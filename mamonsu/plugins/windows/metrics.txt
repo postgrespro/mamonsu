@@ -1,0 +1,1547 @@
+\TBS counters\CurrentResources
+\TBS counters\CurrentContexts
+\WSMan Quota Statistics(*)\Active Users
+\WSMan Quota Statistics(*)\Active Operations
+\WSMan Quota Statistics(*)\Active Shells
+\WSMan Quota Statistics(*)\System Quota Violations/Second
+\WSMan Quota Statistics(*)\User Quota Violations/Second
+\WSMan Quota Statistics(*)\Total Requests/Second
+\Synchronization(*)\Exec. Resource Boost Shared Owners/sec
+\Synchronization(*)\Exec. Resource Boost Excl. Owner/sec
+\Synchronization(*)\Exec. Resource Set Owner Pointer Shared (Existing Owner)/sec
+\Synchronization(*)\Exec. Resource Set Owner Pointer Shared (New Owner)/sec
+\Synchronization(*)\Exec. Resource Set Owner Pointer Exclusive/sec
+\Synchronization(*)\Exec. Resource no-Waits AcqShrdWaitForExcl/sec
+\Synchronization(*)\Exec. Resource Contention AcqShrdWaitForExcl/sec
+\Synchronization(*)\Exec. Resource Recursive Sh. Acquires AcqShrdWaitForExcl/sec
+\Synchronization(*)\Exec. Resource Acquires AcqShrdWaitForExcl/sec
+\Synchronization(*)\Exec. Resource Recursive Excl. Acquires AcqShrdWaitForExcl/sec
+\Synchronization(*)\Exec. Resource Attempts AcqShrdWaitForExcl/sec
+\Synchronization(*)\Exec. Resource no-Waits AcqShrdStarveExcl/sec
+\Synchronization(*)\Exec. Resource Contention AcqShrdStarveExcl/sec
+\Synchronization(*)\Exec. Resource Recursive Sh. Acquires AcqShrdStarveExcl/sec
+\Synchronization(*)\Exec. Resource Acquires AcqShrdStarveExcl/sec
+\Synchronization(*)\Exec. Resource Recursive Excl. Acquires AcqShrdStarveExcl/sec
+\Synchronization(*)\Exec. Resource Attempts AcqShrdStarveExcl/sec
+\Synchronization(*)\Exec. Resource no-Waits AcqShrdLite/sec
+\Synchronization(*)\Exec. Resource Contention AcqShrdLite/sec
+\Synchronization(*)\Exec. Resource Recursive Sh. Acquires AcqShrdLite/sec
+\Synchronization(*)\Exec. Resource Acquires AcqShrdLite/sec
+\Synchronization(*)\Exec. Resource Recursive Excl. Acquires AcqShrdLite/sec
+\Synchronization(*)\Exec. Resource Attempts AcqShrdLite/sec
+\Synchronization(*)\Exec. Resource no-Waits AcqExclLite/sec
+\Synchronization(*)\Exec. Resource Contention AcqExclLite/sec
+\Synchronization(*)\Exec. Resource Recursive Excl. Acquires AcqExclLite/sec
+\Synchronization(*)\Exec. Resource Acquires AcqExclLite/sec
+\Synchronization(*)\Exec. Resource Attempts AcqExclLite/sec
+\Synchronization(*)\Exec. Resource Total Conv. Exclusive To Shared/sec
+\Synchronization(*)\Exec. Resource Total Shared Releases/sec
+\Synchronization(*)\Exec. Resource Total Exclusive Releases/sec
+\Synchronization(*)\Exec. Resource Total Contentions/sec
+\Synchronization(*)\Exec. Resource Total Acquires/sec
+\Synchronization(*)\Exec. Resource Total Delete/sec
+\Synchronization(*)\Exec. Resource Total Re-Initialize/sec
+\Synchronization(*)\Exec. Resource Total Initialize/sec
+\Synchronization(*)\IPI Send Software Interrupts/sec
+\Synchronization(*)\IPI Send Routine Requests/sec
+\Synchronization(*)\IPI Send Broadcast Requests/sec
+\Synchronization(*)\Spinlock Spins/sec
+\Synchronization(*)\Spinlock Contentions/sec
+\Synchronization(*)\Spinlock Acquires/sec
+\Event Tracing for Windows\Total Memory Usage --- Non-Paged Pool
+\Event Tracing for Windows\Total Memory Usage --- Paged Pool
+\Event Tracing for Windows\Total Number of Active Sessions
+\Event Tracing for Windows\Total Number of Distinct Disabled Providers
+\Event Tracing for Windows\Total Number of Distinct Pre-Enabled Providers
+\Event Tracing for Windows\Total Number of Distinct Enabled Providers
+\Processor Information(*)\Processor State Flags
+\Processor Information(*)\% of Maximum Frequency
+\Processor Information(*)\Processor Frequency
+\Processor Information(*)\Parking Status
+\Processor Information(*)\% Priority Time
+\Processor Information(*)\C3 Transitions/sec
+\Processor Information(*)\C2 Transitions/sec
+\Processor Information(*)\C1 Transitions/sec
+\Processor Information(*)\% C3 Time
+\Processor Information(*)\% C2 Time
+\Processor Information(*)\% C1 Time
+\Processor Information(*)\% Idle Time
+\Processor Information(*)\DPC Rate
+\Processor Information(*)\DPCs Queued/sec
+\Processor Information(*)\% Interrupt Time
+\Processor Information(*)\% DPC Time
+\Processor Information(*)\Interrupts/sec
+\Processor Information(*)\% Privileged Time
+\Processor Information(*)\% User Time
+\Processor Information(*)\% Processor Time
+\Event Tracing for Windows Session(*)\Number of Real-Time Consumers
+\Event Tracing for Windows Session(*)\Events Lost
+\Event Tracing for Windows Session(*)\Events Logged per sec
+\Event Tracing for Windows Session(*)\Buffer Memory Usage -- Non-Paged Pool
+\Event Tracing for Windows Session(*)\Buffer Memory Usage -- Paged Pool
+\Per Processor Network Activity Cycles(*)\Stack Send Complete Cycles/sec
+\Per Processor Network Activity Cycles(*)\Miniport RSS Indirection Table Change Cycles
+\Per Processor Network Activity Cycles(*)\Build Scatter Gather Cycles/sec
+\Per Processor Network Activity Cycles(*)\NDIS Send Complete Cycles/sec
+\Per Processor Network Activity Cycles(*)\Miniport Send Cycles/sec
+\Per Processor Network Activity Cycles(*)\NDIS Send Cycles/sec
+\Per Processor Network Activity Cycles(*)\Miniport Return Packet Cycles/sec
+\Per Processor Network Activity Cycles(*)\NDIS Return Packet Cycles/sec
+\Per Processor Network Activity Cycles(*)\Stack Receive Indication Cycles/sec
+\Per Processor Network Activity Cycles(*)\NDIS Receive Indication Cycles/sec
+\Per Processor Network Activity Cycles(*)\Interrupt Cycles/sec
+\Per Processor Network Activity Cycles(*)\Interrupt DPC Cycles/sec
+\Per Processor Network Interface Card Activity(*)\Tcp Offload Send bytes/sec
+\Per Processor Network Interface Card Activity(*)\Tcp Offload Receive bytes/sec
+\Per Processor Network Interface Card Activity(*)\Tcp Offload Send Request Calls/sec
+\Per Processor Network Interface Card Activity(*)\Tcp Offload Receive Indications/sec
+\Per Processor Network Interface Card Activity(*)\Low Resource Received Packets/sec
+\Per Processor Network Interface Card Activity(*)\Low Resource Receive Indications/sec
+\Per Processor Network Interface Card Activity(*)\RSS Indirection Table Change Calls/sec
+\Per Processor Network Interface Card Activity(*)\Build Scatter Gather List Calls/sec
+\Per Processor Network Interface Card Activity(*)\Sent Complete Packets/sec
+\Per Processor Network Interface Card Activity(*)\Sent Packets/sec
+\Per Processor Network Interface Card Activity(*)\Send Complete Calls/sec
+\Per Processor Network Interface Card Activity(*)\Send Request Calls/sec
+\Per Processor Network Interface Card Activity(*)\Returned Packets/sec
+\Per Processor Network Interface Card Activity(*)\Received Packets/sec
+\Per Processor Network Interface Card Activity(*)\Return Packet Calls/sec
+\Per Processor Network Interface Card Activity(*)\Receive Indications/sec
+\Per Processor Network Interface Card Activity(*)\Interrupts/sec
+\Per Processor Network Interface Card Activity(*)\DPCs Queued/sec
+\Netlogon(*)\Average Semaphore Hold Time
+\Netlogon(*)\Semaphore Timeouts
+\Netlogon(*)\Semaphore Acquires
+\Netlogon(*)\Semaphore Holders
+\Netlogon(*)\Semaphore Waiters
+\HTTP Service\TotalFlushedUris
+\HTTP Service\UriCacheFlushes
+\HTTP Service\UriCacheMisses
+\HTTP Service\UriCacheHits
+\HTTP Service\TotalUrisCached
+\HTTP Service\CurrentUrisCached
+\HTTP Service Url Groups(*)\AllRequests
+\HTTP Service Url Groups(*)\HeadRequests
+\HTTP Service Url Groups(*)\GetRequests
+\HTTP Service Url Groups(*)\ConnectionAttempts
+\HTTP Service Url Groups(*)\MaxConnections
+\HTTP Service Url Groups(*)\CurrentConnections
+\HTTP Service Url Groups(*)\BytesTransferredRate
+\HTTP Service Url Groups(*)\BytesReceivedRate
+\HTTP Service Url Groups(*)\BytesSentRate
+\HTTP Service Request Queues(*)\CacheHitRate
+\HTTP Service Request Queues(*)\RejectedRequests
+\HTTP Service Request Queues(*)\RejectionRate
+\HTTP Service Request Queues(*)\ArrivalRate
+\HTTP Service Request Queues(*)\MaxQueueItemAge
+\HTTP Service Request Queues(*)\CurrentQueueSize
+\Power Meter(*)\Power Budget
+\Power Meter(*)\Power
+\ServiceModelEndpoint 4.0.0.0(*)\Transactions Flowed Per Second
+\ServiceModelEndpoint 4.0.0.0(*)\Transactions Flowed
+\ServiceModelEndpoint 4.0.0.0(*)\Reliable Messaging Messages Dropped Per Second
+\ServiceModelEndpoint 4.0.0.0(*)\Reliable Messaging Messages Dropped
+\ServiceModelEndpoint 4.0.0.0(*)\Reliable Messaging Sessions Faulted Per Second
+\ServiceModelEndpoint 4.0.0.0(*)\Reliable Messaging Sessions Faulted
+\ServiceModelEndpoint 4.0.0.0(*)\Security Calls Not Authorized Per Second
+\ServiceModelEndpoint 4.0.0.0(*)\Security Calls Not Authorized
+\ServiceModelEndpoint 4.0.0.0(*)\Security Validation and Authentication Failures Per Second
+\ServiceModelEndpoint 4.0.0.0(*)\Security Validation and Authentication Failures
+\ServiceModelEndpoint 4.0.0.0(*)\Calls Duration
+\ServiceModelEndpoint 4.0.0.0(*)\Calls Faulted Per Second
+\ServiceModelEndpoint 4.0.0.0(*)\Calls Faulted
+\ServiceModelEndpoint 4.0.0.0(*)\Calls Failed Per Second
+\ServiceModelEndpoint 4.0.0.0(*)\Calls Failed
+\ServiceModelEndpoint 4.0.0.0(*)\Calls Outstanding
+\ServiceModelEndpoint 4.0.0.0(*)\Calls Per Second
+\ServiceModelEndpoint 4.0.0.0(*)\Calls
+\ServiceModelOperation 4.0.0.0(*)\Transactions Flowed Per Second
+\ServiceModelOperation 4.0.0.0(*)\Transactions Flowed
+\ServiceModelOperation 4.0.0.0(*)\Security Calls Not Authorized Per Second
+\ServiceModelOperation 4.0.0.0(*)\Security Calls Not Authorized
+\ServiceModelOperation 4.0.0.0(*)\Security Validation and Authentication Failures Per Second
+\ServiceModelOperation 4.0.0.0(*)\Security Validation and Authentication Failures
+\ServiceModelOperation 4.0.0.0(*)\Calls Duration
+\ServiceModelOperation 4.0.0.0(*)\Calls Faulted Per Second
+\ServiceModelOperation 4.0.0.0(*)\Calls Faulted
+\ServiceModelOperation 4.0.0.0(*)\Call Failed Per Second
+\ServiceModelOperation 4.0.0.0(*)\Calls Failed
+\ServiceModelOperation 4.0.0.0(*)\Calls Outstanding
+\ServiceModelOperation 4.0.0.0(*)\Calls Per Second
+\ServiceModelOperation 4.0.0.0(*)\Calls
+\ServiceModelService 4.0.0.0(*)\Percent Of Max Concurrent Sessions
+\ServiceModelService 4.0.0.0(*)\Percent Of Max Concurrent Instances
+\ServiceModelService 4.0.0.0(*)\Percent Of Max Concurrent Calls
+\ServiceModelService 4.0.0.0(*)\Queued Messages Dropped Per Second
+\ServiceModelService 4.0.0.0(*)\Queued Messages Dropped
+\ServiceModelService 4.0.0.0(*)\Queued Messages Rejected Per Second
+\ServiceModelService 4.0.0.0(*)\Queued Messages Rejected
+\ServiceModelService 4.0.0.0(*)\Queued Poison Messages Per Second
+\ServiceModelService 4.0.0.0(*)\Queued Poison Messages
+\ServiceModelService 4.0.0.0(*)\Transacted Operations In Doubt Per Second
+\ServiceModelService 4.0.0.0(*)\Transacted Operations In Doubt
+\ServiceModelService 4.0.0.0(*)\Transacted Operations Aborted Per Second
+\ServiceModelService 4.0.0.0(*)\Transacted Operations Aborted
+\ServiceModelService 4.0.0.0(*)\Transacted Operations Committed Per Second
+\ServiceModelService 4.0.0.0(*)\Transacted Operations Committed
+\ServiceModelService 4.0.0.0(*)\Transactions Flowed Per Second
+\ServiceModelService 4.0.0.0(*)\Transactions Flowed
+\ServiceModelService 4.0.0.0(*)\Reliable Messaging Messages Dropped Per Second
+\ServiceModelService 4.0.0.0(*)\Reliable Messaging Messages Dropped
+\ServiceModelService 4.0.0.0(*)\Reliable Messaging Sessions Faulted Per Second
+\ServiceModelService 4.0.0.0(*)\Reliable Messaging Sessions Faulted
+\ServiceModelService 4.0.0.0(*)\Instances Created Per Second
+\ServiceModelService 4.0.0.0(*)\Instances
+\ServiceModelService 4.0.0.0(*)\Security Calls Not Authorized Per Second
+\ServiceModelService 4.0.0.0(*)\Security Calls Not Authorized
+\ServiceModelService 4.0.0.0(*)\Security Validation and Authentication Failures Per Second
+\ServiceModelService 4.0.0.0(*)\Security Validation and Authentication Failures
+\ServiceModelService 4.0.0.0(*)\Calls Duration
+\ServiceModelService 4.0.0.0(*)\Calls Faulted Per Second
+\ServiceModelService 4.0.0.0(*)\Calls Faulted
+\ServiceModelService 4.0.0.0(*)\Calls Failed Per Second
+\ServiceModelService 4.0.0.0(*)\Calls Failed
+\ServiceModelService 4.0.0.0(*)\Calls Outstanding
+\ServiceModelService 4.0.0.0(*)\Calls Per Second
+\ServiceModelService 4.0.0.0(*)\Calls
+\Teredo Client(*)\Out - Teredo Data Kernel Mode
+\Teredo Client(*)\Out - Teredo Data User Mode
+\Teredo Client(*)\In - Teredo Data Kernel Mode
+\Teredo Client(*)\In - Teredo Data User Mode
+\Teredo Client(*)\Out - Teredo Data
+\Teredo Client(*)\Out - Teredo Bubble
+\Teredo Client(*)\Out - Teredo Router Solicitation
+\Teredo Client(*)\In - Teredo Invalid
+\Teredo Client(*)\In - Teredo Data
+\Teredo Client(*)\In - Teredo Bubble
+\Teredo Client(*)\In - Teredo Router Advertisement
+\Teredo Server(*)\In - Teredo Server Total Packets: Success + Error / sec
+\Teredo Server(*)\Out - Teredo Server: RA-Secondary
+\Teredo Server(*)\Out - Teredo Server: RA-Primary
+\Teredo Server(*)\In - Teredo Server Error Packets: Authentication Error
+\Teredo Server(*)\In - Teredo Server Error Packets: Destination Error
+\Teredo Server(*)\In - Teredo Server Error Packets: Source Error
+\Teredo Server(*)\In - Teredo Server Error Packets: Header Error
+\Teredo Server(*)\In - Teredo Server Error Packets: Total
+\Teredo Server(*)\In - Teredo Server Success Packets: RS-Secondary
+\Teredo Server(*)\In - Teredo Server Success Packets: RS-Primary
+\Teredo Server(*)\In - Teredo Server Success Packets: Echo
+\Teredo Server(*)\In - Teredo Server Success Packets: Bubbles
+\Teredo Server(*)\In - Teredo Server Success Packets: Total
+\Teredo Server(*)\In - Teredo Server Total Packets: Success + Error
+\IPHTTPS Global(*)\Sessions - Total sessions
+\IPHTTPS Global(*)\Out - Total packets sent
+\IPHTTPS Global(*)\In - Total packets received
+\IPHTTPS Global(*)\Errors - Receive errors on the server
+\IPHTTPS Global(*)\Errors - Transmit errors on the server
+\IPHTTPS Global(*)\Out - Total bytes forwarded
+\IPHTTPS Global(*)\Errors - Authentication Errors
+\IPHTTPS Global(*)\Drops - Neighbor resolution timeouts
+\IPHTTPS Global(*)\Out - Total bytes sent
+\IPHTTPS Global(*)\In - Total bytes received
+\IPHTTPS Session(*)\Duration - Duration of the session (Seconds)
+\IPHTTPS Session(*)\Errors - Receive errors on this session
+\IPHTTPS Session(*)\Errors - Transmit errors on this session
+\IPHTTPS Session(*)\Bytes sent on this session
+\IPHTTPS Session(*)\Bytes received on this session
+\IPHTTPS Session(*)\Packets sent on this session
+\IPHTTPS Session(*)\Packets received on this session
+\Teredo Relay(*)\Out - Teredo Relay Success Packets: Data Packets Kernel Mode
+\Teredo Relay(*)\Out - Teredo Relay Success Packets: Data Packets User Mode
+\Teredo Relay(*)\In - Teredo Relay Success Packets: Data Packets Kernel Mode
+\Teredo Relay(*)\In - Teredo Relay Success Packets: Data Packets User Mode
+\Teredo Relay(*)\Out - Teredo Relay Total Packets: Success + Error / sec
+\Teredo Relay(*)\In - Teredo Relay Total Packets: Success + Error / sec
+\Teredo Relay(*)\Out - Teredo Relay Error Packets: Destination Error
+\Teredo Relay(*)\Out - Teredo Relay Error Packets: Source Error
+\Teredo Relay(*)\Out - Teredo Relay Error Packets: Header Error
+\Teredo Relay(*)\Out - Teredo Relay Error Packets
+\Teredo Relay(*)\Out - Teredo Relay Success Packets: Data Packets
+\Teredo Relay(*)\Out - Teredo Relay Success Packets: Bubbles
+\Teredo Relay(*)\Out - Teredo Relay Success Packets
+\Teredo Relay(*)\Out - Teredo Relay Total Packets: Success + Error
+\Teredo Relay(*)\In - Teredo Relay Error Packets: Destination Error
+\Teredo Relay(*)\In - Teredo Relay Error Packets: Source Error
+\Teredo Relay(*)\In - Teredo Relay Error Packets: Header Error
+\Teredo Relay(*)\In - Teredo Relay Error Packets: Total
+\Teredo Relay(*)\In - Teredo Relay Success Packets: Data Packets
+\Teredo Relay(*)\In - Teredo Relay Success Packets: Bubbles
+\Teredo Relay(*)\In - Teredo Relay Success Packets: Total
+\Teredo Relay(*)\In - Teredo Relay Total Packets: Success + Error
+\IPsec DoS Protection\Per IP Rate Limit Queues
+\IPsec DoS Protection\Inbound Discarded Packets/sec
+\IPsec DoS Protection\Inbound Discarded Packets
+\IPsec DoS Protection\Inbound Discarded Default Block Packets/sec
+\IPsec DoS Protection\Inbound Discarded Default Block Packets
+\IPsec DoS Protection\Inbound Rate Limit Discarded Default Block Exempt Packets/sec
+\IPsec DoS Protection\Inbound Rate Limit Discarded Default Block Exempt Packets
+\IPsec DoS Protection\Inbound Discarded Filter Block IPv6 Packets/sec
+\IPsec DoS Protection\Inbound Discarded Filter Block IPv6 Packets
+\IPsec DoS Protection\Inbound Rate Limit Discarded Filter Exempt IPv6 Packets/sec
+\IPsec DoS Protection\Inbound Rate Limit Discarded Filter Exempt IPv6 Packets
+\IPsec DoS Protection\Inbound Rate Limit Discarded ICMPv6 Packets/sec
+\IPsec DoS Protection\Inbound Rate Limit Discarded ICMPv6 Packets
+\IPsec DoS Protection\Inbound Other Discarded IPv6 IPsec Authenticated Packets/sec
+\IPsec DoS Protection\Inbound Other Discarded IPv6 IPsec Authenticated Packets
+\IPsec DoS Protection\Inbound Rate Limit Discarded IPv6 IPsec Authenticated Packets/sec
+\IPsec DoS Protection\Inbound Rate Limit Discarded IPv6 IPsec Authenticated Packets
+\IPsec DoS Protection\Inbound Other Discarded IPv6 IPsec Unauthenticated Packets/sec
+\IPsec DoS Protection\Inbound Other Discarded IPv6 IPsec Unauthenticated Packets
+\IPsec DoS Protection\Inbound Per IP Rate Limit Discarded IPv6 IPsec Unauthenticated Packets/sec
+\IPsec DoS Protection\Inbound Per IP Rate Limit Discarded IPv6 IPsec Unauthenticated Packets
+\IPsec DoS Protection\Inbound Rate Limit Discarded IPv6 IPsec Unauthenticated Packets/sec
+\IPsec DoS Protection\Inbound Rate Limit Discarded IPv6 IPsec Unauthenticated Packets
+\IPsec DoS Protection\Inbound Allowed Default Block Exempt Packets/sec
+\IPsec DoS Protection\Inbound Allowed Default Block Exempt Packets
+\IPsec DoS Protection\Inbound Allowed Filter Exempt IPv6 Packets/sec
+\IPsec DoS Protection\Inbound Allowed Filter Exempt IPv6 Packets
+\IPsec DoS Protection\Inbound Allowed ICMPv6 Packets/sec
+\IPsec DoS Protection\Inbound Allowed ICMPv6 Packets
+\IPsec DoS Protection\Inbound Allowed IPv6 IPsec Authenticated Packets/sec
+\IPsec DoS Protection\Inbound Allowed IPv6 IPsec Authenticated Packets
+\IPsec DoS Protection\Inbound Allowed IPv6 IPsec Unauthenticated Packets/sec
+\IPsec DoS Protection\Inbound Allowed IPv6 IPsec Unauthenticated Packets
+\IPsec DoS Protection\Current State Entries
+\IPsec DoS Protection\State Entries/sec
+\IPsec DoS Protection\State Entries
+\IPsec IKEv1 IPv6\Failed Quick Mode Negotiations/sec
+\IPsec IKEv1 IPv6\Failed Quick Mode Negotiations
+\IPsec IKEv1 IPv6\Successful Quick Mode Negotiations/sec
+\IPsec IKEv1 IPv6\Successful Quick Mode Negotiations
+\IPsec IKEv1 IPv6\Quick Mode Negotiations/sec
+\IPsec IKEv1 IPv6\Quick Mode Negotiations
+\IPsec IKEv1 IPv6\Pending Quick Mode Negotiations
+\IPsec IKEv1 IPv6\Active Quick Mode SAs
+\IPsec IKEv1 IPv6\Main Mode Negotiation Requests Received/sec
+\IPsec IKEv1 IPv6\Main Mode Negotiation Requests Received
+\IPsec IKEv1 IPv6\Failed Main Mode Negotiations/sec
+\IPsec IKEv1 IPv6\Failed Main Mode Negotiations
+\IPsec IKEv1 IPv6\Successful Main Mode Negotiations/sec
+\IPsec IKEv1 IPv6\Successful Main Mode Negotiations
+\IPsec IKEv1 IPv6\Main Mode Negotiations/sec
+\IPsec IKEv1 IPv6\Main Mode Negotiations
+\IPsec IKEv1 IPv6\Pending Main Mode Negotiations
+\IPsec IKEv1 IPv6\Active Main Mode SAs
+\IPsec IKEv1 IPv4\Failed Quick Mode Negotiations/sec
+\IPsec IKEv1 IPv4\Failed Quick Mode Negotiations
+\IPsec IKEv1 IPv4\Successful Quick Mode Negotiations/sec
+\IPsec IKEv1 IPv4\Successful Quick Mode Negotiations
+\IPsec IKEv1 IPv4\Quick Mode Negotiations/sec
+\IPsec IKEv1 IPv4\Quick Mode Negotiations
+\IPsec IKEv1 IPv4\Pending Quick Mode Negotiations
+\IPsec IKEv1 IPv4\Active Quick Mode SAs
+\IPsec IKEv1 IPv4\Main Mode Negotiation Requests Received/sec
+\IPsec IKEv1 IPv4\Main Mode Negotiation Requests Received
+\IPsec IKEv1 IPv4\Failed Main Mode Negotiations/sec
+\IPsec IKEv1 IPv4\Failed Main Mode Negotiations
+\IPsec IKEv1 IPv4\Successful Main Mode Negotiations/sec
+\IPsec IKEv1 IPv4\Successful Main Mode Negotiations
+\IPsec IKEv1 IPv4\Main Mode Negotiations/sec
+\IPsec IKEv1 IPv4\Main Mode Negotiations
+\IPsec IKEv1 IPv4\Pending Main Mode Negotiations
+\IPsec IKEv1 IPv4\Active Main Mode SAs
+\IPsec IKEv2 IPv6\Failed Quick Mode Negotiations/sec
+\IPsec IKEv2 IPv6\Failed Quick Mode Negotiations
+\IPsec IKEv2 IPv6\Successful Quick Mode Negotiations/sec
+\IPsec IKEv2 IPv6\Successful Quick Mode Negotiations
+\IPsec IKEv2 IPv6\Quick Mode Negotiations/sec
+\IPsec IKEv2 IPv6\Quick Mode Negotiations
+\IPsec IKEv2 IPv6\Pending Quick Mode Negotiations
+\IPsec IKEv2 IPv6\Active Quick Mode SAs
+\IPsec IKEv2 IPv6\Main Mode Negotiation Requests Received/sec
+\IPsec IKEv2 IPv6\Main Mode Negotiation Requests Received
+\IPsec IKEv2 IPv6\Failed Main Mode Negotiations/sec
+\IPsec IKEv2 IPv6\Failed Main Mode Negotiations
+\IPsec IKEv2 IPv6\Successful Main Mode Negotiations/sec
+\IPsec IKEv2 IPv6\Successful Main Mode Negotiations
+\IPsec IKEv2 IPv6\Main Mode Negotiations/sec
+\IPsec IKEv2 IPv6\Main Mode Negotiations
+\IPsec IKEv2 IPv6\Pending Main Mode Negotiations
+\IPsec IKEv2 IPv6\Active Main Mode SAs
+\IPsec AuthIP IPv6\Extended Mode SAs That Used Impersonation
+\IPsec AuthIP IPv6\Failed Extended Mode Negotiations/sec
+\IPsec AuthIP IPv6\Failed Extended Mode Negotiations
+\IPsec AuthIP IPv6\Successful Extended Mode Negotiations/sec
+\IPsec AuthIP IPv6\Successful Extended Mode Negotiations
+\IPsec AuthIP IPv6\Extended Mode Negotiations/sec
+\IPsec AuthIP IPv6\Extended Mode Negotiations
+\IPsec AuthIP IPv6\Pending Extended Mode Negotiations
+\IPsec AuthIP IPv6\Active Extended Mode SAs
+\IPsec AuthIP IPv6\Failed Quick Mode Negotiations/sec
+\IPsec AuthIP IPv6\Failed Quick Mode Negotiations
+\IPsec AuthIP IPv6\Successful Quick Mode Negotiations/sec
+\IPsec AuthIP IPv6\Successful Quick Mode Negotiations
+\IPsec AuthIP IPv6\Quick Mode Negotiations/sec
+\IPsec AuthIP IPv6\Quick Mode Negotiations
+\IPsec AuthIP IPv6\Pending Quick Mode Negotiations
+\IPsec AuthIP IPv6\Active Quick Mode SAs
+\IPsec AuthIP IPv6\Main Mode SAs That Used Impersonation/sec
+\IPsec AuthIP IPv6\Main Mode SAs That Used Impersonation
+\IPsec AuthIP IPv6\Main Mode Negotiation Requests Received/sec
+\IPsec AuthIP IPv6\Main Mode Negotiation Requests Received
+\IPsec AuthIP IPv6\Failed Main Mode Negotiations/sec
+\IPsec AuthIP IPv6\Failed Main Mode Negotiations
+\IPsec AuthIP IPv6\Successful Main Mode Negotiations/sec
+\IPsec AuthIP IPv6\Successful Main Mode Negotiations
+\IPsec AuthIP IPv6\Main Mode Negotiations/sec
+\IPsec AuthIP IPv6\Main Mode Negotiations
+\IPsec AuthIP IPv6\Pending Main Mode Negotiations
+\IPsec AuthIP IPv6\Active Main Mode SAs
+\IPsec AuthIP IPv4\Extended Mode SAs That Used Impersonation
+\IPsec AuthIP IPv4\Failed Extended Mode Negotiations/sec
+\IPsec AuthIP IPv4\Failed Extended Mode Negotiations
+\IPsec AuthIP IPv4\Successful Extended Mode Negotiations/sec
+\IPsec AuthIP IPv4\Successful Extended Mode Negotiations
+\IPsec AuthIP IPv4\Extended Mode Negotiations/sec
+\IPsec AuthIP IPv4\Extended Mode Negotiations
+\IPsec AuthIP IPv4\Pending Extended Mode Negotiations
+\IPsec AuthIP IPv4\Active Extended Mode SAs
+\IPsec AuthIP IPv4\Failed Quick Mode Negotiations/sec
+\IPsec AuthIP IPv4\Failed Quick Mode Negotiations
+\IPsec AuthIP IPv4\Successful Quick Mode Negotiations/sec
+\IPsec AuthIP IPv4\Successful Quick Mode Negotiations
+\IPsec AuthIP IPv4\Quick Mode Negotiations/sec
+\IPsec AuthIP IPv4\Quick Mode Negotiations
+\IPsec AuthIP IPv4\Pending Quick Mode Negotiations
+\IPsec AuthIP IPv4\Active Quick Mode SAs
+\IPsec AuthIP IPv4\Main Mode SAs That Used Impersonation/sec
+\IPsec AuthIP IPv4\Main Mode SAs That Used Impersonation
+\IPsec AuthIP IPv4\Main Mode Negotiation Requests Received/sec
+\IPsec AuthIP IPv4\Main Mode Negotiation Requests Received
+\IPsec AuthIP IPv4\Failed Main Mode Negotiations/sec
+\IPsec AuthIP IPv4\Failed Main Mode Negotiations
+\IPsec AuthIP IPv4\Successful Main Mode Negotiations/sec
+\IPsec AuthIP IPv4\Successful Main Mode Negotiations
+\IPsec AuthIP IPv4\Main Mode Negotiations/sec
+\IPsec AuthIP IPv4\Main Mode Negotiations
+\IPsec AuthIP IPv4\Pending Main Mode Negotiations
+\IPsec AuthIP IPv4\Active Main Mode SAs
+\IPsec IKEv2 IPv4\Failed Quick Mode Negotiations/sec
+\IPsec IKEv2 IPv4\Failed Quick Mode Negotiations
+\IPsec IKEv2 IPv4\Successful Quick Mode Negotiations/sec
+\IPsec IKEv2 IPv4\Successful Quick Mode Negotiations
+\IPsec IKEv2 IPv4\Quick Mode Negotiations/sec
+\IPsec IKEv2 IPv4\Quick Mode Negotiations
+\IPsec IKEv2 IPv4\Pending Quick Mode Negotiations
+\IPsec IKEv2 IPv4\Active Quick Mode SAs
+\IPsec IKEv2 IPv4\Main Mode Negotiation Requests Received/sec
+\IPsec IKEv2 IPv4\Main Mode Negotiation Requests Received
+\IPsec IKEv2 IPv4\Failed Main Mode Negotiations/sec
+\IPsec IKEv2 IPv4\Failed Main Mode Negotiations
+\IPsec IKEv2 IPv4\Successful Main Mode Negotiations/sec
+\IPsec IKEv2 IPv4\Successful Main Mode Negotiations
+\IPsec IKEv2 IPv4\Main Mode Negotiations/sec
+\IPsec IKEv2 IPv4\Main Mode Negotiations
+\IPsec IKEv2 IPv4\Pending Main Mode Negotiations
+\IPsec IKEv2 IPv4\Active Main Mode SAs
+\Generic IKEv1, AuthIP, and IKEv2\IKEv2 Quick Mode Negotiation Time
+\Generic IKEv1, AuthIP, and IKEv2\IKEv2 Main Mode Negotiation Time
+\Generic IKEv1, AuthIP, and IKEv2\Failed Negotiations/sec
+\Generic IKEv1, AuthIP, and IKEv2\Failed Negotiations
+\Generic IKEv1, AuthIP, and IKEv2\Successful Negotiations/sec
+\Generic IKEv1, AuthIP, and IKEv2\Successful Negotiations
+\Generic IKEv1, AuthIP, and IKEv2\Invalid Packets Received/sec
+\Generic IKEv1, AuthIP, and IKEv2\Packets Received/sec
+\Generic IKEv1, AuthIP, and IKEv2\Extended Mode Negotiation Time
+\Generic IKEv1, AuthIP, and IKEv2\AuthIP Quick Mode Negotiation Time
+\Generic IKEv1, AuthIP, and IKEv2\IKEv1 Quick Mode Negotiation Time
+\Generic IKEv1, AuthIP, and IKEv2\AuthIP Main Mode Negotiation Time
+\Generic IKEv1, AuthIP, and IKEv2\IKEv1 Main Mode Negotiation Time
+\Authorization Manager Applications(*)\Number of Scopes loaded in memory
+\Authorization Manager Applications(*)\Total number of scopes
+\WFPv6\Allowed Classifies/sec
+\WFPv6\Active Outbound Connections
+\WFPv6\Active Inbound Connections
+\WFPv6\Outbound Connections
+\WFPv6\Inbound Connections
+\WFPv6\Outbound Connections Allowed/sec
+\WFPv6\Inbound Connections Allowed/sec
+\WFPv6\Outbound Connections Blocked/sec
+\WFPv6\Inbound Connections Blocked/sec
+\WFPv6\Blocked Binds
+\WFPv6\Packets Discarded/sec
+\WFPv6\Outbound Packets Discarded/sec
+\WFPv6\Inbound Packets Discarded/sec
+\WFP\Provider Count
+\IPsec Driver\Inbound Packets Dropped/sec
+\IPsec Driver\Total Inbound Packets Dropped
+\IPsec Driver\Inbound Packets Received/sec
+\IPsec Driver\Total Inbound Packets Received
+\IPsec Driver\Plaintext Packets Received/sec
+\IPsec Driver\Plaintext Packets Received
+\IPsec Driver\Packets Received Over Wrong SA/sec
+\IPsec Driver\Packets Received Over Wrong SA
+\IPsec Driver\Packets That Failed UDP-ESP Validation/sec
+\IPsec Driver\Packets That Failed UDP-ESP Validation
+\IPsec Driver\Packets That Failed ESP Validation/sec
+\IPsec Driver\Packets That Failed ESP Validation
+\IPsec Driver\Security Associations Added
+\IPsec Driver\SA Rekeys
+\IPsec Driver\Packets Not Decrypted/sec
+\IPsec Driver\Packets Not Decrypted
+\IPsec Driver\Packets Not Authenticated/sec
+\IPsec Driver\Packets Not Authenticated
+\IPsec Driver\Packets That Failed Replay Detection/sec
+\IPsec Driver\Packets That Failed Replay Detection
+\IPsec Driver\Offloaded Bytes Sent/sec
+\IPsec Driver\Offloaded Bytes Received/sec
+\IPsec Driver\Offloaded Security Associations
+\IPsec Driver\Bytes Sent in Transport Mode/sec
+\IPsec Driver\Bytes Received in Transport Mode/sec
+\IPsec Driver\Bytes Sent in Tunnel Mode/sec
+\IPsec Driver\Bytes Received in Tunnel Mode/sec
+\IPsec Driver\Incorrect SPI Packets/sec
+\IPsec Driver\Incorrect SPI Packets
+\IPsec Driver\Pending Security Associations
+\IPsec Driver\Active Security Associations
+\WFPv4\Allowed Classifies/sec
+\WFPv4\Active Outbound Connections
+\WFPv4\Active Inbound Connections
+\WFPv4\Outbound Connections
+\WFPv4\Inbound Connections
+\WFPv4\Outbound Connections Allowed/sec
+\WFPv4\Inbound Connections Allowed/sec
+\WFPv4\Outbound Connections Blocked/sec
+\WFPv4\Inbound Connections Blocked/sec
+\WFPv4\Blocked Binds
+\WFPv4\Packets Discarded/sec
+\WFPv4\Outbound Packets Discarded/sec
+\WFPv4\Inbound Packets Discarded/sec
+\Pacer Pipe(*)\Nonconforming packets transmitted/sec
+\Pacer Pipe(*)\Nonconforming packets transmitted
+\Pacer Pipe(*)\Average packets in netcard
+\Pacer Pipe(*)\Max packets in netcard
+\Pacer Pipe(*)\Max packets in sequencer
+\Pacer Pipe(*)\Average packets in sequencer
+\Pacer Pipe(*)\Max packets in shaper
+\Pacer Pipe(*)\Average packets in shaper
+\Pacer Pipe(*)\Nonconforming packets scheduled/sec
+\Pacer Pipe(*)\Nonconforming packets scheduled
+\Pacer Pipe(*)\Max simultaneous flows
+\Pacer Pipe(*)\Flow mods rejected
+\Pacer Pipe(*)\Flows modified
+\Pacer Pipe(*)\Flows rejected
+\Pacer Pipe(*)\Flows closed
+\Pacer Pipe(*)\Flows opened
+\Pacer Pipe(*)\Out of packets
+\Pacer Flow(*)\Nonconforming packets transmitted/sec
+\Pacer Flow(*)\Nonconforming packets transmitted
+\Pacer Flow(*)\Average packets in netcard
+\Pacer Flow(*)\Maximum packets in netcard
+\Pacer Flow(*)\Max packets in sequencer
+\Pacer Flow(*)\Average packets in sequencer
+\Pacer Flow(*)\Max packets in shaper
+\Pacer Flow(*)\Average packets in shaper
+\Pacer Flow(*)\Nonconforming packets scheduled/sec
+\Pacer Flow(*)\Nonconforming packets scheduled
+\Pacer Flow(*)\Packets dropped/sec
+\Pacer Flow(*)\Packets scheduled/sec
+\Pacer Flow(*)\Packets transmitted/sec
+\Pacer Flow(*)\Bytes scheduled/sec
+\Pacer Flow(*)\Bytes transmitted/sec
+\Pacer Flow(*)\Bytes transmitted
+\Pacer Flow(*)\Bytes scheduled
+\Pacer Flow(*)\Packets transmitted
+\Pacer Flow(*)\Packets scheduled
+\Pacer Flow(*)\Packets dropped
+\Terminal Services\Total Sessions
+\Terminal Services\Inactive Sessions
+\Terminal Services\Active Sessions
+\.NET CLR Data(*)\SqlClient: Current # pooled and nonpooled connections
+\.NET CLR Data(*)\SqlClient: Current # pooled connections
+\.NET CLR Data(*)\SqlClient: Current # connection pools
+\.NET CLR Data(*)\SqlClient: Peak # pooled connections
+\.NET CLR Data(*)\SqlClient: Total # failed connects
+\.NET CLR Data(*)\SqlClient: Total # failed commands
+\.NET CLR Networking(*)\Connections Established
+\.NET CLR Networking(*)\Bytes Received
+\.NET CLR Networking(*)\Bytes Sent
+\.NET CLR Networking(*)\Datagrams Received
+\.NET CLR Networking(*)\Datagrams Sent
+\.NET CLR Networking 4.0.0.0(*)\Connections Established
+\.NET CLR Networking 4.0.0.0(*)\Bytes Received
+\.NET CLR Networking 4.0.0.0(*)\Bytes Sent
+\.NET CLR Networking 4.0.0.0(*)\Datagrams Received
+\.NET CLR Networking 4.0.0.0(*)\Datagrams Sent
+\.NET CLR Networking 4.0.0.0(*)\HttpWebRequests Created/Sec
+\.NET CLR Networking 4.0.0.0(*)\HttpWebRequests Average Lifetime
+\.NET CLR Networking 4.0.0.0(*)\HttpWebRequests Queued/Sec
+\.NET CLR Networking 4.0.0.0(*)\HttpWebRequests Average Queue Time
+\.NET CLR Networking 4.0.0.0(*)\HttpWebRequests Aborted/Sec
+\.NET CLR Networking 4.0.0.0(*)\HttpWebRequests Failed/Sec
+\.NET Data Provider for Oracle(*)\HardConnectsPerSecond
+\.NET Data Provider for Oracle(*)\HardDisconnectsPerSecond
+\.NET Data Provider for Oracle(*)\SoftConnectsPerSecond
+\.NET Data Provider for Oracle(*)\SoftDisconnectsPerSecond
+\.NET Data Provider for Oracle(*)\NumberOfNonPooledConnections
+\.NET Data Provider for Oracle(*)\NumberOfPooledConnections
+\.NET Data Provider for Oracle(*)\NumberOfActiveConnectionPoolGroups
+\.NET Data Provider for Oracle(*)\NumberOfInactiveConnectionPoolGroups
+\.NET Data Provider for Oracle(*)\NumberOfActiveConnectionPools
+\.NET Data Provider for Oracle(*)\NumberOfInactiveConnectionPools
+\.NET Data Provider for Oracle(*)\NumberOfActiveConnections
+\.NET Data Provider for Oracle(*)\NumberOfFreeConnections
+\.NET Data Provider for Oracle(*)\NumberOfStasisConnections
+\.NET Data Provider for Oracle(*)\NumberOfReclaimedConnections
+\.NET Data Provider for SqlServer(*)\HardConnectsPerSecond
+\.NET Data Provider for SqlServer(*)\HardDisconnectsPerSecond
+\.NET Data Provider for SqlServer(*)\SoftConnectsPerSecond
+\.NET Data Provider for SqlServer(*)\SoftDisconnectsPerSecond
+\.NET Data Provider for SqlServer(*)\NumberOfNonPooledConnections
+\.NET Data Provider for SqlServer(*)\NumberOfPooledConnections
+\.NET Data Provider for SqlServer(*)\NumberOfActiveConnectionPoolGroups
+\.NET Data Provider for SqlServer(*)\NumberOfInactiveConnectionPoolGroups
+\.NET Data Provider for SqlServer(*)\NumberOfActiveConnectionPools
+\.NET Data Provider for SqlServer(*)\NumberOfInactiveConnectionPools
+\.NET Data Provider for SqlServer(*)\NumberOfActiveConnections
+\.NET Data Provider for SqlServer(*)\NumberOfFreeConnections
+\.NET Data Provider for SqlServer(*)\NumberOfStasisConnections
+\.NET Data Provider for SqlServer(*)\NumberOfReclaimedConnections
+\.NET CLR Memory(*)\# Gen 0 Collections
+\.NET CLR Memory(*)\# Gen 1 Collections
+\.NET CLR Memory(*)\# Gen 2 Collections
+\.NET CLR Memory(*)\Promoted Memory from Gen 0
+\.NET CLR Memory(*)\Promoted Memory from Gen 1
+\.NET CLR Memory(*)\Gen 0 Promoted Bytes/Sec
+\.NET CLR Memory(*)\Gen 1 Promoted Bytes/Sec
+\.NET CLR Memory(*)\Promoted Finalization-Memory from Gen 0
+\.NET CLR Memory(*)\Process ID
+\.NET CLR Memory(*)\Gen 0 heap size
+\.NET CLR Memory(*)\Gen 1 heap size
+\.NET CLR Memory(*)\Gen 2 heap size
+\.NET CLR Memory(*)\Large Object Heap size
+\.NET CLR Memory(*)\Finalization Survivors
+\.NET CLR Memory(*)\# GC Handles
+\.NET CLR Memory(*)\Allocated Bytes/sec
+\.NET CLR Memory(*)\# Induced GC
+\.NET CLR Memory(*)\% Time in GC
+\.NET CLR Memory(*)\# Bytes in all Heaps
+\.NET CLR Memory(*)\# Total committed Bytes
+\.NET CLR Memory(*)\# Total reserved Bytes
+\.NET CLR Memory(*)\# of Pinned Objects
+\.NET CLR Memory(*)\# of Sink Blocks in use
+\.NET CLR Interop(*)\# of CCWs
+\.NET CLR Interop(*)\# of Stubs
+\.NET CLR Interop(*)\# of marshalling
+\.NET CLR Interop(*)\# of TLB imports / sec
+\.NET CLR Interop(*)\# of TLB exports / sec
+\.NET CLR Exceptions(*)\# of Exceps Thrown
+\.NET CLR Exceptions(*)\# of Exceps Thrown / sec
+\.NET CLR Exceptions(*)\# of Filters / sec
+\.NET CLR Exceptions(*)\# of Finallys / sec
+\.NET CLR Exceptions(*)\Throw To Catch Depth / sec
+\.NET CLR Loading(*)\Current Classes Loaded
+\.NET CLR Loading(*)\Total Classes Loaded
+\.NET CLR Loading(*)\Rate of Classes Loaded
+\.NET CLR Loading(*)\Current appdomains
+\.NET CLR Loading(*)\Total Appdomains
+\.NET CLR Loading(*)\Rate of appdomains
+\.NET CLR Loading(*)\Current Assemblies
+\.NET CLR Loading(*)\Total Assemblies
+\.NET CLR Loading(*)\Rate of Assemblies
+\.NET CLR Loading(*)\% Time Loading
+\.NET CLR Loading(*)\Assembly Search Length
+\.NET CLR Loading(*)\Total # of Load Failures
+\.NET CLR Loading(*)\Rate of Load Failures
+\.NET CLR Loading(*)\Bytes in Loader Heap
+\.NET CLR Loading(*)\Total appdomains unloaded
+\.NET CLR Loading(*)\Rate of appdomains unloaded
+\.NET CLR LocksAndThreads(*)\Total # of Contentions
+\.NET CLR LocksAndThreads(*)\Contention Rate / sec
+\.NET CLR LocksAndThreads(*)\Current Queue Length
+\.NET CLR LocksAndThreads(*)\Queue Length Peak
+\.NET CLR LocksAndThreads(*)\Queue Length / sec
+\.NET CLR LocksAndThreads(*)\# of current logical Threads
+\.NET CLR LocksAndThreads(*)\# of current physical Threads
+\.NET CLR LocksAndThreads(*)\# of current recognized threads
+\.NET CLR LocksAndThreads(*)\# of total recognized threads
+\.NET CLR LocksAndThreads(*)\rate of recognized threads / sec
+\.NET CLR Jit(*)\# of Methods Jitted
+\.NET CLR Jit(*)\# of IL Bytes Jitted
+\.NET CLR Jit(*)\Total # of IL Bytes Jitted
+\.NET CLR Jit(*)\IL Bytes Jitted / sec
+\.NET CLR Jit(*)\Standard Jit Failures
+\.NET CLR Jit(*)\% Time in Jit
+\.NET CLR Remoting(*)\Remote Calls/sec
+\.NET CLR Remoting(*)\Total Remote Calls
+\.NET CLR Remoting(*)\Channels
+\.NET CLR Remoting(*)\Context Proxies
+\.NET CLR Remoting(*)\Context-Bound Classes Loaded
+\.NET CLR Remoting(*)\Context-Bound Objects Alloc / sec
+\.NET CLR Remoting(*)\Contexts
+\.NET CLR Security(*)\Total Runtime Checks
+\.NET CLR Security(*)\% Time Sig. Authenticating
+\.NET CLR Security(*)\# Link Time Checks
+\.NET CLR Security(*)\% Time in RT checks
+\.NET CLR Security(*)\Stack Walk Depth
+\ASP.NET\Application Restarts
+\ASP.NET\Applications Running
+\ASP.NET\Requests Disconnected
+\ASP.NET\Request Execution Time
+\ASP.NET\Requests Rejected
+\ASP.NET\Requests Queued
+\ASP.NET\Worker Processes Running
+\ASP.NET\Worker Process Restarts
+\ASP.NET\Request Wait Time
+\ASP.NET\State Server Sessions Active
+\ASP.NET\State Server Sessions Abandoned
+\ASP.NET\State Server Sessions Timed Out
+\ASP.NET\State Server Sessions Total
+\ASP.NET\Requests Current
+\ASP.NET\Audit Success Events Raised
+\ASP.NET\Audit Failure Events Raised
+\ASP.NET\Error Events Raised
+\ASP.NET\Request Error Events Raised
+\ASP.NET\Infrastructure Error Events Raised
+\ASP.NET Applications(*)\Anonymous Requests
+\ASP.NET Applications(*)\Anonymous Requests/Sec
+\ASP.NET Applications(*)\Cache Total Entries
+\ASP.NET Applications(*)\Cache Total Turnover Rate
+\ASP.NET Applications(*)\Cache Total Hits
+\ASP.NET Applications(*)\Cache Total Misses
+\ASP.NET Applications(*)\Cache Total Hit Ratio
+\ASP.NET Applications(*)\Cache API Entries
+\ASP.NET Applications(*)\Cache API Turnover Rate
+\ASP.NET Applications(*)\Cache API Hits
+\ASP.NET Applications(*)\Cache API Misses
+\ASP.NET Applications(*)\Cache API Hit Ratio
+\ASP.NET Applications(*)\Output Cache Entries
+\ASP.NET Applications(*)\Output Cache Turnover Rate
+\ASP.NET Applications(*)\Output Cache Hits
+\ASP.NET Applications(*)\Output Cache Misses
+\ASP.NET Applications(*)\Output Cache Hit Ratio
+\ASP.NET Applications(*)\Compilations Total
+\ASP.NET Applications(*)\Debugging Requests
+\ASP.NET Applications(*)\Errors During Preprocessing
+\ASP.NET Applications(*)\Errors During Compilation
+\ASP.NET Applications(*)\Errors During Execution
+\ASP.NET Applications(*)\Errors Unhandled During Execution
+\ASP.NET Applications(*)\Errors Unhandled During Execution/Sec
+\ASP.NET Applications(*)\Errors Total
+\ASP.NET Applications(*)\Errors Total/Sec
+\ASP.NET Applications(*)\Pipeline Instance Count
+\ASP.NET Applications(*)\Request Bytes In Total
+\ASP.NET Applications(*)\Request Bytes Out Total
+\ASP.NET Applications(*)\Requests Executing
+\ASP.NET Applications(*)\Requests Failed
+\ASP.NET Applications(*)\Requests Not Found
+\ASP.NET Applications(*)\Requests Not Authorized
+\ASP.NET Applications(*)\Requests In Application Queue
+\ASP.NET Applications(*)\Requests Timed Out
+\ASP.NET Applications(*)\Requests Succeeded
+\ASP.NET Applications(*)\Requests Total
+\ASP.NET Applications(*)\Requests/Sec
+\ASP.NET Applications(*)\Sessions Active
+\ASP.NET Applications(*)\Sessions Abandoned
+\ASP.NET Applications(*)\Sessions Timed Out
+\ASP.NET Applications(*)\Sessions Total
+\ASP.NET Applications(*)\Transactions Aborted
+\ASP.NET Applications(*)\Transactions Committed
+\ASP.NET Applications(*)\Transactions Pending
+\ASP.NET Applications(*)\Transactions Total
+\ASP.NET Applications(*)\Transactions/Sec
+\ASP.NET Applications(*)\Session State Server connections total
+\ASP.NET Applications(*)\Session SQL Server connections total
+\ASP.NET Applications(*)\Events Raised
+\ASP.NET Applications(*)\Events Raised/Sec
+\ASP.NET Applications(*)\Application Lifetime Events
+\ASP.NET Applications(*)\Application Lifetime Events/Sec
+\ASP.NET Applications(*)\Error Events Raised
+\ASP.NET Applications(*)\Error Events Raised/Sec
+\ASP.NET Applications(*)\Request Error Events Raised
+\ASP.NET Applications(*)\Request Error Events Raised/Sec
+\ASP.NET Applications(*)\Infrastructure Error Events Raised
+\ASP.NET Applications(*)\Infrastructure Error Events Raised/Sec
+\ASP.NET Applications(*)\Request Events Raised
+\ASP.NET Applications(*)\Request Events Raised/Sec
+\ASP.NET Applications(*)\Audit Success Events Raised
+\ASP.NET Applications(*)\Audit Failure Events Raised
+\ASP.NET Applications(*)\Membership Authentication Success
+\ASP.NET Applications(*)\Membership Authentication Failure
+\ASP.NET Applications(*)\Forms Authentication Success
+\ASP.NET Applications(*)\Forms Authentication Failure
+\ASP.NET Applications(*)\Viewstate MAC Validation Failure
+\ASP.NET Applications(*)\Request Execution Time
+\ASP.NET Applications(*)\Requests Disconnected
+\ASP.NET Applications(*)\Requests Rejected
+\ASP.NET Applications(*)\Request Wait Time
+\ASP.NET Applications(*)\Cache % Machine Memory Limit Used
+\ASP.NET Applications(*)\Cache % Process Memory Limit Used
+\ASP.NET Applications(*)\Cache Total Trims
+\ASP.NET Applications(*)\Cache API Trims
+\ASP.NET Applications(*)\Output Cache Trims
+\ASP.NET Applications(*)\% Managed Processor Time (estimated)
+\ASP.NET Applications(*)\Managed Memory Used (estimated)
+\ASP.NET v4.0.30319\Application Restarts
+\ASP.NET v4.0.30319\Applications Running
+\ASP.NET v4.0.30319\Requests Disconnected
+\ASP.NET v4.0.30319\Request Execution Time
+\ASP.NET v4.0.30319\Requests Rejected
+\ASP.NET v4.0.30319\Requests Queued
+\ASP.NET v4.0.30319\Worker Processes Running
+\ASP.NET v4.0.30319\Worker Process Restarts
+\ASP.NET v4.0.30319\Request Wait Time
+\ASP.NET v4.0.30319\State Server Sessions Active
+\ASP.NET v4.0.30319\State Server Sessions Abandoned
+\ASP.NET v4.0.30319\State Server Sessions Timed Out
+\ASP.NET v4.0.30319\State Server Sessions Total
+\ASP.NET v4.0.30319\Requests Current
+\ASP.NET v4.0.30319\Audit Success Events Raised
+\ASP.NET v4.0.30319\Audit Failure Events Raised
+\ASP.NET v4.0.30319\Error Events Raised
+\ASP.NET v4.0.30319\Request Error Events Raised
+\ASP.NET v4.0.30319\Infrastructure Error Events Raised
+\ASP.NET Apps v4.0.30319(*)\Anonymous Requests
+\ASP.NET Apps v4.0.30319(*)\Anonymous Requests/Sec
+\ASP.NET Apps v4.0.30319(*)\Cache Total Entries
+\ASP.NET Apps v4.0.30319(*)\Cache Total Turnover Rate
+\ASP.NET Apps v4.0.30319(*)\Cache Total Hits
+\ASP.NET Apps v4.0.30319(*)\Cache Total Misses
+\ASP.NET Apps v4.0.30319(*)\Cache Total Hit Ratio
+\ASP.NET Apps v4.0.30319(*)\Cache API Entries
+\ASP.NET Apps v4.0.30319(*)\Cache API Turnover Rate
+\ASP.NET Apps v4.0.30319(*)\Cache API Hits
+\ASP.NET Apps v4.0.30319(*)\Cache API Misses
+\ASP.NET Apps v4.0.30319(*)\Cache API Hit Ratio
+\ASP.NET Apps v4.0.30319(*)\Output Cache Entries
+\ASP.NET Apps v4.0.30319(*)\Output Cache Turnover Rate
+\ASP.NET Apps v4.0.30319(*)\Output Cache Hits
+\ASP.NET Apps v4.0.30319(*)\Output Cache Misses
+\ASP.NET Apps v4.0.30319(*)\Output Cache Hit Ratio
+\ASP.NET Apps v4.0.30319(*)\Compilations Total
+\ASP.NET Apps v4.0.30319(*)\Debugging Requests
+\ASP.NET Apps v4.0.30319(*)\Errors During Preprocessing
+\ASP.NET Apps v4.0.30319(*)\Errors During Compilation
+\ASP.NET Apps v4.0.30319(*)\Errors During Execution
+\ASP.NET Apps v4.0.30319(*)\Errors Unhandled During Execution
+\ASP.NET Apps v4.0.30319(*)\Errors Unhandled During Execution/Sec
+\ASP.NET Apps v4.0.30319(*)\Errors Total
+\ASP.NET Apps v4.0.30319(*)\Errors Total/Sec
+\ASP.NET Apps v4.0.30319(*)\Pipeline Instance Count
+\ASP.NET Apps v4.0.30319(*)\Request Bytes In Total
+\ASP.NET Apps v4.0.30319(*)\Request Bytes Out Total
+\ASP.NET Apps v4.0.30319(*)\Requests Executing
+\ASP.NET Apps v4.0.30319(*)\Requests Failed
+\ASP.NET Apps v4.0.30319(*)\Requests Not Found
+\ASP.NET Apps v4.0.30319(*)\Requests Not Authorized
+\ASP.NET Apps v4.0.30319(*)\Requests In Application Queue
+\ASP.NET Apps v4.0.30319(*)\Requests Timed Out
+\ASP.NET Apps v4.0.30319(*)\Requests Succeeded
+\ASP.NET Apps v4.0.30319(*)\Requests Total
+\ASP.NET Apps v4.0.30319(*)\Requests/Sec
+\ASP.NET Apps v4.0.30319(*)\Sessions Active
+\ASP.NET Apps v4.0.30319(*)\Sessions Abandoned
+\ASP.NET Apps v4.0.30319(*)\Sessions Timed Out
+\ASP.NET Apps v4.0.30319(*)\Sessions Total
+\ASP.NET Apps v4.0.30319(*)\Transactions Aborted
+\ASP.NET Apps v4.0.30319(*)\Transactions Committed
+\ASP.NET Apps v4.0.30319(*)\Transactions Pending
+\ASP.NET Apps v4.0.30319(*)\Transactions Total
+\ASP.NET Apps v4.0.30319(*)\Transactions/Sec
+\ASP.NET Apps v4.0.30319(*)\Session State Server connections total
+\ASP.NET Apps v4.0.30319(*)\Session SQL Server connections total
+\ASP.NET Apps v4.0.30319(*)\Events Raised
+\ASP.NET Apps v4.0.30319(*)\Events Raised/Sec
+\ASP.NET Apps v4.0.30319(*)\Application Lifetime Events
+\ASP.NET Apps v4.0.30319(*)\Application Lifetime Events/Sec
+\ASP.NET Apps v4.0.30319(*)\Error Events Raised
+\ASP.NET Apps v4.0.30319(*)\Error Events Raised/Sec
+\ASP.NET Apps v4.0.30319(*)\Request Error Events Raised
+\ASP.NET Apps v4.0.30319(*)\Request Error Events Raised/Sec
+\ASP.NET Apps v4.0.30319(*)\Infrastructure Error Events Raised
+\ASP.NET Apps v4.0.30319(*)\Infrastructure Error Events Raised/Sec
+\ASP.NET Apps v4.0.30319(*)\Request Events Raised
+\ASP.NET Apps v4.0.30319(*)\Request Events Raised/Sec
+\ASP.NET Apps v4.0.30319(*)\Audit Success Events Raised
+\ASP.NET Apps v4.0.30319(*)\Audit Failure Events Raised
+\ASP.NET Apps v4.0.30319(*)\Membership Authentication Success
+\ASP.NET Apps v4.0.30319(*)\Membership Authentication Failure
+\ASP.NET Apps v4.0.30319(*)\Forms Authentication Success
+\ASP.NET Apps v4.0.30319(*)\Forms Authentication Failure
+\ASP.NET Apps v4.0.30319(*)\Viewstate MAC Validation Failure
+\ASP.NET Apps v4.0.30319(*)\Request Execution Time
+\ASP.NET Apps v4.0.30319(*)\Requests Disconnected
+\ASP.NET Apps v4.0.30319(*)\Requests Rejected
+\ASP.NET Apps v4.0.30319(*)\Request Wait Time
+\ASP.NET Apps v4.0.30319(*)\Cache % Machine Memory Limit Used
+\ASP.NET Apps v4.0.30319(*)\Cache % Process Memory Limit Used
+\ASP.NET Apps v4.0.30319(*)\Cache Total Trims
+\ASP.NET Apps v4.0.30319(*)\Cache API Trims
+\ASP.NET Apps v4.0.30319(*)\Output Cache Trims
+\ASP.NET Apps v4.0.30319(*)\% Managed Processor Time (estimated)
+\ASP.NET Apps v4.0.30319(*)\Managed Memory Used (estimated)
+\ASP.NET State Service\State Server Sessions Active
+\ASP.NET State Service\State Server Sessions Abandoned
+\ASP.NET State Service\State Server Sessions Timed Out
+\ASP.NET State Service\State Server Sessions Total
+\Distributed Transaction Coordinator\Active Transactions
+\Distributed Transaction Coordinator\Committed Transactions
+\Distributed Transaction Coordinator\Aborted Transactions
+\Distributed Transaction Coordinator\In Doubt Transactions
+\Distributed Transaction Coordinator\Active Transactions Maximum
+\Distributed Transaction Coordinator\Force Committed Transactions
+\Distributed Transaction Coordinator\Force Aborted Transactions
+\Distributed Transaction Coordinator\Response Time -- Minimum
+\Distributed Transaction Coordinator\Response Time -- Average
+\Distributed Transaction Coordinator\Response Time -- Maximum
+\Distributed Transaction Coordinator\Transactions/sec
+\Distributed Transaction Coordinator\Committed Transactions/sec
+\Distributed Transaction Coordinator\Aborted Transactions/sec
+\.NET Memory Cache 4.0(*)\Cache Hits
+\.NET Memory Cache 4.0(*)\Cache Misses
+\.NET Memory Cache 4.0(*)\Cache Hit Ratio
+\.NET Memory Cache 4.0(*)\Cache Trims
+\.NET Memory Cache 4.0(*)\Cache Entries
+\.NET Memory Cache 4.0(*)\Cache Turnover Rate
+\LogicalDisk(*)\% Free Space
+\LogicalDisk(*)\Free Megabytes
+\LogicalDisk(*)\Current Disk Queue Length
+\LogicalDisk(*)\% Disk Time
+\LogicalDisk(*)\Avg. Disk Queue Length
+\LogicalDisk(*)\% Disk Read Time
+\LogicalDisk(*)\Avg. Disk Read Queue Length
+\LogicalDisk(*)\% Disk Write Time
+\LogicalDisk(*)\Avg. Disk Write Queue Length
+\LogicalDisk(*)\Avg. Disk sec/Transfer
+\LogicalDisk(*)\Avg. Disk sec/Read
+\LogicalDisk(*)\Avg. Disk sec/Write
+\LogicalDisk(*)\Disk Transfers/sec
+\LogicalDisk(*)\Disk Reads/sec
+\LogicalDisk(*)\Disk Writes/sec
+\LogicalDisk(*)\Disk Bytes/sec
+\LogicalDisk(*)\Disk Read Bytes/sec
+\LogicalDisk(*)\Disk Write Bytes/sec
+\LogicalDisk(*)\Avg. Disk Bytes/Transfer
+\LogicalDisk(*)\Avg. Disk Bytes/Read
+\LogicalDisk(*)\Avg. Disk Bytes/Write
+\LogicalDisk(*)\% Idle Time
+\LogicalDisk(*)\Split IO/Sec
+\PhysicalDisk(*)\Current Disk Queue Length
+\PhysicalDisk(*)\% Disk Time
+\PhysicalDisk(*)\Avg. Disk Queue Length
+\PhysicalDisk(*)\% Disk Read Time
+\PhysicalDisk(*)\Avg. Disk Read Queue Length
+\PhysicalDisk(*)\% Disk Write Time
+\PhysicalDisk(*)\Avg. Disk Write Queue Length
+\PhysicalDisk(*)\Avg. Disk sec/Transfer
+\PhysicalDisk(*)\Avg. Disk sec/Read
+\PhysicalDisk(*)\Avg. Disk sec/Write
+\PhysicalDisk(*)\Disk Transfers/sec
+\PhysicalDisk(*)\Disk Reads/sec
+\PhysicalDisk(*)\Disk Writes/sec
+\PhysicalDisk(*)\Disk Bytes/sec
+\PhysicalDisk(*)\Disk Read Bytes/sec
+\PhysicalDisk(*)\Disk Write Bytes/sec
+\PhysicalDisk(*)\Avg. Disk Bytes/Transfer
+\PhysicalDisk(*)\Avg. Disk Bytes/Read
+\PhysicalDisk(*)\Avg. Disk Bytes/Write
+\PhysicalDisk(*)\% Idle Time
+\PhysicalDisk(*)\Split IO/Sec
+\Server\Bytes Total/sec
+\Server\Bytes Received/sec
+\Server\Bytes Transmitted/sec
+\Server\Sessions Timed Out
+\Server\Sessions Errored Out
+\Server\Sessions Logged Off
+\Server\Sessions Forced Off
+\Server\Errors Logon
+\Server\Errors Access Permissions
+\Server\Errors Granted Access
+\Server\Errors System
+\Server\Blocking Requests Rejected
+\Server\Work Item Shortages
+\Server\Files Opened Total
+\Server\Files Open
+\Server\Server Sessions
+\Server\File Directory Searches
+\Server\Pool Nonpaged Bytes
+\Server\Pool Nonpaged Failures
+\Server\Pool Nonpaged Peak
+\Server\Pool Paged Bytes
+\Server\Pool Paged Failures
+\Server\Pool Paged Peak
+\Server\Context Blocks Queued/sec
+\Server\Logon/sec
+\Server\Logon Total
+\Server\Total Durable Handles
+\Server\Reconnected Durable Handles
+\Server\SMB BranchCache Hash Header Requests
+\Server\SMB BranchCache Hash Generation Requests
+\Server\SMB BranchCache Hash Requests Received
+\Server\SMB BranchCache Hash Responses Sent
+\Server\SMB BranchCache Hash Bytes Sent
+\Server\Total Resilient Handles
+\Server\Reconnected Resilient Handles
+\Server Work Queues(*)\Queue Length
+\Server Work Queues(*)\Active Threads
+\Server Work Queues(*)\Available Threads
+\Server Work Queues(*)\Available Work Items
+\Server Work Queues(*)\Borrowed Work Items
+\Server Work Queues(*)\Work Item Shortages
+\Server Work Queues(*)\Current Clients
+\Server Work Queues(*)\Bytes Received/sec
+\Server Work Queues(*)\Bytes Sent/sec
+\Server Work Queues(*)\Bytes Transferred/sec
+\Server Work Queues(*)\Read Operations/sec
+\Server Work Queues(*)\Read Bytes/sec
+\Server Work Queues(*)\Write Operations/sec
+\Server Work Queues(*)\Write Bytes/sec
+\Server Work Queues(*)\Total Bytes/sec
+\Server Work Queues(*)\Total Operations/sec
+\Server Work Queues(*)\Context Blocks Queued/sec
+\Redirector\Bytes Total/sec
+\Redirector\File Data Operations/sec
+\Redirector\Packets/sec
+\Redirector\Bytes Received/sec
+\Redirector\Packets Received/sec
+\Redirector\Read Bytes Paging/sec
+\Redirector\Read Bytes Non-Paging/sec
+\Redirector\Read Bytes Cache/sec
+\Redirector\Read Bytes Network/sec
+\Redirector\Bytes Transmitted/sec
+\Redirector\Packets Transmitted/sec
+\Redirector\Write Bytes Paging/sec
+\Redirector\Write Bytes Non-Paging/sec
+\Redirector\Write Bytes Cache/sec
+\Redirector\Write Bytes Network/sec
+\Redirector\File Read Operations/sec
+\Redirector\Read Operations Random/sec
+\Redirector\Read Packets/sec
+\Redirector\Reads Large/sec
+\Redirector\Read Packets Small/sec
+\Redirector\File Write Operations/sec
+\Redirector\Write Operations Random/sec
+\Redirector\Write Packets/sec
+\Redirector\Writes Large/sec
+\Redirector\Write Packets Small/sec
+\Redirector\Reads Denied/sec
+\Redirector\Writes Denied/sec
+\Redirector\Network Errors/sec
+\Redirector\Server Sessions
+\Redirector\Server Reconnects
+\Redirector\Connects Core
+\Redirector\Connects Lan Manager 2.0
+\Redirector\Connects Lan Manager 2.1
+\Redirector\Connects Windows NT
+\Redirector\Server Disconnects
+\Redirector\Server Sessions Hung
+\Redirector\Current Commands
+\Browser\Announcements Server/sec
+\Browser\Announcements Domain/sec
+\Browser\Announcements Total/sec
+\Browser\Election Packets/sec
+\Browser\Mailslot Writes/sec
+\Browser\Server List Requests/sec
+\Browser\Enumerations Server/sec
+\Browser\Enumerations Domain/sec
+\Browser\Enumerations Other/sec
+\Browser\Enumerations Total/sec
+\Browser\Missed Server Announcements
+\Browser\Missed Mailslot Datagrams
+\Browser\Missed Server List Requests
+\Browser\Server Announce Allocations Failed/sec
+\Browser\Mailslot Allocations Failed
+\Browser\Mailslot Receives Failed
+\Browser\Mailslot Writes Failed
+\Browser\Mailslot Opens Failed/sec
+\Browser\Duplicate Master Announcements
+\Browser\Illegal Datagrams/sec
+\Cache\Data Maps/sec
+\Cache\Sync Data Maps/sec
+\Cache\Async Data Maps/sec
+\Cache\Data Map Hits %
+\Cache\Data Map Pins/sec
+\Cache\Pin Reads/sec
+\Cache\Sync Pin Reads/sec
+\Cache\Async Pin Reads/sec
+\Cache\Pin Read Hits %
+\Cache\Copy Reads/sec
+\Cache\Sync Copy Reads/sec
+\Cache\Async Copy Reads/sec
+\Cache\Copy Read Hits %
+\Cache\MDL Reads/sec
+\Cache\Sync MDL Reads/sec
+\Cache\Async MDL Reads/sec
+\Cache\MDL Read Hits %
+\Cache\Read Aheads/sec
+\Cache\Fast Reads/sec
+\Cache\Sync Fast Reads/sec
+\Cache\Async Fast Reads/sec
+\Cache\Fast Read Resource Misses/sec
+\Cache\Fast Read Not Possibles/sec
+\Cache\Lazy Write Flushes/sec
+\Cache\Lazy Write Pages/sec
+\Cache\Data Flushes/sec
+\Cache\Data Flush Pages/sec
+\Cache\Dirty Pages
+\Cache\Dirty Page Threshold
+\Processor(*)\% Processor Time
+\Processor(*)\% User Time
+\Processor(*)\% Privileged Time
+\Processor(*)\Interrupts/sec
+\Processor(*)\% DPC Time
+\Processor(*)\% Interrupt Time
+\Processor(*)\DPCs Queued/sec
+\Processor(*)\DPC Rate
+\Processor(*)\% Idle Time
+\Processor(*)\% C1 Time
+\Processor(*)\% C2 Time
+\Processor(*)\% C3 Time
+\Processor(*)\C1 Transitions/sec
+\Processor(*)\C2 Transitions/sec
+\Processor(*)\C3 Transitions/sec
+\Memory\Page Faults/sec
+\Memory\Available Bytes
+\Memory\Committed Bytes
+\Memory\Commit Limit
+\Memory\Write Copies/sec
+\Memory\Transition Faults/sec
+\Memory\Cache Faults/sec
+\Memory\Demand Zero Faults/sec
+\Memory\Pages/sec
+\Memory\Pages Input/sec
+\Memory\Page Reads/sec
+\Memory\Pages Output/sec
+\Memory\Pool Paged Bytes
+\Memory\Pool Nonpaged Bytes
+\Memory\Page Writes/sec
+\Memory\Pool Paged Allocs
+\Memory\Pool Nonpaged Allocs
+\Memory\Free System Page Table Entries
+\Memory\Cache Bytes
+\Memory\Cache Bytes Peak
+\Memory\Pool Paged Resident Bytes
+\Memory\System Code Total Bytes
+\Memory\System Code Resident Bytes
+\Memory\System Driver Total Bytes
+\Memory\System Driver Resident Bytes
+\Memory\System Cache Resident Bytes
+\Memory\% Committed Bytes In Use
+\Memory\Available KBytes
+\Memory\Available MBytes
+\Memory\Transition Pages RePurposed/sec
+\Memory\Free & Zero Page List Bytes
+\Memory\Modified Page List Bytes
+\Memory\Standby Cache Reserve Bytes
+\Memory\Standby Cache Normal Priority Bytes
+\Memory\Standby Cache Core Bytes
+\Objects\Processes
+\Objects\Threads
+\Objects\Events
+\Objects\Semaphores
+\Objects\Mutexes
+\Objects\Sections
+\Paging File(*)\% Usage
+\Paging File(*)\% Usage Peak
+\System\File Read Operations/sec
+\System\File Write Operations/sec
+\System\File Control Operations/sec
+\System\File Read Bytes/sec
+\System\File Write Bytes/sec
+\System\File Control Bytes/sec
+\System\Context Switches/sec
+\System\System Calls/sec
+\System\File Data Operations/sec
+\System\System Up Time
+\System\Processor Queue Length
+\System\Processes
+\System\Threads
+\System\Alignment Fixups/sec
+\System\Exception Dispatches/sec
+\System\Floating Emulations/sec
+\System\% Registry Quota In Use
+\Process(*)\% Processor Time
+\Process(*)\% User Time
+\Process(*)\% Privileged Time
+\Process(*)\Virtual Bytes Peak
+\Process(*)\Virtual Bytes
+\Process(*)\Page Faults/sec
+\Process(*)\Working Set Peak
+\Process(*)\Working Set
+\Process(*)\Page File Bytes Peak
+\Process(*)\Page File Bytes
+\Process(*)\Private Bytes
+\Process(*)\Thread Count
+\Process(*)\Priority Base
+\Process(*)\Elapsed Time
+\Process(*)\ID Process
+\Process(*)\Creating Process ID
+\Process(*)\Pool Paged Bytes
+\Process(*)\Pool Nonpaged Bytes
+\Process(*)\Handle Count
+\Process(*)\IO Read Operations/sec
+\Process(*)\IO Write Operations/sec
+\Process(*)\IO Data Operations/sec
+\Process(*)\IO Other Operations/sec
+\Process(*)\IO Read Bytes/sec
+\Process(*)\IO Write Bytes/sec
+\Process(*)\IO Data Bytes/sec
+\Process(*)\IO Other Bytes/sec
+\Process(*)\Working Set - Private
+\Thread(*)\Context Switches/sec
+\Thread(*)\% Processor Time
+\Thread(*)\% User Time
+\Thread(*)\% Privileged Time
+\Thread(*)\Elapsed Time
+\Thread(*)\Priority Current
+\Thread(*)\Priority Base
+\Thread(*)\Start Address
+\Thread(*)\Thread State
+\Thread(*)\Thread Wait Reason
+\Thread(*)\ID Process
+\Thread(*)\ID Thread
+\Job Object(*)\Current % Processor Time
+\Job Object(*)\Current % User Mode Time
+\Job Object(*)\Current % Kernel Mode Time
+\Job Object(*)\This Period mSec - Processor
+\Job Object(*)\This Period mSec - User Mode
+\Job Object(*)\This Period mSec - Kernel Mode
+\Job Object(*)\Total mSec - Processor
+\Job Object(*)\Total mSec - User Mode
+\Job Object(*)\Total mSec - Kernel Mode
+\Job Object(*)\Pages/Sec
+\Job Object(*)\Process Count - Total
+\Job Object(*)\Process Count - Active
+\Job Object(*)\Process Count - Terminated
+\Job Object Details(*)\% Processor Time
+\Job Object Details(*)\% User Time
+\Job Object Details(*)\% Privileged Time
+\Job Object Details(*)\Virtual Bytes Peak
+\Job Object Details(*)\Virtual Bytes
+\Job Object Details(*)\Page Faults/sec
+\Job Object Details(*)\Working Set Peak
+\Job Object Details(*)\Working Set
+\Job Object Details(*)\Page File Bytes Peak
+\Job Object Details(*)\Page File Bytes
+\Job Object Details(*)\Private Bytes
+\Job Object Details(*)\Thread Count
+\Job Object Details(*)\Priority Base
+\Job Object Details(*)\Elapsed Time
+\Job Object Details(*)\ID Process
+\Job Object Details(*)\Creating Process ID
+\Job Object Details(*)\Pool Paged Bytes
+\Job Object Details(*)\Pool Nonpaged Bytes
+\Job Object Details(*)\Handle Count
+\Job Object Details(*)\IO Read Operations/sec
+\Job Object Details(*)\IO Write Operations/sec
+\Job Object Details(*)\IO Data Operations/sec
+\Job Object Details(*)\IO Other Operations/sec
+\Job Object Details(*)\IO Read Bytes/sec
+\Job Object Details(*)\IO Write Bytes/sec
+\Job Object Details(*)\IO Data Bytes/sec
+\Job Object Details(*)\IO Other Bytes/sec
+\RAS Port(*)\Bytes Transmitted
+\RAS Port(*)\Bytes Received
+\RAS Port(*)\Frames Transmitted
+\RAS Port(*)\Frames Received
+\RAS Port(*)\Percent Compression Out
+\RAS Port(*)\Percent Compression In
+\RAS Port(*)\CRC Errors
+\RAS Port(*)\Timeout Errors
+\RAS Port(*)\Serial Overrun Errors
+\RAS Port(*)\Alignment Errors
+\RAS Port(*)\Buffer Overrun Errors
+\RAS Port(*)\Total Errors
+\RAS Port(*)\Bytes Transmitted/Sec
+\RAS Port(*)\Bytes Received/Sec
+\RAS Port(*)\Frames Transmitted/Sec
+\RAS Port(*)\Frames Received/Sec
+\RAS Port(*)\Total Errors/Sec
+\RAS Total\Bytes Transmitted
+\RAS Total\Bytes Received
+\RAS Total\Frames Transmitted
+\RAS Total\Frames Received
+\RAS Total\Percent Compression Out
+\RAS Total\Percent Compression In
+\RAS Total\CRC Errors
+\RAS Total\Timeout Errors
+\RAS Total\Serial Overrun Errors
+\RAS Total\Alignment Errors
+\RAS Total\Buffer Overrun Errors
+\RAS Total\Total Errors
+\RAS Total\Bytes Transmitted/Sec
+\RAS Total\Bytes Received/Sec
+\RAS Total\Frames Transmitted/Sec
+\RAS Total\Frames Received/Sec
+\RAS Total\Total Errors/Sec
+\RAS Total\Total Connections
+\MSDTC Bridge 4.0.0.0\Message send failures/sec
+\MSDTC Bridge 4.0.0.0\Prepare retry count/sec
+\MSDTC Bridge 4.0.0.0\Commit retry count/sec
+\MSDTC Bridge 4.0.0.0\Prepared retry count/sec
+\MSDTC Bridge 4.0.0.0\Replay retry count/sec
+\MSDTC Bridge 4.0.0.0\Faults received count/sec
+\MSDTC Bridge 4.0.0.0\Faults sent count/sec
+\MSDTC Bridge 4.0.0.0\Average participant prepare response time
+\MSDTC Bridge 4.0.0.0\Average participant commit response time
+\Print Queue(*)\Total Jobs Printed
+\Print Queue(*)\Bytes Printed/sec
+\Print Queue(*)\Total Pages Printed
+\Print Queue(*)\Jobs
+\Print Queue(*)\References
+\Print Queue(*)\Max References
+\Print Queue(*)\Jobs Spooling
+\Print Queue(*)\Max Jobs Spooling
+\Print Queue(*)\Out of Paper Errors
+\Print Queue(*)\Not Ready Errors
+\Print Queue(*)\Job Errors
+\Print Queue(*)\Enumerate Network Printer Calls
+\Print Queue(*)\Add Network Printer Calls
+\Telephony\Lines
+\Telephony\Telephone Devices
+\Telephony\Active Lines
+\Telephony\Active Telephones
+\Telephony\Outgoing Calls/sec
+\Telephony\Incoming Calls/sec
+\Telephony\Client Apps
+\Telephony\Current Outgoing Calls
+\Telephony\Current Incoming Calls
+\NBT Connection(*)\Bytes Received/sec
+\NBT Connection(*)\Bytes Sent/sec
+\NBT Connection(*)\Bytes Total/sec
+\Network Interface(*)\Bytes Total/sec
+\Network Interface(*)\Packets/sec
+\Network Interface(*)\Packets Received/sec
+\Network Interface(*)\Packets Sent/sec
+\Network Interface(*)\Current Bandwidth
+\Network Interface(*)\Bytes Received/sec
+\Network Interface(*)\Packets Received Unicast/sec
+\Network Interface(*)\Packets Received Non-Unicast/sec
+\Network Interface(*)\Packets Received Discarded
+\Network Interface(*)\Packets Received Errors
+\Network Interface(*)\Packets Received Unknown
+\Network Interface(*)\Bytes Sent/sec
+\Network Interface(*)\Packets Sent Unicast/sec
+\Network Interface(*)\Packets Sent Non-Unicast/sec
+\Network Interface(*)\Packets Outbound Discarded
+\Network Interface(*)\Packets Outbound Errors
+\Network Interface(*)\Output Queue Length
+\Network Interface(*)\Offloaded Connections
+\IPv4\Datagrams/sec
+\IPv4\Datagrams Received/sec
+\IPv4\Datagrams Received Header Errors
+\IPv4\Datagrams Received Address Errors
+\IPv4\Datagrams Forwarded/sec
+\IPv4\Datagrams Received Unknown Protocol
+\IPv4\Datagrams Received Discarded
+\IPv4\Datagrams Received Delivered/sec
+\IPv4\Datagrams Sent/sec
+\IPv4\Datagrams Outbound Discarded
+\IPv4\Datagrams Outbound No Route
+\IPv4\Fragments Received/sec
+\IPv4\Fragments Re-assembled/sec
+\IPv4\Fragment Re-assembly Failures
+\IPv4\Fragmented Datagrams/sec
+\IPv4\Fragmentation Failures
+\IPv4\Fragments Created/sec
+\ICMP\Messages/sec
+\ICMP\Messages Received/sec
+\ICMP\Messages Received Errors
+\ICMP\Received Dest. Unreachable
+\ICMP\Received Time Exceeded
+\ICMP\Received Parameter Problem
+\ICMP\Received Source Quench
+\ICMP\Received Redirect/sec
+\ICMP\Received Echo/sec
+\ICMP\Received Echo Reply/sec
+\ICMP\Received Timestamp/sec
+\ICMP\Received Timestamp Reply/sec
+\ICMP\Received Address Mask
+\ICMP\Received Address Mask Reply
+\ICMP\Messages Sent/sec
+\ICMP\Messages Outbound Errors
+\ICMP\Sent Destination Unreachable
+\ICMP\Sent Time Exceeded
+\ICMP\Sent Parameter Problem
+\ICMP\Sent Source Quench
+\ICMP\Sent Redirect/sec
+\ICMP\Sent Echo/sec
+\ICMP\Sent Echo Reply/sec
+\ICMP\Sent Timestamp/sec
+\ICMP\Sent Timestamp Reply/sec
+\ICMP\Sent Address Mask
+\ICMP\Sent Address Mask Reply
+\TCPv4\Segments/sec
+\TCPv4\Connections Established
+\TCPv4\Connections Active
+\TCPv4\Connections Passive
+\TCPv4\Connection Failures
+\TCPv4\Connections Reset
+\TCPv4\Segments Received/sec
+\TCPv4\Segments Sent/sec
+\TCPv4\Segments Retransmitted/sec
+\UDPv4\Datagrams/sec
+\UDPv4\Datagrams Received/sec
+\UDPv4\Datagrams No Port/sec
+\UDPv4\Datagrams Received Errors
+\UDPv4\Datagrams Sent/sec
+\IPv6\Datagrams/sec
+\IPv6\Datagrams Received/sec
+\IPv6\Datagrams Received Header Errors
+\IPv6\Datagrams Received Address Errors
+\IPv6\Datagrams Forwarded/sec
+\IPv6\Datagrams Received Unknown Protocol
+\IPv6\Datagrams Received Discarded
+\IPv6\Datagrams Received Delivered/sec
+\IPv6\Datagrams Sent/sec
+\IPv6\Datagrams Outbound Discarded
+\IPv6\Datagrams Outbound No Route
+\IPv6\Fragments Received/sec
+\IPv6\Fragments Re-assembled/sec
+\IPv6\Fragment Re-assembly Failures
+\IPv6\Fragmented Datagrams/sec
+\IPv6\Fragmentation Failures
+\IPv6\Fragments Created/sec
+\ICMPv6\Messages/sec
+\ICMPv6\Messages Received/sec
+\ICMPv6\Messages Received Errors
+\ICMPv6\Received Dest. Unreachable
+\ICMPv6\Received Packet Too Big
+\ICMPv6\Received Time Exceeded
+\ICMPv6\Received Parameter Problem
+\ICMPv6\Received Echo/sec
+\ICMPv6\Received Echo Reply/sec
+\ICMPv6\Received Membership Query
+\ICMPv6\Received Membership Report
+\ICMPv6\Received Membership Reduction
+\ICMPv6\Received Router Solicit
+\ICMPv6\Received Router Advert
+\ICMPv6\Received Neighbor Solicit
+\ICMPv6\Received Neighbor Advert
+\ICMPv6\Received Redirect/sec
+\ICMPv6\Messages Sent/sec
+\ICMPv6\Messages Outbound Errors
+\ICMPv6\Sent Destination Unreachable
+\ICMPv6\Sent Packet Too Big
+\ICMPv6\Sent Time Exceeded
+\ICMPv6\Sent Parameter Problem
+\ICMPv6\Sent Echo/sec
+\ICMPv6\Sent Echo Reply/sec
+\ICMPv6\Sent Membership Query
+\ICMPv6\Sent Membership Report
+\ICMPv6\Sent Membership Reduction
+\ICMPv6\Sent Router Solicit
+\ICMPv6\Sent Router Advert
+\ICMPv6\Sent Neighbor Solicit
+\ICMPv6\Sent Neighbor Advert
+\ICMPv6\Sent Redirect/sec
+\TCPv6\Segments/sec
+\TCPv6\Connections Established
+\TCPv6\Connections Active
+\TCPv6\Connections Passive
+\TCPv6\Connection Failures
+\TCPv6\Connections Reset
+\TCPv6\Segments Received/sec
+\TCPv6\Segments Sent/sec
+\TCPv6\Segments Retransmitted/sec
+\UDPv6\Datagrams/sec
+\UDPv6\Datagrams Received/sec
+\UDPv6\Datagrams No Port/sec
+\UDPv6\Datagrams Received Errors
+\UDPv6\Datagrams Sent/sec
+\Terminal Services Session(*)\% Processor Time
+\Terminal Services Session(*)\% User Time
+\Terminal Services Session(*)\% Privileged Time
+\Terminal Services Session(*)\Virtual Bytes Peak
+\Terminal Services Session(*)\Virtual Bytes
+\Terminal Services Session(*)\Page Faults/sec
+\Terminal Services Session(*)\Working Set Peak
+\Terminal Services Session(*)\Working Set
+\Terminal Services Session(*)\Page File Bytes Peak
+\Terminal Services Session(*)\Page File Bytes
+\Terminal Services Session(*)\Private Bytes
+\Terminal Services Session(*)\Thread Count
+\Terminal Services Session(*)\Pool Paged Bytes
+\Terminal Services Session(*)\Pool Nonpaged Bytes
+\Terminal Services Session(*)\Handle Count
+\Terminal Services Session(*)\Input WdBytes
+\Terminal Services Session(*)\Input WdFrames
+\Terminal Services Session(*)\Input WaitForOutBuf
+\Terminal Services Session(*)\Input Frames
+\Terminal Services Session(*)\Input Bytes
+\Terminal Services Session(*)\Input Compressed Bytes
+\Terminal Services Session(*)\Input Compress Flushes
+\Terminal Services Session(*)\Input Errors
+\Terminal Services Session(*)\Input Timeouts
+\Terminal Services Session(*)\Input Async Frame Error
+\Terminal Services Session(*)\Input Async Overrun
+\Terminal Services Session(*)\Input Async Overflow
+\Terminal Services Session(*)\Input Async Parity Error
+\Terminal Services Session(*)\Input Transport Errors
+\Terminal Services Session(*)\Output WdBytes
+\Terminal Services Session(*)\Output WdFrames
+\Terminal Services Session(*)\Output WaitForOutBuf
+\Terminal Services Session(*)\Output Frames
+\Terminal Services Session(*)\Output Bytes
+\Terminal Services Session(*)\Output Compressed Bytes
+\Terminal Services Session(*)\Output Compress Flushes
+\Terminal Services Session(*)\Output Errors
+\Terminal Services Session(*)\Output Timeouts
+\Terminal Services Session(*)\Output Async Frame Error
+\Terminal Services Session(*)\Output Async Overrun
+\Terminal Services Session(*)\Output Async Overflow
+\Terminal Services Session(*)\Output Async Parity Error
+\Terminal Services Session(*)\Output Transport Errors
+\Terminal Services Session(*)\Total WdBytes
+\Terminal Services Session(*)\Total WdFrames
+\Terminal Services Session(*)\Total WaitForOutBuf
+\Terminal Services Session(*)\Total Frames
+\Terminal Services Session(*)\Total Bytes
+\Terminal Services Session(*)\Total Compressed Bytes
+\Terminal Services Session(*)\Total Compress Flushes
+\Terminal Services Session(*)\Total Errors
+\Terminal Services Session(*)\Total Timeouts
+\Terminal Services Session(*)\Total Async Frame Error
+\Terminal Services Session(*)\Total Async Overrun
+\Terminal Services Session(*)\Total Async Overflow
+\Terminal Services Session(*)\Total Async Parity Error
+\Terminal Services Session(*)\Total Transport Errors
+\Terminal Services Session(*)\Total Protocol Cache Reads
+\Terminal Services Session(*)\Total Protocol Cache Hits
+\Terminal Services Session(*)\Total Protocol Cache Hit Ratio
+\Terminal Services Session(*)\Protocol Bitmap Cache Reads
+\Terminal Services Session(*)\Protocol Bitmap Cache Hits
+\Terminal Services Session(*)\Protocol Bitmap Cache Hit Ratio
+\Terminal Services Session(*)\Protocol Glyph Cache Reads
+\Terminal Services Session(*)\Protocol Glyph Cache Hits
+\Terminal Services Session(*)\Protocol Glyph Cache Hit Ratio
+\Terminal Services Session(*)\Protocol Brush Cache Reads
+\Terminal Services Session(*)\Protocol Brush Cache Hits
+\Terminal Services Session(*)\Protocol Brush Cache Hit Ratio
+\Terminal Services Session(*)\Protocol Save Screen Bitmap Cache Reads
+\Terminal Services Session(*)\Protocol Save Screen Bitmap Cache Hits
+\Terminal Services Session(*)\Protocol Save Screen Bitmap Cache Hit Ratio
+\Terminal Services Session(*)\Input Compression Ratio
+\Terminal Services Session(*)\Output Compression Ratio
+\Terminal Services Session(*)\Total Compression Ratio
+\USB(*)\Bulk Bytes/Sec
+\USB(*)\Isochronous Bytes/Sec
+\USB(*)\Interrupt Bytes/Sec
+\USB(*)\Control Data Bytes/Sec
+\USB(*)\Controller PCI Interrupts/Sec
+\USB(*)\Controller WorkSignals/Sec
+\USB(*)\% Total Bandwidth Used for Interrupt
+\USB(*)\% Total Bandwidth Used for Iso
+\USB(*)\Avg. Bytes/Transfer
+\USB(*)\Iso Packet Errors/Sec
+\USB(*)\Avg ms latency for ISO transfers
+\USB(*)\Transfer Errors/Sec
+\USB(*)\Host Controller Idle
+\USB(*)\Host Controller Async Idle
+\USB(*)\Host Controller Async Cache Flush Count
+\USB(*)\Host Controller Periodic Idle
+\USB(*)\Host Controller Periodic Cache Flush Count
+\SMSvcHost 4.0.0.0\Protocol Failures over net.tcp
+\SMSvcHost 4.0.0.0\Protocol Failures over net.pipe
+\SMSvcHost 4.0.0.0\Dispatch Failures over net.tcp
+\SMSvcHost 4.0.0.0\Dispatch Failures over net.pipe
+\SMSvcHost 4.0.0.0\Connections Dispatched over net.tcp
+\SMSvcHost 4.0.0.0\Connections Dispatched over net.pipe
+\SMSvcHost 4.0.0.0\Connections Accepted over net.tcp
+\SMSvcHost 4.0.0.0\Connections Accepted over net.pipe
+\SMSvcHost 4.0.0.0\Registrations Active for net.tcp
+\SMSvcHost 4.0.0.0\Registrations Active for net.pipe
+\SMSvcHost 4.0.0.0\Uris Registered for net.tcp
+\SMSvcHost 4.0.0.0\Uris Registered for net.pipe
+\SMSvcHost 4.0.0.0\Uris Unregistered for net.tcp
+\SMSvcHost 4.0.0.0\Uris Unregistered for net.pipe

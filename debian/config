@@ -1,0 +1,34 @@
+#!/bin/sh
+set -e
+
+CONFIGFILE=/etc/mamonsu/agent.conf
+. /usr/share/debconf/confmodule
+
+db_version 2.0
+db_capb
+
+HOSTNAME=$(hostname -f || 'locahost')
+
+db_set mamonsu/zabbix_client "$HOSTNAME"
+db_set mamonsu/zabbix_server "127.0.0.1"
+db_set mamonsu/postgres_user "postgres"
+db_set mamonsu/postgres_password "None"
+db_set mamonsu/postgres_database "postgres"
+db_set mamonsu/postgres_host "127.0.0.1"
+db_set mamonsu/postgres_port "5432"
+db_set mamonsu/postgres_query_timeout "10"
+db_set mamonsu/log_level "INFO"
+
+db_title Configure mamonsu agent
+db_input high mamonsu/zabbix_server
+db_input high mamonsu/zabbix_client
+db_input high mamonsu/postgres_user
+db_input high mamonsu/postgres_password
+db_input high mamonsu/postgres_database
+db_input high mamonsu/postgres_host
+db_input high mamonsu/postgres_port
+db_input high mamonsu/postgres_query_timeout
+db_input high mamonsu/log_level
+
+db_go
+

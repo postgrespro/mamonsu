@@ -1,0 +1,71 @@
+# -*- coding: utf-8 -*-
+
+from mamonsu.lib.plugin import Plugin
+from ._pool import Pooler
+
+
+class Databases(Plugin):
+
+    BloatScale = 0.2
+    MinRows = 50
+
+    def run(self, zbx):
+
+        result = Pooler.query('select datname, pg_database_size(datname::text)\
+            from pg_catalog.pg_database where datistemplate = false')
+        dbs = []
+        for info in result:
+            dbs.append({'{#DATABASE}': info[0]})
+            zbx.send('pgsql.database.size[{0}]'.format(info[0]), info[1])
+            bloat_count = Pooler.query(
+                'select count(*) from pg_catalog.pg_stat_all_tables where\
+                (n_dead_tup/n_live_tup::float8) > {0}\
+                and n_live_tup > {1}'.format(self.BloatScale, self.MinRows),
+                info[0])[0][0]
+            zbx.send(
+                'pgsql.database.bloating_tables[{0}]'.format(info[0]),
+                bloat_count)
+        zbx.send('pgsql.database.discovery[]', zbx.json({'data': dbs}))
+        del dbs, bloat_count
+
+        result = Pooler.query("select count(*) from pg_catalog.pg_stat_activity\
+            where query like '%%autovacuum%%' and state <> 'idle'")
+        zbx.send('pgsql.autovacumm.count[]', int(result[0][0])-1)
+
+    def items(self, template):
+        return template.item({
+            'name': 'Count of autovacuum workers',
+            'key': 'pgsql.autovacumm.count[]'
+        })
+
+    def discovery_rules(self, template):
+        rule = {
+            'name': 'Database discovery',
+            'key': 'pgsql.database.discovery[]',
+            'filter': '{#DATABASE}:.*'
+        }
+        items = [
+            {'key': 'pgsql.database.size[{#DATABASE}]',
+                'name': 'Database {#DATABASE}: size', 'units': 'b'},
+            {'key': 'pgsql.database.bloating_tables[{#DATABASE}]',
+                'name': 'Count of bloating tables in database: {#DATABASE}'}
+        ]
+        graphs = [
+            {
+                'name': 'Database: {#DATABASE} size',
+                'type': 1,
+                'items': [
+                    {'color': '00CC00',
+                        'key': 'pgsql.database.size[{#DATABASE}]'}]
+            },
+            {
+                'name': 'Database bloating overview: {#DATABASE}',
+                'items': [
+                    {'color': 'CC0000',
+                        'key': 'pgsql.database.bloating_tables[{#DATABASE}]'},
+                    {'color': '00CC00',
+                        'key': 'pgsql.autovacumm.count[]',
+                        'yaxisside': 1}]
+            }
+        ]
+        return template.discovery_rule(rule=rule, items=items, graphs=graphs)

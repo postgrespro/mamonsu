@@ -1,0 +1,12 @@
+/var/log/mamonsu/agent.log {
+    daily
+    rotate 7
+    compress
+    missingok
+    notifempty
+    create 0640 mamnosu mamnosu
+    sharedscripts
+    postrotate
+        [ -e /var/run/mamonsu/mamonsu.pid ] && /etc/init.d/mamonsu restart >/dev/null
+    endscript
+}

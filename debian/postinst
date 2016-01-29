@@ -1,0 +1,78 @@
+#!/bin/sh
+set -e
+
+. /usr/share/debconf/confmodule
+db_version 2.0
+
+CONFIGFILE=/etc/mamonsu/agent.conf
+
+_configure_conf() {
+
+    if [ -e $CONFIGFILE ] && [ -z "$DEBCONF_RECONFIGURE" ] ; then
+        db_stop
+        echo
+        echo "File $CONFIGFILE exists, leaving unchanged."
+    fi
+
+    db_get mamonsu/zabbix_server
+    SERVER="$RET"
+    db_get mamonsu/zabbix_client
+    CLIENT="$RET"
+    db_get mamonsu/postgres_user
+    USER="$RET"
+    db_get mamonsu/postgres_password
+    PASSWD="$RET"
+    db_get mamonsu/postgres_database
+    DATABASE="$RET"
+    db_get mamonsu/postgres_host
+    HOST="$RET"
+    db_get mamonsu/postgres_port
+    PORT="$RET"
+    db_get mamonsu/postgres_query_timeout
+    TIMEOUT="$RET"
+
+    echo "
+[zabbix]
+client = $CLIENT # client hostname for zabbix server
+server = $SERVER # zabbix server
+
+[postgres]
+user = $USER
+database = $DATABASE
+password = $PASSWD
+host = $HOST
+port = $PORT
+query_timeout = $TIMEOUT
+
+[log]
+file = /var/log/mamonsu/agent.log
+level = INFO
+" > $CONFIGFILE
+
+}
+
+
+if [ "$1" = "configure" ]; then
+
+    if ! getent group mamonsu > /dev/null 2>&1 ; then
+        addgroup --system --quiet mamonsu
+    fi
+    if ! getent passwd mamonsu > /dev/null 2>&1 ; then
+        # Not yet. Create it.
+        adduser --quiet \
+            --system --disabled-login --ingroup mamonsu \
+            --home /var/run/mamonsu/ --no-create-home \
+            mamonsu
+    fi
+
+    mkdir -p /var/run/mamonsu
+    chown mamonsu:mamonsu /var/run/mamonsu
+
+    mkdir -p /var/log/mamonsu
+    chown mamonsu:mamonsu /var/log/mamonsu
+
+    _configure_conf
+
+fi
+
+exit 0

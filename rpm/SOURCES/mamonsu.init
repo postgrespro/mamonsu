@@ -1,0 +1,74 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          mamonsu
+# Required-Start:    $remote_fs $network
+# Required-Stop:     $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start mamonsu daemon
+### END INIT INFO
+
+set -e
+
+NAME=mamonsu
+DESC="Zabbix active agent"
+
+CONFIG=/etc/mamonsu/agent.conf
+PIDFILE=/var/run/mamonsu/mamonsu.pid
+LOGFILE=/var/log/mamonsu/agent.log
+
+COMMAND="/usr/bin/$NAME -c $CONFIG -p $PIDFILE"
+RUNAS=mamonsu
+
+start() {
+  if [ -f $PIDFILE ] && kill -0 $(cat $PIDFILE); then
+    echo 'Service already running' >&2
+    return 1
+  fi
+  echo -n 'Starting service' >&2
+  su -c "$COMMAND" $RUNAS -s /bin/sh &
+  echo '\t\tOK' >&2
+}
+
+stop() {
+  if [ ! -f "$PIDFILE" ] || ! kill -0 $(cat "$PIDFILE"); then
+    echo 'Service not running' >&2
+    return 1
+  fi
+  echo -n 'Stopping service' >&2
+  kill -15 $(cat "$PIDFILE") && rm -f "$PIDFILE"
+  echo '\t\tOK' >&2
+}
+
+status() {
+        printf "%-50s" "Checking $NAME..."
+    if [ -f $PIDFILE ]; then
+        PID=$(cat $PIDFILE)
+            if [ ! -d /proc/$PID ]; then
+                printf "%s\n" "The process appears to be dead but pidfile still exists"
+            else
+                echo "Running, the PID is $PID"
+            fi
+    else
+        printf "%s\n" "Service not running"
+    fi
+}
+
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status
+    ;;
+  restart)
+    stop || true
+    start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status|restart}"
+esac

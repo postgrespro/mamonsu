@@ -1,0 +1,15 @@
+Source: mamonsu
+Section: admin
+Priority: optional
+Maintainer: Dmitry Vasilyev
+Build-Depends:  debhelper, python-dev, python-setuptools
+XS-Python-Version: all
+Standards-Version: 3.7.3
+
+Package: mamonsu
+Architecture: any
+Depends: ${shlibs:Depends}, ${python:Depends}
+XB-Python-Version: ${python:Versions}
+Provides: ${python:Provides}
+Suggests: zabbix-agent
+Description: Zabbix active agent for monitoring PostgreSQL
