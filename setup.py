@@ -1,41 +1,42 @@
 import codecs
-from setuptools import setup, find_packages
-from mamonsu import __version__
+import mamonsu
+from os import path
+import mamonsu.lib.platform as platform
+
+if platform.WINDOWS:
+    from cx_Freeze import setup, Executable
+else:
+    from setuptools import setup, find_packages
 
 
 def long_description():
-    with codecs.open('README.rst', encoding='utf8') as f:
+    filespath = path.dirname(path.realpath(__file__))
+    with codecs.open(path.join(filespath, 'README.rst'), encoding='utf8') as f:
         return f.read()
+
+
+def executables():
+    if platform.WINDOWS:
+        return [Executable('agent.py')]
 
 setup(
     name='mamonsu',
-    version=__version__,
+    version=mamonsu.__version__,
     packages=find_packages(),
-    description='Zabbix ative agent for monitoring PostgreSQL',
+    description=mamonsu.__description__,
     long_description=long_description(),
-    classifiers=[
-        'Environment :: Console',
-        'Intended Audience :: System Administrators',
-        'Operating System :: POSIX :: Linux',
-        'Operating System :: Microsoft :: Windows',
-        'License :: OSI Approved :: BSD License',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 3',
-        'Topic :: System :: Monitoring'
-    ],
-    keywords=[
-        'monitoring',
-        'zabbix',
-        'postgres'
-    ],
-    author='Dmitry Vasilyev',
-    author_email='info@postgrespro.ru',
-    url='https://github.com/postgrespro/mamonsu',
-    license='BSD',
+    classifiers=mamonsu.__classifiers__,
+    keywords=mamonsu.__keywords__,
+    author=mamonsu.__author__,
+    author_email=mamonsu.__author_email__,
+    url=mamonsu.__url__,
+    license=mamonsu.__licence__,
     entry_points={
         'console_scripts': [
             'mamonsu=mamonsu.lib.supervisor:start'
         ],
     },
+    options={'build_exe': {'packages': ['mamonsu'], 'optimize': 0}},
+    executables=executables(),
     zip_safe=True,
 )

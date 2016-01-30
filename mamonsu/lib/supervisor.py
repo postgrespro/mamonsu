@@ -3,10 +3,13 @@
 import time
 import logging
 import signal
+import sys
 
 import mamonsu.lib.platform as platform
+
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.config import Config
+from mamonsu.lib.zbx import *
 from mamonsu.plugins import Loader as PluginLoader
 
 
@@ -55,8 +58,8 @@ class Supervisor(object):
 def start():
 
     def quit_handler(_signo=None, _stack_frame=None):
-        logging.info("Bye–bye")
-        exit(0)
+        logging.info("Bye bye!")
+        sys.exit(0)
 
     signal.signal(signal.SIGTERM, quit_handler)
     if platform.LINUX:

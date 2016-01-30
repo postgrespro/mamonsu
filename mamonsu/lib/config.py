@@ -11,7 +11,6 @@ import mamonsu.lib.platform as platform
 from mamonsu import __version__
 from mamonsu.plugins import Loader as PluginLoader
 from mamonsu.lib.plugin import Plugin
-from mamonsu.lib.zbx import *
 from mamonsu.lib.template import *
 
 if platform.PY2:
@@ -67,7 +66,7 @@ class Config(object):
         parser.add_option(
             '-c', '--config',
             dest='config',
-            default='config.cfg',
+            default=None,
             help='Path to config file')
 
         parser.add_option(
@@ -161,9 +160,10 @@ class Config(object):
 
         if args.config and not os.path.isfile(args.config):
             print('Config file {0} not found'.format(args.config))
-            exit(1)
+            sys.exit(1)
         else:
-            config.read(args.config)
+            if args.config is not None:
+                config.read(args.config)
         self.config = config
 
         logging.basicConfig(
@@ -174,7 +174,7 @@ class Config(object):
         if args.write_config_file is not None:
             with open(args.write_config_file, 'w') as configfile:
                 config.write(configfile)
-                exit(0)
+                sys.exit(0)
 
         if args.write_template_file is not None:
             plugins = []
@@ -184,11 +184,11 @@ class Config(object):
             template = ZbxTemplate(args.template, args.application)
             with open(args.write_template_file, 'w') as templatefile:
                 templatefile.write(template.xml(plugins))
-                exit(0)
+                sys.exit(0)
 
         if platform.WINDOWS:
-            from lib.win32service import ServiceControlManagerContext
-            from lib.win32service import ServiceType, ServiceStartType
+            from mamonsu.lib.win32service import ServiceControlManagerContext
+            from mamonsu.lib.win32service import ServiceType, ServiceStartType
             if args.register:
                 with ServiceControlManagerContext() as scm:
                     scm.create_service(
@@ -198,11 +198,11 @@ class Config(object):
                         ServiceStartType.AUTO,
                         '{0} {1}'.format(__file__, args.register),
                     )
-                exit(0)
+                sys.exit(0)
             if args.unregister:
                 with ServiceControlManagerContext() as scm:
                     scm.delete_service(SERVICE_NAME)
-                exit(0)
+                sys.exit(0)
 
         if args.pid is not None:
             with open(args.pid, 'w') as pidfile:

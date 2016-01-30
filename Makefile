@@ -11,23 +11,33 @@ publish: clean
 	python setup.py sdist upload
 	@echo
 
-deb: clean
+prepare_build_dir: clean
+	@echo Prepare build directory
+	mkdir build
+	tar --transform='s,^\.,mamonsu-$(VERSION),'\
+		-czf build/mamonsu-$(VERSION).tar.gz .\
+		--exclude=build
+	tar xvf build/mamonsu-$(VERSION).tar.gz -C build
+	cp build/mamonsu-$(VERSION).tar.gz \
+		build/mamonsu-$(VERSION)/rpm/SOURCES
+	@echo
+
+deb: prepare_build_dir
 	@echo Build deb
-	dpkg-buildpackage -b
-	cp -av ../mamonsu*.deb .
+	cd build/mamonsu-$(VERSION) && dpkg-buildpackage -b
+	cp -av build/mamonsu*.deb .
 	@echo
 
-rpm: clean
+rpm: prepare_build_dir
 	@echo Build rpm
-	cp -a rpm rpmbuild
-	tar --transform='s,^\.,mamonsu-$(VERSION),' -czf rpm/SOURCES/mamonsu-$(VERSION).tar.gz .
-	mv rpm/SOURCES/mamonsu-$(VERSION).tar.gz rpmbuild/SOURCES/mamonsu-$(VERSION).tar.gz
-	chown -R root.root rpmbuild
-	rpmbuild -ba --define '_topdir $(CURDIR)/rpmbuild' $(CURDIR)/rpmbuild/SPECS/mamonsu.spec
-	cp -av $(CURDIR)/rpmbuild/RPMS/noarch/mamonsu*.rpm .
+	chown -R root.root build/mamonsu-$(VERSION)
+	rpmbuild -ba --define '_topdir $(CURDIR)/build/mamonsu-$(VERSION)/rpm'\
+		$(CURDIR)/build/mamonsu-$(VERSION)/rpm/SPECS/mamonsu.spec
+	cp -av $(CURDIR)/build/mamonsu-$(VERSION)/rpm/RPMS/noarch/mamonsu*.rpm .
 	@echo
 
-clean: deb_clean rpm_clean python_clean
+clean: python_clean
+	rm -rf build
 
 python_clean:
 	@echo Cleaning up python fragments

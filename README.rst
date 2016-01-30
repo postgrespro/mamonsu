@@ -22,15 +22,22 @@ Build deb:
 
 .. code-block:: bash
 
-    $ apt-get install debhelper python-dev python-setuptools
-    $ git clone ... && make deb && dpkg -i mamonsu*.deb
+    $ apt-get install make dpkg-dev debhelper python-dev python-setuptools
+    $ git clone ... && cd mamonsu && make deb && dpkg -i mamonsu*.deb
 
 Build rpm:
 
 .. code-block:: bash
 
-    $ yum install python2-devel python-setuptools
-    $ git clone ... && make rpm && rpm -i mamonsu*.rpm
+    $ yum install make rpm-build python2-devel python-setuptools
+    $ git clone ... && cd mamonsu && make rpm && rpm -i mamonsu*.rpm
+
+Build exe:
+
+.. code-block:: bash
+
+    $ pip install cx_freeze
+    $ git clone ... && cd mamonsu && python setup.py build
 
 ==========
 Configure

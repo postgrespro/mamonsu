@@ -100,6 +100,6 @@ class DiskStats(Plugin):
                     'yaxisside': 1,
                     'color': '00CC00',
                     'key': 'system.disk.utilization[{#BLOCKDEVICE}]'}]
-            }]
+        }]
 
         return template.discovery_rule(rule=rule, items=items, graphs=graphs)

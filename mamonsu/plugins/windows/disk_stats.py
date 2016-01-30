@@ -56,5 +56,5 @@ class DiskStats(Plugin):
                     'key': 'system.disk.queue_avg[{#LOGICALDEVICE}]',
                     'name': 'Logical device {#LOGICALDEVICE}: queue',
                     'yaxisside': 1}]
-            }]
+        }]
         return template.discovery_rule(rule=rule, items=items, graphs=graphs)
