@@ -58,7 +58,6 @@ if [ "$1" = "configure" ]; then
         addgroup --system --quiet mamonsu
     fi
     if ! getent passwd mamonsu > /dev/null 2>&1 ; then
-        # Not yet. Create it.
         adduser --quiet \
             --system --disabled-login --ingroup mamonsu \
             --home /var/run/mamonsu/ --no-create-home \

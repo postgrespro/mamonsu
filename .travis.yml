@@ -10,6 +10,14 @@ before_install:
   - docker pull debian:6
 
 script:
+# rpm build
+  - >
+    docker run -v $(pwd):/var/tmp centos:6 bash -c
+    "cd /var/tmp &&
+     yum install -y tar make rpm-build python2-devel python-setuptools &&
+     make rpm && rpm -i mamonsu*.rpm &&
+     /etc/init.d/mamonsu restart"
+# deb build
   - >
     docker run -v $(pwd):/var/tmp debian:6 bash -c
     "cd /var/tmp && apt-get update &&
@@ -23,11 +31,5 @@ script:
      echo package mamonsu/postgres_query_timeout string '10' | debconf-set-selections &&
      echo package mamonsu/log_level string 'INFO' | debconf-set-selections &&
      apt-get install -y make dpkg-dev debhelper python-dev python-setuptools &&
-     make deb && DEBIAN_FRONTEND=noninteractive dpkg -i mamonsu*.deb &&
-     /etc/init.d/mamonsu restart"
-  - >
-    docker run -v $(pwd):/var/tmp centos:6 bash -c
-    "cd /var/tmp &&
-     yum install -y tar make rpm-build python2-devel python-setuptools &&
-     make rpm && rpm -i mamonsu*.rpm &&
+     make deb && dpkg -i mamonsu*.deb &&
      /etc/init.d/mamonsu restart"
