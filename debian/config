@@ -6,6 +6,7 @@ CONFIGFILE=/etc/mamonsu/agent.conf
 
 db_version 2.0
 db_capb
+db_title Configure mamonsu agent
 
 HOSTNAME=$(hostname -f || 'locahost')
 
@@ -19,16 +20,15 @@ db_set mamonsu/postgres_port "5432"
 db_set mamonsu/postgres_query_timeout "10"
 db_set mamonsu/log_level "INFO"
 
-db_title Configure mamonsu agent
-db_input high mamonsu/zabbix_server
-db_input high mamonsu/zabbix_client
-db_input high mamonsu/postgres_user
-db_input high mamonsu/postgres_password
-db_input high mamonsu/postgres_database
-db_input high mamonsu/postgres_host
-db_input high mamonsu/postgres_port
-db_input high mamonsu/postgres_query_timeout
-db_input high mamonsu/log_level
+db_input high mamonsu/zabbix_server || true
+db_input high mamonsu/zabbix_client || true
+db_input high mamonsu/postgres_user || true
+db_input high mamonsu/postgres_password || true
+db_input high mamonsu/postgres_database || true
+db_input high mamonsu/postgres_host || true
+db_input high mamonsu/postgres_port || true
+db_input high mamonsu/postgres_query_timeout || true
+db_input high mamonsu/log_level || true
 
-db_go
+db_go || true
 

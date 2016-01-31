@@ -1,0 +1,35 @@
+language: python
+
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker pull centos:6
+  - docker pull debian:6
+
+script:
+# rpm build
+  - >
+    docker run -v $(pwd):/var/tmp centos:6 bash -c
+    "cd /var/tmp &&
+     yum install -y tar make rpm-build python2-devel python-setuptools &&
+     make rpm && rpm -i mamonsu*.rpm &&
+     /etc/init.d/mamonsu restart"
+# deb build
+  - >
+    docker run -v $(pwd):/var/tmp debian:6 bash -c
+    "cd /var/tmp && apt-get update &&
+     echo package mamonsu/zabbix_server string '127.0.0.1' | debconf-set-selections &&
+     echo package mamonsu/zabbix_client string '127.0.0.1' | debconf-set-selections &&
+     echo package mamonsu/postgres_user string 'postgres' | debconf-set-selections &&
+     echo package mamonsu/postgres_password string 'postgres' | debconf-set-selections &&
+     echo package mamonsu/postgres_database string 'postgres' | debconf-set-selections &&
+     echo package mamonsu/postgres_host string '127.0.0.1' | debconf-set-selections &&
+     echo package mamonsu/postgres_port string '5432' | debconf-set-selections &&
+     echo package mamonsu/postgres_query_timeout string '10' | debconf-set-selections &&
+     echo package mamonsu/log_level string 'INFO' | debconf-set-selections &&
+     apt-get install -y make dpkg-dev debhelper python-dev python-setuptools &&
+     make deb && dpkg -i mamonsu*.deb &&
+     /etc/init.d/mamonsu restart"
