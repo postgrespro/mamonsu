@@ -3,14 +3,6 @@ mamonsu: Active zabbix agent
 *******************************
 
 ============
-Build status
-============
-
-.. image:: https://travis-ci.org/vadv/mamonsu.svg?branch=master
-    :target: https://travis-ci.org/vadv/mamonsu
-
-
-============
 Installation
 ============
 
