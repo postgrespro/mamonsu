@@ -39,6 +39,7 @@ export PYTHONPATH=%{buildroot}%{python_sitelib}
 %{python_sitelib}/%{name}/
 %{python_sitelib}/%{name}-%{version}*
 %{_sysconfdir}/%{name}
+%{_datarootdir}/%{name}
 %{_sysconfdir}/init.d/%{name}
 %{_sysconfdir}/logrotate.d/%{name}
 %{_bindir}/%{name}
