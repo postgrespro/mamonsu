@@ -1,4 +1,4 @@
-Template: mamonsu/zabbix_server
+Template: mamonsu/zabbix_address
 Type: string
 Description: Address of Zabbix server:
  IP or DNS-address of your zabbix server.

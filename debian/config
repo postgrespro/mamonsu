@@ -11,7 +11,7 @@ db_title Configure mamonsu agent
 HOSTNAME=$(hostname -f || 'locahost')
 
 db_set mamonsu/zabbix_client "$HOSTNAME"
-db_set mamonsu/zabbix_server "127.0.0.1"
+db_set mamonsu/zabbix_address "127.0.0.1"
 db_set mamonsu/postgres_user "postgres"
 db_set mamonsu/postgres_password "None"
 db_set mamonsu/postgres_database "postgres"
@@ -20,7 +20,7 @@ db_set mamonsu/postgres_port "5432"
 db_set mamonsu/postgres_query_timeout "10"
 db_set mamonsu/log_level "INFO"
 
-db_input high mamonsu/zabbix_server || true
+db_input high mamonsu/zabbix_address || true
 db_input high mamonsu/zabbix_client || true
 db_input high mamonsu/postgres_user || true
 db_input high mamonsu/postgres_password || true
