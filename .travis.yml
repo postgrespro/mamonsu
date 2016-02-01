@@ -16,7 +16,8 @@ script:
     "cd /var/tmp &&
      yum install -y tar make rpm-build python2-devel python-setuptools &&
      make rpm && rpm -i mamonsu*.rpm &&
-     /etc/init.d/mamonsu restart"
+     /etc/init.d/mamonsu restart &&
+     yum remove -y mamonsu"
 # deb build
   - >
     docker run -v $(pwd):/var/tmp debian:6 bash -c
@@ -32,4 +33,5 @@ script:
      echo package mamonsu/log_level string 'INFO' | debconf-set-selections &&
      apt-get install -y make dpkg-dev debhelper python-dev python-setuptools &&
      make deb && dpkg -i mamonsu*.deb &&
-     /etc/init.d/mamonsu restart"
+     /etc/init.d/mamonsu restart &&
+     apt-get purge -y mamonsu"

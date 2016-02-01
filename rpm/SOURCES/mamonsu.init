@@ -23,7 +23,7 @@ RUNAS=mamonsu
 start() {
   if [ -f $PIDFILE ] && kill -0 $(cat $PIDFILE); then
     echo 'Service already running' >&2
-    return 1
+    return 0
   fi
   echo -n 'Starting service' >&2
   su -c "$COMMAND" $RUNAS -s /bin/sh &
