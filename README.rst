@@ -3,6 +3,12 @@ mamonsu: Active zabbix agent
 *******************************
 
 ============
+Build status
+============
+.. image:: https://travis-ci.org/postgrespro/mamonsu.svg?branch=master
+    :target: https://travis-ci.org/postgrespro/mamonsu
+
+============
 Installation
 ============
 
