@@ -6,6 +6,7 @@ import time
 import struct
 import socket
 import json
+import logging
 
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
@@ -25,6 +26,8 @@ class Zbx(Plugin):
         self.max_queue_size = config.fetch('sender', 'queue', int)
         self.fqdn = config.fetch('zabbix', 'client')
         self.queue = Queue()
+        self.log = logging.getLogger(
+            'ZBX-{0}:{1}'.format(self.host, self.port))
 
     def json(self, val):
         return json.dumps(val)
@@ -75,6 +78,10 @@ class Zbx(Plugin):
             resp_body_len = struct.unpack('<Q', resp_header[5:])[0]
             resp_body = self._receive(sock, resp_body_len)
             self.log.debug('response: {0}'.format(resp_body))
+            if 'failed: 0' not in str(resp_body):
+                self.log.error(
+                    'Response from server'
+                    ' with failed items: {0}'.format(resp_body))
         finally:
             sock.close()
 
