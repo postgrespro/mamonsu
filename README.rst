@@ -51,7 +51,7 @@ Export template for zabbix:
 
 Import this file in web interface of zabbix: Configuration => Templates => Import.
 
-Add this template like `PostgrePro-Linux` at your monitoring host.
+Add this template like `PostgresPro-Linux` at your monitoring host.
 
 Generate config on monitring host:
 
