@@ -15,7 +15,7 @@ _configure_conf() {
         return 0
     fi
 
-    db_get mamonsu/zabbix_server
+    db_get mamonsu/zabbix_address
     SERVER="$RET"
     db_get mamonsu/zabbix_client
     CLIENT="$RET"
