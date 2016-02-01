@@ -1,3 +1,9 @@
+mamonsu (0.0.4) unstable; urgency=low
+
+  * Fixes.
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 1 Feb 2016 23:42:23 +0400
+
 mamonsu (0.0.3) unstable; urgency=low
 
   * Keep alive log, connection to postgresql via socket.
