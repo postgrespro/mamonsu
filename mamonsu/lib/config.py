@@ -93,14 +93,14 @@ class Config(object):
             '-t',
             '--template',
             dest='template',
-            default='PostgrePro-{0}'.format(sys.platform.title()),
+            default='PostgresPro-{0}'.format(sys.platform.title()),
             help='Generated template name')
 
         parser.add_option(
             '-a',
             '--application',
             dest='application',
-            default='App-PostgrePro-{0}'.format(sys.platform.title()),
+            default='App-PostgresPro-{0}'.format(sys.platform.title()),
             help='Application for generated template')
 
         if platform.WINDOWS:
