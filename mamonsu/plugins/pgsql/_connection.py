@@ -49,10 +49,14 @@ class Connection(object):
         if not self.query_completed_succ:
             self.log.debug('[db: {0}] Connecting...'.format(self.database))
             self._close()
+            host, unix_sock = os.environ.get('PGHOST'), None
+            if host.startswith('/'):
+                unix_sock, host = host, None
             self.conn = connect(
                 user=os.environ.get('PGUSER'),
                 password=os.environ.get('PGPASSWORD'),
-                host=os.environ.get('PGHOST'),
+                unix_sock=unix_sock,
+                host=host,
                 port=int(os.environ.get('PGPORT') or 5432),
                 database=self.database
             )

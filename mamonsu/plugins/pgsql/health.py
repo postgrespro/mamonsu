@@ -15,6 +15,8 @@ class Health(Plugin):
         # алертим, если cache hit меньше чем %
         self.TriggerCacheHitLessThen = self.config.fetch(
             'health', 'cache', int)
+        # счетчик, для сообщения в лог
+        self.counter = 0
 
     def run(self, zbx):
 
@@ -30,6 +32,11 @@ class Health(Plugin):
             round(sum(blks_hit)*100/sum(blks_hit+blks_read), 2) \
             from pg_stat_database')
         zbx.send('pgsql.cache[hit]', int(result[0][0]))
+
+        self.counter += 1
+        if self.counter > 9:
+            self.log.info('=== Keep alive ===')
+            self.counter = 0
 
     def items(self, template):
         result = template.item({
