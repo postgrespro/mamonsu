@@ -12,6 +12,7 @@ _configure_conf() {
         db_stop
         echo
         echo "File $CONFIGFILE exists, leaving unchanged."
+        return 0
     fi
 
     db_get mamonsu/zabbix_server
