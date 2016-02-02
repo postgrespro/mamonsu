@@ -73,6 +73,8 @@ if [ "$1" = "configure" ]; then
 
     _configure_conf
 
+    update-rc.d mamonsu enable
+
 fi
 
 exit 0

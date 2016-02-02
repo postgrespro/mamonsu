@@ -1,3 +1,9 @@
+mamonsu (0.0.5) unstable; urgency=low
+
+  * Fixes.
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 2 Feb 2016 18:48:45 +0400
+
 mamonsu (0.0.4) unstable; urgency=low
 
   * Fixes.

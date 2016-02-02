@@ -15,7 +15,7 @@ script:
     docker run -v $(pwd):/var/tmp centos:6 bash -c
     "cd /var/tmp &&
      yum install -y tar make rpm-build python2-devel python-setuptools &&
-     make rpm && rpm -i mamonsu*.rpm &&
+     make rpm && rpm -i mamonsu*.rpm && cd / &&
      /etc/init.d/mamonsu restart &&
      yum remove -y mamonsu"
 # deb build
@@ -32,6 +32,6 @@ script:
      echo package mamonsu/postgres_query_timeout string '10' | debconf-set-selections &&
      echo package mamonsu/log_level string 'INFO' | debconf-set-selections &&
      apt-get install -y make dpkg-dev debhelper python-dev python-setuptools &&
-     make deb && dpkg -i mamonsu*.deb &&
+     make deb && dpkg -i mamonsu*.deb && cd / &&
      /etc/init.d/mamonsu restart &&
      apt-get purge -y mamonsu"
