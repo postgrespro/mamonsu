@@ -21,7 +21,7 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	python setup.py install --install-layout=deb
+	python setup.py install --install-layout=deb --root=debian/mamonsu
 
 binary-indep: build install
 	dh_testdir -i

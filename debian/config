@@ -1,24 +1,54 @@
 #!/bin/sh
 set -e
 
-CONFIGFILE=/etc/mamonsu/agent.conf
 . /usr/share/debconf/confmodule
 
 db_version 2.0
 db_capb
 db_title Configure mamonsu agent
 
-HOSTNAME=$(hostname -f || 'locahost')
 
-db_set mamonsu/zabbix_client "$HOSTNAME"
-db_set mamonsu/zabbix_address "127.0.0.1"
-db_set mamonsu/postgres_user "postgres"
-db_set mamonsu/postgres_password "None"
-db_set mamonsu/postgres_database "postgres"
-db_set mamonsu/postgres_host "127.0.0.1"
-db_set mamonsu/postgres_port "5432"
-db_set mamonsu/postgres_query_timeout "10"
-db_set mamonsu/log_level "INFO"
+VARS=/var/lib/mamonsu/agent.sh
+
+_load_env() {
+    [ -f $VARS ] && . $VARS
+    [ "$CLIENT"=="" ] && CLIENT=$(hostname -f || 'locahost')
+    [ "$ADDRESS"=="" ] && ADDRESS="127.0.0.1"
+    [ "$PG_USER"=="" ] && PG_USER="postgres"
+    [ "$PG_PASS"=="" ] && PG_PASS="None"
+    [ "$PG_DATABASE"=="" ] && PG_DATABASE="postgres"
+    [ "$PG_HOST"=="" ] && PG_HOST="127.0.0.1"
+    [ "$PG_PORT"=="" ] && PG_PORT="5432"
+    [ "$PG_TIMEOUT"=="" ] && PG_TIMEOUT="10"
+    [ "$LOG_LEVEL"=="" ] && PG_LEVEL="LOG_LEVEL"
+}
+
+_save_env() {
+    echo "
+CLIENT='$CLIENT'
+ADDRESS='$ADDRESS'
+PG_USER='$PG_USER'
+PG_PASS='$PG_PASS'
+PG_DATABASE='$PG_DATABASE'
+PG_HOST='$PG_HOST'
+PG_PORT='$PG_PORT'
+PG_TIMEOUT='$PG_TIMEOUT'
+LOG_LEVEL='$LOG_LEVEL'
+" > $VARS
+}
+
+_load_env
+_save_env
+
+db_set mamonsu/zabbix_client "$CLIENT"
+db_set mamonsu/zabbix_address "$ADDRESS"
+db_set mamonsu/postgres_user "$PG_USER"
+db_set mamonsu/postgres_password "$PG_PASS"
+db_set mamonsu/postgres_database "$PG_DATABASE"
+db_set mamonsu/postgres_host "$PG_HOST"
+db_set mamonsu/postgres_port "$PG_PORT"
+db_set mamonsu/postgres_query_timeout "$PG_TIMEOUT"
+db_set mamonsu/log_level "$LOG_LEVEL"
 
 db_input high mamonsu/zabbix_address || true
 db_input high mamonsu/zabbix_client || true
@@ -27,8 +57,8 @@ db_input high mamonsu/postgres_password || true
 db_input high mamonsu/postgres_database || true
 db_input high mamonsu/postgres_host || true
 db_input high mamonsu/postgres_port || true
-db_input high mamonsu/postgres_query_timeout || true
-db_input high mamonsu/log_level || true
+db_input medium mamonsu/postgres_query_timeout || true
+db_input medium mamonsu/log_level || true
 
 db_go || true
 

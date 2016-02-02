@@ -2,3 +2,4 @@ etc/mamonsu
 etc/logrotate.d
 usr/share/mamonsu
 var/log/mamonsu
+var/lib/mamonsu

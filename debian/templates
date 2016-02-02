@@ -7,7 +7,6 @@ Description-ru.UTF-8: Адресс Zabbix сервера:
  IP или DNS-адресс вашего Zabbix сервера.
  .
 
-
 Template: mamonsu/zabbix_client
 Type: string
 Description: Client hostname:

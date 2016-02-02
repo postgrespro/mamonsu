@@ -16,7 +16,7 @@ _configure_conf() {
     fi
 
     db_get mamonsu/zabbix_address
-    SERVER="$RET"
+    ADDRESS="$RET"
     db_get mamonsu/zabbix_client
     CLIENT="$RET"
     db_get mamonsu/postgres_user
@@ -34,8 +34,8 @@ _configure_conf() {
 
     echo "
 [zabbix]
-client = $CLIENT # client hostname for zabbix server
-server = $SERVER # zabbix server
+client = $CLIENT
+address = $ADDRESS
 
 [postgres]
 user = $USER
@@ -68,8 +68,8 @@ if [ "$1" = "configure" ]; then
     mkdir -p /var/run/mamonsu
     chown mamonsu:mamonsu /var/run/mamonsu
 
-    mkdir -p /var/log/mamonsu
     chown mamonsu:mamonsu /var/log/mamonsu
+    chown mamonsu:mamonsu /var/lib/mamonsu
 
     _configure_conf
 
