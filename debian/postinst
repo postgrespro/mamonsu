@@ -5,6 +5,7 @@ set -e
 db_version 2.0
 
 CONFIGFILE=/etc/mamonsu/agent.conf
+VARS=/var/lib/mamonsu/agent.sh
 
 _configure_conf() {
 
@@ -34,8 +35,8 @@ _configure_conf() {
 
     echo "
 [zabbix]
-client = $CLIENT
 address = $ADDRESS
+client = $CLIENT
 
 [postgres]
 user = $USER
@@ -49,6 +50,18 @@ query_timeout = $TIMEOUT
 file = /var/log/mamonsu/agent.log
 level = INFO
 " > $CONFIGFILE
+
+    echo "
+CLIENT='$CLIENT'
+ADDRESS='$ADDRESS'
+PG_USER='$USER'
+PASSWD='$PASSWD'
+DATABASE='$DATABASE'
+HOST='$HOST'
+PORT='$PORT'
+TIMEOUT='$TIMEOUT'
+LEVEL='$LEVEL'
+" > $VARS
 
 }
 
@@ -73,8 +86,17 @@ if [ "$1" = "configure" ]; then
 
     _configure_conf
 
-    update-rc.d mamonsu enable
+fi
 
+db_stop
+
+if [ -x "/etc/init.d/mamonsu" ]; then
+    update-rc.d mamonsu defaults >/dev/null
+    if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+        invoke-rc.d mamonsu start || exit $?
+    else
+        /etc/init.d/mamonsu start || exit $?
+    fi
 fi
 
 exit 0

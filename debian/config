@@ -12,43 +12,28 @@ VARS=/var/lib/mamonsu/agent.sh
 
 _load_env() {
     [ -f $VARS ] && . $VARS
-    [ "$CLIENT"=="" ] && CLIENT=$(hostname -f || 'locahost')
-    [ "$ADDRESS"=="" ] && ADDRESS="127.0.0.1"
-    [ "$PG_USER"=="" ] && PG_USER="postgres"
-    [ "$PG_PASS"=="" ] && PG_PASS="None"
-    [ "$PG_DATABASE"=="" ] && PG_DATABASE="postgres"
-    [ "$PG_HOST"=="" ] && PG_HOST="127.0.0.1"
-    [ "$PG_PORT"=="" ] && PG_PORT="5432"
-    [ "$PG_TIMEOUT"=="" ] && PG_TIMEOUT="10"
-    [ "$LOG_LEVEL"=="" ] && PG_LEVEL="LOG_LEVEL"
-}
-
-_save_env() {
-    echo "
-CLIENT='$CLIENT'
-ADDRESS='$ADDRESS'
-PG_USER='$PG_USER'
-PG_PASS='$PG_PASS'
-PG_DATABASE='$PG_DATABASE'
-PG_HOST='$PG_HOST'
-PG_PORT='$PG_PORT'
-PG_TIMEOUT='$PG_TIMEOUT'
-LOG_LEVEL='$LOG_LEVEL'
-" > $VARS
+    [ ! -n "$CLIENT" ] && CLIENT=$(hostname -f || 'locahost')
+    [ ! -n "$ADDRESS" ] && ADDRESS="127.0.0.1"
+    [ ! -n "$USER" ] && USER="postgres"
+    [ ! -n "$PASS" ] && PASS="None"
+    [ ! -n "$DATABASE" ] && DATABASE="postgres"
+    [ ! -n "$HOST" ] && HOST="127.0.0.1"
+    [ ! -n "$PORT" ] && PORT="5432"
+    [ ! -n "$TIMEOUT" ] && TIMEOUT="10"
+    [ ! -n "$LEVEL" ] && LEVEL="INFO"
 }
 
 _load_env
-_save_env
 
 db_set mamonsu/zabbix_client "$CLIENT"
 db_set mamonsu/zabbix_address "$ADDRESS"
-db_set mamonsu/postgres_user "$PG_USER"
-db_set mamonsu/postgres_password "$PG_PASS"
-db_set mamonsu/postgres_database "$PG_DATABASE"
-db_set mamonsu/postgres_host "$PG_HOST"
-db_set mamonsu/postgres_port "$PG_PORT"
-db_set mamonsu/postgres_query_timeout "$PG_TIMEOUT"
-db_set mamonsu/log_level "$LOG_LEVEL"
+db_set mamonsu/postgres_user "$USER"
+db_set mamonsu/postgres_password "$PASS"
+db_set mamonsu/postgres_database "$DATABASE"
+db_set mamonsu/postgres_host "$HOST"
+db_set mamonsu/postgres_port "$PORT"
+db_set mamonsu/postgres_query_timeout "$TIMEOUT"
+db_set mamonsu/log_level "$LEVEL"
 
 db_input high mamonsu/zabbix_address || true
 db_input high mamonsu/zabbix_client || true
