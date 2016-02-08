@@ -19,11 +19,15 @@ NAME=mamonsu
 DESC="Zabbix active agent"
 
 CONFIG=/etc/mamonsu/agent.conf
-PIDFILE=/var/run/mamonsu/mamonsu.pid
+PIDDIR=/var/run/mamonsu
+PIDFILE=$PIDDIR/mamonsu.pid
 LOGFILE=/var/log/mamonsu/agent.log
 
 COMMAND="/usr/bin/$NAME -c $CONFIG -p $PIDFILE"
 RUNAS=mamonsu
+
+[ ! -d $PIDDIR ] && mkdir -p $PIDDIR
+chown $RUNAS $PIDDIR
 
 start() {
   if [ -f $PIDFILE ] && kill -0 $(cat $PIDFILE); then

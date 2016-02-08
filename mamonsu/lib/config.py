@@ -205,8 +205,12 @@ class Config(object):
                 sys.exit(0)
 
         if args.pid is not None:
-            with open(args.pid, 'w') as pidfile:
-                pidfile.write(str(os.getpid()))
+            try:
+                with open(args.pid, 'w') as pidfile:
+                    pidfile.write(str(os.getpid()))
+            except Exception as e:
+                logging.error('Can\'t write pid file, error: %s'.format(e))
+                sys.exit(2)
 
         os.environ['PGUSER'] = self.fetch('postgres', 'user')
         if self.fetch('postgres', 'password'):
