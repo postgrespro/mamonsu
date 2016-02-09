@@ -18,7 +18,7 @@ def long_description():
 
 def executables():
     if platform.WINDOWS:
-        return [Executable('agent.py')]
+        return [Executable('mamonsu.py')]
 
 setup(
     name='mamonsu',
