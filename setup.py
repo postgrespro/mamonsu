@@ -4,6 +4,7 @@ from os import path
 import mamonsu.lib.platform as platform
 
 if platform.WINDOWS:
+    from setuptools import find_packages
     from cx_Freeze import setup, Executable
 else:
     from setuptools import setup, find_packages
