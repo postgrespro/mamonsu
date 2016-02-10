@@ -2,6 +2,7 @@
 *.egg-info
 *.swp
 __pycache__
+.ropeproject
 
 tags
 dist
