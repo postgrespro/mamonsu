@@ -19,8 +19,9 @@ class Databases(Plugin):
             zbx.send('pgsql.database.size[{0}]'.format(info[0]), info[1])
             bloat_count = Pooler.query(
                 'select count(*) from pg_catalog.pg_stat_all_tables where\
-                (n_dead_tup/n_live_tup::float8) > {0}\
-                and n_live_tup > {1}'.format(self.BloatScale, self.MinRows),
+                (n_dead_tup/(n_live_tup+n_dead_tup)::float8) > {0}\
+                and (n_live_tup+n_dead_tup) > {1}'.format(
+                    self.BloatScale, self.MinRows),
                 info[0])[0][0]
             zbx.send(
                 'pgsql.database.bloating_tables[{0}]'.format(info[0]),
