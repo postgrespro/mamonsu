@@ -33,7 +33,7 @@ class Instance(Plugin):
         ('tup_deleted', 'tuples[deleted]', 'tuples: deleted',
             ('PostgreSQL instance: tuples', '000000', 0), None, 1),
         ('tup_fetched', 'tuples[fetched]', 'tuples: fetched',
-            ('PostgreSQL instance: tuples', '0000CC', 0), None, 1),
+            ('PostgreSQL instance: tuples', '0000CC', 1), None, 1),
         ('tup_inserted', 'tuples[inserted]', 'tuples: inserted',
             ('PostgreSQL instance: tuples', '00CC00', 0), None, 1),
         ('tup_returned', 'tuples[returned]', 'tuples: returned',
