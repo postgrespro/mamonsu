@@ -1,24 +1,13 @@
 import codecs
 import mamonsu
 from os import path
-import mamonsu.lib.platform as platform
-
-if platform.WINDOWS:
-    from setuptools import find_packages
-    from cx_Freeze import setup, Executable
-else:
-    from setuptools import setup, find_packages
+from setuptools import setup, find_packages
 
 
 def long_description():
     filespath = path.dirname(path.realpath(__file__))
     with codecs.open(path.join(filespath, 'README.rst'), encoding='utf8') as f:
         return f.read()
-
-
-def executables():
-    if platform.WINDOWS:
-        return [Executable('mamonsu.py')]
 
 setup(
     name='mamonsu',
@@ -37,7 +26,5 @@ setup(
             'mamonsu=mamonsu.lib.supervisor:start'
         ],
     },
-    options={'build_exe': {'packages': ['mamonsu'], 'optimize': 0}},
-    executables=executables(),
     zip_safe=True,
 )

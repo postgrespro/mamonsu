@@ -17,6 +17,7 @@ script:
      yum install -y tar make rpm-build python2-devel python-setuptools &&
      make rpm && rpm -i mamonsu*.rpm && cd / &&
      /etc/init.d/mamonsu restart &&
+     sleep 5 && /etc/init.d/mamonsu stop &&
      yum remove -y mamonsu"
 # deb build
   - >
@@ -34,4 +35,5 @@ script:
      apt-get install -y make dpkg-dev debhelper python-dev python-setuptools &&
      make deb && dpkg -i mamonsu*.deb && cd / &&
      /etc/init.d/mamonsu restart &&
+     sleep 5 && /etc/init.d/mamonsu stop &&
      apt-get purge -y mamonsu"

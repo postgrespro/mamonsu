@@ -38,12 +38,11 @@ Build rpm:
     $ yum install make rpm-build python2-devel python-setuptools
     $ git clone ... && cd mamonsu && make rpm && rpm -i mamonsu*.rpm
 
-Build exe:
+Build exe (worked with python34, py2exe 0.9.2.2, pywin32 220):
 
 .. code-block:: bash
 
-    $ pip install cx_freeze
-    $ git clone ... && cd mamonsu && python setup.py build
+    $ git clone ... && cd mamonsu && python setup_win32.py build
 
 ==========
 Configure
@@ -95,4 +94,6 @@ Run
 
 .. code-block:: bash
 
+    $ service mamonsu status
+    or by hand:
     $ mamonsu -c /etc/mamonsu/agent.conf -p /var/run/mamonsu.pid

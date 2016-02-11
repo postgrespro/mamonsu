@@ -6,7 +6,6 @@ import signal
 import sys
 
 import mamonsu.lib.platform as platform
-
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.config import Config
 from mamonsu.lib.zbx import *
@@ -55,7 +54,7 @@ class Supervisor(object):
             time.sleep(1)
 
 
-def start():
+def start(blocking=False):
 
     def quit_handler(_signo=None, _stack_frame=None):
         logging.info("Bye bye!")

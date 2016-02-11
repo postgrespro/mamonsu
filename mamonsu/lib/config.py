@@ -63,61 +63,52 @@ class Config(object):
             usage='%prog [-c] [-p]',
             version='%prog {0}'.format(__version__))
 
-        parser.add_option(
-            '-c', '--config',
+        group = optparse.OptionGroup(
+            parser,
+            'Start options')
+        group.add_option(
+            '-c',
             dest='config',
             default=None,
             help='Path to config file')
-
-        parser.add_option(
-            '-p', '--pid',
+        group.add_option(
+            '-p',
             dest='pid',
             default=None,
             help='Path to pid file')
+        parser.add_option_group(group)
 
-        parser.add_option(
+        group = optparse.OptionGroup(
+            parser,
+            'Example options',
+            'Export default options')
+        group.add_option(
             '-w',
-            '--write-config-file',
-            dest='write_config_file',
+            dest='config_file',
             default=None,
             help='Write default config to file and exit')
+        parser.add_option_group(group)
 
-        parser.add_option(
+        group = optparse.OptionGroup(
+            parser,
+            'Export to zabbix',
+            'Export zabbix template options')
+        group.add_option(
             '-e',
-            '--export-template-file',
-            dest='write_template_file',
+            dest='template_file',
             default=None,
             help='Write template to file and exit')
-
-        parser.add_option(
+        group.add_option(
             '-t',
-            '--template',
             dest='template',
             default='PostgresPro-{0}'.format(sys.platform.title()),
             help='Generated template name')
-
-        parser.add_option(
+        group.add_option(
             '-a',
-            '--application',
             dest='application',
             default='App-PostgresPro-{0}'.format(sys.platform.title()),
             help='Application for generated template')
-
-        if platform.WINDOWS:
-            SERVICE_NAME = 'mamonsu'
-            SERVICE_DESC = 'Zabbix active agent mamonsu'
-            parser.add_option(
-                '-r',
-                '--register',
-                dest='register',
-                default=None,
-                help='Register as windows service with params')
-            parser.add_option(
-                '-u',
-                '--unregister',
-                dest='unregister',
-                action='store_true', default=False,
-                help='Unregister windows service')
+        parser.add_option_group(group)
 
         args, _ = parser.parse_args()
 
@@ -158,50 +149,22 @@ class Config(object):
         config.add_section('bgwriter')
         config.set('bgwriter', 'max_checkpoints_req', '5')
 
-        if args.config and not os.path.isfile(args.config):
-            print('Config file {0} not found'.format(args.config))
-            sys.exit(1)
-        else:
-            if args.config is not None:
-                config.read(args.config)
         self.config = config
+        self.load_and_apply_config_file(args.config)
 
-        logging.basicConfig(
-            format=self.fetch('log', 'format', raw=True),
-            filename=self.fetch('log', 'file'),
-            level=self.get_logger_level(self.fetch('log', 'level')))
-
-        if args.write_config_file is not None:
-            with open(args.write_config_file, 'w') as configfile:
-                config.write(configfile)
+        if args.config_file is not None:
+            with open(args.config_file, 'w') as fd:
+                config.write(fd)
                 sys.exit(0)
 
-        if args.write_template_file is not None:
+        if args.template_file is not None:
             plugins = []
             PluginLoader.load()
             for klass in Plugin.__subclasses__():
                 plugins.append(klass(self))
             template = ZbxTemplate(args.template, args.application)
-            with open(args.write_template_file, 'w') as templatefile:
+            with open(args.template_file, 'w') as templatefile:
                 templatefile.write(template.xml(plugins))
-                sys.exit(0)
-
-        if platform.WINDOWS:
-            from mamonsu.lib.win32service import ServiceControlManagerContext
-            from mamonsu.lib.win32service import ServiceType, ServiceStartType
-            if args.register:
-                with ServiceControlManagerContext() as scm:
-                    scm.create_service(
-                        SERVICE_NAME,
-                        SERVICE_DESC,
-                        ServiceType.WIN32_OWN_PROCESS,
-                        ServiceStartType.AUTO,
-                        '{0} {1}'.format(__file__, args.register),
-                    )
-                sys.exit(0)
-            if args.unregister:
-                with ServiceControlManagerContext() as scm:
-                    scm.delete_service(SERVICE_NAME)
                 sys.exit(0)
 
         if args.pid is not None:
@@ -212,15 +175,15 @@ class Config(object):
                 logging.error('Can\'t write pid file, error: %s'.format(e))
                 sys.exit(2)
 
-        os.environ['PGUSER'] = self.fetch('postgres', 'user')
-        if self.fetch('postgres', 'password'):
-            os.environ['PGPASSWORD'] = self.fetch('postgres', 'password')
-        os.environ['PGHOST'] = self.fetch('postgres', 'host')
-        os.environ['PGPORT'] = str(self.fetch('postgres', 'port'))
-        os.environ['PGDATABASE'] = self.fetch('postgres', 'database')
-        os.environ['PGTIMEOUT'] = self.fetch('postgres', 'query_timeout')
+    def load_and_apply_config_file(self, config_file=None):
+        if config_file and not os.path.isfile(config_file):
+            sys.exit(1)
+        else:
+            if config_file is not None:
+                self.config.read(config_file)
+        self._apply_log_setting()
+        self._apply_environ()
 
-    # function fetch value of key in section
     def fetch(self, sec, key, klass=None, raw=False):
         try:
             if klass == float:
@@ -234,3 +197,18 @@ class Config(object):
             return self.config.get(sec, key, raw=raw)
         except KeyError:
             return None
+
+    def _apply_environ(self):
+        os.environ['PGUSER'] = self.fetch('postgres', 'user')
+        if self.fetch('postgres', 'password'):
+            os.environ['PGPASSWORD'] = self.fetch('postgres', 'password')
+        os.environ['PGHOST'] = self.fetch('postgres', 'host')
+        os.environ['PGPORT'] = str(self.fetch('postgres', 'port'))
+        os.environ['PGDATABASE'] = self.fetch('postgres', 'database')
+        os.environ['PGTIMEOUT'] = self.fetch('postgres', 'query_timeout')
+
+    def _apply_log_setting(self):
+        logging.basicConfig(
+            format=self.fetch('log', 'format', raw=True),
+            filename=self.fetch('log', 'file'),
+            level=self.get_logger_level(self.fetch('log', 'level')))
