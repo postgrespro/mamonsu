@@ -3,7 +3,7 @@ import win32service
 import win32event
 import win32evtlogutil
 import servicemanager
-import logging
+import os
 
 from threading import Thread
 from mamonsu.lib.config import Config
@@ -35,8 +35,22 @@ class MamonsuSvc(win32serviceutil.ServiceFramework):
             (self._svc_name_, ''))
 
         config = Config()
-        config.load_and_apply_config_file(config_file='c:\\tmp\\1.conf')
+        config_file = os.path.join(
+            # __file__ == 'service_win32.py'
+            os.path.dirname(os.path.dirname(__file__)),
+            'agent.conf')
+
+        if not os.path.isfile(config_file):
+            raise Exception('Config file: {0} not found!'.format(config_file))
+
+        config.load_and_apply_config_file(config_file)
         supervisor = Supervisor(config)
+        win32evtlogutil.ReportEvent(
+            self._svc_name_,
+            servicemanager.PYS_SERVICE_STOPPED,
+            0,
+            servicemanager.EVENTLOG_INFORMATION_TYPE,
+            (self._svc_name_, ''))
 
         thread = Thread(target=supervisor.start)
         thread.daemon = True

@@ -6,6 +6,7 @@ from ._pool import Pooler
 
 class Databases(Plugin):
 
+    Interval = 300
     BloatScale = 0.2
     MinRows = 50
 

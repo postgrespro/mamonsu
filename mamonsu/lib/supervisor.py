@@ -9,7 +9,7 @@ import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.config import Config
 from mamonsu.lib.zbx import *
-from mamonsu.plugins import Loader as PluginLoader
+from mamonsu.plugins import *
 
 
 class Supervisor(object):
@@ -28,7 +28,6 @@ class Supervisor(object):
         self._loop()
 
     def _load_plugins(self):
-        PluginLoader.load()
         for klass in Plugin.__subclasses__():
             plugin = klass(self.config)
             self.Plugins.append(plugin)

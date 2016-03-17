@@ -24,15 +24,27 @@ setup(
         Target(
             name='mamonsu',
             description='Zabbix active agent',
-            modules=['setup_win32_service'],
+            modules=['service_win32'],
             cmdline_style='pywin32'
         )
     ],
     console=[{'script': 'mamonsu.py'}],
     options={
         'py2exe': {
-            'packages': ['mamonsu'],
+            'packages': [
+                'mamonsu',
+                'mamonsu.plugins',
+                'mamonsu.plugins.windows',
+                'mamonsu.plugins.pgsql'
+            ],
             'bundle_files': 1,
-        }
-    }
+            'dist_dir': 'dist',
+            'xref': False,
+            'skip_archive': False,
+            'ascii': False,
+            'compressed': 2,
+            'optimize': 2
+        },
+    },
+    zipfile=None
 )

@@ -9,7 +9,6 @@ import sys
 import mamonsu.lib.platform as platform
 
 from mamonsu import __version__
-from mamonsu.plugins import Loader as PluginLoader
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.template import *
 
@@ -159,7 +158,6 @@ class Config(object):
 
         if args.template_file is not None:
             plugins = []
-            PluginLoader.load()
             for klass in Plugin.__subclasses__():
                 plugins.append(klass(self))
             template = ZbxTemplate(args.template, args.application)
