@@ -10,6 +10,7 @@ before_install:
   - docker pull debian:6
 
 script:
+
 # rpm build
   - >
     docker run -v $(pwd):/var/tmp centos:6 bash -c
@@ -19,6 +20,7 @@ script:
      /etc/init.d/mamonsu restart &&
      sleep 5 && /etc/init.d/mamonsu stop &&
      yum remove -y mamonsu"
+
 # deb build
   - >
     docker run -v $(pwd):/var/tmp debian:6 bash -c
