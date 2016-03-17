@@ -45,6 +45,10 @@ If you have error with ctypes: try to extend bootstrap_modules (add "ctypes") in
 .. code-block:: bash
 
     $ git clone ... && cd mamonsu && python setup_win32.py py2exe
+    $ cp dist\{mamonsu, service_win32}.exe c:\mamonsu
+    $ c:\mamonsu\mamonsu.exe -w c:\mamonsu\agent.conf
+    $ c:\mamonsu\service_win32.exe -install
+    $ net start mamonsu
 
 
 ==========
