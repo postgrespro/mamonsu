@@ -31,12 +31,12 @@ class DiskStats(Plugin):
         items = [
             {
                 'key': 'system.disk.read[{#LOGICALDEVICE}]',
-                'name': 'Logical device {#LOGICALDEVICE}: read operations',
-                'delta': 2},
+                'name': 'Logical device {#LOGICALDEVICE}: read operations/sec',
+                'delta': 1},
             {
                 'key': 'system.disk.write[{#LOGICALDEVICE}]',
-                'name': 'Logical device {#LOGICALDEVICE}: write operations',
-                'delta': 2},
+                'name': 'Logical device {#LOGICALDEVICE}: write operations/sec',
+                'delta': 1},
             {
                 'key': 'system.disk.queue_avg[{#LOGICALDEVICE}]',
                 'name': 'Logical device {#LOGICALDEVICE}: queue'},
