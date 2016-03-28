@@ -58,7 +58,8 @@ class Connection(object):
                 unix_sock=unix_sock,
                 host=host,
                 port=int(os.environ.get('PGPORT') or 5432),
-                database=self.database
+                database=self.database,
+                application_name=os.environ.get('PGAPPNAME')
             )
             self.log.debug('[db: {0}] Connected!'.format(self.database))
             self.conn.autocommit = True

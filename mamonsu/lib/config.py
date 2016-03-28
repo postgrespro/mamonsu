@@ -41,6 +41,11 @@ class Config(object):
         return port
 
     @staticmethod
+    def default_app():
+        app = os.environ.get('PGAPPNAME') or 'mamonsu'
+        return app
+
+    @staticmethod
     def default_db():
         database = os.environ.get('PGDATABASE') or os.environ.get('PGUSER')
         database = database or os.environ.get('USER') or 'postgres'
@@ -123,6 +128,7 @@ class Config(object):
         config.set('postgres', 'database', Config.default_db())
         config.set('postgres', 'host', Config.default_host())
         config.set('postgres', 'port', str(Config.default_port()))
+        config.set('postgres', 'application_name', str(Config.default_app()))
         config.set('postgres', 'query_timeout', '10')
 
         config.add_section('log')
@@ -204,6 +210,7 @@ class Config(object):
         os.environ['PGPORT'] = str(self.fetch('postgres', 'port'))
         os.environ['PGDATABASE'] = self.fetch('postgres', 'database')
         os.environ['PGTIMEOUT'] = self.fetch('postgres', 'query_timeout')
+        os.environ['PGAPPNAME'] = self.fetch('postgres', 'application_name')
 
     def _apply_log_setting(self):
         logging.basicConfig(
