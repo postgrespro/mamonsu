@@ -7,6 +7,7 @@ import struct
 import socket
 import json
 import logging
+import encodings.idna
 
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
