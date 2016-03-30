@@ -1,12 +1,8 @@
-import datetime
-
-
 class ZbxTemplate(object):
 
     mainTemplate = """<?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
 <version>2.0</version>
-    <date>{date}</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -89,7 +85,7 @@ class ZbxTemplate(object):
         self.Template = name
 
     def xml(self, plugins=[]):
-        template_data = {'date': datetime.datetime.now().isoformat()}
+        template_data = {}
         template_data['template'] = self.Template
         template_data['application'] = self.Application
         template_data['items'] = self._get_all('items', plugins)
