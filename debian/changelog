@@ -1,3 +1,9 @@
+mamonsu (0.0.8) unstable; urgency=low
+
+  * Zabbix 3.0 support.
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 31 Mar 2016 17:24:00 +0300
+
 mamonsu (0.0.7) unstable; urgency=low
 
   * Bug fixes.
