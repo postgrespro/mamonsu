@@ -31,10 +31,12 @@ class ZbxTemplate(object):
     <graphs>{graphs}</graphs>
 </zabbix_export>"""
 
+# https://www.zabbix.com/documentation/2.0/manual/appendix/api/item/definitions
     item_defaults = [
         ('name', None), ('type', 7), ('snmp_community', None),
-        ('key', None), ('snmp_oid', None), ('delay', 60),
-        ('history', 7), ('trends', 365), ('status', 0),
+        ('multiplier', 0), ('inventory_link', 0),
+        ('key', None), ('snmp_oid', None), ('history', 7),
+        ('trends', 365), ('status', 0), ('delay', 60),
         ('value_type', 0), ('allowed_hosts', None), ('valuemap', None),
         ('units', None), ('delta', 0), ('snmpv3_contextname', None),
         ('snmpv3_securityname', None), ('snmpv3_securitylevel', 0),
@@ -74,7 +76,7 @@ class ZbxTemplate(object):
         ('snmpv3_authprotocol', 0), ('snmpv3_authpassphrase', None),
         ('snmpv3_privprotocol', 0), ('snmpv3_privpassphrase', None),
         ('delay_flex', None), ('params', None), ('filter', None),
-        ('ipmi_sensor', None), ('data_type', 0), ('authtype', 0),
+        ('ipmi_sensor', None), ('authtype', 0),
         ('username', None), ('password', None), ('publickey', None),
         ('privatekey', None), ('port', None), ('lifetime', 7),
         ('description', None), ('key', None)

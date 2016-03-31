@@ -83,7 +83,6 @@ class DiskInfo(object):
                 if kernel32.GetDriveTypeW(letter+':\\') == 3:
                     drives.append(letter)
             bitmask >>= 1
-
         return drives
 
     @classmethod
