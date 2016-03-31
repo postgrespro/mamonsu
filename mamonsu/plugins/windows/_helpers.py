@@ -78,9 +78,9 @@ class DiskInfo(object):
     def get_fixed_drivers(cls):
         drives = []
         bitmask = kernel32.GetLogicalDrives()
-        for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+        for letter in u'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
             if bitmask & 1:
-                if kernel32.GetDriveTypeA(letter+':\\') == 3:
+                if kernel32.GetDriveTypeW(letter+':\\') == 3:
                     drives.append(letter)
             bitmask >>= 1
 
@@ -90,8 +90,8 @@ class DiskInfo(object):
     def get_drive_info(cls, drive):
         _diskusage = namedtuple('disk_usage', 'total used free')
         used, total, free = c_ulonglong(), c_ulonglong(), c_ulonglong()
-        drive = drive + ':\\'
-        ret = kernel32.GetDiskFreeSpaceExA(
+        drive = drive + u':\\'
+        ret = kernel32.GetDiskFreeSpaceExW(
             str(drive), byref(used), byref(total), byref(free))
         if ret == 0:
             raise
