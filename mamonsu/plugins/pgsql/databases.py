@@ -12,12 +12,14 @@ class Databases(Plugin):
 
     def run(self, zbx):
 
-        result = Pooler.query('select datname, pg_database_size(datname::text)\
+        result = Pooler.query('select \
+            datname, pg_database_size(datname::text), age(datfrozenxid) \
             from pg_catalog.pg_database where datistemplate = false')
         dbs = []
         for info in result:
             dbs.append({'{#DATABASE}': info[0]})
             zbx.send('pgsql.database.size[{0}]'.format(info[0]), info[1])
+            zbx.send('pgsql.database.max_age[{0}]'.format(info[0]), info[1])
             bloat_count = Pooler.query(
                 'select count(*) from pg_catalog.pg_stat_all_tables where\
                 (n_dead_tup/(n_live_tup+n_dead_tup)::float8) > {0}\
@@ -49,6 +51,8 @@ class Databases(Plugin):
         items = [
             {'key': 'pgsql.database.size[{#DATABASE}]',
                 'name': 'Database {#DATABASE}: size', 'units': 'b'},
+            {'key': 'pgsql.database.max_age[{#DATABASE}]',
+                'name': 'Max age (datfrozenxid) in: {#DATABASE}'},
             {'key': 'pgsql.database.bloating_tables[{#DATABASE}]',
                 'name': 'Count of bloating tables in database: {#DATABASE}'}
         ]
@@ -65,6 +69,15 @@ class Databases(Plugin):
                 'items': [
                     {'color': 'CC0000',
                         'key': 'pgsql.database.bloating_tables[{#DATABASE}]'},
+                    {'color': '00CC00',
+                        'key': 'pgsql.autovacumm.count[]',
+                        'yaxisside': 1}]
+            },
+            {
+                'name': 'Database max age overview: {#DATABASE}',
+                'items': [
+                    {'color': 'CC0000',
+                        'key': 'pgsql.database.max_age[{#DATABASE}]'},
                     {'color': '00CC00',
                         'key': 'pgsql.autovacumm.count[]',
                         'yaxisside': 1}]
