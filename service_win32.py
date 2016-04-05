@@ -27,6 +27,10 @@ class MamonsuSvc(win32serviceutil.ServiceFramework):
 
     def SvcDoRun(self):
 
+        # __file__ == 'service_win32.py'
+        exe_dir = os.path.dirname(os.path.dirname(__file__))
+        os.chdir(exe_dir)
+
         win32evtlogutil.ReportEvent(
             self._svc_name_,
             servicemanager.PYS_SERVICE_STARTED,
@@ -34,16 +38,9 @@ class MamonsuSvc(win32serviceutil.ServiceFramework):
             servicemanager.EVENTLOG_INFORMATION_TYPE,
             (self._svc_name_, ''))
 
-        config = Config()
-        config_file = os.path.join(
-            # __file__ == 'service_win32.py'
-            os.path.dirname(os.path.dirname(__file__)),
-            'agent.conf')
+        config_file = os.path.join(exe_dir, 'agent.conf')
+        config = Config(config_file)
 
-        if not os.path.isfile(config_file):
-            raise Exception('Config file: {0} not found!'.format(config_file))
-
-        config.load_and_apply_config_file(config_file)
         supervisor = Supervisor(config)
         win32evtlogutil.ReportEvent(
             self._svc_name_,
@@ -56,14 +53,17 @@ class MamonsuSvc(win32serviceutil.ServiceFramework):
         thread.daemon = True
         thread.start()
 
-        win32event.WaitForSingleObject(self.hWaitStop, win32event.INFINITE)
-
-        win32evtlogutil.ReportEvent(
-            self._svc_name_,
-            servicemanager.PYS_SERVICE_STOPPED,
-            0,
-            servicemanager.EVENTLOG_INFORMATION_TYPE,
-            (self._svc_name_, ''))
+        while True:
+            rc = win32event.WaitForSingleObject(
+                self.hWaitStop, win32event.INFINITE)
+            if rc == win32event.WAIT_OBJECT_0:
+                win32evtlogutil.ReportEvent(
+                    self._svc_name_,
+                    servicemanager.PYS_SERVICE_STOPPED,
+                    0,
+                    servicemanager.EVENTLOG_INFORMATION_TYPE,
+                    (self._svc_name_, ''))
+                break
 
 
 if __name__ == '__main__':

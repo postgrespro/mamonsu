@@ -61,7 +61,7 @@ class Config(object):
             return logging.WARN
         return result
 
-    def __init__(self):
+    def __init__(self, override_config_filename=None):
 
         parser = optparse.OptionParser(
             usage='%prog [-c] [-p]',
@@ -72,7 +72,7 @@ class Config(object):
             'Start options')
         group.add_option(
             '-c',
-            dest='config',
+            dest='config_filename',
             default=None,
             help='Path to config file')
         group.add_option(
@@ -88,7 +88,7 @@ class Config(object):
             'Export default options')
         group.add_option(
             '-w',
-            dest='config_file',
+            dest='write_config_file',
             default=None,
             help='Write default config to file and exit')
         parser.add_option_group(group)
@@ -154,11 +154,21 @@ class Config(object):
         config.add_section('bgwriter')
         config.set('bgwriter', 'max_checkpoints_req', '5')
 
-        self.config = config
-        self.load_and_apply_config_file(args.config)
+        # override config file name
+        if override_config_filename is not None:
+            args.config_filename = override_config_filename
 
-        if args.config_file is not None:
-            with open(args.config_file, 'w') as fd:
+        self.config = config
+        if args.config_filename and not os.path.isfile(args.config_filename):
+            sys.exit(1)
+        else:
+            if args.config_filename is not None:
+                self.config.read(args.config_filename)
+        self._apply_log_setting()
+        self._apply_environ()
+
+        if args.write_config_file is not None:
+            with open(args.write_config_file, 'w') as fd:
                 config.write(fd)
                 sys.exit(0)
 
@@ -178,15 +188,6 @@ class Config(object):
             except Exception as e:
                 logging.error('Can\'t write pid file, error: %s'.format(e))
                 sys.exit(2)
-
-    def load_and_apply_config_file(self, config_file=None):
-        if config_file and not os.path.isfile(config_file):
-            sys.exit(1)
-        else:
-            if config_file is not None:
-                self.config.read(config_file)
-        self._apply_log_setting()
-        self._apply_environ()
 
     def fetch(self, sec, key, klass=None, raw=False):
         try:
