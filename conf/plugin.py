@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.lib.plugin import Plugin
-from mamonsu.lib.plugin.pgsql.pool import Pooler
+from mamonsu.plugins.pgsql.pool import Pooler
 
 
 # Count all queries running more then 5 minutes
