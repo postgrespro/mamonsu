@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.lib.plugin import Plugin
-from ._pool import Pooler
+from .pool import Pooler
 
 
 class Connections(Plugin):

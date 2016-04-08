@@ -53,7 +53,7 @@ class Supervisor(object):
             time.sleep(1)
 
 
-def start(blocking=False):
+def start():
 
     def quit_handler(_signo=None, _stack_frame=None):
         logging.info("Bye bye!")

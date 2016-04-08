@@ -5,6 +5,7 @@ import socket
 import os
 import logging
 import sys
+import glob
 
 import mamonsu.lib.platform as platform
 
@@ -118,6 +119,9 @@ class Config(object):
 
         config = configparser.ConfigParser()
 
+        config.add_section('plugins')
+        config.set('plugins', 'directory', str(None))
+
         config.add_section('template')
         config.set('template', 'name', args.template)
         config.set('template', 'application', args.application)
@@ -166,6 +170,7 @@ class Config(object):
                 self.config.read(args.config_filename)
         self._apply_log_setting()
         self._apply_environ()
+        self._load_additional_plugins()
 
         if args.write_config_file is not None:
             with open(args.write_config_file, 'w') as fd:
@@ -218,3 +223,39 @@ class Config(object):
             format=self.fetch('log', 'format', raw=True),
             filename=self.fetch('log', 'file'),
             level=self.get_logger_level(self.fetch('log', 'level')))
+
+    def _load_additional_plugins(self):
+
+        directory = self.fetch('plugins', 'directory')
+        if directory is None:
+            return
+
+        if not os.path.isdir(directory):
+            logging.error("Can't find directory: %s", directory)
+            sys.exit(3)
+
+        sys.path.append(directory)
+        logging.info(
+            'Import module \'%s\' from directory %s',
+            os.path.basename(directory),
+            directory)
+
+        try:
+            for filename in glob.glob(os.path.join(directory, '*.py')):
+                if not os.path.isfile(filename):
+                    break
+                # /dir/filename.py => filename.py
+                filename = os.path.basename(filename)
+                if filename.startswith('_'):
+                    break
+                # filename.py => filename
+                filename, _ = os.path.splitext(filename)
+                logging.info(
+                    'Import plugin \'%s\' from module \'%s\'',
+                    filename,
+                    os.path.basename(directory))
+                __import__(filename)
+        except Exception as e:
+            logging.error(
+                'Can\'t load module: %s', e)
+            sys.exit(3)
