@@ -98,9 +98,9 @@ Change previously zabbix server address and client hostname:
     file = /var/log/mamonsu/agent.log
     level = INFO
 
-===
+==================
 Write your plugin
-===
+==================
 
 All plugins must exist in plugin directory which is defined in your configuration file.
 
