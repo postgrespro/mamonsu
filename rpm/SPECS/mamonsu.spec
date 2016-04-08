@@ -31,6 +31,7 @@ export PYTHONPATH=%{buildroot}%{python_sitelib}
 
 %{__install} -m 0644 -p conf/example.conf %{buildroot}/%{_sysconfdir}/%{name}/agent.conf
 %{__install} -m 0644 -p conf/template.xml %{buildroot}/%{_datarootdir}/%{name}/template.xml
+%{__install} -m 0644 -p conf/plugin.py %{buildroot}/%{_datarootdir}/%{name}/plugin.py
 %{__install} -m 0755 -p %{SOURCE1} %{buildroot}/%{_sysconfdir}/init.d/%{name}
 %{__install} -m 0644 -p %{SOURCE2} %{buildroot}/%{_sysconfdir}/logrotate.d/%{name}
 
@@ -56,6 +57,9 @@ getent passwd mamonsu > /dev/null || \
 mkdir -p /var/run/mamonsu
 chown mamonsu.mamonsu /var/run/mamonsu
 
+mkdir -p /etc/mamonsu/plugins
+touch /etc/mamonsu/plugins/__init__.py
+
 mkdir -p /var/log/mamonsu
 chown mamonsu.mamonsu /var/log/mamonsu
 
@@ -67,6 +71,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Thu Apr 8 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.0.9-1
+- User plugins support.
+
 * Thu Mar 18 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.0.8-1
 - Zabbix 3.0 support.
 

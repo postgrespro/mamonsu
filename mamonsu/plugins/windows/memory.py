@@ -1,5 +1,5 @@
 from mamonsu.lib.plugin import Plugin
-from ._helpers import PerfData
+from .helpers import PerfData
 
 
 class Memory(Plugin):

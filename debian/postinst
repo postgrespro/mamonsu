@@ -46,6 +46,9 @@ host = $HOST
 port = $PORT
 query_timeout = $TIMEOUT
 
+[plugins]
+directory = /etc/mamonsu/plugins
+
 [log]
 file = /var/log/mamonsu/agent.log
 level = INFO
@@ -80,6 +83,9 @@ if [ "$1" = "configure" ]; then
 
     mkdir -p /var/run/mamonsu
     chown mamonsu:mamonsu /var/run/mamonsu
+
+    mkdir -p /etc/mamonsu/plugins
+    touch /etc/mamonsu/plugins/__init__.py
 
     chown mamonsu:mamonsu /var/log/mamonsu
     chown mamonsu:mamonsu /var/lib/mamonsu

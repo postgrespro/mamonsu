@@ -1,5 +1,5 @@
 from mamonsu.lib.plugin import Plugin
-from ._helpers import DiskInfo, PerfData
+from .helpers import DiskInfo, PerfData
 
 
 class DiskStats(Plugin):
