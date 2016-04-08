@@ -22,6 +22,8 @@ class ExamplePlugin(Plugin):
         """)
         # send a resulting value to zabbix
         zbx.send('pgsql.queries.long_count[]', result[0][0])
+        # debug message
+        self.log.debug('some information for debug')
 
     # Declare zabbix items for template
     def items(self, template):
