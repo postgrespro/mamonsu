@@ -47,8 +47,6 @@ class ExamplePlugin(Plugin):
     # Declare zabbix trigger for template
     def triggers(self, template):
         return template.trigger({
-            'name': 'PostgreSQL long running queries '
-            '{HOSTNAME} (count={ITEM.LASTVALUE})',
-            'expression': '{#TEMPLATE:pgsql.queries.long_count[].last'
-            '()}&lt;' + str(100)
+            'name': """PostgreSQL long running queries {HOSTNAME} (count={ITEM.LASTVALUE})""",
+            'expression': """{#TEMPLATE:pgsql.queries.long_count[].last()}&lt;100"""
         })
