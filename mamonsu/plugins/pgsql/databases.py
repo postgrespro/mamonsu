@@ -50,11 +50,14 @@ class Databases(Plugin):
         }
         items = [
             {'key': 'pgsql.database.size[{#DATABASE}]',
-                'name': 'Database {#DATABASE}: size', 'units': 'b'},
+                'name': 'Database {#DATABASE}: size',
+                'units': 'b', 'delay': self.Interval},
             {'key': 'pgsql.database.max_age[{#DATABASE}]',
-                'name': 'Max age (datfrozenxid) in: {#DATABASE}'},
+                'name': 'Max age (datfrozenxid) in: {#DATABASE}',
+                'delay': self.Interval},
             {'key': 'pgsql.database.bloating_tables[{#DATABASE}]',
-                'name': 'Count of bloating tables in database: {#DATABASE}'}
+                'name': 'Count of bloating tables in database: {#DATABASE}',
+                'delay': self.Interval}
         ]
         graphs = [
             {
