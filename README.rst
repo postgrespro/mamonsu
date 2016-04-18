@@ -122,7 +122,7 @@ Run
 PostgreSQL metrics
 ==================
 
-..code-block:: bash
+.. code-block:: bash
     'Processes: in state running': system.processes[running]
     'Processes: in state blocked': system.processes[blocked]
     'Processes: forkrate': system.processes[forkrate]
