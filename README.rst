@@ -123,6 +123,7 @@ PostgreSQL metrics
 ==================
 
 .. code-block:: bash
+
     'Processes: in state running': system.processes[running]
     'Processes: in state blocked': system.processes[blocked]
     'Processes: forkrate': system.processes[forkrate]
@@ -160,7 +161,7 @@ PostgreSQL metrics
 Linux system metrics
 ====================
 
-..code-block:: bash
+.. code-block:: bash
 
     'Block devices: read requests': system.disk.all_read[]
     'Block devices: write requests': system.disk.all_write[]
