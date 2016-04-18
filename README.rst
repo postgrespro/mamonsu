@@ -181,3 +181,16 @@ Linux system metrics
     'PostgreSQL: ping': pgsql.ping[]
     'PostgreSQL: service uptime': pgsql.uptime[]
     'PostgreSQL: cache hit ratio': pgsql.cache[hit]
+
+======================
+Windows system metrics
+======================
+
+.. code-block:: bash
+
+    'Memory cached': system.memory[cache]
+    'Memory available': system.memory[available]
+    'Memory free': system.memory[free]
+    'User time': system.cpu[user_time]
+    'Idle time': system.cpu[idle_time]
+    'Privileged time': system.cpu[privileged_time]
