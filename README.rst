@@ -117,3 +117,66 @@ Run
     $ service mamonsu status
     or by hand:
     $ mamonsu -c /etc/mamonsu/agent.conf -p /var/run/mamonsu.pid
+
+==================
+PostgreSQL metrics
+==================
+
+..code-block:: bash
+    'Processes: in state running': system.processes[running]
+    'Processes: in state blocked': system.processes[blocked]
+    'Processes: forkrate': system.processes[forkrate]
+    'PostgreSQL: number of total connections': pgsql.connections[total]
+    'PostgreSQL: number of waiting connections': pgsql.connections[waiting]
+    'PostgreSQL: number of active connections': pgsql.connections[active]
+    'PostgreSQL: number of idle connections': pgsql.connections[idle]
+    'PostgreSQL: number of idle in transaction connections': pgsql.connections[idle_in_transaction]
+    'PostgreSQL checkpoints: by timeout': pgsql.checkpoints[checkpoints_timed]
+    'PostgreSQL checkpoints: required': pgsql.checkpoints[checkpoints_req]
+    'PostgreSQL checkpoint: write time': pgsql.checkpoint[write_time]
+    'PostgreSQL checkpoint: sync time': pgsql.checkpoint[checkpoint_sync_time]
+    'PostgreSQL bgwriter: buffers written during checkpoints': pgsql.bgwriter[buffers_checkpoint]
+    'PostgreSQL bgwriter: buffers written': pgsql.bgwriter[buffers_clean]
+    'PostgreSQL bgwriter: number of bgwriter stopped by max write count': pgsql.bgwriter[maxwritten_clean]
+    'PostgreSQL bgwriter: buffers written directly by a backend': pgsql.bgwriter[buffers_backend]
+    'PostgreSQL bgwriter: times a backend execute its own fsync': pgsql.bgwriter[buffers_backend_fsync]
+    'PostgreSQL bgwriter: buffers allocated': pgsql.bgwriter[buffers_alloc]
+    'Count of autovacuum workers': pgsql.autovacumm.count[]
+    'PostgreSQL transactions: total': pgsql.transactions[total]
+    'PostgreSQL blocks: hit': pgsql.blocks[hit]
+    'PostgreSQL blocks: read': pgsql.blocks[read]
+    'PostgreSQL event: conflicts': pgsql.events[conflicts]
+    'PostgreSQL event: deadlocks': pgsql.events[deadlocks]
+    'PostgreSQL event: rollbacks': pgsql.events[xact_rollback]
+    'PostgreSQL temp: bytes written': pgsql.temp[bytes]
+    'PostgreSQL temp: files created': pgsql.temp[files]
+    'PostgreSQL tuples: deleted': pgsql.tuples[deleted]
+    'PostgreSQL tuples: fetched': pgsql.tuples[fetched]
+    'PostgreSQL tuples: inserted': pgsql.tuples[inserted]
+    'PostgreSQL tuples: returned': pgsql.tuples[returned]
+    'PostgreSQL tuples: updated': pgsql.tuples[updated]
+
+====================
+Linux system metrics
+====================
+
+..code-block:: bash
+
+    'Block devices: read requests': system.disk.all_read[]
+    'Block devices: write requests': system.disk.all_write[]
+    'Apps: User-space applications': system.memory[apps]
+    'Buffers: Block device cache and dirty': system.memory[buffers]
+    'Swap: Swap space used': system.memory[swap]
+    'Cached: Parked file data (file content) cache': system.memory[cached]
+    'Free: Wasted memory': system.memory[unused]
+    'Slab: Kernel used memory (inode cache)': system.memory[slab]
+    'SwapCached: Fetched unmod yet swap pages': system.memory[swap_cache]
+    'PageTables: Map bt virtual and physical': system.memory[page_tables]
+    'VMallocUsed: vmaloc() allocated by kernel': system.memory[vmalloc_used]
+    'Committed_AS: Total committed memory': system.memory[committed]
+    'Mapped: All mmap()ed pages': system.memory[mapped]
+    'Active: Memory recently used': system.memory[active]
+    'Inactive: Memory not currently used': system.memory[inactive]
+    'PostgreSQL: ping': pgsql.ping[]
+    'PostgreSQL: service uptime': pgsql.uptime[]
+    'PostgreSQL: cache hit ratio': pgsql.cache[hit]
