@@ -124,9 +124,9 @@ PostgreSQL metrics
 
 .. code-block:: bash
 
-    'Processes: in state running': system.processes[running]
-    'Processes: in state blocked': system.processes[blocked]
-    'Processes: forkrate': system.processes[forkrate]
+    'PostgreSQL: ping': pgsql.ping[]
+    'PostgreSQL: service uptime': pgsql.uptime[]
+    'PostgreSQL: cache hit ratio': pgsql.cache[hit]
     'PostgreSQL: number of total connections': pgsql.connections[total]
     'PostgreSQL: number of waiting connections': pgsql.connections[waiting]
     'PostgreSQL: number of active connections': pgsql.connections[active]
@@ -163,6 +163,9 @@ Linux system metrics
 
 .. code-block:: bash
 
+    'Processes: in state running': system.processes[running]
+    'Processes: in state blocked': system.processes[blocked]
+    'Processes: forkrate': system.processes[forkrate]
     'Block devices: read requests': system.disk.all_read[]
     'Block devices: write requests': system.disk.all_write[]
     'Apps: User-space applications': system.memory[apps]
@@ -178,9 +181,6 @@ Linux system metrics
     'Mapped: All mmap()ed pages': system.memory[mapped]
     'Active: Memory recently used': system.memory[active]
     'Inactive: Memory not currently used': system.memory[inactive]
-    'PostgreSQL: ping': pgsql.ping[]
-    'PostgreSQL: service uptime': pgsql.uptime[]
-    'PostgreSQL: cache hit ratio': pgsql.cache[hit]
 
 ======================
 Windows system metrics
