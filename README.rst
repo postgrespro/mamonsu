@@ -156,6 +156,7 @@ PostgreSQL metrics
     'PostgreSQL tuples: inserted': pgsql.tuples[inserted]
     'PostgreSQL tuples: returned': pgsql.tuples[returned]
     'PostgreSQL tuples: updated': pgsql.tuples[updated]
+    'PostgreSQL: streaming replication lag in seconds': pgsql.replication_lag[sec]
 
 ====================
 Linux system metrics
