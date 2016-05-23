@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        0.0.10
+Version:        0.0.11
 Release:        1%{?dist}
 Summary:        Active zabbix agent
 Group:          Applications/Internet
@@ -71,6 +71,10 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon May 23 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.0.11-1
+- Add replication lag.
+- Fixes in frozen.
+
 * Sat May 14 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.0.10-1
 - User plugins fixes.
 
