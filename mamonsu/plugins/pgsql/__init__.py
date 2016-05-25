@@ -1,2 +1,4 @@
-__all__ = ['bgwriter', 'connections', 'databases', 'health', 'instance']
+__all__ = ['bgwriter', 'connections', 'databases']
+__all__ += ['health', 'instance', 'xlog']
+
 from . import *

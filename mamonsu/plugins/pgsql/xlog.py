@@ -32,15 +32,17 @@ class Replication(Plugin):
         })
 
     def graphs(self, template):
-        items = [
-            {'color': '00CC00',
-                'key': 'pgsql.wal.write[]'},
-            {'color': 'CC0000',
-                'key': 'pgsql.replication_lag[sec]',
-                'yaxisside': 1}
-        ]
-        graph = {'name': 'PostgreSQL streaming lag', 'items': items}
-        return template.graph(graph)
+        result = template.graph({
+            'name': 'PostgreSQL write-ahead log generation speed',
+            'items': [
+                {'color': 'CC0000',
+                    'key': 'pgsql.wal.write[]'}]})
+        result += result + template.graph({
+            'name': 'PostgreSQL replication lag in second',
+            'items': [
+                {'color': 'CC0000',
+                    'key': 'pgsql.replication_lag[sec]'}]})
+        return result
 
     def triggers(self, template):
         return template.trigger({
