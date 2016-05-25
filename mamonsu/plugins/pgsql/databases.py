@@ -39,7 +39,8 @@ class Databases(Plugin):
     def items(self, template):
         return template.item({
             'name': 'Count of autovacuum workers',
-            'key': 'pgsql.autovacumm.count[]'
+            'key': 'pgsql.autovacumm.count[]',
+            'delay': self.Interval
         })
 
     def discovery_rules(self, template):
