@@ -157,6 +157,7 @@ PostgreSQL metrics
     'PostgreSQL tuples: returned': pgsql.tuples[returned]
     'PostgreSQL tuples: updated': pgsql.tuples[updated]
     'PostgreSQL: streaming replication lag in seconds': pgsql.replication_lag[sec]
+    'PostgreSQL: wal write speed': pgsql.wal.write[]
 
 ====================
 Linux system metrics
