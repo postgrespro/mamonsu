@@ -4,7 +4,7 @@ from mamonsu.lib.plugin import Plugin
 from .pool import Pooler
 
 
-class Replication(Plugin):
+class Xlog(Plugin):
 
     TriggerLagMoreThen = 360
 
