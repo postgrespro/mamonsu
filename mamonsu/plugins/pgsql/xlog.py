@@ -37,7 +37,7 @@ class Xlog(Plugin):
             'items': [
                 {'color': 'CC0000',
                     'key': 'pgsql.wal.write[]'}]})
-        result += result + template.graph({
+        result += template.graph({
             'name': 'PostgreSQL replication lag in second',
             'items': [
                 {'color': 'CC0000',

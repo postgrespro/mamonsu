@@ -8,8 +8,8 @@
     </groups>
     <templates>
         <template>
-            <template>PostgresPro-Linux</template>
-            <name>PostgresPro-Linux</name>
+            <template>PostgresPro-Linux2</template>
+            <name>PostgresPro-Linux2</name>
             <groups>
                 <group>
                     <name>Templates</name>
@@ -17,94 +17,10 @@
             </groups>
             <applications>
                 <application>
-                    <name>App-PostgresPro-Linux</name>
+                    <name>App-PostgresPro-Linux2</name>
                 </application>
             </applications>
             <items>
-                <item>
-                    <name>PostgreSQL: streaming replication lag in seconds</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.replication_lag[sec]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL: wal write speed</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.wal.write[]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>2</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
                 <item>
                     <name>PostgreSQL checkpoints: by timeout</name>
                     <type>7</type>
@@ -143,7 +59,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -185,7 +101,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -227,7 +143,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -269,7 +185,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -311,7 +227,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -353,7 +269,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -395,7 +311,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -437,7 +353,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -479,7 +395,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -521,1351 +437,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Apps: User-space applications</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[apps]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Buffers: Block device cache and dirty</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[buffers]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Swap: Swap space used</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[swap]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Cached: Parked file data (file content) cache</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[cached]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Free: Wasted memory</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[unused]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Slab: Kernel used memory (inode cache)</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[slab]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>SwapCached: Fetched unmod yet swap pages</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[swap_cache]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PageTables: Map bt virtual and physical</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[page_tables]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>VMallocUsed: vmaloc() allocated by kernel</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[vmalloc_used]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Committed_AS: Total committed memory</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[committed]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Mapped: All mmap()ed pages</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[mapped]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Active: Memory recently used</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[active]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Inactive: Memory not currently used</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.memory[inactive]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Processes: in state running</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.processes[running]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Processes: in state blocked</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.processes[blocked]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Processes: forkrate</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.processes[forkrate]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>1</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Count of autovacuum workers</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.autovacumm.count[]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>300</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>0</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL transactions: total</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.transactions[total]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>1</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL blocks: hit</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.blocks[hit]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>1</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL blocks: read</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.blocks[read]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>1</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL event: conflicts</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.events[conflicts]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>2</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL event: deadlocks</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.events[deadlocks]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>2</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL event: rollbacks</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.events[xact_rollback]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>2</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL temp: bytes written</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.temp[bytes]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units>b</units>
-                    <delta>2</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL temp: files created</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.temp[files]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>2</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL tuples: deleted</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.tuples[deleted]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>1</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL tuples: fetched</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.tuples[fetched]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>1</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL tuples: inserted</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.tuples[inserted]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>1</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL tuples: returned</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.tuples[returned]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>1</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>PostgreSQL tuples: updated</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>pgsql.tuples[updated]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>1</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Block devices: read requests</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.disk.all_read[]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>2</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
-                        </application>
-                    </applications>
-                </item>
-                <item>
-                    <name>Block devices: write requests</name>
-                    <type>7</type>
-                    <snmp_community/>
-                    <multiplier>0</multiplier>
-                    <inventory_link>0</inventory_link>
-                    <key>system.disk.all_write[]</key>
-                    <snmp_oid/>
-                    <history>7</history>
-                    <trends>365</trends>
-                    <status>0</status>
-                    <delay>60</delay>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <valuemap/>
-                    <units/>
-                    <delta>2</delta>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <formula>1</formula>
-                    <delay_flex/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <data_type>0</data_type>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -1907,7 +479,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -1949,7 +521,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -1991,7 +563,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -2033,7 +605,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -2075,7 +647,49 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Count of autovacuum workers</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.autovacumm.count[]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>300</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -2117,7 +731,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -2159,7 +773,7 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -2201,7 +815,1393 @@
                     <description/>
                     <applications>
                         <application>
-                            <name>App-PostgresPro-Linux</name>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL transactions: total</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.transactions[total]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>1</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL blocks: hit</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.blocks[hit]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>1</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL blocks: read</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.blocks[read]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>1</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL event: conflicts</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.events[conflicts]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>2</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL event: deadlocks</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.events[deadlocks]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>2</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL event: rollbacks</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.events[xact_rollback]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>2</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL temp: bytes written</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.temp[bytes]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>2</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL temp: files created</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.temp[files]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>2</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL tuples: deleted</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.tuples[deleted]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>1</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL tuples: fetched</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.tuples[fetched]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>1</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL tuples: inserted</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.tuples[inserted]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>1</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL tuples: returned</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.tuples[returned]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>1</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL tuples: updated</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.tuples[updated]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>1</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL: streaming replication lag in seconds</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.replication_lag[sec]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL: wal write speed</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.wal.write[]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>2</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Processes: in state running</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.processes[running]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Processes: in state blocked</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.processes[blocked]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Processes: forkrate</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.processes[forkrate]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>1</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Apps: User-space applications</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[apps]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Buffers: Block device cache and dirty</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[buffers]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Swap: Swap space used</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[swap]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Cached: Parked file data (file content) cache</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[cached]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Free: Wasted memory</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[unused]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Slab: Kernel used memory (inode cache)</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[slab]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SwapCached: Fetched unmod yet swap pages</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[swap_cache]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PageTables: Map bt virtual and physical</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[page_tables]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>VMallocUsed: vmaloc() allocated by kernel</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[vmalloc_used]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Committed_AS: Total committed memory</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[committed]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Mapped: All mmap()ed pages</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[mapped]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Active: Memory recently used</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[active]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Inactive: Memory not currently used</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.memory[inactive]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units>b</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Block devices: read requests</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.disk.all_read[]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>2</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Block devices: write requests</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>system.disk.all_write[]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>2</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Linux2</name>
                         </application>
                     </applications>
                 </item>
@@ -2274,7 +2274,7 @@
                             <description/>
                             <applications>
                                 <application>
-                                    <name>App-PostgresPro-Linux</name>
+                                    <name>App-PostgresPro-Linux2</name>
                                 </application>
                             </applications>
                         </item_prototype>
@@ -2316,7 +2316,7 @@
                             <description/>
                             <applications>
                                 <application>
-                                    <name>App-PostgresPro-Linux</name>
+                                    <name>App-PostgresPro-Linux2</name>
                                 </application>
                             </applications>
                         </item_prototype>
@@ -2358,7 +2358,7 @@
                             <description/>
                             <applications>
                                 <application>
-                                    <name>App-PostgresPro-Linux</name>
+                                    <name>App-PostgresPro-Linux2</name>
                                 </application>
                             </applications>
                         </item_prototype>
@@ -2391,7 +2391,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>PostgresPro-Linux</host>
+                                        <host>PostgresPro-Linux2</host>
                                         <key>pgsql.database.size[{#DATABASE}]</key>
                                     </item>
                                 </graph_item>
@@ -2423,7 +2423,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>PostgresPro-Linux</host>
+                                        <host>PostgresPro-Linux2</host>
                                         <key>pgsql.database.bloating_tables[{#DATABASE}]</key>
                                     </item>
                                 </graph_item>
@@ -2435,7 +2435,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>PostgresPro-Linux</host>
+                                        <host>PostgresPro-Linux2</host>
                                         <key>pgsql.autovacumm.count[]</key>
                                     </item>
                                 </graph_item>
@@ -2467,7 +2467,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>PostgresPro-Linux</host>
+                                        <host>PostgresPro-Linux2</host>
                                         <key>pgsql.database.max_age[{#DATABASE}]</key>
                                     </item>
                                 </graph_item>
@@ -2479,7 +2479,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>PostgresPro-Linux</host>
+                                        <host>PostgresPro-Linux2</host>
                                         <key>pgsql.autovacumm.count[]</key>
                                     </item>
                                 </graph_item>
@@ -2554,7 +2554,7 @@
                             <description/>
                             <applications>
                                 <application>
-                                    <name>App-PostgresPro-Linux</name>
+                                    <name>App-PostgresPro-Linux2</name>
                                 </application>
                             </applications>
                         </item_prototype>
@@ -2596,7 +2596,7 @@
                             <description/>
                             <applications>
                                 <application>
-                                    <name>App-PostgresPro-Linux</name>
+                                    <name>App-PostgresPro-Linux2</name>
                                 </application>
                             </applications>
                         </item_prototype>
@@ -2638,7 +2638,7 @@
                             <description/>
                             <applications>
                                 <application>
-                                    <name>App-PostgresPro-Linux</name>
+                                    <name>App-PostgresPro-Linux2</name>
                                 </application>
                             </applications>
                         </item_prototype>
@@ -2671,7 +2671,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>PostgresPro-Linux</host>
+                                        <host>PostgresPro-Linux2</host>
                                         <key>system.disk.read[{#BLOCKDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -2683,7 +2683,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>PostgresPro-Linux</host>
+                                        <host>PostgresPro-Linux2</host>
                                         <key>system.disk.write[{#BLOCKDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -2695,7 +2695,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>PostgresPro-Linux</host>
+                                        <host>PostgresPro-Linux2</host>
                                         <key>system.disk.utilization[{#BLOCKDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -2709,17 +2709,7 @@
     </templates>
     <triggers>
         <trigger>
-            <expression>{PostgresPro-Linux:pgsql.replication_lag[sec].last()}&gt;360</expression>
-            <name>PostgreSQL streaming lag to high on {HOSTNAME} (value={ITEM.LASTVALUE})</name>
-            <url/>
-            <status>0</status>
-            <priority>3</priority>
-            <description/>
-            <type>0</type>
-            <dependencies/>
-        </trigger>
-        <trigger>
-            <expression>{PostgresPro-Linux:pgsql.checkpoints[checkpoints_req].last()}&gt;5</expression>
+            <expression>{PostgresPro-Linux2:pgsql.checkpoints[checkpoints_req].last()}&gt;5</expression>
             <name>PostgreSQL required checkpoints occurs to frequently on {HOSTNAME}</name>
             <url/>
             <status>0</status>
@@ -2729,17 +2719,7 @@
             <dependencies/>
         </trigger>
         <trigger>
-            <expression>{PostgresPro-Linux:system.processes[forkrate].last()}&gt;500</expression>
-            <name>Process fork-rate to frequently on {HOSTNAME}</name>
-            <url/>
-            <status>0</status>
-            <priority>3</priority>
-            <description/>
-            <type>0</type>
-            <dependencies/>
-        </trigger>
-        <trigger>
-            <expression>{PostgresPro-Linux:pgsql.uptime[].last()}&lt;60000</expression>
+            <expression>{PostgresPro-Linux2:pgsql.uptime[].last()}&lt;60000</expression>
             <name>PostgreSQL service was restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})</name>
             <url/>
             <status>0</status>
@@ -2749,8 +2729,28 @@
             <dependencies/>
         </trigger>
         <trigger>
-            <expression>{PostgresPro-Linux:pgsql.cache[hit].last()}&lt;80</expression>
+            <expression>{PostgresPro-Linux2:pgsql.cache[hit].last()}&lt;80</expression>
             <name>PostgreSQL cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})</name>
+            <url/>
+            <status>0</status>
+            <priority>3</priority>
+            <description/>
+            <type>0</type>
+            <dependencies/>
+        </trigger>
+        <trigger>
+            <expression>{PostgresPro-Linux2:pgsql.replication_lag[sec].last()}&gt;360</expression>
+            <name>PostgreSQL streaming lag to high on {HOSTNAME} (value={ITEM.LASTVALUE})</name>
+            <url/>
+            <status>0</status>
+            <priority>3</priority>
+            <description/>
+            <type>0</type>
+            <dependencies/>
+        </trigger>
+        <trigger>
+            <expression>{PostgresPro-Linux2:system.processes[forkrate].last()}&gt;500</expression>
+            <name>Process fork-rate to frequently on {HOSTNAME}</name>
             <url/>
             <status>0</status>
             <priority>3</priority>
@@ -2760,102 +2760,6 @@
         </trigger>
     </triggers>
     <graphs>
-        <graph>
-            <name>PostgreSQL write-ahead log generation speed</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.wal.write[]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL write-ahead log generation speed</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.wal.write[]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL replication lag in second</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.replication_lag[sec]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
         <graph>
             <name>PostgreSQL bgwriter</name>
             <width>900</width>
@@ -2882,7 +2786,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.bgwriter[buffers_checkpoint]</key>
                     </item>
                 </graph_item>
@@ -2894,7 +2798,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.bgwriter[buffers_clean]</key>
                     </item>
                 </graph_item>
@@ -2906,7 +2810,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.bgwriter[maxwritten_clean]</key>
                     </item>
                 </graph_item>
@@ -2918,7 +2822,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.bgwriter[buffers_backend]</key>
                     </item>
                 </graph_item>
@@ -2930,7 +2834,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.bgwriter[buffers_backend_fsync]</key>
                     </item>
                 </graph_item>
@@ -2942,7 +2846,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.bgwriter[buffers_alloc]</key>
                     </item>
                 </graph_item>
@@ -2974,7 +2878,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.checkpoints[checkpoints_timed]</key>
                     </item>
                 </graph_item>
@@ -2986,7 +2890,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.checkpoints[checkpoints_req]</key>
                     </item>
                 </graph_item>
@@ -2998,7 +2902,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.checkpoint[write_time]</key>
                     </item>
                 </graph_item>
@@ -3010,520 +2914,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.checkpoint[checkpoint_sync_time]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>Memory overview</name>
-            <width>900</width>
-            <height>400</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>1</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[apps]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00CC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[buffers]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>0000CC</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[swap]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC00CC</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[cached]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>000000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[unused]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CCCC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[slab]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>777777</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[swap_cache]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>770000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[page_tables]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>000077</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[vmalloc_used]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>007700</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[committed]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>DF0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[mapped]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00DF00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[active]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>0000DF</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.memory[inactive]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>Processes overview</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.processes[running]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00CC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.processes[blocked]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>0000CC</color>
-                    <yaxisside>1</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.processes[forkrate]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL instance: rate</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>0000CC</color>
-                    <yaxisside>1</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.transactions[total]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00CC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.blocks[hit]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.blocks[read]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL instance: events</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>0000CC</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.events[conflicts]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>000000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.events[deadlocks]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.events[xact_rollback]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL instance: temp files</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.temp[bytes]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>0000CC</color>
-                    <yaxisside>1</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.temp[files]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL instance: tuples</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>000000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.tuples[deleted]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>0000CC</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.tuples[fetched]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00CC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.tuples[inserted]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC00CC</color>
-                    <yaxisside>1</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.tuples[returned]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>pgsql.tuples[updated]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>Block devices: read/write operations</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.disk.all_read[]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>0000CC</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Linux</host>
-                        <key>system.disk.all_write[]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -3554,7 +2946,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.connections[active]</key>
                     </item>
                 </graph_item>
@@ -3566,7 +2958,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.connections[idle]</key>
                     </item>
                 </graph_item>
@@ -3578,7 +2970,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.connections[idle_in_transaction]</key>
                     </item>
                 </graph_item>
@@ -3590,7 +2982,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.connections[total]</key>
                     </item>
                 </graph_item>
@@ -3602,7 +2994,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.connections[waiting]</key>
                     </item>
                 </graph_item>
@@ -3634,7 +3026,7 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.cache[hit]</key>
                     </item>
                 </graph_item>
@@ -3646,8 +3038,584 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>PostgresPro-Linux</host>
+                        <host>PostgresPro-Linux2</host>
                         <key>pgsql.uptime[]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>PostgreSQL instance: rate</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0</yaxismin>
+            <yaxismax>100.0</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0</percent_left>
+            <percent_right>0.0</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>0000CC</color>
+                    <yaxisside>1</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.transactions[total]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>00CC00</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.blocks[hit]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.blocks[read]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>PostgreSQL instance: events</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0</yaxismin>
+            <yaxismax>100.0</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0</percent_left>
+            <percent_right>0.0</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>0000CC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.events[conflicts]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>000000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.events[deadlocks]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.events[xact_rollback]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>PostgreSQL instance: temp files</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0</yaxismin>
+            <yaxismax>100.0</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0</percent_left>
+            <percent_right>0.0</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.temp[bytes]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>0000CC</color>
+                    <yaxisside>1</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.temp[files]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>PostgreSQL instance: tuples</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0</yaxismin>
+            <yaxismax>100.0</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0</percent_left>
+            <percent_right>0.0</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>000000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.tuples[deleted]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>0000CC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.tuples[fetched]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>00CC00</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.tuples[inserted]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC00CC</color>
+                    <yaxisside>1</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.tuples[returned]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.tuples[updated]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>PostgreSQL write-ahead log generation speed</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0</yaxismin>
+            <yaxismax>100.0</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0</percent_left>
+            <percent_right>0.0</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.wal.write[]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>PostgreSQL replication lag in second</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0</yaxismin>
+            <yaxismax>100.0</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0</percent_left>
+            <percent_right>0.0</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>pgsql.replication_lag[sec]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Processes overview</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0</yaxismin>
+            <yaxismax>100.0</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0</percent_left>
+            <percent_right>0.0</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.processes[running]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>00CC00</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.processes[blocked]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>0000CC</color>
+                    <yaxisside>1</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.processes[forkrate]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Memory overview</name>
+            <width>900</width>
+            <height>400</height>
+            <yaxismin>0.0</yaxismin>
+            <yaxismax>100.0</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>1</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0</percent_left>
+            <percent_right>0.0</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[apps]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>00CC00</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[buffers]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>0000CC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[swap]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC00CC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[cached]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>000000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[unused]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CCCC00</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[slab]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>777777</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[swap_cache]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>770000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[page_tables]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>000077</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[vmalloc_used]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>007700</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[committed]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>DF0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[mapped]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>00DF00</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[active]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>0000DF</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.memory[inactive]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Block devices: read/write operations</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0</yaxismin>
+            <yaxismax>100.0</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0</percent_left>
+            <percent_right>0.0</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.disk.all_read[]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>0000CC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Linux2</host>
+                        <key>system.disk.all_write[]</key>
                     </item>
                 </graph_item>
             </graph_items>
