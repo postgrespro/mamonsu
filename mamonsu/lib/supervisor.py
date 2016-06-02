@@ -46,11 +46,26 @@ class Supervisor(object):
             plugin.update_sender(self.sender)
 
     def _loop(self):
+        plugin_errors, plugin_probes, last_error = 0, 0, ''
         while self.Running:
             for plugin in self.Plugins:
                 if not plugin.is_alive():
                     plugin.start()
+                    last_error = plugin.last_error_text
+                    plugin_errors += 1
             time.sleep(1)
+            # error counts
+            plugin_probes += 1
+            if plugin_probes >= 60:
+                if plugin_errors > 0:
+                    self.sender.send(
+                        'mamonsu.plugin.errors[]',
+                        'Errors in the last 60 seconds: {0}.\
+                        Last error: {1}'.format(
+                            plugin_errors, last_error))
+                else:
+                    self.sender.send('mamonsu.plugin.errors[]', '')
+                plugin_errors, plugin_probes = 0, 0
 
 
 def start():

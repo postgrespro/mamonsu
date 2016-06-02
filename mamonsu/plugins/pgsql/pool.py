@@ -15,13 +15,14 @@ class Pool(object):
         self.__install_connection(database)
         return self.connections[database].query(query)
 
-    def is_installed(self, ext):
-        result = self.query('select count(*) from pg_extension\
-            where extname = "{0}"'.format(ext))
+    def is_extension_installed(self, ext, database):
+        result = self.query('select count(*) from pg_catalog.pg_extension\
+            where extname = "{0}"'.format(ext), database)
         return (int(result[0][0])) == 1
 
     def databases(self):
-        result, databases = self.query('select datname from pg_database'), []
+        result, databases = self.query('select datname from \
+            pg_catalog.pg_database'), []
         for row in result:
             if row[0] not in self.ExcludeDBs:
                 databases.append(row[0])

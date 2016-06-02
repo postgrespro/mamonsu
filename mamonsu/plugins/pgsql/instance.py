@@ -44,7 +44,8 @@ class Instance(Plugin):
 
     def run(self, zbx):
         params = ['sum({0}) as {0}'.format(x[0]) for x in self.Items]
-        result = Pooler.query('select {0} from pg_stat_database'.format(
+        result = Pooler.query('select {0} from \
+            pg_catalog.pg_stat_database'.format(
             ', '.join(params)))
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(

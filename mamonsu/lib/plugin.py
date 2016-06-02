@@ -17,6 +17,7 @@ class Plugin(object):
         self.log = logging.getLogger(
             self.__class__.__name__.upper())
         self.sender = None
+        self.last_error_text = ''
 
     def start(self):
         self._thread = Thread(target=self._loop)
@@ -51,7 +52,8 @@ class Plugin(object):
 
     def _log_exception(self, e):
         name = e.__class__.__name__
-        self.log.error('Plugin exception [{0}]: {1}'.format(name, e))
+        self.last_error_text = 'Plugin exception [{0}]: {1}'.format(name, e)
+        self.log.error(self.last_error_text)
 
     def _loop(self):
         while(True):

@@ -32,9 +32,6 @@ class Connection(object):
         self.query_completed_succ = True
         return result
 
-    def is_extension_enabled(self):
-        return None
-
     def _close(self):
         if self.conn is not None:
             self.log.debug(

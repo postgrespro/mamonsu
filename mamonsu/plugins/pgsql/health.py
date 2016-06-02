@@ -5,10 +5,10 @@ from .pool import Pooler
 import time
 
 
-class Health(Plugin):
+class PgHealth(Plugin):
 
     def __init__(self, config):
-        super(Health, self).__init__(config)
+        super(PgHealth, self).__init__(config)
         # сообщаем что у сервиса низкий аптайм, пока аптайм меньше 10 минут
         self.TriggerUptimeLessThen = self.config.fetch(
             'health', 'uptime', int)
@@ -32,11 +32,6 @@ class Health(Plugin):
             round(sum(blks_hit)*100/sum(blks_hit+blks_read), 2) \
             from pg_stat_database')
         zbx.send('pgsql.cache[hit]', int(result[0][0]))
-
-        self.counter += 1
-        if self.counter > 9:
-            self.log.info('=== Keep alive ===')
-            self.counter = 0
 
     def items(self, template):
         result = template.item({
