@@ -24,7 +24,7 @@ script:
 # deb build
   - >
     docker run -v $(pwd):/var/tmp debian:7 bash -c
-    "cd /var/tmp && apt-get update --ignore-missing ;
+    "cd /var/tmp && ( apt-get update --ignore-missing || true ) &&
      echo package mamonsu/zabbix_address string '127.0.0.1' | debconf-set-selections &&
      echo package mamonsu/zabbix_client string '127.0.0.1' | debconf-set-selections &&
      echo package mamonsu/postgres_user string 'postgres' | debconf-set-selections &&
