@@ -1,3 +1,9 @@
+mamonsu (0.1.0) unstable; urgency=low
+
+  * Plugins: nodata, plugin errors
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 2 Jun 2016 16:00:00 +0300
+
 mamonsu (0.0.11-1) unstable; urgency=low
 
   * Add replication lag
