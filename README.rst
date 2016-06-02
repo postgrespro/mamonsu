@@ -85,9 +85,7 @@ Change previously zabbix server address and client hostname:
 
     [postgres]
     user = postgres
-    password = None
     database = postgres
-    host = localhost
     port = 5432
     query_timeout = 10
 
