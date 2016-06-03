@@ -147,7 +147,7 @@ class Config(object):
         config.set('zabbix', 'client', socket.gethostname())
         config.set('zabbix', 'address', '127.0.0.1')
         config.set('zabbix', 'port', str(10051))
-        config.set('zabbix', 'binary_log', None)
+        config.set('zabbix', 'binary_log', str(None))
 
         config.add_section('sender')
         config.set('sender', 'queue', str(300))
