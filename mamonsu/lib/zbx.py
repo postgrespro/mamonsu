@@ -103,14 +103,15 @@ class Zbx(Plugin):
             return
         if self.binary_log_fd is None:
             try:
-                self.binary_log_fd = open(self.binary_log_file, 'a')
+                self.binary_log_fd = open(self.binary_log_file, 'ab')
             except Exception as e:
                 self.log.error('Open binary log: {0}'.format(e))
                 self.binary_log_fd = None
         try:
             self.binary_log_fd.write(data)
-            self.binary_log_fd.write("\n")
+            self.binary_log_fd.write(b"\n")
             self.binary_log_fd.flush()
         except Exception as e:
             self.log.error('Write binary log: {0}'.format(e))
+            self.binary_log_fd.close()
             self.binary_log_fd = None

@@ -1,3 +1,9 @@
+mamonsu (0.2.1) stable; urgency=low
+
+  * Fixes for binary log
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Fri, 3 Jun 2016 16:00:00 +0300
+
 mamonsu (0.2.0) stable; urgency=low
 
   * Zabbix binary log

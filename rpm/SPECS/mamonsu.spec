@@ -71,6 +71,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Fri Jun 3 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.2.1-1
+- fixes for binary log
+
 * Fri Jun 3 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.2.0-1
 - Zabbix binary log
 
