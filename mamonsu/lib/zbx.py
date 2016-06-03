@@ -26,6 +26,8 @@ class Zbx(Plugin):
         self.port = config.fetch('zabbix', 'port', int)
         self.max_queue_size = config.fetch('sender', 'queue', int)
         self.fqdn = config.fetch('zabbix', 'client')
+        self.binary_log_file = config.fetch('zabbix', 'binary_log')
+        self.binary_log_fd = None
         self.queue = Queue()
         self.log = logging.getLogger(
             'ZBX-{0}:{1}'.format(self.host, self.port))
@@ -70,6 +72,7 @@ class Zbx(Plugin):
             packet = b'ZBXD\x01' + data_len + str.encode(data)
         else:
             packet = 'ZBXD\x01' + data_len + data
+        self._write_binary_log(packet)
         try:
             sock = socket.socket()
             sock.connect((self.host, self.port))
@@ -94,3 +97,20 @@ class Zbx(Plugin):
                 break
             buf += chunk
         return buf
+
+    def _write_binary_log(self, data):
+        if self.binary_log_file is None:
+            return
+        if self.binary_log_fd is None:
+            try:
+                self.binary_log_fd = open(self.binary_log_file, 'a')
+            except Exception as e:
+                self.log.error('Open binary log: {0}'.format(e))
+                self.binary_log_fd = None
+        try:
+            self.binary_log_fd.write(data)
+            self.binary_log_fd.write("\n")
+            self.binary_log_fd.flush()
+        except Exception as e:
+            self.log.error('Write binary log: {0}'.format(e))
+            self.binary_log_fd = None
