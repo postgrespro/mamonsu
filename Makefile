@@ -6,10 +6,15 @@ all:
 	pip install --upgrade --editable .
 
 publish: clean
-	@echo Testing wheel build an installation
+	@echo "Check rpm version"
+	grep ^Version ./rpm/SPECS/mamonsu.spec | grep $(VERSION)
+	@echo "Check deb version"
+	grep ^mamonsu ./debian/changelog | grep $(VERSION)
 	@echo "Build $(VERSION)"
 	python setup.py register
 	python setup.py sdist upload
+	git tag $(VERSION)
+	git push --tags
 	@echo
 
 prepare_builddir: clean

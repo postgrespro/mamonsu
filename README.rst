@@ -194,3 +194,5 @@ Windows system metrics
     'User time': system.cpu[user_time]
     'Idle time': system.cpu[idle_time]
     'Privileged time': system.cpu[privileged_time]
+    'Bytes Total': system.network[total_bytes]
+    'Output Queue Length': system.network[total_output_queue]
