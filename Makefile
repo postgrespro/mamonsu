@@ -10,9 +10,10 @@ publish: clean
 	grep ^Version ./rpm/SPECS/mamonsu.spec | grep $(VERSION)
 	@echo "Check deb version"
 	grep ^mamonsu ./debian/changelog | grep $(VERSION)
-	@echo "Build $(VERSION)"
+	@echo "Python release"
 	python setup.py register
 	python setup.py sdist upload
+	@echo "Git tag"
 	git tag $(VERSION)
 	git push --tags
 	@echo
