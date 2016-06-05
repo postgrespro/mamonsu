@@ -1,2 +1,2 @@
-__all__ = ['processes', 'disk_stats', 'memory']
+__all__ = ['proc_stat', 'disk_stats', 'memory']
 from . import *
