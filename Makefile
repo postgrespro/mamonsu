@@ -14,6 +14,7 @@ publish: clean
 	python setup.py register
 	python setup.py sdist upload
 	@echo "Git tag"
+	git push
 	git tag $(VERSION)
 	git push --tags
 	@echo

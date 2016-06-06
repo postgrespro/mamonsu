@@ -42,7 +42,7 @@ class ZbxTemplate(object):
         ('trends', 365), ('status', 0), ('delay', 60),
         ('value_type', Template.VALUE_TYPE.numeric_float),
         ('allowed_hosts', None), ('valuemap', None),
-        ('units', Template.UNITS.bytes), ('delta', Template.DELTA.as_is),
+        ('units', Template.UNITS.none), ('delta', Template.DELTA.as_is),
         ('snmpv3_contextname', None), ('snmpv3_securityname', None),
         ('snmpv3_securitylevel', 0), ('snmpv3_authprotocol', 0),
         ('snmpv3_authpassphrase', None), ('snmpv3_privprotocol', 0),
