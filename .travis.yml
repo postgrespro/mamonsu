@@ -7,7 +7,7 @@ services:
 
 before_install:
   - docker pull centos:6
-  - docker pull debian:6
+  - docker pull debian:7
 
 script:
 
