@@ -30,10 +30,10 @@ class DiskSizes(Plugin):
 
             for line in f:
                 data = line.split()
-                if len(data) != 10:
+                if len(data) != 11:
                     continue
                 point, fstype = data[4], data[8]
-                if fstype not in self.ExcludeFsTypes:
+                if fstype in self.ExcludeFsTypes:
                     continue
                 vfs = os.statvfs(point)
                 if vfs.f_blocks == 0 or vfs.f_files == 0:
@@ -47,10 +47,10 @@ class DiskSizes(Plugin):
                     vfs.f_bfree * vfs.f_bsize)
                 zbx.send(
                     'system.vfs.percent_free[{0}]'.format(point),
-                    float(vfs.f_blocks - vfs.f_bfree)*100/vfs.f_blocks)
+                    100 - (float(vfs.f_blocks - vfs.f_bfree)*100/vfs.f_blocks))
                 zbx.send(
                     'system.vfs.percent_inode_free[{0}]'.format(point),
-                    float(vfs.f_files - vfs.f_ffree)*100/vfs.f_files)
+                    100 - (float(vfs.f_files - vfs.f_ffree)*100/vfs.f_files))
 
             zbx.send('system.vfs.discovery[]', zbx.json({'data': points}))
 
