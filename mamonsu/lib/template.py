@@ -1,3 +1,6 @@
+from mamonsu.lib.const import Template
+
+
 class ZbxTemplate(object):
 
     mainTemplate = """<?xml version="1.0" encoding="UTF-8"?>
@@ -37,12 +40,14 @@ class ZbxTemplate(object):
         ('multiplier', 0), ('inventory_link', 0),
         ('key', None), ('snmp_oid', None), ('history', 7),
         ('trends', 365), ('status', 0), ('delay', 60),
-        ('value_type', 0), ('allowed_hosts', None), ('valuemap', None),
-        ('units', None), ('delta', 0), ('snmpv3_contextname', None),
-        ('snmpv3_securityname', None), ('snmpv3_securitylevel', 0),
-        ('snmpv3_authprotocol', 0), ('snmpv3_authpassphrase', None),
-        ('snmpv3_privprotocol', 0), ('snmpv3_privpassphrase', None),
-        ('formula', 1), ('delay_flex', None), ('params', None),
+        ('value_type', Template.VALUE_TYPE.numeric_float),
+        ('allowed_hosts', None), ('valuemap', None),
+        ('units', Template.UNITS.bytes), ('delta', Template.DELTA.as_is),
+        ('snmpv3_contextname', None), ('snmpv3_securityname', None),
+        ('snmpv3_securitylevel', 0), ('snmpv3_authprotocol', 0),
+        ('snmpv3_authpassphrase', None), ('snmpv3_privprotocol', 0),
+        ('snmpv3_privpassphrase', None), ('formula', 1),
+        ('delay_flex', None), ('params', None),
         ('ipmi_sensor', None), ('data_type', 0), ('authtype', 0),
         ('username', None), ('password', None), ('publickey', None),
         ('privatekey', None), ('port', None), ('description', None)
@@ -64,8 +69,9 @@ class ZbxTemplate(object):
     ]
 
     graph_items_defaults = [
-        ('sortorder', 0), ('drawtype', 0), ('color', '00CC00'),
-        ('yaxisside', 0), ('calc_fnc', 2), ('type', 0)
+        ('sortorder', 0), ('drawtype', 0),
+        ('color', '00CC00'), ('yaxisside', 0),
+        ('calc_fnc', 2), ('type', Template.GRAPH_TYPE.normal)
     ]
 
     discovery_defaults = [

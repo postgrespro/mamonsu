@@ -52,7 +52,9 @@ class Databases(Plugin):
         items = [
             {'key': 'pgsql.database.size[{#DATABASE}]',
                 'name': 'Database {#DATABASE}: size',
-                'units': 'b', 'value_type': 3, 'delay': self.Interval},
+                'units': Plugin.UNITS.bytes,
+                'value_type': self.VALUE_TYPE.numeric_unsigned,
+                'delay': self.Interval},
             {'key': 'pgsql.database.max_age[{#DATABASE}]',
                 'name': 'Max age (datfrozenxid) in: {#DATABASE}',
                 'delay': self.Interval},

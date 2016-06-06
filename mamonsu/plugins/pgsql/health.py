@@ -37,18 +37,18 @@ class PgHealth(Plugin):
         result = template.item({
             'name': 'PostgreSQL: ping',
             'key': 'pgsql.ping[]',
-            'value_type': 0,
-            'units': 'ms'
+            'value_type': self.VALUE_TYPE.numeric_float,
+            'units': Plugin.UNITS.ms
         }) + template.item({
             'name': 'PostgreSQL: service uptime',
             'key': 'pgsql.uptime[]',
-            'value_type': 3,
-            'units': 'uptime'
+            'value_type': self.VALUE_TYPE.numeric_unsigned,
+            'units': Plugin.UNITS.uptime
         }) + template.item({
             'name': 'PostgreSQL: cache hit ratio',
             'key': 'pgsql.cache[hit]',
-            'value_type': 3,
-            'units': '%'
+            'value_type': self.VALUE_TYPE.numeric_unsigned,
+            'units': Plugin.UNITS.percent
         })
         return result
 

@@ -13,29 +13,36 @@ class ProcStat(Plugin):
     ProcessItems = [
         # key, zbx_key, name, delta, color, side
         ('procs_running', 'processes[running]',
-            'in state running', 0, 'CC0000', 0),
+            'in state running', Plugin.DELTA.as_is, 'CC0000', 0),
         ('procs_blocked', 'processes[blocked]',
-            'in state blocked', 0, '00CC00', 0),
+            'in state blocked', Plugin.DELTA.as_is, '00CC00', 0),
         ('processes', 'processes[forkrate]',
-            'forkrate', 1, '0000CC', 1),
+            'forkrate', Plugin.DELTA.speed_per_second, '0000CC', 1),
     ]
 
     CpuItems = [
         # key, zbx_key, name, delta, color, side
         (1, 'cpu[user]',
-            'by normal programs and daemons', 1, '0000CC', 0),
+            'by normal programs and daemons',
+            Plugin.DELTA.speed_per_second, '0000CC', 0),
         (2, 'cpu[nice]',
-            'by nice(1)d programs', 1, 'CC00CC', 0),
+            'by nice(1)d programs',
+            Plugin.DELTA.speed_per_second, 'CC00CC', 0),
         (3, 'cpu[system]',
-            'by the kernel in system activities', 1, 'CC0000', 0),
+            'by the kernel in system activities',
+            Plugin.DELTA.speed_per_second, 'CC0000', 0),
         (4, 'cpu[idle]',
-            'Idle CPU time', 1, '00CC00', 0),
+            'Idle CPU time',
+            Plugin.DELTA.speed_per_second, '00CC00', 0),
         (5, 'cpu[iowait]',
-            'waiting for I/O operations', 1, 'CCCC00', 0),
+            'waiting for I/O operations',
+            Plugin.DELTA.speed_per_second, 'CCCC00', 0),
         (6, 'cpu[irq]',
-            'handling interrupts', 1, '777777', 0),
+            'handling interrupts',
+            Plugin.DELTA.speed_per_second, '777777', 0),
         (7, 'cpu[softirq]',
-            'handling batched interrupts', 1, '000077', 0),
+            'handling batched interrupts',
+            Plugin.DELTA.speed_per_second, '000077', 0),
     ]
 
     def run(self, zbx):
@@ -89,7 +96,8 @@ class ProcStat(Plugin):
                 'yaxisside': item[5]
             })
         graphs += template.graph({
-            'name': 'CPU time spent', 'items': items, 'type': 1})
+            'name': 'CPU time spent',
+            'items': items, 'type': self.GRAPH_TYPE.stacked})
         return graphs
 
     def triggers(self, template):

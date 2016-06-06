@@ -48,11 +48,11 @@ class DiskStats(Plugin):
         return template.item({
             'name': 'Block devices: read requests',
             'key': 'system.disk.all_read[]',
-            'delta': 1
+            'delta': Plugin.DELTA.speed_per_second
         }) + template.item({
             'name': 'Block devices: write requests',
             'key': 'system.disk.all_write[]',
-            'delta': 1
+            'delta': Plugin.DELTA.speed_per_second
         })
 
     def graphs(self, template):
@@ -77,16 +77,16 @@ class DiskStats(Plugin):
             {
                 'key': 'system.disk.utilization[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: utilization',
-                'delta': 1,
+                'delta': Plugin.DELTA.speed_per_second,
                 'units': '%'},
             {
                 'key': 'system.disk.read[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: read operations',
-                'delta': 1},
+                'delta': Plugin.DELTA.speed_per_second},
             {
                 'key': 'system.disk.write[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: write operations',
-                'delta': 1}]
+                'delta': Plugin.DELTA.speed_per_second}]
 
         graphs = [{
             'name': 'Block device overview: {#BLOCKDEVICE}',

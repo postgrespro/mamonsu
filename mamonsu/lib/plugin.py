@@ -4,13 +4,22 @@ import time
 from threading import Thread
 import logging
 
+from mamonsu.lib.const import Template
+
 
 class Plugin(object):
 
     # plugin interval run
     Interval = 60
+
     _thread = None
     _sender = False
+
+    # const
+    DELTA = Template.DELTA
+    GRAPH_TYPE = Template.GRAPH_TYPE
+    VALUE_TYPE = Template.VALUE_TYPE
+    UNITS = Template.UNITS
 
     def __init__(self, config):
         self.config = config

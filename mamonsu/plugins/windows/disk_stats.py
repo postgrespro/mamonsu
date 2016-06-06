@@ -32,18 +32,18 @@ class DiskStats(Plugin):
             {
                 'key': 'system.disk.read[{#LOGICALDEVICE}]',
                 'name': 'Logical device {#LOGICALDEVICE}: read operations/sec',
-                'delta': 1},
+                'delta': Plugin.DELTA.speed_per_second},
             {
                 'key': 'system.disk.write[{#LOGICALDEVICE}]',
                 'name': 'Logical device {#LOGICALDEVICE}: write operations/sec',
-                'delta': 1},
+                'delta': Plugin.DELTA.speed_per_second},
             {
                 'key': 'system.disk.queue_avg[{#LOGICALDEVICE}]',
                 'name': 'Logical device {#LOGICALDEVICE}: queue'},
             {
                 'key': 'system.disk.idle[{#LOGICALDEVICE}]',
                 'name': 'Logical device {#LOGICALDEVICE}: idle time (%)',
-                'units': '%'}]
+                'units': Plugin.UNITS.percent}]
         graphs = [{
             'name': 'Logical devices overview: {#LOGICALDEVICE}',
             'items': [{

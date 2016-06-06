@@ -27,8 +27,8 @@ class Xlog(Plugin):
         }) + template.item({
             'name': 'PostgreSQL: wal write speed',
             'key': 'pgsql.wal.write[]',
-            'units': 'b',
-            'delta': 2
+            'units': Plugin.UNITS.bytes,
+            'delta': Plugin.DELTA.speed_per_second
         })
 
     def graphs(self, template):

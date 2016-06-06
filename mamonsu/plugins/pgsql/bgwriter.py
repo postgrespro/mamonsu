@@ -17,43 +17,53 @@ class BgWriter(Plugin):
 
         ('checkpoints_timed', 'checkpoints[checkpoints_timed]',
             'checkpoints: by timeout',
-            ('PostgreSQL checkpoints', '00CC00', 0), None, 2),
+            ('PostgreSQL checkpoints', '00CC00', 0),
+            Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
         ('checkpoints_req', 'checkpoints[checkpoints_req]',
             'checkpoints: required',
-            ('PostgreSQL checkpoints', 'CC0000', 0), None, 2),
+            ('PostgreSQL checkpoints', 'CC0000', 0),
+            Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
         ('checkpoint_write_time', 'checkpoint[write_time]',
             'checkpoint: write time',
-            ('PostgreSQL checkpoints', '0000CC', 1), 'ms', 2),
+            ('PostgreSQL checkpoints', '0000CC', 1),
+            Plugin.UNITS.ms, Plugin.DELTA.simple_change),
 
         ('checkpoint_sync_time', 'checkpoint[checkpoint_sync_time]',
             'checkpoint: sync time',
-            ('PostgreSQL checkpoints', '000000', 1), 'ms', 2),
+            ('PostgreSQL checkpoints', '000000', 1),
+            Plugin.UNITS.ms, Plugin.DELTA.simple_change),
 
         ('buffers_checkpoint', 'bgwriter[buffers_checkpoint]',
             'bgwriter: buffers written during checkpoints',
-            ('PostgreSQL bgwriter', 'CCCC00', 1), 'b', 2),
+            ('PostgreSQL bgwriter', 'CCCC00', 1),
+            Plugin.UNITS.bytes, Plugin.DELTA.simple_change),
 
         ('buffers_clean', 'bgwriter[buffers_clean]',
             'bgwriter: buffers written',
-            ('PostgreSQL bgwriter', '0000CC', 1), 'b', 2),
+            ('PostgreSQL bgwriter', '0000CC', 1),
+            Plugin.UNITS.bytes, Plugin.DELTA.simple_change),
 
         ('maxwritten_clean', 'bgwriter[maxwritten_clean]',
             'bgwriter: number of bgwriter stopped by max write count',
-            ('PostgreSQL bgwriter', '777777', 0), 'ms', 2),
+            ('PostgreSQL bgwriter', '777777', 0),
+            Plugin.UNITS.ms, Plugin.DELTA.simple_change),
 
         ('buffers_backend', 'bgwriter[buffers_backend]',
             'bgwriter: buffers written directly by a backend',
-            ('PostgreSQL bgwriter', 'CC0000', 1), 'b', 2),
+            ('PostgreSQL bgwriter', 'CC0000', 1),
+            Plugin.UNITS.bytes, Plugin.DELTA.simple_change),
 
         ('buffers_backend_fsync', 'bgwriter[buffers_backend_fsync]',
             'bgwriter: times a backend execute its own fsync',
-            ('PostgreSQL bgwriter', 'CC00CC', 0), None, 2),
+            ('PostgreSQL bgwriter', 'CC00CC', 0),
+            Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
         ('buffers_alloc', 'bgwriter[buffers_alloc]',
             'bgwriter: buffers allocated',
-            ('PostgreSQL bgwriter', '00CC00', 1), 'b', 2)
+            ('PostgreSQL bgwriter', '00CC00', 1),
+            Plugin.UNITS.bytes, Plugin.DELTA.simple_change)
     ]
 
     def run(self, zbx):
