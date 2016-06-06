@@ -157,6 +157,11 @@ PostgreSQL metrics
     'PostgreSQL: streaming replication lag in seconds': pgsql.replication_lag[sec]
     'PostgreSQL: wal write speed': pgsql.wal.write[]
 
+    'Database {#DATABASE}: size': pgsql.database.size[{#DATABASE}]
+    'Count of bloating tables in database: {#DATABASE}': pgsql.database.bloating_tables[{#DATABASE}]
+    'Max age (datfrozenxid) in: {#DATABASE}': pgsql.database.bloating_tables[{#DATABASE}]
+
+
 ====================
 Linux system metrics
 ====================
@@ -188,6 +193,14 @@ Linux system metrics
     'Mapped: All mmap()ed pages': system.memory[mapped]
     'Active: Memory recently used': system.memory[active]
     'Inactive: Memory not currently used': system.memory[inactive]
+
+    'Mount point {#MOUNTPOINT}: used': system.vfs.used[{#MOUNTPOINT}]
+    'Mount point {#MOUNTPOINT}: free' system.vfs.free[{#MOUNTPOINT}]
+    'Mount point {#MOUNTPOINT}: free in percents': system.vfs.percent_free[{#MOUNTPOINT}]
+    'Mount point {#MOUNTPOINT}: free inodes in percent': system.vfs.percent_inode_free[{#MOUNTPOINT}]
+    'Block device {#BLOCKDEVICE}: utilization': system.disk.utilization[{#BLOCKDEVICE}]
+    'Block device {#BLOCKDEVICE}: read operations': system.disk.read[{#BLOCKDEVICE}]
+    'Block device {#BLOCKDEVICE}: write operations': system.disk.write[{#BLOCKDEVICE}]
 
 ======================
 Windows system metrics
