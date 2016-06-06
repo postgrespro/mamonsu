@@ -94,12 +94,14 @@ class DiskSizes(Plugin):
         triggers = [{
             'name': 'Free disk space less then 10% on mountpoint '
             '{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
-            'expression': '{#TEMPLATE:system.vfs.percent_free[].last'
+            'expression': '{#TEMPLATE:system.vfs.'
+            'percent_free[{#MOUNTPOINT}].last'
             '()}&lt;' + str(self.TriggerPfreeLessThen)},
             {
             'name': 'Free inode space less then 10% on mountpoint '
             '{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
-            'expression': '{#TEMPLATE:system.vfs.percent_inode_free[].last'
+            'expression': '{#TEMPLATE:system.vfs.'
+            'percent_inode_free[{#MOUNTPOINT}].last'
             '()}&lt;' + str(self.TriggerPIfreeLessThen)
         }]
 

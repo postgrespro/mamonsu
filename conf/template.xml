@@ -3065,24 +3065,22 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{PostgresPro-Linux:system.vfs.percent_free[].last()}&lt;10</expression>
+                            <expression>{PostgresPro-Linux:system.vfs.percent_free[{#MOUNTPOINT}].last()}&lt;10</expression>
                             <name>Free disk space less then 10% on mountpoint {#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})</name>
                             <url/>
                             <status>0</status>
                             <priority>3</priority>
                             <description/>
                             <type>0</type>
-                            <dependencies/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{PostgresPro-Linux:system.vfs.percent_inode_free[].last()}&lt;10</expression>
+                            <expression>{PostgresPro-Linux:system.vfs.percent_inode_free[{#MOUNTPOINT}].last()}&lt;10</expression>
                             <name>Free inode space less then 10% on mountpoint {#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})</name>
                             <url/>
                             <status>0</status>
                             <priority>3</priority>
                             <description/>
                             <type>0</type>
-                            <dependencies/>
                         </trigger_prototype>
                     </trigger_prototypes>
                     <graph_prototypes>

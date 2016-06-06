@@ -59,6 +59,12 @@ class ZbxTemplate(object):
         ('type', 0), ('dependencies', None)
     ]
 
+    trigger_discovery_defaults = [
+        ('expression', None), ('name', None), ('url', None),
+        ('status', 0), ('priority', 3), ('description', None),
+        ('type', 0)
+    ]
+
     graph_values_defaults = [
         ('name', None), ('width', 900), ('height', 200),
         ('yaxismin', 0.0000), ('yaxismax', 100.0), ('show_work_period', 1),
@@ -122,7 +128,9 @@ class ZbxTemplate(object):
             self._application(),
             xml_key)
 
-    def trigger(self, args={}, xml_key='trigger'):
+    def trigger(self, args={}, xml_key='trigger', defaults=None):
+        if defaults is None:
+            defaults = self.trigger_defaults
         try:
             expression = args['expression']
         except KeyError:
@@ -130,7 +138,7 @@ class ZbxTemplate(object):
                 'Miss expression in trigger: {0}.'.format(args))
         args['expression'] = expression.replace('#TEMPLATE', self.Template)
         return '<{1}>{0}</{1}>'.format(
-            self._format_args(self.trigger_defaults, args),
+            self._format_args(defaults, args),
             xml_key)
 
     def graph(self, args={}, xml_key='graph'):
@@ -166,7 +174,8 @@ class ZbxTemplate(object):
         result_triggers = '<trigger_prototypes>'
         for trigger in triggers:
             result_triggers += self.trigger(
-                trigger, xml_key='trigger_prototype')
+                trigger, xml_key='trigger_prototype',
+                defaults=self.trigger_discovery_defaults)
         result_triggers += '</trigger_prototypes>'
 
         result_graphs = '<graph_prototypes>'
