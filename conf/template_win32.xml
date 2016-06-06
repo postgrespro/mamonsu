@@ -652,7 +652,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>User time</name>
+                    <name>CPU user time</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -694,7 +694,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>Idle time</name>
+                    <name>CPU idle time</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -736,7 +736,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>Privileged time</name>
+                    <name>CPU privileged time</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -1576,7 +1576,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>Output Queue Length</name>
+                    <name>Network output queue length</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -1618,7 +1618,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>Bytes Total</name>
+                    <name>Network bytes total</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>

@@ -25,7 +25,7 @@ class Network(Plugin):
         result = ''
         for item in self.Items:
             result += template.item({
-                'name': '{0}'.format(item[2]),
+                'name': 'Network {0}'.format(item[2].lower()),
                 'key': 'system.network{0}'.format(item[1]),
                 'units': item[3]
             })
