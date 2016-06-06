@@ -93,6 +93,9 @@ class ZbxTemplate(object):
         self.Template = name
 
     def xml(self, plugins=[]):
+        # sort plugins!
+        plugins.sort(key=lambda x: x.__class__.__name__)
+        # create template
         template_data = {}
         template_data['template'] = self.Template
         template_data['application'] = self.Application
