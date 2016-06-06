@@ -146,7 +146,7 @@ PostgreSQL metrics
     'PostgreSQL bgwriter: buffers written directly by a backend': pgsql.bgwriter[buffers_backend]
     'PostgreSQL bgwriter: times a backend execute its own fsync': pgsql.bgwriter[buffers_backend_fsync]
     'PostgreSQL bgwriter: buffers allocated': pgsql.bgwriter[buffers_alloc]
-    'Count of autovacuum workers': pgsql.autovacumm.count[]
+    'PostgreSQL: count of autovacuum workers': pgsql.autovacumm.count[]
     'PostgreSQL transactions: total': pgsql.transactions[total]
     'PostgreSQL blocks: hit': pgsql.blocks[hit]
     'PostgreSQL blocks: read': pgsql.blocks[read]

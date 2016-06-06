@@ -38,7 +38,7 @@ class Databases(Plugin):
 
     def items(self, template):
         return template.item({
-            'name': 'Count of autovacuum workers',
+            'name': 'PostgreSQL: count of autovacuum workers',
             'key': 'pgsql.autovacumm.count[]',
             'delay': self.Interval
         })
