@@ -7,7 +7,8 @@ class ProcStat(Plugin):
     # alert fork-rate
     ForkRate = 500
     # /proc/stat all cpu line
-    re_stat = re.compile('cpu\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)')
+    re_stat = re.compile(
+        'cpu\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)')
 
     ProcessItems = [
         # key, zbx_key, name, delta, color, side
@@ -22,19 +23,19 @@ class ProcStat(Plugin):
     CpuItems = [
         # key, zbx_key, name, delta, color, side
         (1, 'cpu[user]',
-            'by normal programs and daemons', 2, 'CC0000', 0),
+            'by normal programs and daemons', 1, '0000CC', 0),
         (2, 'cpu[nice]',
-            'by nice(1)d programs', 2, '00CC00', 0),
+            'by nice(1)d programs', 1, 'CC00CC', 0),
         (3, 'cpu[system]',
-            'by the kernel in system activities', 2, '0000CC', 0),
+            'by the kernel in system activities', 1, 'CC0000', 0),
         (4, 'cpu[idle]',
-            'Idle CPU time', 2, '00CC00', 0),
+            'Idle CPU time', 1, '00CC00', 0),
         (5, 'cpu[iowait]',
-            'waiting for I/O operations', 2, '00CC00', 0),
+            'waiting for I/O operations', 1, 'CCCC00', 0),
         (6, 'cpu[irq]',
-            'handling interrupts', 2, '00CC00', 0),
+            'handling interrupts', 1, '777777', 0),
         (7, 'cpu[softirq]',
-            'handling batched interrupts', 2, '00CC00', 0),
+            'handling batched interrupts', 1, '000077', 0),
     ]
 
     def run(self, zbx):
@@ -80,13 +81,15 @@ class ProcStat(Plugin):
                 'yaxisside': item[5]
             })
         graphs = template.graph({'name': 'Processes overview', 'items': items})
+        items = []
         for item in self.CpuItems:
             items.append({
                 'key': 'system.{0}'.format(item[1]),
                 'color': item[4],
                 'yaxisside': item[5]
             })
-        graphs += template.graph({'name': 'CPU time spent', 'items': items})
+        graphs += template.graph({
+            'name': 'CPU time spent', 'items': items, 'type': 1})
         return graphs
 
     def triggers(self, template):
