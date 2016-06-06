@@ -2455,7 +2455,7 @@
             <dependencies/>
         </trigger>
         <trigger>
-            <expression>{PostgresPro-Win32:pgsql.uptime[].last()}&lt;60000</expression>
+            <expression>{PostgresPro-Win32:pgsql.uptime[].last()}&lt;600</expression>
             <name>PostgreSQL service was restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})</name>
             <url/>
             <status>0</status>

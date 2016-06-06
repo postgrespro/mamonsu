@@ -1,3 +1,10 @@
+mamonsu (0.3.0) stable; urgency=low
+
+  * additional cpu plugins
+  * additional vfs plugins
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 6 Jun 2016 15:00:00 +0300
+
 mamonsu (0.2.1) stable; urgency=low
 
   * Fixes for binary log

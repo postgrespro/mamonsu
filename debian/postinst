@@ -35,7 +35,9 @@ _configure_conf() {
 
     echo "
 [zabbix]
+; zabbix server address
 address = $ADDRESS
+; configured 'Host name' of client in zabbix server
 client = $CLIENT
 
 [postgres]
