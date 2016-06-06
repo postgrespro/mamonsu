@@ -12,6 +12,12 @@ Build status
 Installation
 ============
 
+Pre-Build packages for:
+
+    Linux distros: https://packagecloud.io/postgrespro/mamonsu
+
+    Windows: https://github.com/postgrespro/mamonsu/tree/master/win
+
 Install via pip:
 
 .. code-block:: bash
