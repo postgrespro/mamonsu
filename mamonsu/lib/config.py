@@ -153,8 +153,12 @@ class Config(object):
         config.set('sender', 'queue', str(300))
 
         config.add_section('health')
-        config.set('health', 'uptime', str(60 * 10 * 100))
+        config.set('health', 'uptime', str(60 * 10))
         config.set('health', 'cache', str(80))
+
+        config.add_section('disk_sizes')
+        config.set('disk_sizes', 'percent_free', str(10))
+        config.set('disk_sizes', 'inode_percent_free', str(10))
 
         config.add_section('bgwriter')
         config.set('bgwriter', 'max_checkpoints_req', '5')

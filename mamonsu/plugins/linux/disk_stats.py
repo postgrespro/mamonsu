@@ -78,7 +78,7 @@ class DiskStats(Plugin):
                 'key': 'system.disk.utilization[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: utilization',
                 'delta': Plugin.DELTA.speed_per_second,
-                'units': '%'},
+                'units': Plugin.UNITS.percent},
             {
                 'key': 'system.disk.read[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: read operations',
