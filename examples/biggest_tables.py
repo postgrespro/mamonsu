@@ -12,10 +12,9 @@ class BiggestTables(Plugin):
     Limit = 10
 
     def run(self, zbx):
-        result = Pooler.query('select datname \
-            from pg_catalog.pg_database where datistemplate = false')
         tables = []
-        for info_dbs in result:
+        for info_dbs in Pooler.query('select datname \
+                from pg_catalog.pg_database where datistemplate = false'):
             for info_sizes in Pooler.query("select n.nspname, c.relname, \
                     pg_catalog.pg_total_relation_size(c.oid) as size from \
                     pg_catalog.pg_class c left join pg_catalog.pg_namespace n \
