@@ -111,7 +111,7 @@ Write your plugin
 
 All plugins must exist in plugin directory which is defined in your configuration file.
 
-See the `example <https://github.com/postgrespro/mamonsu/blob/master/conf/plugin.py>`_ for aditional information.
+See the `examples <https://github.com/postgrespro/mamonsu/tree/master/examples>`_ for aditional information.
 
 After add new plugin, you must to reexport template and import this file to zabbix.
 

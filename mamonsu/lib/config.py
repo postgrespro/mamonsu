@@ -254,11 +254,11 @@ class Config(object):
         try:
             for filename in glob.glob(os.path.join(directory, '*.py')):
                 if not os.path.isfile(filename):
-                    break
+                    continue
                 # /dir/filename.py => filename.py
                 filename = os.path.basename(filename)
                 if filename.startswith('_'):
-                    break
+                    continue
                 # filename.py => filename
                 filename, _ = os.path.splitext(filename)
                 logging.info(
