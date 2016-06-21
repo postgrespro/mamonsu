@@ -15,17 +15,19 @@ class BiggestTables(Plugin):
         result = Pooler.query('select datname \
             from pg_catalog.pg_database where datistemplate = false')
         tables = []
-        for db in result:
+        for info_dbs in result:
             for info_sizes in Pooler.query("select n.nspname, c.relname, \
                     pg_catalog.pg_total_relation_size(c.oid) as size from \
                     pg_catalog.pg_class c left join pg_catalog.pg_namespace n \
-                    ON n.oid = c.relnamespace order by size \
-                    desc limit {0};".format(self.Limit), db[0]):
+                        on n.oid = c.relnamespace \
+                    where c.relkind IN ('r','v','m','S','f','') \
+                    order by size \
+                    desc limit {0};".format(self.Limit), info_dbs[0]):
                 table_name = '{0}.{1}.{2}'.format(
-                    db[0], info_sizes[0], info_sizes[1])
+                    info_dbs[0], info_sizes[0], info_sizes[1])
                 tables.append({'{#TABLE}': table_name})
                 zbx.send('pgsql.table.size[{0}]'.format(
-                    table_name), info_sizes[1])
+                    table_name), info_sizes[2])
         zbx.send('pgsql.table.discovery[]', zbx.json({'data': tables}))
 
     def discovery_rules(self, template):

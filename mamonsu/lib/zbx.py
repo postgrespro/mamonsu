@@ -84,8 +84,10 @@ class Zbx(Plugin):
             self.log.debug('response: {0}'.format(resp_body))
             if 'failed: 0' not in str(resp_body):
                 self.log.error(
-                    'Response from server'
-                    ' with failed items: {0}'.format(resp_body))
+                    'On request:\n{0}\nget response'
+                    ' with failed items:\n{1}'.format(
+                        data,
+                        resp_body))
         finally:
             sock.close()
 
