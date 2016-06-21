@@ -16,10 +16,17 @@ class Connection(object):
         self.conn = None
         self.query_completed_succ = False
 
+    def _conn_string(self):
+        db = self.database
+        host = os.environ.get('PGHOST')
+        return 'host={0} db={1}'.format(host, db)
+
     def query(self, query):
         self.lock.acquire()
         try:
-            self.log.debug('[db: {0}] Run: "{1}"'.format(self.database, query))
+            self.log.debug(
+                '[{0}] Run: "{1}"'.format(
+                    self._conn_string(), query))
             self._check_connect()
             self.query_completed_succ = False
             cursor = self.conn.cursor()
@@ -35,19 +42,20 @@ class Connection(object):
     def _close(self):
         if self.conn is not None:
             self.log.debug(
-                '[db: {0}] Closing...'.format(
-                    self.database))
+                '[{0}] Closing...'.format(
+                    self._conn_string()))
             try:
                 self.conn.close()
             except Exception as e:
                 self.log.error(
-                    '[db: {0}] Closing error: {1}'.format(
-                        self.database,
-                        e))
+                    '[{0}] Closing error: {1}'.format(
+                        self._conn_string(), e))
 
     def _check_connect(self):
         if not self.query_completed_succ:
-            self.log.debug('[db: {0}] Connecting...'.format(self.database))
+            self.log.debug(
+                '[{0}] Connecting...'.format(
+                    self._conn_string()))
             self._close()
             host, unix_sock = os.environ.get('PGHOST'), None
             if host.startswith('/'):
@@ -61,11 +69,14 @@ class Connection(object):
                 database=self.database,
                 application_name=os.environ.get('PGAPPNAME')
             )
-            self.log.debug('[db: {0}] Connected!'.format(self.database))
+            self.log.debug(
+                '[{0}] Connected!'.format(
+                    self._conn_string()))
             self.conn.autocommit = True
 
             self.log.debug(
-                '[db: {0}] Set statement timeout...'.format(self.database))
+                '[{0}] Set statement timeout...'.format(
+                    self._conn_string()))
             cur = self.conn.cursor()
             cur.execute('set statement_timeout to {0}'.format(
                 self.QueryTimeout * 1000))

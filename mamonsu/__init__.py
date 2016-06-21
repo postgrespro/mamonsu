@@ -1,7 +1,7 @@
 __author__ = 'Dmitry Vasilyev'
 __author_email__ = 'info@postgrespro.ru'
 __description__ = 'Zabbix ative agent for monitoring PostgreSQL'
-__version__ = '0.3.2'
+__version__ = '0.4.0'
 __licence__ = 'BSD'
 
 __url__ = 'https://github.com/postgrespro/mamonsu'

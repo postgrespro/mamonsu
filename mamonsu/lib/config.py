@@ -8,6 +8,7 @@ import sys
 import glob
 
 import mamonsu.lib.platform as platform
+from mamonsu.plugins.pgsql.checks import is_conn_to_db
 
 from mamonsu import __version__
 from mamonsu.lib.plugin import Plugin
@@ -33,7 +34,10 @@ class Config(object):
 
     @staticmethod
     def default_host():
-        host = os.environ.get('PGHOST') or 'localhost'
+        if platform.WINDOWS:
+            host = os.environ.get('PGHOST') or 'localhost'
+        if platform.LINUX:
+            host = os.environ.get('PGHOST') or 'auto'
         return host
 
     @staticmethod
@@ -199,6 +203,8 @@ class Config(object):
                 logging.error('Can\'t write pid file, error: %s'.format(e))
                 sys.exit(2)
 
+        self._override_auto_variables()
+
     def fetch(self, sec, key, klass=None, raw=False):
         try:
             if klass == float:
@@ -264,3 +270,34 @@ class Config(object):
             logging.error(
                 'Can\'t load module: %s', e)
             sys.exit(3)
+
+    def _override_auto_variables(self):
+        self._override_auto_host()
+
+    def _override_auto_host(self):
+
+        def test_db(self, host_pre):
+            if is_conn_to_db(
+                host=host_pre,
+                db=self.fetch('postgres', 'database'),
+                port=str(self.fetch('postgres', 'port')),
+                user=self.fetch('postgres', 'user'),
+                    paswd=self.fetch('postgres', 'password')):
+                self.config.set('postgres', 'host', host_pre)
+                self._apply_environ()
+                return True
+            return False
+
+        host = self.fetch('postgres', 'host')
+        port = str(self.fetch('postgres', 'port'))
+        if host == 'auto' and platform.LINUX:
+            logging.debug('Host set to auto, test variables')
+            if test_db(self, '/tmp/.s.PGSQL.{0}'.format(port)):
+                return
+            if test_db(self, '/var/run/postgresql/.s.PGSQL.{0}'.format(port)):
+                return
+            if test_db(self, '127.0.0.1'):
+                return
+            #  не выходим, так как ожидаем коннекта до localhost
+            self.config.set('postgres', 'host', 'localhost')
+            self._apply_environ()

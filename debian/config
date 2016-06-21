@@ -17,7 +17,7 @@ _load_env() {
     [ ! -n "$USER" ] && USER="postgres"
     [ ! -n "$PASS" ] && PASS="None"
     [ ! -n "$DATABASE" ] && DATABASE="postgres"
-    [ ! -n "$HOST" ] && HOST="127.0.0.1"
+    [ ! -n "$HOST" ] && HOST="auto"
     [ ! -n "$PORT" ] && PORT="5432"
     [ ! -n "$TIMEOUT" ] && TIMEOUT="10"
     [ ! -n "$LEVEL" ] && LEVEL="INFO"
