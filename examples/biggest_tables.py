@@ -40,6 +40,6 @@ class BiggestTables(Plugin):
             {'key': 'pgsql.table.size[{#TABLE}]',
                 'name': 'Table {#TABLE}: size',
                 'units': Plugin.UNITS.bytes,
-                'value_type': self.VALUE_TYPE.numeric_unsigned,
+                'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
                 'delay': self.Interval}]
         return template.discovery_rule(rule=rule, items=items)
