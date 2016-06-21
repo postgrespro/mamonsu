@@ -98,6 +98,7 @@ Change previously zabbix server address and client hostname:
     query_timeout = 10
 
     [plugins]
+    ; directory with user plugins
     directory = /etc/mamonsu/plugins
 
     [log]
