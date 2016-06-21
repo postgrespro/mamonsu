@@ -31,7 +31,7 @@ export PYTHONPATH=%{buildroot}%{python_sitelib}
 
 %{__install} -m 0644 -p conf/example.conf %{buildroot}/%{_sysconfdir}/%{name}/agent.conf
 %{__install} -m 0644 -p conf/template.xml %{buildroot}/%{_datarootdir}/%{name}/template.xml
-%{__install} -m 0644 -p conf/plugin.py %{buildroot}/%{_datarootdir}/%{name}/plugin.py
+%{__install} -m 0644 -p examples/*.py %{buildroot}/%{_datarootdir}/%{name}/
 %{__install} -m 0755 -p %{SOURCE1} %{buildroot}/%{_sysconfdir}/init.d/%{name}
 %{__install} -m 0644 -p %{SOURCE2} %{buildroot}/%{_sysconfdir}/logrotate.d/%{name}
 
