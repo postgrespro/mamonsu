@@ -36,6 +36,7 @@ script:
      echo package mamonsu/log_level string 'INFO' | debconf-set-selections &&
      apt-get install -y make dpkg-dev debhelper python-dev python-setuptools &&
      make deb && dpkg -i mamonsu*.deb && cd / &&
+     grep '^127.0.0.1' /etc/mamonsu/agent.conf &&
      /etc/init.d/mamonsu restart &&
      sleep 5 && /etc/init.d/mamonsu stop &&
      apt-get purge -y mamonsu"

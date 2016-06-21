@@ -652,7 +652,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>Count of autovacuum workers</name>
+                    <name>PostgreSQL: count of autovacuum workers</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>

@@ -16,6 +16,8 @@ _configure_conf() {
         return 0
     fi
 
+    dbc_go mamonsu
+
     db_get mamonsu/zabbix_address
     ADDRESS="$RET"
     db_get mamonsu/zabbix_client
