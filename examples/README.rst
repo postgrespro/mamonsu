@@ -17,6 +17,6 @@ Export template:
 
 .. code-block:: bash
 
-    mamonsu -e template.xml
+    mamonsu -c agent.conf -e template.xml
 
 Upload xml to zabbix server.
