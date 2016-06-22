@@ -53,7 +53,7 @@ class Databases(Plugin):
             {'key': 'pgsql.database.size[{#DATABASE}]',
                 'name': 'Database {#DATABASE}: size',
                 'units': Plugin.UNITS.bytes,
-                'value_type': self.VALUE_TYPE.numeric_unsigned,
+                'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
                 'delay': self.Interval},
             {'key': 'pgsql.database.max_age[{#DATABASE}]',
                 'name': 'Max age (datfrozenxid) in: {#DATABASE}',
