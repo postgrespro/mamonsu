@@ -46,6 +46,7 @@ rpm: prepare_builddir
 
 clean: python_clean
 	rm -rf build
+	rm -f rpm-tmp*
 
 python_clean:
 	@echo Cleaning up python fragments
