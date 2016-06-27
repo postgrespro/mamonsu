@@ -47,6 +47,7 @@ rpm: prepare_builddir
 clean: python_clean
 	rm -rf build
 	rm -f rpm-tmp*
+	rm -rf mamonsu.egg-info
 
 python_clean:
 	@echo Cleaning up python fragments

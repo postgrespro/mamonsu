@@ -3,7 +3,7 @@
 set -e
 set -x
 
-declare -a DISTRIBUTIVES_LIST=("debian" "ubuntu" "centos")
+declare -a DISTRIBUTIVES_LIST=( "debian" "ubuntu" "centos" )
 declare -a DEBIAN_VERSIONS=( "7" "8" )
 declare -a DEBIAN_CODENAMES=( "wheezy" "jessie" )
 declare -a UBUNTU_VERSIONS=( "12.04" "14.04" "15.10" "16.04" )

@@ -5,6 +5,7 @@ import logging
 import signal
 import sys
 
+from mamonsu.lib.first_look import run_first_look
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.config import Config
@@ -77,6 +78,14 @@ def start():
     signal.signal(signal.SIGTERM, quit_handler)
     if platform.LINUX:
         signal.signal(signal.SIGQUIT, quit_handler)
+
+    for arg in sys.argv:
+        if arg == '--run-first-look' or arg == '--run-look'\
+                or arg == 'first' or arg == '--first'\
+                or arg == 'first-look':
+            sys.argv.remove(arg)
+            run_first_look()
+            return
 
     config = Config()
     supervisor = Supervisor(config)
