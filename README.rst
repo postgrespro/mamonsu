@@ -125,6 +125,14 @@ Run
     or by hand:
     $ mamonsu -c /etc/mamonsu/agent.conf -p /var/run/mamonsu.pid
 
+===============
+First look tool
+===============
+
+.. code-block:: bash
+    $ mamonsu first --help
+
+
 ==================
 PostgreSQL metrics
 ==================
