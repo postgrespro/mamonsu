@@ -2,7 +2,9 @@
 
 import logging
 import optparse
+import os
 import mamonsu.lib.platform as platform
+from mamonsu.lib.default_config import DefaultConfig
 
 from mamonsu import __version__
 if platform.LINUX:
@@ -11,7 +13,7 @@ else:
     from mamonsu.lib.first_look_os_win import SystemInfo
 
 
-class Args(object):
+class Args(DefaultConfig):
 
     def __init__(self):
 
@@ -38,11 +40,42 @@ class Args(object):
             dest='print_report',
             default=True, help='Print summary info')
         parser.add_option_group(group)
+        group = optparse.OptionGroup(
+            parser,
+            'Postgres connection options')
+        group.add_option(
+            '-d', '--dbname',
+            dest='dbname',
+            default=self.default_db(), help='database name to connect to')
+        group.add_option(
+            '--host',
+            dest='hostname',
+            default=self.default_host(),
+            help='database server host or socket full path')
+        group.add_option(
+            '-U', '--username',
+            dest='username',
+            default=self.default_user(),
+            help='database user name')
+        group.add_option(
+            '-W', '--password',
+            dest='password',
+            default=self.default_user(),
+            help='force password prompt (should happen automatically)')
+        parser.add_option_group(group)
 
         self.args, _ = parser.parse_args()
+
+        # apply logging
         logging.basicConfig(
             filename=self.args.report_path,
             level=self.get_logger_level(self.args.log_level))
+        # apply env
+        os.environ['PGUSER'] = self.args.username
+        os.environ['PGPASSWORD'] = self.args.password
+        os.environ['PGHOST'] = self.args.hostname
+        os.environ['PGDATABASE'] = self.args.database
+        os.environ['PGAPPNAME'] = 'mamonsu first look'
 
     def __getattr__(self, name):
         try:
