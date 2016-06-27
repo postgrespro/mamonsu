@@ -42,4 +42,10 @@ class PgsqlConfig(object):
 
 
 class DefaultConfig(PgsqlConfig):
-    pass
+
+    @staticmethod
+    def default_report_path():
+        if platform.WINDOWS:
+            return 'c:\\report.txt'
+        if platform.LINUX:
+            return '/tmp/report.txt'
