@@ -146,10 +146,18 @@ class Args(DefaultConfig):
 
 
 def run_first_look():
+
     args = Args()
+
     if args.run_system:
         sys_info = SystemInfo(args)
-        sys_info.run()
+        sys_report = sys_info.collect()
     if args.run_postgres:
         pg_info = PostgresInfo(args)
-        pg_info.run()
+        pg_report = pg_info.collect()
+
+    if args.print_report:
+        if args.run_system:
+            print(sys_report)
+        if args.run_postgres:
+            print(pg_report)

@@ -89,7 +89,7 @@ class SystemInfo(object):
         self.args = args
         # disable sudo
         global sudoWorking
-        if not self.args.sudo:
+        if not self.args.use_sudo:
             sudoWorking = False
         logging.info('Test if sudo is working: {0}'.format(is_sudo_working()))
         logging.info('Collecting date...')
@@ -146,10 +146,10 @@ class SystemInfo(object):
     def printable_info(self):
 
         def format_header(info):
-            return "\n# {0} ##################################\n".format(info)
+            return "\n###### {0:20} ###########################\n".format(info)
 
         def format_out(key, val):
-            return "{0:20s}|    {1}\n".format(key, val)
+            return "{0:40}|    {1}\n".format(key, val)
 
         out = ''
         out += format_header('Report')
@@ -212,12 +212,10 @@ class SystemInfo(object):
         out += format_out('VGS', self.vgs)
         return out
 
-    def run(self):
+    def collect(self):
         info = self.printable_info()
-        if self.args.print_report:
-            print(info)
-        logging.error("\n{}\n".format(info))
         logging.error("\n{}\n".format(self.store_raw()))
+        return info
 
     _suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 
