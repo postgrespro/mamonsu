@@ -87,6 +87,10 @@ class SystemInfo(object):
 
     def __init__(self, args):
         self.args = args
+        # disable sudo
+        global sudoWorking
+        if not self.args.sudo:
+            sudoWorking = False
         logging.info('Test if sudo is working: {0}'.format(is_sudo_working()))
         logging.info('Collecting date...')
         self.date = self._fetch_date()

@@ -3,15 +3,17 @@
 import logging
 import optparse
 import os
+
+from mamonsu import __version__
 import mamonsu.lib.platform as platform
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.checks import is_conn_to_db
 
-from mamonsu import __version__
+from mamonsu.first_look.pgsql import PostgresInfo
 if platform.LINUX:
-    from mamonsu.lib.first_look_os_linux import SystemInfo
+    from mamonsu.first_look.os_linux import SystemInfo
 else:
-    from mamonsu.lib.first_look_os_win import SystemInfo
+    from mamonsu.first_look.os_win import SystemInfo
 
 
 class Args(DefaultConfig):
@@ -19,15 +21,30 @@ class Args(DefaultConfig):
     def __init__(self):
 
         parser = optparse.OptionParser(
+            usage='%prog first-look',
             version='%prog first-look {0}'.format(__version__),
-            description='First look report [default: %default]')
+            description='First look report')
         group = optparse.OptionGroup(
             parser,
             'Start options')
         group.add_option(
+            '--run-system',
+            dest='run_system',
+            default=True, help='Enable system collect (default: %default)')
+        group.add_option(
+            '--run-postgres',
+            dest='run_postgres',
+            default=True,
+            help='Run postresql collect (default: %default)')
+        group.add_option(
             '-l', '--log-level',
             dest='log_level',
-            default='INFO', help='Log level [default: %default]')
+            default='INFO', help='Log level (default: %default)')
+        if platform.LINUX:
+            group.add_option(
+                '-t', '--try-sudo',
+                dest='use_sudo',
+                default=True, help='Try sudo if needed (default: %default)')
         parser.add_option_group(group)
         group = optparse.OptionGroup(
             parser,
@@ -36,35 +53,35 @@ class Args(DefaultConfig):
             '-w', '--report-path',
             dest='report_path',
             default=self.default_report_path(),
-            help='Path to report [default: %default]')
+            help='Path to report (default: %default)')
         group.add_option(
             '-r', '--print-report',
             dest='print_report',
-            default=True, help='Print summary info [default: %default]')
+            default=True, help='Print summary info (default: %default)')
         parser.add_option_group(group)
         group = optparse.OptionGroup(
             parser,
             'Postgres connection options')
         group.add_option(
-            '--miss-postgres',
-            dest='miss_postgres',
-            default=False,
-            help='Disable postresql checks [default: %default]')
-        group.add_option(
             '-d', '--dbname',
             dest='dbname',
             default=self.default_db(),
-            help='database name to connect to [default: %default]')
+            help='database name to connect to (default: %default)')
         group.add_option(
             '--host',
             dest='hostname',
             default=self.default_host(),
-            help='database server host or socket path [default: %default]')
+            help='database server host or socket path (default: %default)')
+        group.add_option(
+            '--port',
+            dest='port',
+            default=self.default_port(),
+            help='database server port (default: %default)')
         group.add_option(
             '-U', '--username',
             dest='username',
             default=self.default_user(),
-            help='database user name [default: %default]')
+            help='database user name (default: %default)')
         group.add_option(
             '-W', '--password',
             dest='password',
@@ -82,13 +99,13 @@ class Args(DefaultConfig):
         os.environ['PGUSER'] = self.args.username
         os.environ['PGPASSWORD'] = self.args.password
         os.environ['PGHOST'] = self.args.hostname
-        os.environ['PGDATABASE'] = self.args.database
+        os.environ['PGDATABASE'] = self.args.dbname
         os.environ['PGAPPNAME'] = 'mamonsu first look'
 
-        if not self._auto_host_is_working():
+        if self.args.run_postgres and not self._auto_host_is_working():
             logging.error(
                 'Miss postgres checking, can\'t connected with auto options')
-            self.args.miss_postgres = True
+            self.args.run_postgres = False
 
     def _auto_host_is_working(self):
 
@@ -96,7 +113,7 @@ class Args(DefaultConfig):
             logging.debug('Test host: {0}'.format(host_pre))
             if is_conn_to_db(
                 host=host_pre,
-                db=self.args.database,
+                db=self.args.dbname,
                 port=self.args.port,
                 user=self.args.username,
                     paswd=self.args.password):
@@ -127,18 +144,12 @@ class Args(DefaultConfig):
         except KeyError:
             return None
 
-    @staticmethod
-    def get_logger_level(level):
-        result = logging.INFO
-        level = level.upper()
-        if level == 'DEBUG':
-            return logging.DEBUG
-        if level == 'WARNING' or level == 'WARN':
-            return logging.WARN
-        return result
-
 
 def run_first_look():
     args = Args()
-    info = SystemInfo(args)
-    info.run()
+    if args.run_system:
+        sys_info = SystemInfo(args)
+        sys_info.run()
+    if args.run_postgres:
+        pg_info = PostgresInfo(args)
+        pg_info.run()

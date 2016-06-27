@@ -23,16 +23,6 @@ else:
 
 class Config(DefaultConfig):
 
-    @staticmethod
-    def get_logger_level(level):
-        result = logging.INFO
-        level = level.upper()
-        if level == 'DEBUG':
-            return logging.DEBUG
-        if level == 'WARNING' or level == 'WARN':
-            return logging.WARN
-        return result
-
     def __init__(self, override_config_filename=None):
 
         parser = optparse.OptionParser(

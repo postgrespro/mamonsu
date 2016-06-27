@@ -5,7 +5,7 @@ import logging
 import signal
 import sys
 
-from mamonsu.lib.first_look import run_first_look
+from mamonsu.first_look.start import run_first_look
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.config import Config

@@ -1235,7 +1235,7 @@ class Connection(object):
     # default value is 100 rows.  The effect of this parameter is transparent.
     # That is, the library reads more rows when the cache is empty
     # automatically.
-    _row_cache_size = 100
+    _row_cache_size = 2000
     _row_cache_size_bin = i_pack(_row_cache_size)
 
     def _getError(self, error):

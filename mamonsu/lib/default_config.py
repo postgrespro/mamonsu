@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import logging
 import mamonsu.lib.platform as platform
 
 
@@ -42,6 +43,16 @@ class PgsqlConfig(object):
 
 
 class DefaultConfig(PgsqlConfig):
+
+    @staticmethod
+    def get_logger_level(level):
+        result = logging.INFO
+        level = level.upper()
+        if level == 'DEBUG':
+            return logging.DEBUG
+        if level == 'WARNING' or level == 'WARN':
+            return logging.WARN
+        return result
 
     @staticmethod
     def default_report_path():
