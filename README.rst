@@ -130,6 +130,7 @@ First look tool
 ===============
 
 .. code-block:: bash
+
     $ mamonsu first --help
 
 
