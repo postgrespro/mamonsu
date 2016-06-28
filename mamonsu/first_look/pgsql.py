@@ -2,10 +2,48 @@
 
 import logging
 import re
+import time
 from mamonsu.plugins.pgsql.pool import Pooler
 
 
 class PostgresInfo(object):
+
+    QueryCommonInfo = (
+        """
+select
+    version(),
+    (now() - pg_postmaster_start_time())::time,
+    round(sum(blks_hit)*100/sum(blks_hit+blks_read), 2)
+from
+    pg_catalog.pg_stat_database """,
+        ('version', 'uptime', 'cache hit')
+    )
+
+    QueryConnections = (
+        """
+select count(*), 'total' from pg_catalog.pg_stat_activity
+union all
+select count(*), 'waiting' from pg_catalog.pg_stat_activity where waiting
+union all
+select count(*), 'active' from pg_catalog.pg_stat_activity
+    where state = 'active'
+union all
+select count(*), 'idle' from pg_catalog.pg_stat_activity where state = 'idle'
+union all
+select count(*), 'idle in transaction' from pg_catalog.pg_stat_activity
+    where state = 'idle in transaction'
+"""
+    )
+
+    QueryRate = (
+        """
+select
+    date_part('epoch', now()),
+    sum(xact_commit),
+    sum(xact_rollback)
+from pg_catalog.pg_stat_database
+"""
+    )
 
     QueryPgSettings = (
         """
@@ -73,13 +111,23 @@ select
     pg_catalog.shobj_description(d.oid, 'pg_database')
 from pg_catalog.pg_database d
   join pg_catalog.pg_tablespace t on d.dattablespace = t.oid
-order by 2 desc """,
+order by 1 """,
         ('name', 'size', 'owner', 'encoding', 'collate',
             'ctype', 'privileges', 'tablespace', 'description')
     )
 
     def __init__(self, args):
         self.args = args
+        logging.info('Test connection...')
+        self.connected = self._is_connection_work()
+        if not self.connected:
+            return
+        logging.info('Collect pg common info...')
+        self.common_info = self._collect_query(self.QueryCommonInfo)
+        logging.info('Collect rate.,.')
+        self.rate = self._collect_rate()
+        logging.info('Collect connection info...')
+        self.connections = self._collect_connections()
         logging.info('Collect pg_setting info...')
         self.settings = self._collect_query(self.QueryPgSettings)
         logging.info('Collect database list...')
@@ -91,6 +139,14 @@ order by 2 desc """,
         info = self.printable_info()
         logging.error("\n{}\n".format(self.store_raw()))
         return info
+
+    def _is_connection_work(self):
+        try:
+            Pooler.query('select 1')
+            return True
+        except Exception as e:
+            logging.error('Test query error: {0}'.format(e))
+            return False
 
     _suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 
@@ -136,9 +192,15 @@ order by 2 desc """,
         def format_out(info, val):
             return "# {0} ##################################\n{1}\n".format(
                 info, val)
-        out = format_out('PG SETTINGS', self.settings)
+        if not self.connected:
+            out = format_out('Test connection', 'Failed')
+            return out
+        out = format_out('PG COMMON', self.common_info)
+        out += format_out('PG RATE', self.rate)
+        out += format_out('PG CONNECTIONS', self.connections)
+        out += format_out('PG SETTINGS', self.settings)
         out += format_out('PG DBLIST', self.dblist)
-        out += format_out('PG DBLIST', self.biggest_tables)
+        out += format_out('PG BIG TABLES LIST', self.biggest_tables)
         return out
 
     def printable_info(self):
@@ -150,6 +212,20 @@ order by 2 desc """,
             return "{0:40s}|    {1}\n".format(key, val)
 
         out = ''
+        if not self.connected:
+            out += format_header('PGSQL Error')
+            out += format_out('Test connection', 'Failed')
+            return out
+        out += format_header('PostgreSQL')
+        out += format_out('version', self.common_info[1][0])
+        out += format_out('uptime', self.common_info[1][1])
+        out += format_out('cache hit', '{0} %'.format(self.common_info[1][2]))
+        out += format_out('tps', self.rate['_TPS'])
+        out += format_out('rollbacks', self.rate['_ROLLBACKS'])
+        out += format_header('Connections')
+        for info in self.connections:
+            count, name = info
+            out += format_out(name, count)
         for key in self.QueryPgSettings[2]:
             out += format_header(key)
             for row in self.settings:
@@ -184,6 +260,30 @@ order by 2 desc """,
                 result.append(row)
         except Exception as e:
             logging.error("Query {0} error: {1}".format(query_desc[0], e))
+        return result
+
+    def _collect_rate(self):
+        result = {}
+        result['_TPS'], result['_ROLLBACKS'] = '', ''
+        try:
+            result['row_1'] = Pooler.query(self.QueryRate)[0]
+            time.sleep(2)
+            result['row_2'] = Pooler.query(self.QueryRate)[0]
+            exec_time = float(result['row_2'][0] - result['row_1'][0])
+            result['_TPS'] = float(
+                result['row_2'][1] - result['row_1'][1]) / exec_time
+            result['_ROLLBACKS'] = float(
+                result['row_2'][2] - result['row_1'][2]) / exec_time
+        except Exception as e:
+            logging.error('Query rate error: {0}'.format(e))
+        return result
+
+    def _collect_connections(self):
+        result = []
+        try:
+            result = Pooler.query(self.QueryConnections)
+        except Exception as e:
+            logging.error('Query connections error: {0}'.format(e))
         return result
 
     def _collect_biggest(self):

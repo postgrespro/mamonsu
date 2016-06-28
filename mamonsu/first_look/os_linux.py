@@ -8,6 +8,8 @@ import os
 import re
 import glob
 
+from mamonsu import __version__
+
 sudoWorking = None
 
 
@@ -83,8 +85,6 @@ class Shell(object):
 
 class SystemInfo(object):
 
-    VERSION = '0.0.1'
-
     def __init__(self, args):
         self.args = args
         # disable sudo
@@ -136,6 +136,8 @@ class SystemInfo(object):
         self.parsed_meminfo = self._parse_meminfo(self.meminfo, self.sysctl)
         logging.info('Collecting disks info...')
         self.disks = self._fetch_disk_info()
+        logging.info('Collecting iostat...')
+        self.iostat = self._fetch_iostat()
         logging.info('Collecting lvs info...')
         self.lvs = self._fetch_lvs()
         logging.info('Collecting vgs info...')
@@ -153,7 +155,7 @@ class SystemInfo(object):
 
         out = ''
         out += format_header('Report')
-        out += format_out('Version', self.VERSION)
+        out += format_out('Version', __version__)
         out += format_out('Platform', sys.platform)
         out += format_out('Python', sys.version_info)
         out += format_header('System')
@@ -187,6 +189,8 @@ class SystemInfo(object):
             out += format_out(disk, 'Scheduler: {0} Queue: {1}'.format(
                 self.disks[disk]['scheduler'],
                 self.disks[disk]['nr_requests']))
+        out += format_header('IOstat')
+        out += self.iostat + "\n"
         out += format_header('LVM')
         out += self.vgs + "\n"
         out += self.lvs + "\n"
@@ -208,6 +212,7 @@ class SystemInfo(object):
         out += format_out('DF', self.df)
         out += format_out('MOUNT', self.mount)
         out += format_out('MDSTAT', self.mdstat)
+        out += format_out('IOSTAT', self.iostat)
         out += format_out('LVS', self.lvs)
         out += format_out('VGS', self.vgs)
         return out
@@ -531,7 +536,8 @@ class SystemInfo(object):
                 result['hyperthreading'] = True
         result['model'] = fetch_first(r'model name\s+\:\s+(.*)$', info)
         result['cache'] = fetch_first(r'cache size\s+\:\s+(.*)$', info)
-        result['speed'] = fetch_first(r'^cpu MHz\s+\:\s+(\d+\.\d+)$', info)
+        result['speed'] = fetch_first(
+            r'^cpu MHz\s+\:\s+(\d+\.\d+)$', info) + ' MHz'
         result['_TOTAL'] = 'physical = {0}, cores = {1}, '\
             'virtual = {2}, hyperthreading = {3}'.format(
                 result['physical'], result['cores'],
@@ -610,6 +616,14 @@ class SystemInfo(object):
                 continue
             result[disk] = data
         return result
+
+    def _fetch_iostat(self):
+        shell = Shell('iostat -x -N -m 1 2', timeout=3)
+        if shell.status == 0:
+            return shell.stdout
+        else:
+            logging.error(shell.error())
+            return ''
 
     def _fetch_lvs(self):
         shell = Shell('lvs', sudo=True)

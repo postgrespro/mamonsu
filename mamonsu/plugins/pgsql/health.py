@@ -30,7 +30,7 @@ class PgHealth(Plugin):
 
         result = Pooler.query('select \
             round(sum(blks_hit)*100/sum(blks_hit+blks_read), 2) \
-            from pg_stat_database')
+            from pg_catalog.pg_stat_database')
         zbx.send('pgsql.cache[hit]', int(result[0][0]))
 
     def items(self, template):
