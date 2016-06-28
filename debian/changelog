@@ -1,3 +1,9 @@
+mamonsu (0.5.1) stable; urgency=low
+
+  * First look fixes
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Tue, 29 Jun 2016 09:00:00 +0300
+
 mamonsu (0.5.0) stable; urgency=low
 
   * Add first look tool

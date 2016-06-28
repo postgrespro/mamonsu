@@ -3,6 +3,7 @@
 import logging
 import re
 import time
+import datetime
 from mamonsu.plugins.pgsql.pool import Pooler
 
 
@@ -189,18 +190,34 @@ order by 1 """,
         return value
 
     def store_raw(self):
+
+        def format_obj(val):
+            if isinstance(val, list) or isinstance(val, tuple):
+                result = ''
+                for row in val:
+                    result += format_obj(row)
+                result += "\n"
+                return result
+            if isinstance(val, dict):
+                result = ''
+                for key in val:
+                    result += '{0}:{1}\n'.format(key, format_obj(val[key]))
+                return result
+            return '{0:10}|'.format(val)
+
         def format_out(info, val):
             return "# {0} ##################################\n{1}\n".format(
                 info, val)
+
         if not self.connected:
             out = format_out('Test connection', 'Failed')
             return out
-        out = format_out('PG COMMON', self.common_info)
-        out += format_out('PG RATE', self.rate)
-        out += format_out('PG CONNECTIONS', self.connections)
-        out += format_out('PG SETTINGS', self.settings)
-        out += format_out('PG DBLIST', self.dblist)
-        out += format_out('PG BIG TABLES LIST', self.biggest_tables)
+        out = format_out('PG COMMON', format_obj(self.common_info))
+        out += format_out('PG RATE', format_obj(self.rate))
+        out += format_out('PG CONNECTIONS', format_obj(self.connections))
+        out += format_out('PG SETTINGS', format_obj(self.settings))
+        out += format_out('PG DBLIST', format_obj(self.dblist))
+        out += format_out('TABLES LIST', format_obj(self.biggest_tables))
         return out
 
     def printable_info(self):
