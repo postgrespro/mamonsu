@@ -10,6 +10,7 @@ Source2:        mamonsu-logrotate.in
 BuildRequires:  python2-devel
 BuildRequires:  python-setuptools
 BuildArch:      noarch
+Requires:       python-setuptools
 
 %description
 Zabbix active agent for monitoring PostgreSQL.
