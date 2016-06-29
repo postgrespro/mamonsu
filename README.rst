@@ -133,6 +133,11 @@ First look tool
 
     $ mamonsu first --help
 
+===============
+Screenshots
+===============
+
+.. image::  https://raw.githubusercontent.com/postgrespro/mamonsu/master/examples/statistics.png 
 
 ==================
 PostgreSQL metrics
