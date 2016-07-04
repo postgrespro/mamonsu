@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        0.5.1
+Version:        0.6.0
 Release:        1%{?dist}
 Summary:        Active zabbix agent
 Group:          Applications/Internet
@@ -38,6 +38,7 @@ export PYTHONPATH=%{buildroot}%{python_sitelib}
 
 %files
 %doc README.rst
+%config %{_sysconfdir}/%{name}/agent.conf
 %{python_sitelib}/%{name}/
 %{python_sitelib}/%{name}-%{version}*
 %{_sysconfdir}/%{name}
@@ -72,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Jul 4 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.6.0-1
+- Autotune PostgreSQL config
+
 * Tue Jun 28 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.5.1-1
 - First look fixes
 

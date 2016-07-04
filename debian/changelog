@@ -1,3 +1,9 @@
+mamonsu (0.6.0) stable; urgency=low
+
+  * Autotune PostgreSQL config
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 4 Jul 2016 23:00:00 +0300
+
 mamonsu (0.5.1) stable; urgency=low
 
   * First look fixes
