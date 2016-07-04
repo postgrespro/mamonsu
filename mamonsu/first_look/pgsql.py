@@ -3,7 +3,6 @@
 import logging
 import re
 import time
-import datetime
 from mamonsu.plugins.pgsql.pool import Pooler
 
 

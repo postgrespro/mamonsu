@@ -133,11 +133,19 @@ First look tool
 
     $ mamonsu first --help
 
+====================
+Auto tune PostgreSQL
+====================
+
+.. code-block:: bash
+
+    $ mamonsu tuen --help
+
 ===============
 Screenshots
 ===============
 
-.. image::  https://raw.githubusercontent.com/postgrespro/mamonsu/master/examples/statistics.png 
+.. image::  https://raw.githubusercontent.com/postgrespro/mamonsu/master/examples/statistics.png
 
 ==================
 PostgreSQL metrics

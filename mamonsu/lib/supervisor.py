@@ -6,6 +6,7 @@ import signal
 import sys
 
 from mamonsu.first_look.start import run_first_look
+from mamonsu.auto_tune.start import run_auto_tune
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.config import Config
@@ -85,6 +86,14 @@ def start():
                 or arg == 'first-look':
             sys.argv.remove(arg)
             run_first_look()
+            return
+
+    for arg in sys.argv:
+        if arg == 'auto-tune' or arg == '--auto-tune'\
+                or arg == 'tune' or arg == 'autotune'\
+                or arg == '--autotune':
+            sys.argv.remove(arg)
+            run_auto_tune()
             return
 
     config = Config()
