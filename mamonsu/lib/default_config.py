@@ -9,7 +9,7 @@ class PgsqlConfig(object):
 
     @staticmethod
     def default_user():
-        user = os.environ.get('PGUSER') or os.environ.get('USER') or 'postgres'
+        user = os.environ.get('PGUSER') or 'postgres'
         return user
 
     @staticmethod
