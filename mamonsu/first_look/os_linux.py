@@ -219,7 +219,7 @@ class SystemInfo(object):
 
     def collect(self):
         info = self.printable_info()
-        logging.error("\n{}\n".format(self.store_raw()))
+        logging.error("\n{0}\n".format(self.store_raw()))
         return info
 
     _suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']

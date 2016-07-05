@@ -137,7 +137,7 @@ order by 1 """,
 
     def collect(self):
         info = self.printable_info()
-        logging.error("\n{}\n".format(self.store_raw()))
+        logging.error("\n{0}\n".format(self.store_raw()))
         return info
 
     def _is_connection_work(self):

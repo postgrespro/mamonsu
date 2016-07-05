@@ -18,11 +18,16 @@ script:
      make rpm && rpm -i mamonsu*.rpm && cd / &&
      /etc/init.d/mamonsu restart &&
      sleep 5 && /etc/init.d/mamonsu stop &&
+     yum install -y https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm &&
+     yum install -y postgresql95-server &&
+     su postgres -c '/usr/pgsql-9.5/bin/initdb -D /var/lib/pgsql/9.5/data' &&
+     /etc/init.d/postgresql-9.5 start &&
+      mamonsu first | grep version | grep 'PostgreSQL 9.5' &&
      yum remove -y mamonsu"
 # deb build
   - >
     docker run -v $(pwd):/var/tmp debian:7 bash -c
-    "cd /var/tmp && apt-get update --fix-missing ;
+    "cd /var/tmp && (apt-get update || apt-get update || apt-get update) &&
      echo package mamonsu/zabbix_address string '127.0.0.1' | debconf-set-selections &&
      echo package mamonsu/zabbix_client string '127.0.0.1' | debconf-set-selections &&
      echo package mamonsu/postgres_user string 'postgres' | debconf-set-selections &&
