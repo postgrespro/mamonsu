@@ -38,7 +38,7 @@ class PgsqlConfig(object):
     @staticmethod
     def default_db():
         database = os.environ.get('PGDATABASE') or os.environ.get('PGUSER')
-        database = database or os.environ.get('USER') or 'postgres'
+        database = database or 'postgres'
         return database
 
 
