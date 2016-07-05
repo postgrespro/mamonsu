@@ -38,7 +38,7 @@ export PYTHONPATH=%{buildroot}%{python_sitelib}
 
 %files
 %doc README.rst
-%config %{_sysconfdir}/%{name}/agent.conf
+%config(noreplace) %{_sysconfdir}/%{name}/agent.conf
 %{python_sitelib}/%{name}/
 %{python_sitelib}/%{name}-%{version}*
 %{_sysconfdir}/%{name}

@@ -126,12 +126,12 @@ Run
     $ mamonsu -c /etc/mamonsu/agent.conf -p /var/run/mamonsu.pid
 
 ===============
-First look tool
+Report tool
 ===============
 
 .. code-block:: bash
 
-    $ mamonsu first --help
+    $ mamonsu report --help
 
 ====================
 Auto tune PostgreSQL
@@ -139,7 +139,7 @@ Auto tune PostgreSQL
 
 .. code-block:: bash
 
-    $ mamonsu tuen --help
+    $ mamonsu tune --help
 
 ===============
 Screenshots

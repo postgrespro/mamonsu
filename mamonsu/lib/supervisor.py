@@ -83,7 +83,7 @@ def start():
     for arg in sys.argv:
         if arg == '--run-first-look' or arg == '--run-look'\
                 or arg == 'first' or arg == '--first'\
-                or arg == 'first-look':
+                or arg == 'first-look' or arg == 'report':
             sys.argv.remove(arg)
             run_first_look()
             return
