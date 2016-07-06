@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        0.6.0
+Version:        0.6.1
 Release:        1%{?dist}
 Summary:        Active zabbix agent
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Wed 6 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.6.1-1
+- Autotune PostgreSQL config
+
 * Mon Jul 4 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.6.0-1
 - Autotune PostgreSQL config
 
