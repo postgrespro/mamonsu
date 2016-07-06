@@ -8,7 +8,7 @@ Standards-Version: 3.7.3
 
 Package: mamonsu
 Architecture: any
-Depends: ${shlibs:Depends}, ${python:Depends}
+Depends: ${shlibs:Depends}, ${python:Depends}, python-pkg-resources
 XB-Python-Version: ${python:Versions}
 Provides: ${python:Provides}
 Suggests: zabbix-agent
