@@ -1,12 +1,18 @@
+mamonsu (0.6.2-1) stable; urgency=low
+
+  * mamonsu report improve
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Fri, 8 Jul 2016 17:00:00 +0300
+
 mamonsu (0.6.1-2) stable; urgency=low
 
-  * Small fixes 
+  * Small fixes
 
  -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 4 Jul 2016 23:00:00 +0300
 
 mamonsu (0.6.1) stable; urgency=low
 
-  * Small fixes 
+  * Small fixes
 
  -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 4 Jul 2016 23:00:00 +0300
 
