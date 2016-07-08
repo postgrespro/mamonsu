@@ -10,5 +10,5 @@ Run
 
 .. code-block:: bash
 
-    mamonsu first --help
+    mamonsu report --help
 
