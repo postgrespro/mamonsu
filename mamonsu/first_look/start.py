@@ -3,6 +3,7 @@
 import logging
 import optparse
 import os
+import pwd
 
 from mamonsu import __version__
 import mamonsu.lib.platform as platform
@@ -42,9 +43,11 @@ class Args(DefaultConfig):
             default='INFO', help='Log level (default: %default)')
         if platform.LINUX:
             group.add_option(
-                '-t', '--try-sudo',
-                dest='use_sudo',
-                default=True, help='Try sudo if needed (default: %default)')
+                '-t', '--try-connect-as-user-postgres',
+                dest='try_postgres',
+                default=True,
+                help='Try connect as unix user postgres'
+                ' (only with auto opts, default: %default)')
         parser.add_option_group(group)
         group = optparse.OptionGroup(
             parser,
@@ -102,10 +105,29 @@ class Args(DefaultConfig):
         os.environ['PGDATABASE'] = self.args.dbname
         os.environ['PGAPPNAME'] = 'mamonsu first look'
 
+        if not self._configure_auto_host():
+            if self._try_run_as_postgres():
+                if not self._configure_auto_host():
+                    logging.error('Miss postgres config')
+                    self.run_postgres = False
+            else:
+                logging.error('Miss postgres config')
+                self.run_postgres = False
+
+    def _configure_auto_host(self):
         if self.args.run_postgres and not self._auto_host_is_working():
-            logging.error(
-                'Miss postgres checking, can\'t connected with auto options')
-            self.args.run_postgres = False
+            return False
+        return True
+
+    def _try_run_as_postgres(self):
+        if platform.LINUX and os.getegid() == 0:
+            try:
+                uid = pwd.getpwnam('postgres').pw_uid()
+                os.seteuid(uid)
+                return True
+            except:
+                pass
+        return False
 
     def _auto_host_is_working(self):
 
@@ -159,5 +181,9 @@ def run_first_look():
     if args.print_report:
         if args.run_system:
             print(sys_report)
+        else:
+            print('Disabled system collect')
         if args.run_postgres:
             print(pg_report)
+        else:
+            print('Disabled postgres collect')
