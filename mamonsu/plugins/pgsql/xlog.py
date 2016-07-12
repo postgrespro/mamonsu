@@ -11,7 +11,7 @@ class Xlog(Plugin):
     def run(self, zbx):
         # recovery
         result = Pooler.query('select pg_is_in_recovery()')
-        if result[0][0] == 't':
+        if str(result[0][0]) == 't' or str(result[0][0]) == 'True':
             lag = Pooler.query('select extract(epoch from now() \
                 - pg_last_xact_replay_timestamp())')
             zbx.send('pgsql.replication_lag[sec]', lag[0][0])

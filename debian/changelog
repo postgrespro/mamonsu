@@ -1,3 +1,9 @@
+mamonsu (0.6.5-1) stable; urgency=low
+
+  * fix replica metrics
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Tue, 12 Jul 2016 16:00:00 +0300
+
 mamonsu (0.6.4-1) stable; urgency=low
 
   * fixes
