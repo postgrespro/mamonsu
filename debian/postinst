@@ -22,8 +22,6 @@ if [ "$1" = "configure" ]; then
     chown mamonsu:mamonsu /var/log/mamonsu
     chown mamonsu:mamonsu /var/lib/mamonsu
 
-    _configure_conf
-
 fi
 
 db_stop
