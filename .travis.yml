@@ -28,18 +28,8 @@ script:
   - >
     docker run -v $(pwd):/var/tmp debian:7 bash -c
     "cd /var/tmp && (apt-get update || apt-get update || apt-get update) &&
-     echo package mamonsu/zabbix_address string '127.0.0.1' | debconf-set-selections &&
-     echo package mamonsu/zabbix_client string '127.0.0.1' | debconf-set-selections &&
-     echo package mamonsu/postgres_user string 'postgres' | debconf-set-selections &&
-     echo package mamonsu/postgres_password string 'postgres' | debconf-set-selections &&
-     echo package mamonsu/postgres_database string 'postgres' | debconf-set-selections &&
-     echo package mamonsu/postgres_host string '127.0.0.1' | debconf-set-selections &&
-     echo package mamonsu/postgres_port string '5432' | debconf-set-selections &&
-     echo package mamonsu/postgres_query_timeout string '10' | debconf-set-selections &&
-     echo package mamonsu/log_level string 'INFO' | debconf-set-selections &&
      apt-get install -y make dpkg-dev debhelper python-dev python-setuptools &&
      make deb && dpkg -i mamonsu*.deb && cd / &&
-     grep 'address \= 127.0.0.1' /etc/mamonsu/agent.conf &&
      /etc/init.d/mamonsu restart &&
      sleep 5 && /etc/init.d/mamonsu stop &&
      apt-get purge -y mamonsu"

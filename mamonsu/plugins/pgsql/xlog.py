@@ -15,10 +15,11 @@ class Xlog(Plugin):
             lag = Pooler.query('select extract(epoch from now() \
                 - pg_last_xact_replay_timestamp())')
             zbx.send('pgsql.replication_lag[sec]', lag[0][0])
-        # xlog location
-        result = Pooler.query("select \
-            pg_xlog_location_diff(pg_current_xlog_location(),'0/00000000')")
-        zbx.send('pgsql.wal.write[]', result[0][0])
+        else:
+            # xlog location
+            result = Pooler.query("select pg_xlog_location_diff\
+                (pg_current_xlog_location(),'0/00000000')")
+            zbx.send('pgsql.wal.write[]', result[0][0])
 
     def items(self, template):
         return template.item({
