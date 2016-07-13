@@ -3,7 +3,10 @@
 import logging
 import optparse
 import os
-import pwd
+try:
+    import pwd
+except ImportError:
+    pass
 
 from mamonsu import __version__
 import mamonsu.lib.platform as platform
