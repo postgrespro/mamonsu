@@ -3,7 +3,6 @@
 import logging
 import optparse
 import os
-import pwd
 
 from mamonsu import __version__
 import mamonsu.lib.platform as platform
@@ -15,6 +14,8 @@ if platform.LINUX:
     from mamonsu.first_look.os_linux import SystemInfo
 else:
     from mamonsu.first_look.os_win import SystemInfo
+if platform.LINUX:
+    import pwd
 
 
 class Args(DefaultConfig):
