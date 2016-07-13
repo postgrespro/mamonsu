@@ -119,10 +119,9 @@ Section "${NAME} ${VERSION}" SectionMamonsu
    Call StopService
  ${endif}
 
- SetOutPath "$INSTDIR" ; install binary to directory on target machine
- File "..\win\${VERSION}\service.exe" ; pick that file and pack it to installer
- File "..\win\${VERSION}\agent.exe"
- File "..\win\${VERSION}\template.xml"
+ SetOutPath "$INSTDIR"
+ File "..\dist\service_win32.exe"
+ File "..\dist\agent.exe"
  CreateDirectory "$log_dir"
  WriteUninstaller "$INSTDIR\Uninstall.exe"
 
@@ -372,13 +371,11 @@ Function InputData
  ${if} $action != ''
    Abort
  ${endif}
-
  ${NSD_GetText} $pg_host_input $pg_host
  ${NSD_GetText} $pg_port_input $pg_port
  ${NSD_GetText} $pg_user_input $pg_user
  ${NSD_GetText} $pg_db_input $pg_db
  ${NSD_GetText} $pg_password_input $pg_password
-
  ${If} $pg_password == ''
    StrCpy $pg_password 'None' 
  ${EndIf}  
@@ -419,7 +416,6 @@ Function InputDataZB
  ${if} $action != ''
    Abort
  ${endif}
-
  ${NSD_GetText} $zb_address_input $zb_address
  ${NSD_GetText} $zb_port_input $zb_port
  ${NSD_GetText} $zb_client_input $zb_client
@@ -483,7 +479,6 @@ Function CreateConfig
    ${endif}
 
  ${elseif} $action == 'reinstall'
-   
    ${if} ${FileExists} "$ext_inst_dir\agent.conf"
      #if user decided to choose different log directory while reinstalling
      ${ConfigWrite} "$ext_inst_dir\agent.conf" "file = " "$log_dir\${LOG_FILE}" $0
@@ -491,9 +486,8 @@ Function CreateConfig
    ${else}
      Goto recreate_config
    ${endif}
-
  ${else} ; fresh install
- Goto create_config
+  Goto create_config
  ${endif}
  
  recreate_config:
@@ -540,14 +534,11 @@ Function CreateConfig
  AccessControl::GrantOnFile "$log_dir" "${USER}" "FullAccess"
  AccessControl::GrantOnFile "$log_dir" "${USER}" "AddFile"
 
- AccessControl::SetFileOwner "$INSTDIR\service.exe" "${USER}"
- AccessControl::GrantOnFile "$INSTDIR\service.exe" "(S-1-3-0)" "FullAccess"
+ AccessControl::SetFileOwner "$INSTDIR\service_win32.exe" "${USER}"
+ AccessControl::GrantOnFile "$INSTDIR\service_win32.exe" "(S-1-3-0)" "FullAccess"
 
  AccessControl::SetFileOwner "$INSTDIR\agent.conf" "${USER}"
  AccessControl::GrantOnFile "$INSTDIR\agent.conf" "(S-1-3-0)" "FullAccess"
-
- AccessControl::SetFileOwner "$INSTDIR\template.xml" "${USER}"
- AccessControl::GrantOnFile "$INSTDIR\template.xml" "(S-1-3-0)" "FullAccess"
  cancel:
 FunctionEnd
 
@@ -595,36 +586,36 @@ Function CreateService
        SimpleSC::RemoveService "${SERVICE_NAME}"
        Pop $0 
         ${if} $0 == 0 ; service deleted
-          DetailPrint "Result RemoveService: ok"
+         DetailPrint "Result RemoveService: ok"
         ${else}
-          DetailPrint "Result RemoveService: error"
+         DetailPrint "Result RemoveService: error"
         ${endIf}
       ${else} ; service exist but user was not recreated, so its ok to exit
         ${if} $action == 'upgrade'
         ${OrIf} $action == 'downgrade'
-        DetailPrint "It`s upgrade/downgrade, service must be updated to reflect new path to binary"
-        DetailPrint "Updating service ..."
-        nsExec::ExecToStack /TIMEOUT=10000 '"$INSTDIR\service.exe" update'
-          Pop $0
-          Pop $1
-           ${if} $0 == 0
-             DetailPrint "Result: ok"
-           ${elseif} $0 == 'error'
-             DetailPrint "Result: error"
-             DetailPrint "$1"
-           ${elseif} $0 == 'timeout'
-             DetailPrint "Result: timeout"
-           ${endif}
-        goto cancel
+         DetailPrint "It`s upgrade/downgrade, service must be updated to reflect new path to binary"
+         DetailPrint "Updating service ..."
+         nsExec::ExecToStack /TIMEOUT=10000 '"$INSTDIR\service_win32.exe" update'
+         Pop $0
+         Pop $1
+          ${if} $0 == 0
+           DetailPrint "Result: ok"
+          ${elseif} $0 == 'error'
+           DetailPrint "Result: error"
+           DetailPrint "$1"
+          ${elseif} $0 == 'timeout'
+           DetailPrint "Result: timeout"
+          ${endif}
+         Goto cancel
         ${elseif} $action == 'reinstall'
-        DetailPrint "Service exist and user was not recreated, so its ok to use existing service"
-        goto cancel
+         DetailPrint "Service exist and user was not recreated, so its ok to use existing service"
+         Goto cancel
         ${endif}
      ${endif}
     ${endif}
   ${endif} 
  DetailPrint "Creating service ${SERVICE_NAME} ... "
- nsExec::ExecToStack /TIMEOUT=10000 '"$INSTDIR\service.exe" --username "$hostname\${USER}" --password "$user_password" --startup delayed install'
+ nsExec::ExecToStack /TIMEOUT=10000 '"$INSTDIR\service_win32.exe" --username "$hostname\${USER}" --password "$user_password" --startup delayed install'
  Pop $0
  Pop $1
  ${if} $0 == 0
@@ -670,8 +661,7 @@ Function DeleteDirectory
    DetailPrint "Deleting old install directory ..."
    Delete "$ext_inst_dir\agent.conf"
    Delete "$ext_inst_dir\agent.exe"
-   Delete "$ext_inst_dir\service.exe"
-   Delete "$ext_inst_dir\template.xml"
+   Delete "$ext_inst_dir\service_win32.exe"
    Delete "$ext_inst_dir\Uninstall.exe"
    compare_log_dirs:
    ${if} $ext_log_dir != $log_dir
@@ -701,7 +691,7 @@ Function un.DeleteService
 
  #remove
  DetailPrint "Removing service mamonsu ..."
- nsExec::ExecToStack '"$INSTDIR\service.exe" remove'
+ nsExec::ExecToStack '"$INSTDIR\service_win32.exe" remove'
  Pop $0
  Pop $1
  ${if} $0 == 0
@@ -744,8 +734,7 @@ FunctionEnd
 Function un.DeleteDirectory
  Delete "$INSTDIR\agent.conf"
  Delete "$INSTDIR\agent.exe"
- Delete "$INSTDIR\service.exe"
- Delete "$INSTDIR\template.xml"
+ Delete "$INSTDIR\service_win32.exe"
  Delete "$INSTDIR\Uninstall.exe"
  Delete "$ext_log_dir\${LOG_FILE}"
  RMDir "$ext_log_dir"

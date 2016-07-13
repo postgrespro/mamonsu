@@ -28,7 +28,7 @@ setup(
             cmdline_style='pywin32'
         )
     ],
-    console=[{'script': 'mamonsu.py'}],
+    console=[{'script': 'mamonsu.py', 'dest_base': 'agent'}],
     options={
         'py2exe': {
             'packages': [
