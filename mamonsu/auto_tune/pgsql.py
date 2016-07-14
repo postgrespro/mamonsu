@@ -78,7 +78,7 @@ class AutoTune(object):
         self._run_query(
             "alter system set log_lock_waits to on")
         self._run_query(
-            "alter system set log_temp_files to on")
+            "alter system set log_temp_files to 0")
         self._run_query(
             "alter system set log_autovacuum_min_duration to 0")
         self._run_query(

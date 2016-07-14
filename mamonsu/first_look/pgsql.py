@@ -62,10 +62,11 @@ from pg_catalog.pg_settings """,
         ({
             'Data safe': [
                 'fsync', 'synchronous_commit',
-                'synchronous_standby_names'
+                'archive_command', 'synchronous_standby_names'
             ],
             'Memory': [
                 'shared_buffers', 'huge_pages', 'work_mem',
+                'maintenance_work_mem', 'autovacuum_work_mem',
                 'temp_buffers', 'max_connections'
             ],
             'Autovacuum': [
@@ -111,7 +112,7 @@ select
     pg_catalog.shobj_description(d.oid, 'pg_database')
 from pg_catalog.pg_database d
   join pg_catalog.pg_tablespace t on d.dattablespace = t.oid
-order by 1 """,
+order by 1 desc""",
         ('name', 'size', 'owner', 'encoding', 'collate',
             'ctype', 'privileges', 'tablespace', 'description')
     )

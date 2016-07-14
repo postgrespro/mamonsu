@@ -144,6 +144,8 @@ class SystemInfo(object):
         self.vgs = self._fetch_vgs()
         logging.info('Collecting mdstat info...')
         self.mdstat = self._fetch_mdstat()
+        logging.info('Collecting systemd settings...')
+        self.systemd = self._fetch_systemd()
 
     def printable_info(self):
 
@@ -182,6 +184,9 @@ class SystemInfo(object):
         out += format_out('Dirty bytes', self.parsed_meminfo['_DIRTY_BYTES'])
         out += format_out('Swap', self.parsed_meminfo['_SWAP'])
         out += format_out('Swappines', self.parsed_meminfo['_SWAPPINESS'])
+        out += format_header('System settings')
+        for k in self.systemd['_main']:
+            out += format_out(k, self.systemd['_main'][k])
         out += format_header('Mount')
         out += self.df + "\n"
         out += format_header('Disks')
@@ -650,3 +655,21 @@ class SystemInfo(object):
                 logging.error('Can\'t read /proc/mdstat')
                 return ''
         return 'N/A'
+
+    def _fetch_systemd(self):
+        result = {'_main': {}, 'logind': {}}
+        if os.path.isfile('/etc/systemd/logind.conf'):
+            try:
+                with open('/etc/systemd/logind.conf', 'r') as f:
+                    for line in f:
+                        data = line.split('=')
+                        if not len(data) == 2:
+                            continue
+                        k, v = data[0].replace('#', ''), data[1]
+                        result['logind'][k] = v
+                if 'RemoveIPC' in result['logind']:
+                    result['_main']['RemoveIPC'] = \
+                        result['logind']['RemoveIPC']
+            except:
+                pass
+        return result
