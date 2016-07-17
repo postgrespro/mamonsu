@@ -4,7 +4,7 @@
     compress
     missingok
     notifempty
-    create 0640 mamnosu mamnosu
+    create 0640 mamonsu mamonsu
     sharedscripts
     postrotate
         [ -e /var/run/mamonsu/mamonsu.pid ] && /etc/init.d/mamonsu restart >/dev/null
