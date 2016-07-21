@@ -7,7 +7,9 @@ import struct
 import socket
 import json
 import logging
+import os
 import encodings.idna
+import sys
 
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
@@ -26,8 +28,8 @@ class Zbx(Plugin):
         self.port = config.fetch('zabbix', 'port', int)
         self.max_queue_size = config.fetch('sender', 'queue', int)
         self.fqdn = config.fetch('zabbix', 'client')
-        self.binary_log_file = config.fetch('zabbix', 'binary_log')
-        self.binary_log_fd = None
+        self.metric_log_dir = config.fetch('zabbix', 'metric_log_dir')
+        self.metric_log_fds = {}
         self.queue = Queue()
         self.log = logging.getLogger(
             'ZBX-{0}:{1}'.format(self.host, self.port))
@@ -59,6 +61,7 @@ class Zbx(Plugin):
         metrics = self.queue.flush()
         if len(metrics) == 0:
             return
+        self._write_metric_log(metrics)
         data = json.dumps({
             'request': 'sender data',
             'data': metrics,
@@ -72,7 +75,6 @@ class Zbx(Plugin):
             packet = b'ZBXD\x01' + data_len + str.encode(data)
         else:
             packet = 'ZBXD\x01' + data_len + data
-        self._write_binary_log(packet)
         try:
             sock = socket.socket()
             sock.connect((self.host, self.port))
@@ -100,20 +102,36 @@ class Zbx(Plugin):
             buf += chunk
         return buf
 
-    def _write_binary_log(self, data):
-        if self.binary_log_file is None:
+    def _write_metric_log(self, data):
+
+        if self.metric_log_dir is None:
             return
-        if self.binary_log_fd is None:
+
+        if not os.path.isdir(self.metric_log_dir):
+                try:
+                    os.makedirs(self.metric_log_dir)
+                except Exception as e:
+                    self.log.error('Create directory error: {0}'.format(e))
+                    sys.exit(7)
+
+        for metric in data:
+
+            host = metric['host']
+            metric_log = os.path.join(
+                self.metric_log_dir, '{0}.log'.format(host))
+
+            if host not in self.metric_log_fds:
+                try:
+                    self.metric_log_fds[host] = open(metric_log, 'a')
+                except Exception as e:
+                    self.log.error('Create metric log error: {0}'.format(e))
+                    continue
+
             try:
-                self.binary_log_fd = open(self.binary_log_file, 'ab')
+                self.metric_log_fds[host].write("{0}\t{1}\t{2}\n".format(
+                    metric['clock'], metric['key'], metric['value']))
+                self.metric_log_fds[host].flush()
             except Exception as e:
-                self.log.error('Open binary log: {0}'.format(e))
-                self.binary_log_fd = None
-        try:
-            self.binary_log_fd.write(data)
-            self.binary_log_fd.write(b"\n")
-            self.binary_log_fd.flush()
-        except Exception as e:
-            self.log.error('Write binary log: {0}'.format(e))
-            self.binary_log_fd.close()
-            self.binary_log_fd = None
+                self.metric_log_fds[host].close()
+                self.metric_log_fds[host] = None
+                self.log.error('Write metric error: {0}'.format(e))

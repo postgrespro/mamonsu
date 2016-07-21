@@ -14,7 +14,7 @@ class DiskSizes(Plugin):
         'hugetlbfs', 'mqueue',
         'nfsd', 'proc', 'pstore',
         'rpc_pipefs', 'securityfs', 'sysfs',
-        'tmpfs', 'tracefs']
+        'nsfs', 'tmpfs', 'tracefs']
 
     def __init__(self, config):
         super(DiskSizes, self).__init__(config)

@@ -1,6 +1,6 @@
 Name:           mamonsu
-Version:        0.6.5
-Release:        2%{?dist}
+Version:        0.7.0
+Release:        1%{?dist}
 Summary:        Active zabbix agent
 Group:          Applications/Internet
 License:        BSD
@@ -73,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Thu Jul 21 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.7.0-1
+- metric log
+
 * Sun Jul 17 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.6.5-2
 - fix logrotate
 

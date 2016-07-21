@@ -108,7 +108,7 @@ class Config(DefaultConfig):
         config.set('zabbix', 'client', socket.gethostname())
         config.set('zabbix', 'address', '127.0.0.1')
         config.set('zabbix', 'port', str(10051))
-        config.set('zabbix', 'binary_log', str(None))
+        config.set('zabbix', 'metric_log_dir', str(None))
 
         config.add_section('sender')
         config.set('sender', 'queue', str(300))
