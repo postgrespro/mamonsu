@@ -16,7 +16,7 @@ Pre-Build packages for:
 
     Linux distros: https://packagecloud.io/postgrespro/mamonsu
 
-    Windows: https://github.com/postgrespro/mamonsu/tree/master/win
+    `Windows installers <https://oc.postgrespro.ru/index.php/s/qkGzj8MPLIqNhQv>`_
 
 Install via pip:
 
