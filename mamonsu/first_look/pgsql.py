@@ -117,6 +117,45 @@ order by 1 desc""",
             'ctype', 'privileges', 'tablespace', 'description')
     )
 
+    BigTableInfo = (
+        """
+with big_tables as (
+    select
+        c.oid as relid,
+        c.relname,
+        n.nspname as schema,
+        pg_catalog.pg_total_relation_size(c.oid) as size
+    from pg_catalog.pg_class c
+    left join pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+    where c.relkind in ('r','v','m','S','f','')
+        order by pg_catalog.pg_total_relation_size(c.oid) desc limit 10)
+select
+    b.schema || '.' || b.relname as "table",
+    pg_catalog.pg_size_pretty(b.size) as "size",
+    s.idx_scan,
+    s.seq_scan,
+    case s.n_live_tup when 0 then 0
+        else round((10000*s.n_mod_since_analyze)::float8
+            /s.n_live_tup::float8)/100 end as "since_analyze_perc",
+    case s.n_live_tup when 0 then 0
+        else round((10000*s.n_dead_tup)::float8
+            /s.n_live_tup::float8)/100 end as "dead_perc",
+    case io.idx_blks_hit when 0 then 0
+        else 100-round((10000*io.heap_blks_read)::float8
+            /io.heap_blks_hit::float8)/100 end as "heap_perc",
+    case io.idx_blks_hit when 0 then 0
+        else 100-round((10000*io.idx_blks_read)::float8
+            /io.idx_blks_hit::float8)/100 end as "idx_perc"
+from
+    pg_catalog.pg_stat_all_tables as s
+    inner join pg_catalog.pg_statio_all_tables io on io.relid = s.relid
+    inner join big_tables b on b.relid = s.relid
+order by b.size desc
+        """,
+        ('table', 'size', 'idx scan', 'seq scan', '% since analyze',
+            '% dead', '% heap', '% idx')
+        )
+
     def __init__(self, args):
         self.args = args
         logging.info('Test connection...')
@@ -260,14 +299,14 @@ order by 1 desc""",
                 continue
             out += format_out(row[0], self._humansize(row[1]))
         out += format_header('Biggest tables')
-        for i, key in enumerate(sorted(
-                self.biggest_tables,
-                key=self.biggest_tables.__getitem__,
-                reverse=True)):
-            if i > 20:
-                break
+        big_table_header = ''
+        for name in self.BigTableInfo[1][1:]:
+            big_table_header = "{0}\t{1}".format(
+                big_table_header, name)
+        out += "{0:40s}|{1}\n".format('table', big_table_header)
+        for i, key in enumerate(self.biggest_tables):
             out += format_out(
-                key, self._humansize_bytes(self.biggest_tables[key]))
+                key, self.biggest_tables[key])
         return out
 
     def _collect_query(self, query_desc):
@@ -308,17 +347,12 @@ order by 1 desc""",
         for info_dbs in Pooler.query('select datname \
                 from pg_catalog.pg_database where datistemplate = false'):
             try:
-                for info_sizes in Pooler.query("select n.nspname, c.relname, \
-                        pg_catalog.pg_total_relation_size(c.oid) as size from \
-                        pg_catalog.pg_class c \
-                            left join pg_catalog.pg_namespace n \
-                            on n.oid = c.relnamespace \
-                        where c.relkind IN ('r','v','m','S','f','') \
-                        order by size \
-                        desc", info_dbs[0]):
-                    table_name = '{0}.{1}.{2}'.format(
-                        info_dbs[0], info_sizes[0], info_sizes[1])
-                    result[table_name] = info_sizes[2]
+                for info in Pooler.query(self.BigTableInfo[0], info_dbs[0]):
+                    table_name = '{0}.{1}'.format(info_dbs[0], info[0])
+                    result[table_name] = ''
+                    for val in info[1:]:
+                        result[table_name] = "{0}\t{1}".format(
+                            result[table_name], val)
             except Exception as e:
                 logging.error("Connect to db {0} error: {1}".format(
                     info_dbs[0], e))
