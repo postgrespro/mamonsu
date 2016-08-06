@@ -8,6 +8,12 @@ Build status
 .. image:: https://travis-ci.org/postgrespro/mamonsu.svg?branch=master
     :target: https://travis-ci.org/postgrespro/mamonsu
 
+========
+License
+========
+
+Development version, available on github, released under BSD 3-clause.
+
 ============
 Installation
 ============
