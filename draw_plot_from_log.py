@@ -9,9 +9,13 @@ import logging
 import dateutil.parser as dateparser
 import datetime as dt
 import time
-import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.dates as md
+
+try:
+    import matplotlib.pyplot as plt
+    import matplotlib.dates as md
+except:
+    logging.error('Failed to load matplotlib: fatal error, exit now.')
+    sys.exit(1)
 
 try:
     import numpy as np
@@ -20,7 +24,8 @@ try:
 except:
     INTERPOLATION_LOADED = False
 
-matplotlib.rcParams.update({'font.size': 20})
+plt.rcParams.update({'font.size': 20})
+plt.style.use('seaborn-white')
 
 parser = optparse.OptionParser()
 group = optparse.OptionGroup(parser, 'General')
@@ -79,7 +84,7 @@ from_date = parse_date(args.from_date)
 # read file
 if not os.path.isfile(args.filename):
     logging.error('\tFile \'{0}\' not found'.format(args.filename))
-    sys.exit(1)
+    sys.exit(3)
 logging.info('\tOpen file {0}'.format(args.filename))
 with open(args.filename, 'r') as file:
     for line in file:
@@ -133,8 +138,8 @@ for service in services:
     # draw plot
     current_service += 1
     fig, ax = plt.subplots()
-    ax.plot(x_axis, y_axis)
-    ax.set_xlabel('Date')
+    plt.legend(loc='best', numpoints=1, fancybox=True)
+    ax.plot(x_axis, y_axis, linewidth=2, linestyle=':', marker='o')
     ax.set_ylabel(service)
     ax.set_axis_bgcolor('white')
     ax.spines['left'].set_smart_bounds(True)
@@ -148,7 +153,7 @@ for service in services:
     logging.info('\t[{0}/{1}] Save {2} file: {3}'.format(
         current_service, count_services,
         service, png_filename))
-    plt.savefig(png_filename)
+    plt.savefig(png_filename, bbox_inches='tight')
 
     # clear memory
     fig.clf()

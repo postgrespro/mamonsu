@@ -63,7 +63,7 @@ class ProcStat(Plugin):
                     for item in self.CpuItems:
                         value = m.group(item[0])
                         zbx.send(
-                            'system.{0}'.format(item[1]), int(value), data[3])
+                            'system.{0}'.format(item[1]), int(value), item[3])
 
     def items(self, template):
         result = ''
