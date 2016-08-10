@@ -1,4 +1,4 @@
-#/bin/sh -ex
+#!/bin/sh -ex
 
 # test build
 cd /var/tmp
