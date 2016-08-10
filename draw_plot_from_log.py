@@ -13,6 +13,7 @@ import time
 try:
     import matplotlib.pyplot as plt
     import matplotlib.dates as md
+    import matplotlib.ticker as tk
 except:
     logging.error('Failed to load matplotlib: fatal error, exit now.')
     sys.exit(1)
@@ -138,11 +139,14 @@ for service in services:
     # draw plot
     current_service += 1
     fig, ax = plt.subplots()
-    plt.legend(loc='best', numpoints=1, fancybox=True)
-    ax.plot(x_axis, y_axis, linewidth=2, linestyle=':', marker='o')
     ax.set_ylabel(service)
+    # format y
+    y_formatter = tk.ScalarFormatter(useOffset=False)
+    ax.yaxis.set_major_formatter(y_formatter)
+    ax.plot(x_axis, y_axis, linewidth=2, linestyle=':', marker='o')
     ax.set_axis_bgcolor('white')
     ax.spines['left'].set_smart_bounds(True)
+    ax.grid(True)
     ax.xaxis.set_major_formatter(xfmt)
     fig.autofmt_xdate()
     png_filename = os.path.join(

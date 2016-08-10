@@ -52,8 +52,9 @@ class ProcStat(Plugin):
                 # parse processes
                 for item in self.ProcessItems:
                     if data[0] == item[0]:
+                        value = int(data[1])
                         zbx.send(
-                            'system.{0}'.format(item[1]), data[1], item[3])
+                            'system.{0}'.format(item[1]), value, item[3])
                         break
                 # parse cpu
                 if data[0] == 'cpu':
