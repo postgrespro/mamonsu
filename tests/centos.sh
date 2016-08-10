@@ -7,8 +7,9 @@ make rpm && rpm -i mamonsu*.rpm
 cd /
 
 # test alive after 5 sec
-/etc/init.d/mamonsu restart &&
-sleep 5 && /etc/init.d/mamonsu stop &&
+/etc/init.d/mamonsu restart
+sleep 5
+/etc/init.d/mamonsu stop
 
 # test report
 yum install -y https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm

@@ -7,7 +7,8 @@ make deb && dpkg -i mamonsu*.deb && cd /
 
 # test alive after 5 sec
 /etc/init.d/mamonsu restart
-sleep 5 && /etc/init.d/mamonsu stop
+sleep 5
+/etc/init.d/mamonsu stop
 
 # test uninstall
 apt-get purge -y mamonsu
