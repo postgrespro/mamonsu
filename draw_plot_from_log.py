@@ -52,7 +52,7 @@ group.add_option(
     help='Count of interpolation points (default is 200)')
 group.add_option(
     '--date-format', dest='date_format', default='%m-%d %H:%M',
-    help='Count of interpolation points (default is "%m-%d %H:%M")')
+    help='Date format for \'x\' axis (default is \'%m-%d %H:%M\')')
 group.add_option(
     '--directory', '-d', dest='save_dir', default='.',
     help='Save images to directory (default is current directory)')
