@@ -10,5 +10,9 @@ make deb && dpkg -i mamonsu*.deb && cd /
 sleep 5
 /etc/init.d/mamonsu stop
 
+# test export
+mamonsu -e /tmp/template.xml
+mamonsu -w /tmp/agent.conf
+
 # test uninstall
 apt-get purge -y mamonsu

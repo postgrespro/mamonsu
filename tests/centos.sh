@@ -18,16 +18,25 @@ su postgres -c '/usr/pgsql-9.5/bin/initdb -D /var/lib/pgsql/9.5/data'
 /etc/init.d/postgresql-9.5 start
 mamonsu report | grep version | grep 'PostgreSQL 9.5'
 
-# test metric send to log
+# test export
+mamonsu -e /tmp/template.xml
+mamonsu -w /tmp/agent.conf
+
+# test metric send
 cat <<EOF > /etc/mamonsu/agent.conf
 [zabbix]
 address = 127.0.0.1
 [metric_log]
 directory = /tmp
+[log]
+file = /var/log/mamonsu/agent.log
+level = DEBUG
 EOF
 /etc/init.d/mamonsu restart && sleep 120
 grep utilization /tmp/localhost.log
+# grep utilization /var/log/mamonsu/agent.log # to zabbix
 grep 'pgsql\.uptime' /tmp/localhost.log
+# grep 'pgsql\.uptime' /var/log/mamonsu/agent.log # to zabbix
 
 # test uninstall
 yum remove -y mamonsu
