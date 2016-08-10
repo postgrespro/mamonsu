@@ -25,7 +25,7 @@ address = 127.0.0.1
 [metric_log]
 directory = /tmp
 EOF
-/etc/init.d/mamonsu restart && sleep 10
+/etc/init.d/mamonsu restart && sleep 120
 grep utilization /tmp/localhost.log
 grep 'pgsql\.uptime' /tmp/localhost.log
 
