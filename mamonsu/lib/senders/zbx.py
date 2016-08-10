@@ -32,8 +32,6 @@ class ZbxSender(Plugin):
             'ZBX-{0}:{1}'.format(self.host, self.port))
 
     def send(self, key, value, host=None, clock=None):
-        if self.host is None:
-            return
         if host is None:
             host = self.fqdn
         if clock is None:
