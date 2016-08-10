@@ -23,6 +23,14 @@ script:
      su postgres -c '/usr/pgsql-9.5/bin/initdb -D /var/lib/pgsql/9.5/data' &&
      /etc/init.d/postgresql-9.5 start &&
      mamonsu first | grep version | grep 'PostgreSQL 9.5' &&
+     cat <<EOF > /etc/mamonsu/agent.conf
+[zabbix]
+address = None
+[metric_log]
+directory = /tmp
+     EOF
+     /etc/init.d/mamonsu restart && sleep 10 &&
+     grep utilization /tmp/localhost.log &&
      yum remove -y mamonsu"
 # deb build
   - >

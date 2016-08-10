@@ -8,7 +8,6 @@ from mamonsu.lib.queue import Queue
 class LogSender(Plugin):
 
     Interval = 2
-    MaxQueueSize = 300
     _sender = True
 
     def __init__(self, config):
@@ -18,13 +17,14 @@ class LogSender(Plugin):
             self._enabled = False
         self._metric_log_fds = {}
         self.queue = Queue()
+        self.max_queue_size = config.fetch('sender', 'queue', int)
 
     def run(self, zbx):
         self._flush()
 
     def send(self, key, value, host=None, clock=None):
         metric = (key, value, host, clock)
-        if self.queue.size() > self.MaxQueueSize:
+        if self.queue.size() > self.max_queue_size:
             self.log.error('Queue size over limit, replace last metrics')
             self.queue.replace(metric)
         else:
