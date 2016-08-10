@@ -13,6 +13,13 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.dates as md
 
+try:
+    import numpy as np
+    from scipy.interpolate import interp1d
+    INTERPOLATION_LOADED = True
+except:
+    INTERPOLATION_LOADED = False
+
 matplotlib.rcParams.update({'font.size': 20})
 
 parser = optparse.OptionParser()
@@ -32,7 +39,14 @@ group.add_option(
     '--to-data', dest='to_date', default=None,
     help='Filter to date (default is no filter)')
 parser.add_option_group(group)
-group = optparse.OptionGroup(parser, 'Save')
+group = optparse.OptionGroup(parser, 'Picture settings')
+group.add_option(
+    '--interpolation-points', '-i', dest='interpolation',
+    default=200, type='int',
+    help='Count of interpolation points (default is 200)')
+group.add_option(
+    '--date-format', dest='date_format', default='%m-%d %H:%M',
+    help='Count of interpolation points (default is "%m-%d %H:%M")')
 group.add_option(
     '--directory', '-d', dest='save_dir', default='.',
     help='Save images to directory (default is current directory)')
@@ -61,22 +75,22 @@ services = {}
 
 to_date = parse_date(args.to_date)
 from_date = parse_date(args.from_date)
-logging.info('\tFilter date from: {0}, to: {1}'.format(from_date, to_date))
 
+# read file
 if not os.path.isfile(args.filename):
     logging.error('\tFile \'{0}\' not found'.format(args.filename))
     sys.exit(1)
 logging.info('\tOpen file {0}'.format(args.filename))
 with open(args.filename, 'r') as file:
     for line in file:
-        # parse
+        # parse line
         data = line.split()
         if len(data) != 3:
             continue
         date, metric, service = data
         date, metric = float(date), float(metric)
 
-        # filter
+        # filter values
         if from_date is not None:
             if date < from_date:
                 continue
@@ -90,23 +104,42 @@ with open(args.filename, 'r') as file:
         # append to main hash
         if service not in services:
             services[service] = {'x': [], 'y': []}
-        services[service]['x'].append(dt.datetime.fromtimestamp(date))
+        services[service]['x'].append(date)
         services[service]['y'].append(metric)
+
 
 count_services, current_service = len(services), 0
 for service in services:
+    x_axis, y_axis = services[service]['x'], services[service]['y']
+
+    # intepolation
+    if not args.interpolation == 0:
+        if len(x_axis) > args.interpolation:
+            if not INTERPOLATION_LOADED:
+                logging.info('Interpolation load failed')
+            else:
+                points = zip(x_axis, y_axis)
+                points = sorted(points, key=lambda point: point[0])
+                x1, y1 = zip(*points)
+                new_x = np.linspace(min(x1), max(x1), args.interpolation)
+                new_y = interp1d(
+                    x1, y1, kind='linear')(new_x)
+                x_axis, y_axis = new_x, new_y
+
+    # as datetime
+    xfmt = md.DateFormatter(args.date_format)
+    x_axis = [dt.datetime.fromtimestamp(x) for x in x_axis]
+
+    # draw plot
     current_service += 1
-    ax = plt.gca()
-    lines, = plt.plot(
-        services[service]['x'], services[service]['y'])
+    fig, ax = plt.subplots()
+    ax.plot(x_axis, y_axis)
     ax.set_xlabel('Date')
     ax.set_ylabel(service)
     ax.set_axis_bgcolor('white')
     ax.spines['left'].set_smart_bounds(True)
-    plt.setp(lines, linewidth=4)
-    xfmt = md.DateFormatter('%Y-%m-%d %H:%M:%S')
     ax.xaxis.set_major_formatter(xfmt)
-    plt.xticks(rotation=25)
+    fig.autofmt_xdate()
     png_filename = os.path.join(
         args.save_dir,
         '{0}.png'.format(
@@ -116,4 +149,7 @@ for service in services:
         current_service, count_services,
         service, png_filename))
     plt.savefig(png_filename)
-    plt.clf()
+
+    # clear memory
+    fig.clf()
+    plt.close(fig)
