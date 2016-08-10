@@ -4,11 +4,14 @@
 import os
 import sys
 import optparse
+import re
 import logging
 import dateutil.parser as dateparser
+import datetime as dt
 import time
 import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.dates as md
 
 matplotlib.rcParams.update({'font.size': 20})
 
@@ -19,6 +22,9 @@ group.add_option(
     help='Path to logfile')
 parser.add_option_group(group)
 group = optparse.OptionGroup(parser, 'Filter')
+group.add_option(
+    '--service', '-s', dest='service_filter', default=None,
+    help='Regexp filter for service (default is no filter)')
 group.add_option(
     '--from-date', dest='from_date', default=None,
     help='Filter from date (default is no filter)')
@@ -70,18 +76,21 @@ with open(args.filename, 'r') as file:
         date, metric, service = data
         date, metric = float(date), float(metric)
 
-        # filter date
+        # filter
         if from_date is not None:
             if date < from_date:
                 continue
         if to_date is not None:
             if date > to_date:
                 continue
+        if args.service_filter is not None:
+            if not re.search(args.service_filter, service):
+                continue
 
         # append to main hash
         if service not in services:
             services[service] = {'x': [], 'y': []}
-        services[service]['x'].append(date)
+        services[service]['x'].append(dt.datetime.fromtimestamp(date))
         services[service]['y'].append(metric)
 
 count_services, current_service = len(services), 0
@@ -95,6 +104,9 @@ for service in services:
     ax.set_axis_bgcolor('white')
     ax.spines['left'].set_smart_bounds(True)
     plt.setp(lines, linewidth=4)
+    xfmt = md.DateFormatter('%Y-%m-%d %H:%M:%S')
+    ax.xaxis.set_major_formatter(xfmt)
+    plt.xticks(rotation=25)
     png_filename = os.path.join(
         args.save_dir,
         '{0}.png'.format(
