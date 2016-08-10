@@ -21,6 +21,9 @@ class Plugin(object):
     VALUE_TYPE = Template.VALUE_TYPE
     UNITS = Template.UNITS
 
+    DELTA_SPEED = Template.DELTA.speed_per_second
+    DELTA_CHANGE = Template.DELTA.simple_change
+
     def __init__(self, config):
         self.config = config
         self.log = logging.getLogger(

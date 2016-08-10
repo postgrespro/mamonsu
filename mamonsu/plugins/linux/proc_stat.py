@@ -52,7 +52,8 @@ class ProcStat(Plugin):
                 # parse processes
                 for item in self.ProcessItems:
                     if data[0] == item[0]:
-                        zbx.send('system.{0}'.format(item[1]), data[1])
+                        zbx.send(
+                            'system.{0}'.format(item[1]), data[1], item[3])
                         break
                 # parse cpu
                 if data[0] == 'cpu':
@@ -61,21 +62,20 @@ class ProcStat(Plugin):
                         continue
                     for item in self.CpuItems:
                         value = m.group(item[0])
-                        zbx.send('system.{0}'.format(item[1]), int(value))
+                        zbx.send(
+                            'system.{0}'.format(item[1]), int(value), data[3])
 
     def items(self, template):
         result = ''
         for item in self.ProcessItems:
             result += template.item({
                 'name': 'Processes: {0}'.format(item[2]),
-                'key': 'system.{0}'.format(item[1]),
-                'delta': item[3]
+                'key': 'system.{0}'.format(item[1])
             })
         for item in self.CpuItems:
             result += template.item({
                 'name': 'CPU time spent {0}'.format(item[2]),
-                'key': 'system.{0}'.format(item[1]),
-                'delta': item[3]
+                'key': 'system.{0}'.format(item[1])
             })
         return result
 

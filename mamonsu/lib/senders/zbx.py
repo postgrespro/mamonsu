@@ -7,35 +7,28 @@ import struct
 import socket
 import json
 import logging
-import os
 import encodings.idna
-import sys
 
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.queue import Queue
 
 
-class Zbx(Plugin):
+class ZbxSender(Plugin):
 
     Interval = 2
     _sender = True
     _thread = None
 
     def __init__(self, config):
-        super(Zbx, self).__init__(config)
+        super(ZbxSender, self).__init__(config)
         self.host = config.fetch('zabbix', 'address')
         self.port = config.fetch('zabbix', 'port', int)
         self.max_queue_size = config.fetch('sender', 'queue', int)
         self.fqdn = config.fetch('zabbix', 'client')
-        self.metric_log_dir = config.fetch('zabbix', 'metric_log_dir')
-        self.metric_log_fds = {}
         self.queue = Queue()
         self.log = logging.getLogger(
             'ZBX-{0}:{1}'.format(self.host, self.port))
-
-    def json(self, val):
-        return json.dumps(val)
 
     def send(self, key, value, host=None, clock=None):
         if host is None:
@@ -61,7 +54,6 @@ class Zbx(Plugin):
         metrics = self.queue.flush()
         if len(metrics) == 0:
             return
-        self._write_metric_log(metrics)
         data = json.dumps({
             'request': 'sender data',
             'data': metrics,
@@ -101,37 +93,3 @@ class Zbx(Plugin):
                 break
             buf += chunk
         return buf
-
-    def _write_metric_log(self, data):
-
-        if self.metric_log_dir is None:
-            return
-
-        if not os.path.isdir(self.metric_log_dir):
-                try:
-                    os.makedirs(self.metric_log_dir)
-                except Exception as e:
-                    self.log.error('Create directory error: {0}'.format(e))
-                    sys.exit(7)
-
-        for metric in data:
-
-            host = metric['host']
-            metric_log = os.path.join(
-                self.metric_log_dir, '{0}.log'.format(host))
-
-            if host not in self.metric_log_fds:
-                try:
-                    self.metric_log_fds[host] = open(metric_log, 'a')
-                except Exception as e:
-                    self.log.error('Create metric log error: {0}'.format(e))
-                    continue
-
-            try:
-                self.metric_log_fds[host].write("{0}\t{1}\t{2}\n".format(
-                    metric['clock'], metric['key'], metric['value']))
-                self.metric_log_fds[host].flush()
-            except Exception as e:
-                self.metric_log_fds[host].close()
-                self.metric_log_fds[host] = None
-                self.log.error('Write metric error: {0}'.format(e))

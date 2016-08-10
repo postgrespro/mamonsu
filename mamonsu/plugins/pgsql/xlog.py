@@ -19,7 +19,7 @@ class Xlog(Plugin):
             # xlog location
             result = Pooler.query("select pg_xlog_location_diff\
                 (pg_current_xlog_location(),'0/00000000')")
-            zbx.send('pgsql.wal.write[]', result[0][0])
+            zbx.send('pgsql.wal.write[]', result[0][0], self.DELTA_SPEED)
 
     def items(self, template):
         return template.item({
@@ -28,8 +28,7 @@ class Xlog(Plugin):
         }) + template.item({
             'name': 'PostgreSQL: wal write speed',
             'key': 'pgsql.wal.write[]',
-            'units': Plugin.UNITS.bytes,
-            'delta': Plugin.DELTA.speed_per_second
+            'units': Plugin.UNITS.bytes
         })
 
     def graphs(self, template):

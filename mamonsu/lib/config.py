@@ -13,7 +13,7 @@ from mamonsu.lib.default_config import DefaultConfig
 
 from mamonsu import __version__
 from mamonsu.lib.plugin import Plugin
-from mamonsu.lib.template import *
+from mamonsu.lib.zbx_template import *
 
 if platform.PY2:
     import ConfigParser as configparser
@@ -108,7 +108,9 @@ class Config(DefaultConfig):
         config.set('zabbix', 'client', socket.gethostname())
         config.set('zabbix', 'address', '127.0.0.1')
         config.set('zabbix', 'port', str(10051))
-        config.set('zabbix', 'metric_log_dir', str(None))
+
+        config.add_section('metric_log')
+        config.set('metric_log', 'directory', str(None))
 
         config.add_section('sender')
         config.set('sender', 'queue', str(300))

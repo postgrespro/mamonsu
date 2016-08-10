@@ -36,23 +36,24 @@ class DiskStats(Plugin):
                 all_write += write
                 devices.append({'{#BLOCKDEVICE}': dev})
 
-                zbx.send('system.disk.read[{0}]'.format(dev), read)
-                zbx.send('system.disk.write[{0}]'.format(dev), write)
-                zbx.send('system.disk.utilization[{0}]'.format(dev), ticks/10)
+                zbx.send('system.disk.read[{0}]'.format(
+                    dev), read, self.DELTA_SPEED)
+                zbx.send('system.disk.write[{0}]'.format(
+                    dev), write, self.DELTA_SPEED)
+                zbx.send('system.disk.utilization[{0}]'.format(
+                    dev), ticks/10)
 
-            zbx.send('system.disk.all_read[]', all_read)
-            zbx.send('system.disk.all_write[]', all_write)
+            zbx.send('system.disk.all_read[]', all_read, self.DELTA_SPEED)
+            zbx.send('system.disk.all_write[]', all_write, self.DELTA_SPEED)
             zbx.send('system.disk.discovery[]', zbx.json({'data': devices}))
 
     def items(self, template):
         return template.item({
             'name': 'Block devices: read requests',
-            'key': 'system.disk.all_read[]',
-            'delta': Plugin.DELTA.speed_per_second
+            'key': 'system.disk.all_read[]'
         }) + template.item({
             'name': 'Block devices: write requests',
-            'key': 'system.disk.all_write[]',
-            'delta': Plugin.DELTA.speed_per_second
+            'key': 'system.disk.all_write[]'
         })
 
     def graphs(self, template):
@@ -77,16 +78,13 @@ class DiskStats(Plugin):
             {
                 'key': 'system.disk.utilization[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: utilization',
-                'delta': Plugin.DELTA.speed_per_second,
                 'units': Plugin.UNITS.percent},
             {
                 'key': 'system.disk.read[{#BLOCKDEVICE}]',
-                'name': 'Block device {#BLOCKDEVICE}: read operations',
-                'delta': Plugin.DELTA.speed_per_second},
+                'name': 'Block device {#BLOCKDEVICE}: read operations'},
             {
                 'key': 'system.disk.write[{#BLOCKDEVICE}]',
-                'name': 'Block device {#BLOCKDEVICE}: write operations',
-                'delta': Plugin.DELTA.speed_per_second}]
+                'name': 'Block device {#BLOCKDEVICE}: write operations'}]
 
         graphs = [{
             'name': 'Block device overview: {#BLOCKDEVICE}',

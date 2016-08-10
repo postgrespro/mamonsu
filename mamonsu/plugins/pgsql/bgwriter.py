@@ -73,7 +73,7 @@ class BgWriter(Plugin):
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(
                 self.Items[idx][1]), int(val)
-            zbx.send(key, val)
+            zbx.send(key, val, self.Items[idx][5])
         del params, result
 
     def items(self, template):
@@ -83,8 +83,7 @@ class BgWriter(Plugin):
                 'key': 'pgsql.{0}'.format(item[1]),
                 'name': 'PostgreSQL {0}'.format(item[2]),
                 'value_type': 3,
-                'units': item[4],
-                'delta': item[5]
+                'units': item[4]
             })
         return result
 

@@ -10,7 +10,8 @@ from mamonsu.auto_tune.start import run_auto_tune
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.config import Config
-from mamonsu.lib.zbx import *
+from mamonsu.lib.sender import *
+from mamonsu.lib.senders import *
 from mamonsu.plugins import *
 
 
@@ -21,12 +22,13 @@ class Supervisor(object):
     def __init__(self, config):
         self.Plugins = []
         self.config = config
-        self.sender = None
+        self._sender = Sender()
+        self._senders = []
 
     def start(self):
         self._load_plugins()
-        self._find_sender()
-        self._update_plugins()
+        self._find_senders()
+        self._set_senders()
         self._loop()
 
     def _load_plugins(self):
@@ -34,18 +36,17 @@ class Supervisor(object):
             plugin = klass(self.config)
             self.Plugins.append(plugin)
 
-    def _find_sender(self):
+    def _find_senders(self):
         for plugin in self.Plugins:
             if plugin.is_sender():
-                if self.sender is not None:
-                    raise RuntimeError("Sender already setted")
-                self.sender = plugin
-        if self.sender is None:
-            raise RuntimeError("Can't find sender")
+                self._senders.append(plugin)
+        if len(self._senders) == 0:
+            raise RuntimeError('Can\'t find any senders')
 
-    def _update_plugins(self):
+    def _set_senders(self):
         for plugin in self.Plugins:
-            plugin.update_sender(self.sender)
+            plugin.update_sender(self._sender)
+        self._sender.update_senders(self._senders)
 
     def _loop(self):
         plugin_errors, plugin_probes, last_error = 0, 0, ''
@@ -60,13 +61,13 @@ class Supervisor(object):
             plugin_probes += 1
             if plugin_probes >= 60:
                 if plugin_errors > 0:
-                    self.sender.send(
+                    self._sender.send(
                         'mamonsu.plugin.errors[]',
                         'Errors in the last 60 seconds: {0}.\
                         Last error: {1}'.format(
                             plugin_errors, last_error))
                 else:
-                    self.sender.send('mamonsu.plugin.errors[]', '')
+                    self._sender.send('mamonsu.plugin.errors[]', '')
                 plugin_errors, plugin_probes = 0, 0
 
 
