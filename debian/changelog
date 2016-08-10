@@ -1,3 +1,9 @@
+mamonsu (1.0.0-1) stable; urgency=low
+
+  * metric log
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Wed, 10 Aug 2016 16:00:00 +0300
+
 mamonsu (0.7.0-1) stable; urgency=low
 
   * metric log

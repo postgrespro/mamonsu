@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        0.7.0
+Version:        1.0.0
 Release:        1%{?dist}
 Summary:        Active zabbix agent
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Wed Aug 10 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.0.0-1
+- metric log
+
 * Thu Jul 21 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 0.7.0-1
 - metric log
 
