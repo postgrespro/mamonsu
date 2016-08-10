@@ -14,6 +14,8 @@ class LogSender(Plugin):
     def __init__(self, config):
         super(LogSender, self).__init__(config)
         self.metric_log = config.fetch('metric_log', 'directory')
+        if self.metric_log is None:
+            self._enabled = False
         self._metric_log_fds = {}
         self.queue = Queue()
 
@@ -21,8 +23,6 @@ class LogSender(Plugin):
         self._flush()
 
     def send(self, key, value, host=None, clock=None):
-        if self.metric_log is None:
-            return
         metric = (key, value, host, clock)
         if self.queue.size() > self.MaxQueueSize:
             self.log.error('Queue size over limit, replace last metrics')

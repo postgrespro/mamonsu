@@ -34,7 +34,8 @@ class Sender():
                         value = float(value - last_value)
 
         for sender in self._senders:
-            sender.send(key, value, host, clock)
+            if sender.is_enabled():
+                sender.send(key, value, host, clock)
 
     # helpers
     def json(self, val):

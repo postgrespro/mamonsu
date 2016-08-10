@@ -14,6 +14,7 @@ class Plugin(object):
 
     _thread = None
     _sender = False
+    _enabled = True
 
     # const
     DELTA = Template.DELTA
@@ -46,6 +47,9 @@ class Plugin(object):
 
     def is_sender(self):
         return self._sender
+
+    def is_enabled(self):
+        return self._enabled
 
     def update_sender(self, sender):
         self.sender = sender

@@ -22,7 +22,7 @@ script:
      yum install -y postgresql95-server &&
      su postgres -c '/usr/pgsql-9.5/bin/initdb -D /var/lib/pgsql/9.5/data' &&
      /etc/init.d/postgresql-9.5 start &&
-      mamonsu first | grep version | grep 'PostgreSQL 9.5' &&
+     mamonsu first | grep version | grep 'PostgreSQL 9.5' &&
      yum remove -y mamonsu"
 # deb build
   - >

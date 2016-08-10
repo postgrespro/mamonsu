@@ -18,11 +18,12 @@ class ZbxSender(Plugin):
 
     Interval = 2
     _sender = True
-    _thread = None
 
     def __init__(self, config):
         super(ZbxSender, self).__init__(config)
         self.host = config.fetch('zabbix', 'address')
+        if self.host is None:
+            self._enabled = False
         self.port = config.fetch('zabbix', 'port', int)
         self.max_queue_size = config.fetch('sender', 'queue', int)
         self.fqdn = config.fetch('zabbix', 'client')
@@ -31,6 +32,8 @@ class ZbxSender(Plugin):
             'ZBX-{0}:{1}'.format(self.host, self.port))
 
     def send(self, key, value, host=None, clock=None):
+        if self.host is None:
+            return
         if host is None:
             host = self.fqdn
         if clock is None:
