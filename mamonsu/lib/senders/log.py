@@ -18,6 +18,9 @@ class LogSender(Plugin):
         self._metric_log_fds = {}
         self.queue = Queue()
         self.max_queue_size = config.fetch('sender', 'queue', int)
+        self.max_size = config.fetch('metric_log', 'max_size_mb', int)
+        self.max_size = self.max_size * 1024 * 1024
+        self._check_size_counter = 0
 
     def run(self, zbx):
         self._flush()
@@ -43,11 +46,11 @@ class LogSender(Plugin):
         host, clock = metric[2], metric[3]
 
         if not os.path.isdir(self.metric_log):
-                try:
-                    os.makedirs(self.metric_log)
-                except Exception as e:
-                    self.log.error('Create directory error: {0}'.format(e))
-                    sys.exit(7)
+            try:
+                os.makedirs(self.metric_log)
+            except Exception as e:
+                self.log.error('Create directory error: {0}'.format(e))
+                sys.exit(7)
 
         if host is None:
             host = 'localhost'
@@ -60,6 +63,16 @@ class LogSender(Plugin):
             except Exception as e:
                 self.log.error('Create metric log error: {0}'.format(e))
                 return
+
+        if self._check_size_counter > 100:
+            size = os.path.getsize(metric_log)
+            if size > self.max_size:
+                self.log.info(
+                    'Truncate file {0}, max size limit reached: {1} b'.format(
+                        metric_log, size))
+                self._metric_log_fds[host].truncate()
+            self._check_size_counter = 0
+        self._check_size_counter += 1
 
         try:
             self._metric_log_fds[host].write("{0}\t{1}\t{2}\n".format(

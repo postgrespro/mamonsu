@@ -111,6 +111,7 @@ class Config(DefaultConfig):
 
         config.add_section('metric_log')
         config.set('metric_log', 'directory', str(None))
+        config.set('metric_log', 'max_size_mb', '1024')
 
         config.add_section('sender')
         config.set('sender', 'queue', str(300))
