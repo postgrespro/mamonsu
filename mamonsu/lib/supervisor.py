@@ -56,7 +56,7 @@ class Supervisor(object):
                     plugin.start()
                     last_error = plugin.last_error_text
                     plugin_errors += 1
-            time.sleep(1)
+            time.sleep(10)
             # error counts
             plugin_probes += 1
             if plugin_probes >= 60:
