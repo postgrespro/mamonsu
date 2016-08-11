@@ -57,22 +57,26 @@ class LogSender(Plugin):
         metric_log = os.path.join(
                 self.metric_log, '{0}.log'.format(host))
 
-        if host not in self._metric_log_fds:
-            try:
-                self._metric_log_fds[host] = open(metric_log, 'a')
-            except Exception as e:
-                self.log.error('Create metric log error: {0}'.format(e))
-                return
-
-        if self._check_size_counter > 100:
+        # rotate if reached max size limit
+        if self._check_size_counter > 2:
             size = os.path.getsize(metric_log)
             if size > self.max_size:
+                # rotate to file <METRIC_LOG>.archive
+                backup_file = '{0}.archive'.format(metric_log)
                 self.log.info(
-                    'Truncate file {0}, max size limit reached: {1} b'.format(
-                        metric_log, size))
-                self._metric_log_fds[host].truncate()
+                    'Move file {0} to {1} (max size limit reached: {2} b)'.
+                    format(metric_log, backup_file, size))
+                # close descriptor
+                if host in self._metric_log_fds:
+                    self._metric_log_fds[host].close()
+                    del self._metric_log_fds[host]
+                # rename
+                os.rename(metric_log, backup_file)
             self._check_size_counter = 0
         self._check_size_counter += 1
+
+        if host not in self._metric_log_fds:
+            self._metric_log_fds[host] = open(metric_log, 'a')
 
         try:
             self._metric_log_fds[host].write("{0}\t{1}\t{2}\n".format(
@@ -80,5 +84,5 @@ class LogSender(Plugin):
             self._metric_log_fds[host].flush()
         except Exception as e:
             self._metric_log_fds[host].close()
-            self._metric_log_fds[host] = None
+            del self._metric_log_fds[host]
             self.log.error('Write metric error: {0}'.format(e))

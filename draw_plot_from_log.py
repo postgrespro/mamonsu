@@ -42,7 +42,7 @@ group.add_option(
     '--from-date', dest='from_date', default=None,
     help='Filter from date (default is no filter)')
 group.add_option(
-    '--to-data', dest='to_date', default=None,
+    '--to-date', dest='to_date', default=None,
     help='Filter to date (default is no filter)')
 parser.add_option_group(group)
 group = optparse.OptionGroup(parser, 'Picture settings')
