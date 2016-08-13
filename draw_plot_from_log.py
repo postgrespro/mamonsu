@@ -6,17 +6,12 @@ import sys
 import optparse
 import re
 import logging
-import dateutil.parser as dateparser
 import datetime as dt
+import dateutil.parser as dateparser
 import time
-
-try:
-    import matplotlib.pyplot as plt
-    import matplotlib.dates as md
-    import matplotlib.ticker as tk
-except:
-    logging.error('Failed to load matplotlib: fatal error, exit now.')
-    sys.exit(1)
+import matplotlib.pyplot as plt
+import matplotlib.dates as md
+import matplotlib.ticker as tk
 
 try:
     import numpy as np
