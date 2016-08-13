@@ -35,7 +35,12 @@ class DiskSizes(Plugin):
                 point, fstype = data[4], data[8]
                 if fstype in self.ExcludeFsTypes:
                     continue
-                vfs = os.statvfs(point)
+                try:
+                    vfs = os.statvfs(point)
+                except Exception as e:
+                    self.log.error(
+                        'Get statvfs for \'{0}\' error: {1}'.format(point, e))
+                    continue
                 if vfs.f_blocks == 0 or vfs.f_files == 0:
                     continue
                 points.append({'{#MOUNTPOINT}': point})
