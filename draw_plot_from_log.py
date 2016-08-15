@@ -56,6 +56,21 @@ args, _ = parser.parse_args()
 
 logging.basicConfig(level=logging.INFO)
 
+# vaildate args
+if args.filename is None:
+    logging.error('\tMetric file is not specified')
+    sys.exit(4)
+
+if args.save_dir is not '.':
+    if not os.path.isdir(args.save_dir):
+        try:
+            os.makedirs(args.save_dir)
+        except Exception as e:
+            logging.error(
+                '\Directory \'{0}\' create error: {1}'.format(
+                    args.filename, e))
+            sys.exit(5)
+
 
 def parse_date(date):
     if date is None:
@@ -117,7 +132,8 @@ for service in services:
     if not args.interpolation == 0:
         if len(x_axis) > args.interpolation:
             if not INTERPOLATION_LOADED:
-                logging.info('Interpolation load failed')
+                logging.error(
+                    '\tInterpolation load failed, install numpy and scipy')
             else:
                 points = zip(x_axis, y_axis)
                 points = sorted(points, key=lambda point: point[0])
