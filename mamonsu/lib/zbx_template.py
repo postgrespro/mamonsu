@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 from mamonsu.lib.const import Template
 
 
 class ZbxTemplate(object):
 
-    mainTemplate = """<?xml version="1.0" encoding="UTF-8"?>
+    mainTemplate = u"""<?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
 <version>2.0</version>
     <groups>
