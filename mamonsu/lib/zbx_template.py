@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+
 from mamonsu.lib.const import Template
 
 
