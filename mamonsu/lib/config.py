@@ -152,7 +152,7 @@ class Config(DefaultConfig):
                 plugins.append(klass(self))
             template = ZbxTemplate(args.template, args.application)
             with open(args.template_file, 'w') as templatefile:
-                templatefile.write(template.xml(plugins))
+                templatefile.write(template.xml(plugins).encode('utf8'))
                 sys.exit(0)
 
         if args.pid is not None:
