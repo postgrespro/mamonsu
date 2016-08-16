@@ -6,6 +6,7 @@ import os
 import logging
 import sys
 import glob
+import codecs
 
 import mamonsu.lib.platform as platform
 from mamonsu.plugins.pgsql.checks import is_conn_to_db
@@ -151,7 +152,7 @@ class Config(DefaultConfig):
             for klass in Plugin.__subclasses__():
                 plugins.append(klass(self))
             template = ZbxTemplate(args.template, args.application)
-            with open(args.template_file, 'w') as templatefile:
+            with codecs.open(args.template_file, 'w', 'utf-8') as templatefile:
                 templatefile.write(template.xml(plugins))
                 sys.exit(0)
 
