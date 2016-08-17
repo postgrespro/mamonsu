@@ -25,7 +25,7 @@ class Cpu(Plugin):
             perf_services.append(item[0])
         data = PerfData.get(perf_services, delay=1000)
         for idx, item in enumerate(self.Items):
-            zbx.send('system.cpu{0}'.format(item[1]), data[idx])
+            zbx.send('system.cpu{0}'.format(item[1]), float(data[idx]))
 
     def items(self, template):
         result = ''

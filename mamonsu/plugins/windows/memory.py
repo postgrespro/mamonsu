@@ -22,7 +22,7 @@ class Memory(Plugin):
             perf_services.append(item[0])
         data = PerfData.get(perf_services, delay=1000)
         for idx, item in enumerate(self.Items):
-            zbx.send('system.memory{0}'.format(item[1]), data[idx])
+            zbx.send('system.memory{0}'.format(item[1]), int(data[idx]))
 
     def items(self, template):
         result = ''

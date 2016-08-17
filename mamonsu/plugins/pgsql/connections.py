@@ -26,15 +26,15 @@ class Connections(Plugin):
                 else:
                     val = row[1]
                     break
-            zbx.send('pgsql.connections[{0}]'.format(key), val)
+            zbx.send('pgsql.connections[{0}]'.format(key), float(val))
 
         result = Pooler.query('select count(*) \
             from pg_stat_activity')
-        zbx.send('pgsql.connections[total]', result[0][0])
+        zbx.send('pgsql.connections[total]', int(result[0][0]))
 
         result = Pooler.query('select count(*) \
             from pg_stat_activity where waiting')
-        zbx.send('pgsql.connections[waiting]', result[0][0])
+        zbx.send('pgsql.connections[waiting]', int(result[0][0]))
 
     def items(self, template):
         result = template.item({

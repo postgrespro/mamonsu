@@ -18,8 +18,8 @@ class Databases(Plugin):
         dbs = []
         for info in result:
             dbs.append({'{#DATABASE}': info[0]})
-            zbx.send('pgsql.database.size[{0}]'.format(info[0]), info[1])
-            zbx.send('pgsql.database.max_age[{0}]'.format(info[0]), info[2])
+            zbx.send('pgsql.database.size[{0}]'.format(info[0]), float(info[1]))
+            zbx.send('pgsql.database.max_age[{0}]'.format(info[0]), float(info[2]))
             bloat_count = Pooler.query(
                 'select count(*) from pg_catalog.pg_stat_all_tables where\
                 (n_dead_tup/(n_live_tup+n_dead_tup)::float8) > {0}\
@@ -28,7 +28,7 @@ class Databases(Plugin):
                 info[0])[0][0]
             zbx.send(
                 'pgsql.database.bloating_tables[{0}]'.format(info[0]),
-                bloat_count)
+                int(bloat_count))
         zbx.send('pgsql.database.discovery[]', zbx.json({'data': dbs}))
         del dbs, bloat_count
 

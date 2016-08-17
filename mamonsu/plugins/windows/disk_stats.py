@@ -13,10 +13,10 @@ class DiskStats(Plugin):
                 r'\LogicalDisk({0}:)\% Idle Time'.format(disk),
                 r'\LogicalDisk({0}:)\Avg. Disk Queue Length'.format(disk)]
             data = PerfData.get(perf_services, delay=1000)
-            zbx.send('system.disk.read[{0}]'.format(disk), data[0])
-            zbx.send('system.disk.write[{0}]'.format(disk), data[1])
-            zbx.send('system.disk.idle[{0}]'.format(disk), data[2])
-            zbx.send('system.disk.queue_avg[{0}]'.format(disk), data[3])
+            zbx.send('system.disk.read[{0}]'.format(disk), float(data[0]))
+            zbx.send('system.disk.write[{0}]'.format(disk), float(data[1]))
+            zbx.send('system.disk.idle[{0}]'.format(disk), float(data[2]))
+            zbx.send('system.disk.queue_avg[{0}]'.format(disk), float(data[3]))
             devices.append({'{#LOGICALDEVICE}': disk})
             del perf_services, data
         zbx.send('system.disk.discovery[]', zbx.json({'data': devices}))

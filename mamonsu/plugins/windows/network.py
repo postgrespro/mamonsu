@@ -19,7 +19,7 @@ class Network(Plugin):
             perf_services.append(item[0])
         data = PerfData.get(perf_services, delay=1000)
         for idx, item in enumerate(self.Items):
-            zbx.send('system.network{0}'.format(item[1]), data[idx])
+            zbx.send('system.network{0}'.format(item[1]), float(data[idx]))
 
     def items(self, template):
         result = ''
