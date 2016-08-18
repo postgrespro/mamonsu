@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        1.1.0
+Version:        1.2.0
 Release:        1%{?dist}
 Summary:        Active zabbix agent
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Thu Aug 18 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.2.0-1
+- metric fixes
+
 * Thu Aug 11 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.1.0-1
 - log rotation by size
 
