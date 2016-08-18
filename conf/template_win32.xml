@@ -37,7 +37,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -79,7 +79,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -121,7 +121,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units>ms</units>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -163,7 +163,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units>ms</units>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -205,7 +205,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units>b</units>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -247,7 +247,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units>b</units>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -289,7 +289,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units>ms</units>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -331,7 +331,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units>b</units>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -373,7 +373,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -415,7 +415,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units>b</units>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -778,7 +778,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>Count of autovacuum workers</name>
+                    <name>PostgreSQL: count of autovacuum workers</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -919,7 +919,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>1</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -961,7 +961,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>1</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1003,7 +1003,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>1</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1045,7 +1045,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1087,7 +1087,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1129,7 +1129,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1171,7 +1171,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units>b</units>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1213,7 +1213,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>2</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1255,7 +1255,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>1</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1297,7 +1297,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>1</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1339,7 +1339,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>1</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1381,7 +1381,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>1</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1423,7 +1423,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
-                    <delta>1</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -1843,7 +1843,7 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units>b</units>
-                    <delta>1</delta>
+                    <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
