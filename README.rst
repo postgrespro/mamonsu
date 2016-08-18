@@ -78,12 +78,16 @@ Export template for zabbix:
 .. code-block:: bash
 
     $ mamonsu -e template.xml
+    or
+    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/conf/template.xml
+    or
+    $ cp /usr/share/mamonsu/template.xml .
 
 Import this file in web interface of zabbix: Configuration => Templates => Import.
 
 Add this template like `PostgresPro-Linux` at your monitoring host.
 
-Generate config on monitring host:
+Generate config on monitring host (or use preinstalled):
 
 .. code-block:: bash
 
