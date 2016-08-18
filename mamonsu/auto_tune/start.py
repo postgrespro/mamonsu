@@ -9,7 +9,8 @@ from mamonsu import __version__
 import mamonsu.lib.platform as platform
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.checks import is_conn_to_db
-from mamonsu.auto_tune.pgsql import AutoTune
+from mamonsu.auto_tune.pgsql import AutoTunePgsl
+from mamonsu.auto_tune.system import AutoTuneSystem
 
 
 class Args(DefaultConfig):
@@ -24,14 +25,17 @@ class Args(DefaultConfig):
             parser,
             'Start options')
         group.add_option(
-            '--pgbadger',
-            dest='pgbadger',
-            default=True,
-            help='Configure pgBadger log settings (default: %default)')
+            '--dry-run',
+            dest='dry_run', action='store_true',
+            help='Dry run')
         group.add_option(
-            '-r', '--reload',
-            dest='reload_config',
-            default=True, help='Reload config (default: %default)')
+            '--dont-tune-pgbadger',
+            dest='pgbadger', action='store_true',
+            help='Don\'t configure pgBadger log settings')
+        group.add_option(
+            '--dont-reload-postgresql',
+            dest='reload_config', action='store_true',
+            help='Don\'t reload config')
         group.add_option(
             '-l', '--log-level',
             dest='log_level',
@@ -132,4 +136,5 @@ class Args(DefaultConfig):
 
 def run_auto_tune():
     args = Args()
-    AutoTune(args)
+    AutoTunePgsl(args)
+    AutoTuneSystem(args)

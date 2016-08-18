@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-
-import os
 import sys
 import logging
 
 import mamonsu.lib.platform as platform
 from mamonsu.plugins.pgsql.pg8000.core import ProgrammingError
 from mamonsu.plugins.pgsql.pool import Pooler
+from mamonsu.auto_tune._info import SystemInfo
 
 
-class AutoTune(object):
+class AutoTunePgsl(object):
 
     def __init__(self, args):
 
@@ -17,6 +16,7 @@ class AutoTune(object):
             logging.error('Can\'t connect to PostgreSQL')
             sys.exit(5)
 
+        self.sys_info = SystemInfo()
         self.args = args
         self._memory()
         self._auto_vacuum()
@@ -29,7 +29,7 @@ class AutoTune(object):
         if platform.WINDOWS:
             logging.info("No memory config for windows")
             return
-        sysmemory = self._get_total_mem()
+        sysmemory = self.sys_info.get_memory_total()
         if sysmemory == 0:
             return
 
@@ -41,10 +41,10 @@ class AutoTune(object):
                 self._humansize_and_round_bytes(3*sysmemory/4)))
         self._run_query(
             "alter system set work_mem to '{0}'".format(
-                self._humansize_and_round_bytes(sysmemory/30)))
+                self._humansize_and_round_bytes(sysmemory/100)))
         self._run_query(
             "alter system set maintenance_work_mem to '{0}'".format(
-                self._humansize_and_round_bytes(sysmemory/5)))
+                self._humansize_and_round_bytes(sysmemory/10)))
 
     def _auto_vacuum(self):
         self._run_query(
@@ -63,7 +63,7 @@ class AutoTune(object):
             "alter system set bgwriter_lru_maxpages to 800")
 
     def _configure_pgbadger(self):
-        if not self.args.pgbadger:
+        if self.args.pgbadger is not None:
             return
         self._run_query(
             "alter system set logging_collector to on")
@@ -82,11 +82,11 @@ class AutoTune(object):
         self._run_query(
             "alter system set log_autovacuum_min_duration to 0")
         self._run_query(
-            "alter system set log_line_prefix to \
-                '%%t [%%p]: [%%l-1] db=%%d,user=%%u,app=%%a,client=%%h '")
+            "alter system set log_line_prefix to "
+            "'%%t [%%p]: [%%l-1] db=%%d,user=%%u,app=%%a,client=%%h '")
 
     def _reload_config(self):
-        if not self.args.reload_config:
+        if self.args.reload_config is not None:
             return
         logging.info('Reload config...')
         self._run_query('select pg_catalog.pg_reload_conf()')
@@ -99,21 +99,11 @@ class AutoTune(object):
             logging.error('Test query error: {0}'.format(e))
             return False
 
-    def _get_total_mem(self):
-        if os.path.isfile('/proc/meminfo'):
-            try:
-                with open('/proc/meminfo', 'r') as f:
-                    for line in f:
-                        data = line.split()
-                        if not len(data) == 3:
-                            continue
-                        if data[0] == 'MemTotal:' and data[2] == 'kB':
-                            return int(data[1]) * 1024
-            except:
-                logging.error('Can\'t read /proc/meminfo')
-        return 0
-
     def _run_query(self, query='', exit_on_fail=True):
+        if self.args.dry_run:
+            logging.info('dry run query:\t{0}'.format(
+                query.replace('%%', '%')))
+            return
         try:
             Pooler.query(query)
         except ProgrammingError as e:
