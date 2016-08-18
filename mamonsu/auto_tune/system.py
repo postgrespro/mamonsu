@@ -19,7 +19,7 @@ class AutoTuneSystem(object):
         self._sysctl_data = []
 
         self._dirty()
-        self._anti_defragment()
+        self._min_free()
 
         self._write_sysctl_file()
 
@@ -31,10 +31,10 @@ class AutoTuneSystem(object):
         # if total < 1Gb, dont tune dirty bytes
         if total > 1024 * 1024 * 1024:
             self._add_sysctl('vm.dirty_background_bytes', 32 * 1024 * 1024)
-            self._add_sysctl('vm.vm.dirty_bytes',         64 * 1024 * 1024)
+            self._add_sysctl('vm.dirty_bytes',            64 * 1024 * 1024)
 
     # defragment
-    def _anti_defragment(self):
+    def _min_free(self):
         if not platform.LINUX:
             return
         total = self.sys_info.get_memory_total()
@@ -59,7 +59,7 @@ class AutoTuneSystem(object):
             all_sysctl.append("\n{0}".format(self._SYSCTL_MAGIC_LINE))
             all_sysctl += self._sysctl_data
             if self.args.dry_run:
-                logging.info('dry run (write {0}):\n{1}'.format(
+                logging.info('dry run (write sysctl vars: {0}):\n{1}'.format(
                     self._SYSCTL_FILE, ''.join(all_sysctl)))
                 return
             with open(self._SYSCTL_FILE, 'w') as f:
