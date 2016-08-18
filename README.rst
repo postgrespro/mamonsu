@@ -62,6 +62,12 @@ If you have error with ctypes: try to extend bootstrap_modules (add "ctypes") in
     $ c:\mamonsu\service_win32.exe -install
     $ net start mamonsu
 
+Build nsis installer(Don`t forget to sign it afterwards):
+
+.. code-block:: bash
+
+    $ git clone ... && cd mamonsu && python setup_win32.py py2exe
+    $ nsis win/mamonsu.nsis
 
 ==========
 Configure
