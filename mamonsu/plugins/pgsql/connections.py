@@ -32,9 +32,14 @@ class Connections(Plugin):
             from pg_stat_activity')
         zbx.send('pgsql.connections[total]', int(result[0][0]))
 
-        result = Pooler.query('select count(*) \
-            from pg_stat_activity where waiting')
-        zbx.send('pgsql.connections[waiting]', int(result[0][0]))
+        try:
+            result = Pooler.query('select count(*) \
+                from pg_stat_activity where waiting')
+            zbx.send('pgsql.connections[waiting]', int(result[0][0]))
+        except Exception as e:
+            # >= PostgreSQL 9.6 ?
+            self.log.error('Query error: {0}, pass'.format(e))
+            pass
 
     def items(self, template):
         result = template.item({

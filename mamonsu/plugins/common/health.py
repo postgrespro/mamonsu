@@ -22,8 +22,7 @@ class Health(Plugin):
             'value_type': Plugin.VALUE_TYPE.text  # text
         }) + template.item({
             'name': 'Mamonsu: plugin keep alive',
-            'key': 'mamonsu.plugin.keepalive[]',
-            'value_type': Plugin.VALUE_TYPE.numeric_float
+            'key': 'mamonsu.plugin.keepalive[]'
         })
 
     def triggers(self, template):

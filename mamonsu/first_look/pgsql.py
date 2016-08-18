@@ -134,18 +134,19 @@ select
     pg_catalog.pg_size_pretty(b.size) as "size",
     s.idx_scan,
     s.seq_scan,
+
     case s.n_live_tup when 0 then 0
-        else round((10000*s.n_mod_since_analyze)::float8
-            /s.n_live_tup::float8)/100 end as "since_analyze_perc",
+        else round(s.n_mod_since_analyze::float8/s.n_live_tup::float8) end as "since_analyze_perc",
+
     case s.n_live_tup when 0 then 0
-        else round((10000*s.n_dead_tup)::float8
-            /s.n_live_tup::float8)/100 end as "dead_perc",
+        else round(s.n_dead_tup::float8/s.n_live_tup::float8) end as "dead_perc",
+
+    case io.heap_blks_hit when 0 then 0
+        else 100-round(io.heap_blks_read::float8/io.heap_blks_hit::float8) end as "heap_perc_hit",
+
     case io.idx_blks_hit when 0 then 0
-        else 100-round((10000*io.heap_blks_read)::float8
-            /io.heap_blks_hit::float8)/100 end as "heap_perc",
-    case io.idx_blks_hit when 0 then 0
-        else 100-round((10000*io.idx_blks_read)::float8
-            /io.idx_blks_hit::float8)/100 end as "idx_perc"
+        else 100-round(io.idx_blks_read::float8/io.idx_blks_hit::float8) end as "idx_perc_hit"
+
 from
     pg_catalog.pg_stat_all_tables as s
     inner join pg_catalog.pg_statio_all_tables io on io.relid = s.relid

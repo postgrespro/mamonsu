@@ -19,7 +19,9 @@ class Sender():
             clock = int(time.time())
 
         if delta is not None:
-            if isinstance(value, float) or isinstance(value, int):
+            is_float = isinstance(value, int)
+            is_int = isinstance(value, int)
+            if is_float or is_int:
                 hash_key = '{0}.{1}'.format(host, key)
                 if hash_key not in self._last_values:
                     self._last_values[hash_key] = (value, clock)
@@ -32,6 +34,8 @@ class Sender():
                         value = float(value - last_value)/(clock - last_time)
                     if delta == Plugin.DELTA.simple_change:
                         value = float(value - last_value)
+                    if is_int:
+                        value = int(value)
 
         for sender in self._senders:
             if sender.is_enabled():
