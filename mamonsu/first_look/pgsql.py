@@ -136,16 +136,16 @@ select
     s.seq_scan,
 
     case s.n_live_tup when 0 then 0
-        else round(s.n_mod_since_analyze::float8/s.n_live_tup::float8) end as "since_analyze_perc",
+        else round(100*s.n_mod_since_analyze::float8/s.n_live_tup::float8) end as "since_analyze_perc",
 
     case s.n_live_tup when 0 then 0
-        else round(s.n_dead_tup::float8/s.n_live_tup::float8) end as "dead_perc",
+        else round(100*s.n_dead_tup::float8/s.n_live_tup::float8) end as "dead_perc",
 
-    case io.heap_blks_hit when 0 then 0
-        else 100-round(io.heap_blks_read::float8/io.heap_blks_hit::float8) end as "heap_perc_hit",
+    case coalesce(io.heap_blks_read + io.heap_blks_hit, 0) when 0 then 0
+        else round(100*io.heap_blks_hit::float8/(io.heap_blks_read+io.heap_blks_hit)::float8) end as "heap_hit_perc",
 
-    case io.idx_blks_hit when 0 then 0
-        else 100-round(io.idx_blks_read::float8/io.idx_blks_hit::float8) end as "idx_perc_hit"
+    case coalesce(io.idx_blks_read + io.idx_blks_hit, 0) when 0 then 0
+        else round(100*io.idx_blks_hit::float8/(io.idx_blks_read + io.idx_blks_hit)::float8) end as "idx_hit_perc"
 
 from
     pg_catalog.pg_stat_all_tables as s
