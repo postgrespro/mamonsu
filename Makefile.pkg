@@ -21,19 +21,19 @@ endef
 define build_and_publish_debian
 	rm -f *.deb
 	$(call build_deb,debian,$1)
-	package_pkg push postgrespro/mamonsu/debian/$2 *.deb
+	package_cloud push postgrespro/mamonsu/debian/$2 *.deb
 endef
 
 define build_and_publish_ubuntu
 	rm -f *.deb
 	$(call build_deb,ubuntu,$1)
-	package_pkg push postgrespro/mamonsu/ubuntu/$2 *.deb
+	package_cloud push postgrespro/mamonsu/ubuntu/$2 *.deb
 endef
 
 define build_and_publish_centos
 	rm -f *.rpm
 	$(call build_rpm,centos,$1)
-	package_pkg push postgrespro/mamonsu/el/$1 *.rpm
+	package_cloud push postgrespro/mamonsu/el/$1 *.rpm
 endef
 
 build/pkg_debian_7:
