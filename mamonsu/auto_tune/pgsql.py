@@ -16,13 +16,14 @@ class AutoTunePgsl(object):
             logging.error('Can\'t connect to PostgreSQL')
             sys.exit(5)
 
-        self.sys_info = SystemInfo()
         self.args = args
+        self.sys_info = SystemInfo()
+
         self._memory()
         self._auto_vacuum()
         self._bgwriter()
         self._configure_pgbadger()
-        logging.info('Auto-tune PostgreSQL config: completed')
+
         self._reload_config()
 
     def _memory(self):
@@ -34,62 +35,61 @@ class AutoTunePgsl(object):
             return
 
         self._run_query(
-            "alter system set shared_buffers to '{0}'".format(
+            "alter system set shared_buffers to '{0}';".format(
                 self._humansize_and_round_bytes(sysmemory/4)))
         self._run_query(
-            "alter system set effective_cache_size to '{0}'".format(
+            "alter system set effective_cache_size to '{0}';".format(
                 self._humansize_and_round_bytes(3*sysmemory/4)))
         self._run_query(
-            "alter system set work_mem to '{0}'".format(
+            "alter system set work_mem to '{0}';".format(
                 self._humansize_and_round_bytes(sysmemory/100)))
         self._run_query(
-            "alter system set maintenance_work_mem to '{0}'".format(
+            "alter system set maintenance_work_mem to '{0}';".format(
                 self._humansize_and_round_bytes(sysmemory/10)))
 
     def _auto_vacuum(self):
         self._run_query(
-            "alter system set autovacuum_max_workers to 20")
+            "alter system set autovacuum_max_workers to 20;")
         self._run_query(
-            "alter system set autovacuum_analyze_scale_factor to 0.01")
+            "alter system set autovacuum_analyze_scale_factor to 0.01;")
         self._run_query(
-            "alter system set autovacuum_vacuum_scale_factor to 0.02")
+            "alter system set autovacuum_vacuum_scale_factor to 0.02;")
         self._run_query(
-            "alter system set vacuum_cost_delay to 1")
+            "alter system set vacuum_cost_delay to 1;")
 
     def _bgwriter(self):
         self._run_query(
-            "alter system set bgwriter_delay to 10")
+            "alter system set bgwriter_delay to 10;")
         self._run_query(
-            "alter system set bgwriter_lru_maxpages to 800")
+            "alter system set bgwriter_lru_maxpages to 800;")
 
     def _configure_pgbadger(self):
         if self.args.pgbadger is not None:
             return
         self._run_query(
-            "alter system set logging_collector to on")
+            "alter system set logging_collector to on;")
         self._run_query(
-            "alter system set log_filename to 'postgresql-%%a.log'")
+            "alter system set log_filename to 'postgresql-%%a.log';")
         self._run_query(
-            "alter system set log_checkpoints to on")
+            "alter system set log_checkpoints to on;")
         self._run_query(
-            "alter system set log_connections to on")
+            "alter system set log_connections to on;")
         self._run_query(
-            "alter system set log_disconnections to on")
+            "alter system set log_disconnections to on;")
         self._run_query(
-            "alter system set log_lock_waits to on")
+            "alter system set log_lock_waits to on;")
         self._run_query(
-            "alter system set log_temp_files to 0")
+            "alter system set log_temp_files to 0;")
         self._run_query(
-            "alter system set log_autovacuum_min_duration to 0")
+            "alter system set log_autovacuum_min_duration to 0;")
         self._run_query(
             "alter system set log_line_prefix to "
-            "'%%t [%%p]: [%%l-1] db=%%d,user=%%u,app=%%a,client=%%h '")
+            "'%%t [%%p]: [%%l-1] db=%%d,user=%%u,app=%%a,client=%%h ';")
 
     def _reload_config(self):
         if self.args.reload_config is not None:
             return
-        logging.info('Reload config...')
-        self._run_query('select pg_catalog.pg_reload_conf()')
+        self._run_query('select pg_catalog.pg_reload_conf();')
 
     def _is_connection_work(self):
         try:
@@ -101,7 +101,7 @@ class AutoTunePgsl(object):
 
     def _run_query(self, query='', exit_on_fail=True):
         if self.args.dry_run:
-            logging.info('dry run query:\t{0}'.format(
+            logging.info('dry run (query):\t{0}'.format(
                 query.replace('%%', '%')))
             return
         try:
