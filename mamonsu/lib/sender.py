@@ -19,7 +19,7 @@ class Sender():
             clock = int(time.time())
 
         if delta is not None:
-            is_float = isinstance(value, int)
+            is_float = isinstance(value, float)
             is_int = isinstance(value, int)
             if is_float or is_int:
                 hash_key = '{0}.{1}'.format(host, key)
