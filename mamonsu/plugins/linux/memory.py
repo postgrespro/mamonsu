@@ -1,4 +1,4 @@
-from mamonsu.lib.plugin import Plugin
+from mamonsu.plugins.common.plugin import SystemPlugin as Plugin
 
 
 class Memory(Plugin):

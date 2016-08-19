@@ -25,7 +25,7 @@ mamonsu -w /tmp/agent.conf
 # test metric send
 cat <<EOF > /etc/mamonsu/agent.conf
 [zabbix]
-address = 127.0.0.1
+address = None
 [metric_log]
 directory = /tmp
 [log]

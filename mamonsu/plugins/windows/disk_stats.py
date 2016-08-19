@@ -1,4 +1,4 @@
-from mamonsu.lib.plugin import Plugin
+from mamonsu.plugins.common.plugin import SystemPlugin as Plugin
 from .helpers import DiskInfo, PerfData
 
 
@@ -31,11 +31,11 @@ class DiskStats(Plugin):
         items = [
             {
                 'key': 'system.disk.read[{#LOGICALDEVICE}]',
-                'name': 'Logical device {#LOGICALDEVICE}: read operations/sec',
+                'name': 'Logical device {#LOGICALDEVICE}: read op/sec',
                 'delta': Plugin.DELTA.speed_per_second},
             {
                 'key': 'system.disk.write[{#LOGICALDEVICE}]',
-                'name': 'Logical device {#LOGICALDEVICE}: write operations/sec',
+                'name': 'Logical device {#LOGICALDEVICE}: write op/sec',
                 'delta': Plugin.DELTA.speed_per_second},
             {
                 'key': 'system.disk.queue_avg[{#LOGICALDEVICE}]',

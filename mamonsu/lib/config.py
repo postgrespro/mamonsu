@@ -96,6 +96,7 @@ class Config(DefaultConfig):
         config.set('postgres', 'host', Config.default_host())
         config.set('postgres', 'port', str(Config.default_port()))
         config.set('postgres', 'application_name', str(Config.default_app()))
+        config.set('postgres', 'max_checkpoints_req', '5')
         config.set('postgres', 'query_timeout', '10')
 
         config.add_section('log')
@@ -126,8 +127,8 @@ class Config(DefaultConfig):
         config.set('disk_sizes', 'percent_free', str(10))
         config.set('disk_sizes', 'inode_percent_free', str(10))
 
-        config.add_section('bgwriter')
-        config.set('bgwriter', 'max_checkpoints_req', '5')
+        config.add_section('system')
+        config.set('system', 'enabled', str(True))
 
         # override config file name
         if override_config_filename is not None:

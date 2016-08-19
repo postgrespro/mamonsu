@@ -9,7 +9,7 @@ class BgWriter(Plugin):
     def __init__(self, config):
         super(BgWriter, self).__init__(config)
         self.CheckpointsReq = self.config.fetch(
-            'bgwriter', 'max_checkpoints_req', int)
+            'postgres', 'max_checkpoints_req', int)
 
     Items = [
         # key, zbx_key, description,

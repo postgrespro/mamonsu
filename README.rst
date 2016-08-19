@@ -112,6 +112,10 @@ Change previously zabbix server address and client hostname:
     password = None
     port = 5432
     query_timeout = 10
+    enabled = True
+
+    [system]
+    enabled = True
 
     [plugins]
     ; directory with user plugins
