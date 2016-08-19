@@ -1,5 +1,5 @@
 import os
-from mamonsu.plugins.common.plugin import SystemPlugin as Plugin
+from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class DiskSizes(Plugin):

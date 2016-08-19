@@ -153,7 +153,7 @@ class Config(DefaultConfig):
 
         if args.template_file is not None:
             plugins = []
-            for klass in Plugin.__subclasses__():
+            for klass in Plugin.childs():
                 plugins.append(klass(self))
             template = ZbxTemplate(args.template, args.application)
             with codecs.open(args.template_file, 'w', 'utf-8') as templatefile:

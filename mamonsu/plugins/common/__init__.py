@@ -1,2 +1,2 @@
-__all__ = ['health', 'plugin']
+__all__ = ['health']
 from . import *

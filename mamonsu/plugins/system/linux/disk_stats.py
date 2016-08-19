@@ -1,5 +1,5 @@
 import re
-from mamonsu.plugins.common.plugin import SystemPlugin as Plugin
+from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class DiskStats(Plugin):

@@ -1,5 +1,6 @@
-from mamonsu.plugins.common.plugin import SystemPlugin as Plugin
 from .helpers import PerfData
+
+from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class Cpu(Plugin):
