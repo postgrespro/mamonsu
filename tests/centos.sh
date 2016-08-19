@@ -25,9 +25,12 @@ mamonsu -w /tmp/agent.conf
 # test metric send
 cat <<EOF > /etc/mamonsu/agent.conf
 [zabbix]
-address = None
+enabled = False
+
 [metric_log]
+enabled = True
 directory = /tmp
+
 [log]
 file = /var/log/mamonsu/agent.log
 level = DEBUG

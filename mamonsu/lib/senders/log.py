@@ -15,6 +15,8 @@ class LogSender(Plugin):
         self.metric_log = config.fetch('metric_log', 'directory')
         if self.metric_log is None:
             self._enabled = False
+        elif not self.config.fetch('metric_log', 'enabled', bool):
+            self._enabled = False
         self._metric_log_fds = {}
         self.queue = Queue()
         self.max_queue_size = config.fetch('sender', 'queue', int)

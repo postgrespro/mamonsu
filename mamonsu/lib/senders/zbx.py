@@ -24,6 +24,8 @@ class ZbxSender(Plugin):
         self.host = config.fetch('zabbix', 'address')
         if self.host is None:
             self._enabled = False
+        elif not config.fetch('zabbix', 'enabled', bool):
+            self._enabled = False
         self.port = config.fetch('zabbix', 'port', int)
         self.max_queue_size = config.fetch('sender', 'queue', int)
         self.fqdn = config.fetch('zabbix', 'client')

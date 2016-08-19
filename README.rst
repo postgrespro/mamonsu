@@ -102,19 +102,23 @@ Change previously zabbix server address and client hostname:
     $ cat /etc/mamonsu/agent.conf
 
     [zabbix]
+    ; enabled by default
+    enabled = True
     client = zabbix_client_host_name
     address = zabbix_server_ip
 
     [postgres]
+    ; enabled by default
+    enabled = True
     user = postgres
     database = postgres
     ; empty password
     password = None
     port = 5432
     query_timeout = 10
-    enabled = True
 
     [system]
+    ; enabled by default
     enabled = True
 
     [plugins]

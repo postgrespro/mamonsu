@@ -108,11 +108,13 @@ class Config(DefaultConfig):
             '[%(levelname)s] %(asctime)s - %(name)s\t-\t%(message)s')
 
         config.add_section('zabbix')
+        config.set('zabbix', 'enabled', str(True))
         config.set('zabbix', 'client', socket.gethostname())
         config.set('zabbix', 'address', '127.0.0.1')
         config.set('zabbix', 'port', str(10051))
 
         config.add_section('metric_log')
+        config.set('metric_log', 'enabled', str(False))
         config.set('metric_log', 'directory', str(None))
         config.set('metric_log', 'max_size_mb', '1024')
 
