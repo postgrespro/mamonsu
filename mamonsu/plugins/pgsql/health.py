@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from mamonsu.lib.plugin import Plugin
+from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
 import time
 

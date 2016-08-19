@@ -15,6 +15,8 @@ class Plugin(object):
     _thread = None
     _sender = False
     _enabled = True
+    # for all childs
+    _child = True
 
     # const
     DELTA = Template.DELTA
@@ -31,6 +33,15 @@ class Plugin(object):
             self.__class__.__name__.upper())
         self.sender = None
         self.last_error_text = ''
+
+    @classmethod
+    def childs(self):
+        childs = []
+        for klass in self.__subclasses__():
+            if klass._child:
+                childs.append(klass)
+            childs.extend(klass.childs())
+        return childs
 
     def start(self):
         self._thread = Thread(target=self._loop)

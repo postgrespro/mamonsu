@@ -32,7 +32,7 @@ class Supervisor(object):
         self._loop()
 
     def _load_plugins(self):
-        for klass in Plugin.__subclasses__():
+        for klass in Plugin.childs():
             plugin = klass(self.config)
             self.Plugins.append(plugin)
 
@@ -52,7 +52,7 @@ class Supervisor(object):
         plugin_errors, plugin_probes, last_error = 0, 0, ''
         while self.Running:
             for plugin in self.Plugins:
-                if not plugin.is_alive():
+                if plugin.is_enabled() and not plugin.is_alive():
                     plugin.start()
                     last_error = plugin.last_error_text
                     plugin_errors += 1

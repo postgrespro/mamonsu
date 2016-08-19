@@ -89,6 +89,7 @@ class Config(DefaultConfig):
         config.set('template', 'application', args.application)
 
         config.add_section('postgres')
+        config.set('postgres', 'enabled', str(True))
         config.set('postgres', 'user', Config.default_user())
         config.set('postgres', 'password', str(Config.default_pgpassword()))
         config.set('postgres', 'database', Config.default_db())
