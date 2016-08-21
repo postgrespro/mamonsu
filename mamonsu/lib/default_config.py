@@ -45,6 +45,11 @@ class PgsqlConfig(object):
 class DefaultConfig(PgsqlConfig):
 
     @staticmethod
+    def default_config_path():
+        if platform.LINUX:
+            return '/etc/mamonsu/agent.conf'
+
+    @staticmethod
     def get_logger_level(level):
         result = logging.INFO
         level = level.upper()

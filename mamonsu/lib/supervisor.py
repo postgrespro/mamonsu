@@ -5,8 +5,8 @@ import logging
 import signal
 import sys
 
-from mamonsu.first_look.start import run_first_look
-from mamonsu.auto_tune.start import run_auto_tune
+from mamonsu.report.start import run_report
+from mamonsu.tune.start import run_tune
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.config import Config
@@ -86,7 +86,7 @@ def start():
                 or arg == 'first' or arg == '--first'\
                 or arg == 'first-look' or arg == 'report':
             sys.argv.remove(arg)
-            run_first_look()
+            run_report()
             return
 
     for arg in sys.argv:
@@ -94,7 +94,7 @@ def start():
                 or arg == 'tune' or arg == 'autotune'\
                 or arg == '--autotune':
             sys.argv.remove(arg)
-            run_auto_tune()
+            run_tune()
             return
 
     config = Config()

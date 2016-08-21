@@ -19,9 +19,9 @@ class DiskSizes(Plugin):
     def __init__(self, config):
         super(DiskSizes, self).__init__(config)
         self.TriggerPfreeLessThen = self.config.fetch(
-            'disk_sizes', 'percent_free', int)
+            'system', 'vfs_percent_free', int)
         self.TriggerPIfreeLessThen = self.config.fetch(
-            'disk_sizes', 'inode_percent_free', int)
+            'system', 'vfs_inode_percent_free', int)
 
     def run(self, zbx):
         with open('/proc/self/mountinfo', 'r') as f:

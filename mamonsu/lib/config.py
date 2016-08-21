@@ -98,6 +98,8 @@ class Config(DefaultConfig):
         config.set('postgres', 'application_name', str(Config.default_app()))
         config.set('postgres', 'max_checkpoints_req', '5')
         config.set('postgres', 'query_timeout', '10')
+        config.set('postgres', 'uptime', str(60 * 10))
+        config.set('postgres', 'cache', str(80))
 
         config.add_section('log')
         config.set('log', 'file', str(None))
@@ -121,16 +123,11 @@ class Config(DefaultConfig):
         config.add_section('sender')
         config.set('sender', 'queue', str(300))
 
-        config.add_section('health')
-        config.set('health', 'uptime', str(60 * 10))
-        config.set('health', 'cache', str(80))
-
-        config.add_section('disk_sizes')
-        config.set('disk_sizes', 'percent_free', str(10))
-        config.set('disk_sizes', 'inode_percent_free', str(10))
-
         config.add_section('system')
         config.set('system', 'enabled', str(True))
+        config.set('system', 'uptime', str(60*5))
+        config.set('system', 'vfs_percent_free', str(10))
+        config.set('system', 'vfs_inode_percent_free', str(10))
 
         # override config file name
         if override_config_filename is not None:

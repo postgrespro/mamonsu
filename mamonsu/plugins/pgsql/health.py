@@ -11,10 +11,10 @@ class PgHealth(Plugin):
         super(PgHealth, self).__init__(config)
         # сообщаем что у сервиса низкий аптайм, пока аптайм меньше 10 минут
         self.TriggerUptimeLessThen = self.config.fetch(
-            'health', 'uptime', int)
+            'postgres', 'uptime', int)
         # алертим, если cache hit меньше чем %
         self.TriggerCacheHitLessThen = self.config.fetch(
-            'health', 'cache', int)
+            'postgres', 'cache', int)
         # счетчик, для сообщения в лог
         self.counter = 0
 

@@ -9,11 +9,11 @@ import mamonsu.lib.platform as platform
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.checks import is_conn_to_db
 
-from mamonsu.first_look.pgsql import PostgresInfo
+from mamonsu.report.pgsql import PostgresInfo
 if platform.LINUX:
-    from mamonsu.first_look.os_linux import SystemInfo
+    from mamonsu.report.os_linux import SystemInfo
 else:
-    from mamonsu.first_look.os_win import SystemInfo
+    from mamonsu.report.os_win import SystemInfo
 if platform.LINUX:
     import pwd
 
@@ -172,7 +172,7 @@ class Args(DefaultConfig):
             return None
 
 
-def run_first_look():
+def run_report():
 
     args = Args()
 
