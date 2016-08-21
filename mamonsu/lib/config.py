@@ -117,7 +117,7 @@ class Config(DefaultConfig):
 
         config.add_section('metric_log')
         config.set('metric_log', 'enabled', str(False))
-        config.set('metric_log', 'directory', str(None))
+        config.set('metric_log', 'directory', '/var/log/mamonsu')
         config.set('metric_log', 'max_size_mb', '1024')
 
         config.add_section('sender')

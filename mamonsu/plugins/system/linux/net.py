@@ -20,13 +20,13 @@ class Net(Plugin):
                 if line.find(':') < 0 or line.find(' lo:') > 0 or idx_line < 1:
                     continue
                 face, data = line.split(':')
-                values = [x for x in data.split()]
+                iface, values = face.strip(), [x for x in data.split()]
                 for idx, value in enumerate(values):
                     for item in self.Items:
                         if item[0] == idx:
-                            key = '{0}[{1}]'.format(item[1], face)
+                            key = '{0}[{1}]'.format(item[1], iface)
                             zbx.send(key, float(value), self.DELTA_SPEED)
-                devices.append(face)
+                devices.append(iface)
         zbx.send('system.net.discovery[]', zbx.json({'data': devices}))
 
     def discovery_rules(self, template):
