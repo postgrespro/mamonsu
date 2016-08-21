@@ -1408,7 +1408,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>System load average</name>
+                    <name>System load average over 1 minute</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -3502,7 +3502,7 @@
                     <key>system.net.discovery[]</key>
                     <item_prototypes>
                         <item_prototype>
-                            <name>RX bytes/s</name>
+                            <name>Network device {#NETDEVICE}: RX bytes/s</name>
                             <type>7</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
@@ -3544,7 +3544,7 @@
                             </applications>
                         </item_prototype>
                         <item_prototype>
-                            <name>RX errors/s</name>
+                            <name>Network device {#NETDEVICE}: RX errors/s</name>
                             <type>7</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
@@ -3586,7 +3586,7 @@
                             </applications>
                         </item_prototype>
                         <item_prototype>
-                            <name>RX drops/s</name>
+                            <name>Network device {#NETDEVICE}: RX drops/s</name>
                             <type>7</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
@@ -3628,7 +3628,7 @@
                             </applications>
                         </item_prototype>
                         <item_prototype>
-                            <name>TX bytes/s</name>
+                            <name>Network device {#NETDEVICE}: TX bytes/s</name>
                             <type>7</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
@@ -3670,7 +3670,7 @@
                             </applications>
                         </item_prototype>
                         <item_prototype>
-                            <name>TX errors/s</name>
+                            <name>Network device {#NETDEVICE}: TX errors/s</name>
                             <type>7</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
@@ -3712,7 +3712,7 @@
                             </applications>
                         </item_prototype>
                         <item_prototype>
-                            <name>TX drops/s</name>
+                            <name>Network device {#NETDEVICE}: TX drops/s</name>
                             <type>7</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
@@ -4410,7 +4410,7 @@
             </graph_items>
         </graph>
         <graph>
-            <name>System load average over 1 minute</name>
+            <name>System load average</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0</yaxismin>

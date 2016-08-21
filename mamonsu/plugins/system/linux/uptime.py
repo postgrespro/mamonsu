@@ -5,13 +5,12 @@ class Uptime(Plugin):
 
     def __init__(self, config):
         super(Uptime, self).__init__(config)
-        # сообщаем что у системы низкий аптайм
         self.TriggerUptimeLessThen = self.config.fetch(
             'system', 'uptime', int)
 
     def run(self, zbx):
         uptime = open('/proc/uptime', 'r').read().split(' ')[0]
-        zbx.send('system.uptime[]', int(uptime))
+        zbx.send('system.uptime[]', float(uptime))
 
     def items(self, template):
         return template.item({

@@ -4,7 +4,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 class OpenFiles(Plugin):
 
     def run(self, zbx):
-        open_files = open('/proc/sys/fs/file-nr', 'r').read().split(' ')[0]
+        open_files = open('/proc/sys/fs/file-nr', 'r').read().split("\t")[0]
         zbx.send('system.open_files[]', int(open_files))
 
     def items(self, template):

@@ -20,12 +20,12 @@ class Net(Plugin):
                 if line.find(':') < 0 or line.find(' lo:') > 0 or idx_line < 1:
                     continue
                 face, data = line.split(':')
-                values = [float(x) for x in data.split()]
-                for idx, value in values:
+                values = [x for x in data.split()]
+                for idx, value in enumerate(values):
                     for item in self.Items:
                         if item[0] == idx:
                             key = '{0}[{1}]'.format(item[1], face)
-                            zbx.send(key, value, self.DELTA_SPEED)
+                            zbx.send(key, float(value), self.DELTA_SPEED)
                 devices.append(face)
         zbx.send('system.net.discovery[]', zbx.json({'data': devices}))
 
@@ -34,7 +34,8 @@ class Net(Plugin):
         for item in self.Items:
             items.append({
                 'key': item[1]+'[{#NETDEVICE}]',
-                'name': item[2], 'units': item[3]})
+                'name': 'Network device {#NETDEVICE}: ' + item[2],
+                'units': item[3]})
         rule = {
             'name': 'Net iface discovery',
             'key': 'system.net.discovery[]',

@@ -223,9 +223,12 @@ Linux system metrics
 
 .. code-block:: bash
 
+    'System uptime': system.uptime[]
+    'System load average over 1 minute': system.la[1]
     'Processes: in state running': system.processes[running]
     'Processes: in state blocked': system.processes[blocked]
     'Processes: forkrate': system.processes[forkrate]
+    'Opened files': system.open_files[]
     'CPU time spent by normal programs and daemons': system.cpu[user]
     'CPU time spent by nice(1)d programs': system.cpu[nice]
     'CPU time spent by the kernel in system activities': system.cpu[system]
@@ -256,6 +259,12 @@ Linux system metrics
     'Block device {#BLOCKDEVICE}: utilization': system.disk.utilization[{#BLOCKDEVICE}]
     'Block device {#BLOCKDEVICE}: read operations': system.disk.read[{#BLOCKDEVICE}]
     'Block device {#BLOCKDEVICE}: write operations': system.disk.write[{#BLOCKDEVICE}]
+    'Net device {#NETDEVICE}: RX bytes/s': system.net.rx_bytes[{#NETDEVICE}]
+    'Net device {#NETDEVICE}: RX errors/s': system.net.rx_errors[{#NETDEVICE}]
+    'Net device {#NETDEVICE}: RX drops/s': system.net.rx_drops[{#NETDEVICE}]
+    'Net device {#NETDEVICE}: TX bytes/s': system.net.tx_bytes[{#NETDEVICE}]
+    'Net device {#NETDEVICE}: TX errors/s': system.net.tx_errors[{#NETDEVICE}]
+    'Net device {#NETDEVICE}: TX drops/s': system.net.tx_drops[{#NETDEVICE}]
 
 ======================
 Windows system metrics
