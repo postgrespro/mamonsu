@@ -44,11 +44,13 @@ class Args(DefaultConfig):
             default='INFO', help='Log level (default: %default)')
         if platform.LINUX:
             group.add_option(
-                '-t', '--try-connect-as-user-postgres',
-                dest='try_postgres',
-                default=True,
-                help='Try connect as unix user postgres'
-                ' (only with auto opts, default: %default)')
+                '--disable-try-connect-as-user-postgres',
+                dest='disable_try_postgres', action='store_false',
+                help='Don\'t try connect as unix user postgres')
+            group.add_option(
+                '--disable-sudo',
+                dest='disable_sudo', action='store_false',
+                help='Disable sudo')
         parser.add_option_group(group)
         group = optparse.OptionGroup(
             parser,
@@ -121,6 +123,8 @@ class Args(DefaultConfig):
         return True
 
     def _try_run_as_postgres(self):
+        if self.args.disable_try_postgres is False:
+            return False
         if platform.LINUX and os.getegid() == 0:
             try:
                 uid = pwd.getpwnam('postgres').pw_uid()

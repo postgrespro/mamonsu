@@ -4,18 +4,20 @@ import os
 import logging
 
 import mamonsu.lib.platform as platform
-from mamonsu.auto_tune._info import SystemInfo
+from mamonsu.sysinfo.linux import SysInfoLinux
 
 
-class AutoTuneSystem(object):
+class AutoTuneSystem(SysInfoLinux):
 
     _SYSCTL_FILE = '/etc/sysctl.conf'
     _SYSCTL_MAGIC_LINE = "#### mamonsu auto tune ####\n"
 
     def __init__(self, args):
 
+        sudo = False if (args.disable_sudo is False) else True
+        super(AutoTuneSystem, self).__init__(use_sudo=sudo)
+
         self.args = args
-        self.sys_info = SystemInfo()
         self._sysctl_data = []
 
         self._dirty()
@@ -27,7 +29,7 @@ class AutoTuneSystem(object):
     def _dirty(self):
         if not platform.LINUX:
             return
-        total = self.sys_info.get_memory_total()
+        total = self.meminfo['_TOTAL']
         # if total < 1Gb, dont tune dirty bytes
         if total > 1024 * 1024 * 1024:
             self._add_sysctl('vm.dirty_background_bytes', 32 * 1024 * 1024)
@@ -37,7 +39,7 @@ class AutoTuneSystem(object):
     def _min_free(self):
         if not platform.LINUX:
             return
-        total = self.sys_info.get_memory_total()
+        total = self.meminfo['_TOTAL']
         self._add_sysctl('vm.min_free_kbytes', int(5*total/100))
 
     def _add_sysctl(self, key, value):
@@ -66,4 +68,4 @@ class AutoTuneSystem(object):
                 f.write(''.join(all_sysctl))
                 f.flush()
         except Exception as e:
-            logging.error("Write to sysctl error: {0}".format(e))
+            logging.error('Write to sysctl error: {0}'.format(e))

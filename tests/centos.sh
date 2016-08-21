@@ -20,6 +20,8 @@ mamonsu report | grep version | grep 'PostgreSQL 9.5'
 
 # test export
 mamonsu -e /tmp/template.xml
+grep 'pgsql\.uptime\[\]' /tmp/template.xml
+grep 'system\.disk\.all_read' /tmp/template.xml
 mamonsu -w /tmp/agent.conf
 
 # test metric send

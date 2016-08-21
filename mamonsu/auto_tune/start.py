@@ -24,6 +24,11 @@ class Args(DefaultConfig):
         group = optparse.OptionGroup(
             parser,
             'Start options')
+        if platform.LINUX:
+            group.add_option(
+                '--disable-sudo',
+                dest='disable_sudo', action='store_false',
+                help='Disable sudo')
         group.add_option(
             '--dry-run',
             dest='dry_run', action='store_true',
@@ -44,6 +49,13 @@ class Args(DefaultConfig):
         group = optparse.OptionGroup(
             parser,
             'Postgres connection options')
+        # if platform.LINUX:
+        #    group.add_option(
+        #        '-t', '--try-connect-as-user-postgres',
+        #        dest='try_postgres',
+        #        default=True,
+        #        help='Try connect as unix user postgres'
+        #        ' (only with auto opts, default: %default)')
         group.add_option(
             '-d', '--dbname',
             dest='dbname',
