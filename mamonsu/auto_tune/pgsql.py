@@ -5,7 +5,7 @@ import logging
 import mamonsu.lib.platform as platform
 from mamonsu.plugins.pgsql.pg8000.core import ProgrammingError
 from mamonsu.plugins.pgsql.pool import Pooler
-from mamonsu.auto_tune._info import SystemInfo
+from mamonsu.sysinfo.linux import SysInfoLinux as SysInfo
 
 
 class AutoTunePgsl(object):
@@ -17,7 +17,7 @@ class AutoTunePgsl(object):
             sys.exit(5)
 
         self.args = args
-        self.sys_info = SystemInfo()
+        self.sys_info = SysInfo()
 
         self._memory()
         self._auto_vacuum()
@@ -28,9 +28,10 @@ class AutoTunePgsl(object):
 
     def _memory(self):
         if platform.WINDOWS:
-            logging.info("No memory config for windows")
+            logging.info('No memory tune for windows')
             return
-        sysmemory = self.sys_info.get_memory_total()
+
+        sysmemory = self.sys_info.meminfo['_TOTAL']
         if sysmemory == 0:
             return
 

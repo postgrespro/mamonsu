@@ -1,7 +1,7 @@
 Name:           mamonsu
-Version:        1.3.1
+Version:        1.3.2
 Release:        1%{?dist}
-Summary:        Active zabbix agent
+Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
 License:        BSD
 Source0:        http://pypi.python.org/packages/source/m/mamonsu/mamonsu-%{version}.tar.gz
@@ -13,7 +13,7 @@ BuildArch:      noarch
 Requires:       python-setuptools
 
 %description
-Zabbix active agent for monitoring PostgreSQL.
+Monitoring agent for PostgreSQL.
 
 %prep
 %setup -q
@@ -73,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Sun Aug 21 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.3.2-1
+- AutoTune and FirstLook improvements
+
 * Fri Aug 19 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.3.1-1
 - import template fix
 

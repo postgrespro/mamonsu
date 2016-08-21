@@ -148,5 +148,5 @@ class Args(DefaultConfig):
 
 def run_auto_tune():
     args = Args()
-    AutoTunePgsl(args)
     AutoTuneSystem(args)
+    AutoTunePgsl(args)
