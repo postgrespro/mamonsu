@@ -11,8 +11,8 @@ sudoWorking = None
 def is_sudo_working():
     global sudoWorking
     if os.getuid() == 0:
-        sudoWorking = True
-        return
+        sudoWorking = False  # disable for root
+        return False
     if sudoWorking is None:
         sudoWorking = False
         p = subprocess.Popen(
@@ -44,7 +44,7 @@ class Shell(object):
         self.status = self.TimeoutCode
         self.cmd, self._real_command, self.sudo = cmd, cmd, sudo
         if sudo and is_sudo_working():
-            self._real_command = 'sudo {0}'.format(cmd)
+            self._real_command = 'sudo -n {0}'.format(cmd)
         self.stdout, self.stderr = '', ''
         self.wait_time, self.exec_time = timeout, 0
         p = subprocess.Popen(

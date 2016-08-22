@@ -109,7 +109,7 @@ class SysInfoLinux(object):
     def _shell_out(self, cmd, timeout=1, sudo=False):
         sudo = sudo and self.use_sudo
         shell = Shell(cmd, timeout=timeout, sudo=sudo)
-        sudo_cmd = 'sudo {0}'.format(cmd) if sudo else cmd
+        sudo_cmd = 'sudo -n {0}'.format(cmd) if sudo else cmd
         logging.debug('Shell "{0}" status: {1}'.format(sudo_cmd, shell.status))
         if shell.status == 0:
             return shell.stdout
