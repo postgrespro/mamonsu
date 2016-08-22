@@ -20,6 +20,12 @@ try:
 except:
     INTERPOLATION_LOADED = False
 
+try:
+    SEABORN_LOADED = True
+    import seaborn as sns
+except:
+    SEABORN_LOADED = False
+
 plt.rcParams.update({'font.size': 20})
 plt.style.use('seaborn-white')
 
@@ -123,6 +129,10 @@ with open(args.filename, 'r') as file:
         services[service]['x'].append(date)
         services[service]['y'].append(metric)
 
+if not INTERPOLATION_LOADED:
+    logging.error('\tInterpolation load failed, install numpy and scipy')
+if not SEABORN_LOADED:
+    logging.error('\tFor best graphics install seaborn')
 
 count_services, current_service = len(services), 0
 for service in services:
@@ -131,10 +141,7 @@ for service in services:
     # intepolation
     if not args.interpolation == 0:
         if len(x_axis) > args.interpolation:
-            if not INTERPOLATION_LOADED:
-                logging.error(
-                    '\tInterpolation load failed, install numpy and scipy')
-            else:
+            if INTERPOLATION_LOADED:
                 points = zip(x_axis, y_axis)
                 points = sorted(points, key=lambda point: point[0])
                 x1, y1 = zip(*points)
@@ -160,6 +167,9 @@ for service in services:
     ax.grid(True)
     ax.xaxis.set_major_formatter(xfmt)
     fig.autofmt_xdate()
+    if SEABORN_LOADED:
+        sns.set_style('ticks')
+        sns.set_context('poster')
     png_filename = os.path.join(
         args.save_dir,
         '{0}.png'.format(
