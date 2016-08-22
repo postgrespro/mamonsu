@@ -21,10 +21,8 @@ class SystemInfo(SysInfoLinux):
                 info.encode('utf-8'))
 
         def format_out(key, val):
-            if isinstance(val, str):
-                val = val.encode('utf-8')
             return "{0:40}|    {1}\n".format(
-                key.encode('utf-8'), val)
+                key.encode('utf-8'), val.encode('utf-8'))
 
         out = ''
         out += format_header('Report')
