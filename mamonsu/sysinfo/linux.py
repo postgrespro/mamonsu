@@ -80,7 +80,7 @@ class SysInfoLinux(object):
             if name == 'vgs_raw':
                 return remember(self, name, self._shell_out(
                     'vgs -o vg_name,vg_size,vg_free', sudo=True))
-            if name == 'cpu_arch':
+            if name == 'os_arch':
                 return remember(self, name, self._os_arch())
             if name == 'cpu_arch':
                 return remember(self, name, self._cpu_arch())
