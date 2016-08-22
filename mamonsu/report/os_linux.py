@@ -87,8 +87,10 @@ class SystemInfo(SysInfoLinux):
 
     def store_raw(self):
         def format_out(info, val):
+            if isinstance(val, str):
+                val = val.encode('utf-8')
             return "# {0} ##################################\n{1}\n".format(
-                info, val)
+                info.encode('utf-8'), val)
         out = format_out('SYSCTL', self.sysctl['_RAW'])
         out += format_out('DMESG', self.dmesg_raw)
         out += format_out('LSPCI', self.lspci_raw)
