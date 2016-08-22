@@ -30,11 +30,7 @@ class SystemInfo(SysInfoLinux):
         out += format_header('Report')
         out += format_out('Version', mamonsu_version)
         out += format_out('Platform', sys.platform)
-        out += format_out(
-            'Python', '{0}.{1}.{2}'.format(
-                sys.version_info.major,
-                sys.version_info.minor,
-                sys.version_info.micro))
+        out += format_out('Python', ' '.join(sys.version.split("\n")))
         out += format_header('System')
         out += format_out('Date', self.date)
         out += format_out('Host', self.hostname)

@@ -13,7 +13,8 @@ from mamonsu.report.pgsql import PostgresInfo
 if platform.LINUX:
     from mamonsu.report.os_linux import SystemInfo
 else:
-    from mamonsu.report.os_win import SystemInfo
+    if platform.WINDOWS:
+        from mamonsu.report.os_win import SystemInfo
 if platform.LINUX:
     import pwd
 
@@ -43,10 +44,6 @@ class Args(DefaultConfig):
             dest='log_level',
             default='INFO', help='Log level (default: %default)')
         if platform.LINUX:
-            group.add_option(
-                '--disable-try-connect-as-user-postgres',
-                dest='disable_try_postgres', action='store_false',
-                help='Don\'t try connect as unix user postgres')
             group.add_option(
                 '--disable-sudo',
                 dest='disable_sudo', action='store_false',
@@ -123,8 +120,6 @@ class Args(DefaultConfig):
         return True
 
     def _try_run_as_postgres(self):
-        if self.args.disable_try_postgres is False:
-            return False
         if platform.LINUX and os.getegid() == 0:
             try:
                 uid = pwd.getpwnam('postgres').pw_uid()
