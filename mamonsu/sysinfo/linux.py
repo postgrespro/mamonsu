@@ -71,6 +71,8 @@ class SysInfoLinux(object):
                         'iostat -x -N -m 1 2', timeout=3))
             if name == 'df_raw':
                 return remember(self, name, self._shell_out('df -h -P'))
+            if name == 'lscpi_raw':
+                return remember(self, name, self._shell_out('lspci'))
             if name == 'mdstat_raw':
                 return remember(self, name, self._read_file('/proc/mdstat'))
             if name == 'lvs_raw':

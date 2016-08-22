@@ -17,10 +17,12 @@ class SystemInfo(SysInfoLinux):
     def printable_info(self):
 
         def format_header(info):
-            return "\n###### {0:20} ###########################\n".format(info)
+            return "\n###### {0:20} ###########################\n".format(
+                info.encode('utf-8'))
 
         def format_out(key, val):
-            return "{0:40}|    {1}\n".format(key, val)
+            return "{0:40}|    {1}\n".format(
+                key.encode('utf-8'), val.encode('utf-8'))
 
         out = ''
         out += format_header('Report')
