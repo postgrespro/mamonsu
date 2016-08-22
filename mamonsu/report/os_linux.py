@@ -21,14 +21,20 @@ class SystemInfo(SysInfoLinux):
                 info.encode('utf-8'))
 
         def format_out(key, val):
+            if isinstance(val, str):
+                val = val.encode('utf-8')
             return "{0:40}|    {1}\n".format(
-                key.encode('utf-8'), val.encode('utf-8'))
+                key.encode('utf-8'), val)
 
         out = ''
         out += format_header('Report')
         out += format_out('Version', mamonsu_version)
         out += format_out('Platform', sys.platform)
-        out += format_out('Python', sys.version_info)
+        out += format_out(
+            'Python', '{0}.{1}.{2}'.format(
+                sys.version_info.major,
+                sys.version_info.minor,
+                sys.version_info.micro))
         out += format_header('System')
         out += format_out('Date', self.date)
         out += format_out('Host', self.hostname)
