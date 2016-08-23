@@ -12,14 +12,18 @@ class Xlog(Plugin):
         # recovery
         result = Pooler.query('select pg_is_in_recovery()')
         if str(result[0][0]) == 't' or str(result[0][0]) == 'True':
-            lag = Pooler.query('select extract(epoch from now() \
-                - pg_last_xact_replay_timestamp())')
-            zbx.send('pgsql.replication_lag[sec]', float(lag[0][0]))
+            lag = Pooler.query("""
+                select extract(epoch from now()
+                    - pg_last_xact_replay_timestamp())""")
+            if lag[0][0] is not None:
+                zbx.send('pgsql.replication_lag[sec]', float(lag[0][0]))
         else:
             # xlog location
-            result = Pooler.query("select pg_xlog_location_diff\
-                (pg_current_xlog_location(),'0/00000000')")
-            zbx.send('pgsql.wal.write[]', float(result[0][0]), self.DELTA_SPEED)
+            result = Pooler.query("""
+                select pg_xlog_location_diff
+                    (pg_current_xlog_location(),'0/00000000')""")
+            zbx.send(
+                'pgsql.wal.write[]', float(result[0][0]), self.DELTA_SPEED)
 
     def items(self, template):
         return template.item({
