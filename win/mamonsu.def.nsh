@@ -9,8 +9,8 @@
 !define USER "mamonsu"
 
 !define SERVICE_NAME "mamonsu"
-!define SERVICE_DISPLAY_NAME "Zabbix monitoring agent: mamonsu"
-!define SERVICE_TYPE "16"      ; service that runs in its own process 
+!define SERVICE_DISPLAY_NAME "Monitoring agent: mamonsu"
+!define SERVICE_TYPE "16"      ; service that runs in its own process
 !define SERVICE_START_TYPE "2" ; automatic start
 !define SERVICE_DEPENDENCIES "EventLog"
 !define SERVICE_DESCRIPTION "mamonsu service"

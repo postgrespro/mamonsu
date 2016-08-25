@@ -13,15 +13,15 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as md
 import matplotlib.ticker as tk
 
+INTERPOLATION_LOADED = True
 try:
     import numpy as np
     from scipy.interpolate import interp1d
-    INTERPOLATION_LOADED = True
 except:
     INTERPOLATION_LOADED = False
 
+SEABORN_LOADED = True
 try:
-    SEABORN_LOADED = True
     import seaborn as sns
 except:
     SEABORN_LOADED = False
