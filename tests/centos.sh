@@ -37,10 +37,14 @@ directory = /tmp
 file = /var/log/mamonsu/agent.log
 level = DEBUG
 EOF
+
+# truncate log
+> /var/log/mamonsu/agent.log
 /etc/init.d/mamonsu restart && sleep 125
+# check metric log
 grep utilization /tmp/localhost.log
 grep 'pgsql\.uptime' /tmp/localhost.log
-# check failed plugin
+# check failed plugin in log
 grep -i 'Plugin exception' /var/log/mamonsu/agent.log && exit 1
 # test uninstall
 yum remove -y mamonsu
