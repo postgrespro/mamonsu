@@ -1,7 +1,7 @@
 #!/bin/sh -ex
 
 # test build
-cp -a /var/tmp /root/mamonsu && cd /root/mamonsu
+cp -a /var/tmp /root/mamonsu && pushd /root/mamonsu
 yum install -y tar make rpm-build python2-devel python-setuptools
 make rpm && rpm -i mamonsu*.rpm
 

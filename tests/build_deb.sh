@@ -1,7 +1,7 @@
-#!/bin/sh -ex
+#!/bin/bash -ex
 
 # test build
-cp -a /var/tmp /root/mamonsu && cd /root/mamonsu
+cp -a /var/tmp /root/mamonsu && pushd /root/mamonsu
 apt-get update || apt-get update || apt-get update
 (apt-get install -y make dpkg-dev debhelper python-dev python-setuptools || apt-get install -y make dpkg-dev debhelper python-dev python-setuptools)
 make deb && dpkg -i mamonsu*.deb && cd /

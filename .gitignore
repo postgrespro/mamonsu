@@ -10,4 +10,5 @@ build
 
 *.deb
 *.rpm
+yum-root*
 rpm-tmp*

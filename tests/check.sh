@@ -1,7 +1,7 @@
 #!/bin/sh -ex
 
 # install mamonsu
-cp -a /var/tmp /root/mamonsu && cd /root/mamonsu
+cp -a /var/tmp /root/mamonsu && pushd /root/mamonsu
 yum install -y tar make rpm-build python2-devel python-setuptools
 make rpm && rpm -i mamonsu*.rpm
 
@@ -10,6 +10,7 @@ yum install -y https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x
 yum install -y postgresql95-server
 su postgres -c '/usr/pgsql-9.5/bin/initdb -D /var/lib/pgsql/9.5/data'
 /etc/init.d/postgresql-9.5 start
+sleep 5
 
 # mamonsu report
 (mamonsu report | grep version | grep 'PostgreSQL 9.5') || exit 1
@@ -35,7 +36,7 @@ directory = /tmp
 file = /var/log/mamonsu/agent.log
 level = DEBUG
 EOF
-service mamonsu start
+/etc/init.d/mamonsu restart
 sleep 125
 
 # metric log
@@ -43,4 +44,5 @@ grep utilization /tmp/localhost.log || exit 3
 grep 'pgsql\.uptime' /tmp/localhost.log || exit 3
 
 # all plugin alive
+cat /var/log/mamonsu/agent.log
 grep -i 'Plugin exception' /var/log/mamonsu/agent.log && exit 4
