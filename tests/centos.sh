@@ -37,11 +37,10 @@ directory = /tmp
 file = /var/log/mamonsu/agent.log
 level = DEBUG
 EOF
-/etc/init.d/mamonsu restart && sleep 120
+/etc/init.d/mamonsu restart && sleep 125
 grep utilization /tmp/localhost.log
-# grep utilization /var/log/mamonsu/agent.log # to zabbix
 grep 'pgsql\.uptime' /tmp/localhost.log
-# grep 'pgsql\.uptime' /var/log/mamonsu/agent.log # to zabbix
-
+# check failed plugin
+grep -i 'Plugin exception' /var/log/mamonsu/agent.log && exit 1
 # test uninstall
 yum remove -y mamonsu
