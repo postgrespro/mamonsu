@@ -17,8 +17,8 @@ sleep 5
 
 # export zabbix template
 mamonsu -e /tmp/template.xml
-grep 'pgsql\.uptime\[\]' /tmp/template.xml || exit 2 > /dev/null
-grep 'system\.disk\.all_read' /tmp/template.xml || exit 2 > /dev/null
+grep 'pgsql\.uptime\[\]' /tmp/template.xml || exit 2
+grep 'system\.disk\.all_read' /tmp/template.xml || exit 2
 
 # export config
 mamonsu -w /tmp/agent.conf
@@ -44,4 +44,6 @@ grep utilization /tmp/localhost.log || exit 3
 grep 'pgsql\.uptime' /tmp/localhost.log || exit 3
 
 # all plugin alive
-(grep -i 'Plugin exception' /var/log/mamonsu/agent.log && exit 4)
+grep -i 'Plugin exception' /var/log/mamonsu/agent.log && exit 4
+
+exit 0
