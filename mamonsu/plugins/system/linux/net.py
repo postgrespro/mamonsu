@@ -26,7 +26,7 @@ class Net(Plugin):
                         if item[0] == idx:
                             key = '{0}[{1}]'.format(item[1], iface)
                             zbx.send(key, float(value), self.DELTA_SPEED)
-                devices.append(iface)
+                devices.append({'{#NETDEVICE}': iface})
         zbx.send('system.net.discovery[]', zbx.json({'data': devices}))
 
     def discovery_rules(self, template):
