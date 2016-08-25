@@ -111,7 +111,6 @@ with open(args.filename, 'r') as file:
             continue
         date, metric, service = data
         date, metric = float(date), float(metric)
-
         # filter values
         if from_date is not None:
             if date < from_date:
@@ -122,7 +121,6 @@ with open(args.filename, 'r') as file:
         if args.service_filter is not None:
             if not re.search(args.service_filter, service):
                 continue
-
         # append to main hash
         if service not in services:
             services[service] = {'x': [], 'y': []}
@@ -153,7 +151,6 @@ for service in services:
     # as datetime
     xfmt = md.DateFormatter(args.date_format)
     x_axis = [dt.datetime.fromtimestamp(x) for x in x_axis]
-
     # draw plot
     current_service += 1
     fig, ax = plt.subplots()
@@ -167,6 +164,7 @@ for service in services:
     ax.grid(True)
     ax.xaxis.set_major_formatter(xfmt)
     fig.autofmt_xdate()
+    # apply style
     if SEABORN_LOADED:
         sns.set_style('ticks')
         sns.set_context('poster')
