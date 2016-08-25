@@ -59,16 +59,16 @@ class Shell(object):
             self.exec_time += 0.1
             line = p.stdout.read()
             if not line == '':
-                self.stdout += line.decode('utf-8')
+                self.stdout += line.decode('utf-8', 'replace')
             line = p.stderr.read()
             if not line == '':
-                self.stderr += line.decode('utf-8')
+                self.stderr += line.decode('utf-8', 'replace')
             if self.wait_time > 0 and self.exec_time >= self.wait_time:
                 return
         self.status = p.returncode
         for line in p.stdout.readlines():
-            self.stdout += line.decode('utf-8')
+            self.stdout += line.decode('utf-8', 'replace')
         for line in p.stderr.readlines():
-            self.stderr += line.decode('utf-8')
+            self.stderr += line.decode('utf-8', 'replace')
         self.stdout = self.stdout.strip()
         self.stderr = self.stderr.strip()
