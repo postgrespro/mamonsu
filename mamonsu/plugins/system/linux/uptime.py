@@ -10,7 +10,7 @@ class Uptime(Plugin):
 
     def run(self, zbx):
         uptime = open('/proc/uptime', 'r').read().split(' ')[0]
-        zbx.send('system.uptime[]', float(uptime))
+        zbx.send('system.uptime[]', int(uptime))
 
     def items(self, template):
         return template.item({
