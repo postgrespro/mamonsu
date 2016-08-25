@@ -5,7 +5,7 @@ all:
 	@echo Install
 	pip install --upgrade --editable .
 
-publish: clean
+publish: clean run_functional_tests
 	@echo "Check rpm version"
 	grep ^Version ./rpm/SPECS/mamonsu.spec | grep $(VERSION)
 	@echo "Check deb version"
@@ -57,3 +57,4 @@ python_clean:
 	@echo
 
 include Makefile.pkg
+include Makefile.tests

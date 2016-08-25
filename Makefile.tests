@@ -1,0 +1,5 @@
+test: run_functional_tests
+
+run_functional_tests:
+	docker run -v $$(pwd):/var/tmp centos:6 /var/tmp/tests/centos.sh
+	docker run -v $$(pwd):/var/tmp debian:7 /var/tmp/tests/debian.sh
