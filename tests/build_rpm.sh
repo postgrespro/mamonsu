@@ -1,12 +1,13 @@
 #!/bin/sh -ex
 
 # test build
-cp -a /var/tmp/ /root && cd /root
+cp -a /var/tmp /root/mamonsu && cd /root/mamonsu
 yum install -y tar make rpm-build python2-devel python-setuptools
 make rpm && rpm -i mamonsu*.rpm
 
-service mamonsu start
-service mamonsu stop
+/etc/init.d/mamonsu start
+sleep 5
+/etc/init.d/mamonsu stop
 
 # test uninstall
 yum remove -y mamonsu

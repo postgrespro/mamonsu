@@ -1,8 +1,8 @@
 #!/bin/sh -ex
 
 # install mamonsu
-cp -a /var/tmp/ /root
-cd /root && yum install -y tar make rpm-build python2-devel python-setuptools
+cp -a /var/tmp /root/mamonsu && cd /root/mamonsu
+yum install -y tar make rpm-build python2-devel python-setuptools
 make rpm && rpm -i mamonsu*.rpm
 
 # install postgres
