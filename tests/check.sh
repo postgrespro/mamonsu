@@ -36,7 +36,7 @@ directory = /tmp
 file = /var/log/mamonsu/agent.log
 level = DEBUG
 EOF
-/etc/init.d/mamonsu restart
+/etc/init.d/mamonsu start
 sleep 125
 
 # metric log
@@ -44,5 +44,4 @@ grep utilization /tmp/localhost.log || exit 3
 grep 'pgsql\.uptime' /tmp/localhost.log || exit 3
 
 # all plugin alive
-cat /var/log/mamonsu/agent.log
-grep -i 'Plugin exception' /var/log/mamonsu/agent.log && exit 4
+(grep -i 'Plugin exception' /var/log/mamonsu/agent.log && exit 4)
