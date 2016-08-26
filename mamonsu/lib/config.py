@@ -81,13 +81,6 @@ class Config(DefaultConfig):
 
         config = configparser.ConfigParser()
 
-        config.add_section('plugins')
-        config.set('plugins', 'directory', str(None))
-
-        config.add_section('template')
-        config.set('template', 'name', args.template)
-        config.set('template', 'application', args.application)
-
         config.add_section('postgres')
         config.set('postgres', 'enabled', str(True))
         config.set('postgres', 'user', Config.default_user())
@@ -101,13 +94,18 @@ class Config(DefaultConfig):
         config.set('postgres', 'uptime', str(60 * 10))
         config.set('postgres', 'cache', str(80))
 
-        config.add_section('log')
-        config.set('log', 'file', str(None))
-        config.set('log', 'level', 'INFO')
-        config.set(
-            'log',
-            'format',
-            '[%(levelname)s] %(asctime)s - %(name)s\t-\t%(message)s')
+        config.add_section('system')
+        config.set('system', 'enabled', str(True))
+        config.set('system', 'uptime', str(60*5))
+        config.set('system', 'vfs_percent_free', str(10))
+        config.set('system', 'vfs_inode_percent_free', str(10))
+
+        config.add_section('plugins')
+        config.set('plugins', 'enabled', str(False))
+        config.set('plugins', 'directory', '/etc/mamonsu/plugins')
+
+        config.add_section('sender')
+        config.set('sender', 'queue', str(300))
 
         config.add_section('zabbix')
         config.set('zabbix', 'enabled', str(True))
@@ -120,14 +118,12 @@ class Config(DefaultConfig):
         config.set('metric_log', 'directory', '/var/log/mamonsu')
         config.set('metric_log', 'max_size_mb', '1024')
 
-        config.add_section('sender')
-        config.set('sender', 'queue', str(300))
-
-        config.add_section('system')
-        config.set('system', 'enabled', str(True))
-        config.set('system', 'uptime', str(60*5))
-        config.set('system', 'vfs_percent_free', str(10))
-        config.set('system', 'vfs_inode_percent_free', str(10))
+        config.add_section('log')
+        config.set('log', 'file', str(None))
+        config.set('log', 'level', 'INFO')
+        config.set(
+            'log', 'format',
+            '[%(levelname)s] %(asctime)s - %(name)s\t-\t%(message)s')
 
         # override config file name
         if override_config_filename is not None:
@@ -199,10 +195,10 @@ class Config(DefaultConfig):
 
     def _load_additional_plugins(self):
 
-        directory = self.fetch('plugins', 'directory')
-        if directory is None:
+        if not self.fetch('plugins', 'enabled', bool):
             return
 
+        directory = self.fetch('plugins', 'directory')
         if not os.path.isdir(directory):
             logging.error("Can't find directory: %s", directory)
             sys.exit(3)

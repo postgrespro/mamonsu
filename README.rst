@@ -165,6 +165,32 @@ Auto tune PostgreSQL
 
     $ mamonsu tune --help
 
+==========================
+Zabbix API manage tools
+==========================
+
+.. code-block:: bash
+
+    $ export ZABBIX_USER=Admin
+    $ export ZABBIX_PASSWD=zabbix
+    $ export ZABBIX_URL='http://localhost/zabbix'
+
+    $ mamonsu zabbix template list
+    $ mamonsu zabbix template export <file>
+    $ mamonsu zabbix template show <template name>
+    $ mamonsu zabbix template id <template name>
+
+    $ mamonsu zabbix hostgroup list
+    $ mamonsu zabbix hostgroup create <hostgroup name>
+    $ mamonsu zabbix hostgroup delete <hostgroup id>
+    $ mamonsu zabbix hostgroup show <hostgroup name>
+    $ mamonsu zabbix hostgroup id <hostgroup name>
+
+    $ mamonsu zabbix host list
+    $ mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
+    $ mamonsu zabbix host show <hostname>
+    $ mamonsu zabbix host id <hostname>
+
 ===============
 Screenshots
 ===============

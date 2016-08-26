@@ -1,6 +1,9 @@
 #!/bin/sh -ex
 
 export TESTDIR=$(dirname $0)
+export ZABBIX_USER=Admin
+export ZABBIX_PASSWD=zabbix
+export ZABBIX_URL='http://localhost/zabbix'
 export ZABBIX_CLIENT_HOST=zabbix_client_host
 export ZABBIX_TEMPLATE=/tmp/template.xml
 export ZABBIX_TEMPLATE_NAME='PostgresPro'
@@ -68,7 +71,12 @@ cp /usr/share/zabbix/conf/zabbix.conf.php /etc/zabbix/web/zabbix.conf.php
 /etc/init.d/httpd start
 
 # export template to zabbix
-python2 $TESTDIR/export_template.py
+MAMONSU_ZABBIX="mamonsu zabbix --url=http://localhost/zabbix --user=Admin --password=zabbix"
+
+mamonsu zabbix template export $ZABBIX_TEMPLATE
+template_id=$(mamonsu zabbix template id $ZABBIX_TEMPLATE)
+hostgroup_id=$(mamonsu zabbix hostgroup id 'Linux servers')
+mamonsu zabbix host create $ZABBIX_CLIENT_HOST $hostgroup_id $template_id 127.0.0.1
 
 # start mamonsu and sleep
 cat <<EOF > /etc/mamonsu/agent.conf

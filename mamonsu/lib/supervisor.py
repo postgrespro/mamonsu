@@ -7,6 +7,7 @@ import sys
 
 from mamonsu.report.start import run_report
 from mamonsu.tune.start import run_tune
+from mamonsu.zabbix_tools.start import run_zabbix
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.config import Config
@@ -95,6 +96,12 @@ def start():
                 or arg == '--autotune':
             sys.argv.remove(arg)
             run_tune()
+            return
+
+    for arg in sys.argv:
+        if arg == 'zabbix':
+            sys.argv.remove(arg)
+            run_zabbix()
             return
 
     config = Config()
