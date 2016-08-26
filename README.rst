@@ -275,7 +275,7 @@ Screenshots
 
 
 ============
-Tool: report
+Tool: Report
 ============
 
 Create report about used hardware and PostgreSQL:
