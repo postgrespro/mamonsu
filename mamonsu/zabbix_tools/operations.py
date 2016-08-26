@@ -237,9 +237,6 @@ mamonsu zabbix item lastclock <host name>
                 sys.stderr.write('Too many found for {0}!\n'.format(hostname))
                 sys.exit(2)
             host_id = hosts[0]['hostid']
-            print('{0}\t{1}'.format(
-                'key',
-                typ))
             for item in self.req.post('item.get', {'hostids': [host_id]}):
                 if typ == 'error':
                     if item['error'] == '':
