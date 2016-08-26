@@ -186,6 +186,10 @@ Zabbix API manage tools
     $ mamonsu zabbix host id <hostname>
     $ mamonsu zabbix host delete <host id>
     $ mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
+    $ mamonsu zabbix host info templates <host id>
+    $ mamonsu zabbix host info hostgroups <host id>
+    $ mamonsu zabbix host info graphs <host id>
+    $ mamonsu zabbix host info items <host id>
 
     $ mamonsu zabbix hostgroup list
     $ mamonsu zabbix hostgroup show <hostgroup name>

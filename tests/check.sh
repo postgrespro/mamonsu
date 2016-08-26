@@ -102,10 +102,10 @@ grep utilization /tmp/localhost.log || exit 3
 grep 'pgsql\.uptime' /tmp/localhost.log || exit 3
 
 # error in zabbix server
-mamonsu zabbix item error $ZABBIX_CLIENT_HOST && exit 4
+(mamonsu zabbix item error $ZABBIX_CLIENT_HOST | grep ZBX_NOTSUPPORTED) && exit 4
 
 # other metric in zabbix server
-(mamonsu zabbix item lastvalue $ZABBIX_CLIENT_HOST | grep pgsql\.uptime) || exit 5
+(mamonsu zabbix item lastvalue $ZABBIX_CLIENT_HOST | grep uptime) || exit 5
 
 # all plugin alive
 grep -i 'Plugin exception' /var/log/mamonsu/agent.log && exit 6

@@ -48,7 +48,7 @@ clean: python_clean
 	rm -rf build
 	rm -f rpm-tmp*
 	rm -rf mamonsu.egg-info
-	rm -rf *.deb *.rpm
+	rm -rf *.deb *.rpm yum-root-*
 
 python_clean:
 	@echo Cleaning up python fragments

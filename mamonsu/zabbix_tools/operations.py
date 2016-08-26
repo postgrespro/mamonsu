@@ -21,6 +21,10 @@ mamonsu zabbix host show <host name>
 mamonsu zabbix host id <host name>
 mamonsu zabbix host delete <host id>
 mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
+mamonsu zabbix host info templates <host id>
+mamonsu zabbix host info hostgroups <host id>
+mamonsu zabbix host info graphs <host id>
+mamonsu zabbix host info items <host id>
 
 mamonsu zabbix hostgroup list
 mamonsu zabbix hostgroup show <hostgroup name>
@@ -65,7 +69,7 @@ mamonsu zabbix item lastclock <host name>
         elif typ == 'hostgroup':
             params = [ids]
         elif typ == 'host':
-            params = [{'hostid': ids}]
+            params = [ids]
         else:
             sys.stderr.write('Unknown type: {0} for deleting'.format(typ))
             sys.exit(4)
@@ -162,9 +166,26 @@ mamonsu zabbix item lastclock <host name>
                     method='configuration.import',
                     params={
                         'format': 'xml',
-                        'rules': {'templates': {
-                                    'createMissing': True,
-                                    'updateExisting': True}},
+                        'rules': {
+                        'templates': {
+                            'createMissing': True,
+                            'updateExisting': True},
+                        'applications': {
+                            'createMissing': True,
+                            'updateExisting': True},
+                        'discoveryRules': {
+                            'createMissing': True,
+                            'updateExisting': True},
+                        'graphs': {
+                            'createMissing': True,
+                            'updateExisting': True},
+                        'items': {
+                            'createMissing': True,
+                            'updateExisting': True},
+                        'triggers': {
+                            'createMissing': True,
+                            'updateExisting': True},
+                        },
                         'source': open(file).read()}):
                     raise Exception('Export template error')
             except Exception as e:
@@ -199,6 +220,51 @@ mamonsu zabbix item lastclock <host name>
 
     def host(self, args):
 
+        def _extented_info(self, hostid, key, val):
+            data = self.req.post(
+                method='host.get',
+                params={
+                    'output': ['host'],
+                    'hostids': hostid,
+                    key: val
+                })
+            if not len(data) == 1:
+                if len(data) == 0:
+                    sys.stderr.write('Host not found: {0}\n'.format(hostid))
+                else:
+                    sys.stderr.write(
+                        'Too many hosts found: {0}\n'.format(data))
+                sys.exit(4)
+            print(json.dumps(data[0], indent=2))
+
+        if args[0] == 'info':
+            if not len(args) == 3:
+                return self._print_help()
+            try:
+                if args[1] == 'templates':
+                    return _extented_info(
+                        self, args[2],
+                        'selectParentTemplates', ['templateid', 'name'])
+                elif args[1] == 'hostgroups':
+                    return _extented_info(
+                        self, args[2],
+                        'selectGroups', ['groupid', 'name'])
+                elif args[1] == 'items':
+                    return _extented_info(
+                        self, args[2],
+                        'selectItems', ['_key'])
+                elif args[1] == 'graphs':
+                    return _extented_info(
+                        self, args[2],
+                        'selectGraphs', ['graphid', 'name'])
+                else:
+                    self._print_help()
+            except Exception as e:
+                sys.stderr.write('Found error: {0}\n'.format(e))
+                sys.exit(4)
+            finally:
+                return
+
         if self._use_generic(args, 'host'):
             return
 
@@ -211,14 +277,15 @@ mamonsu zabbix item lastclock <host name>
                     method='host.create',
                     params={
                         'host': name,
-                        'interfaces': {
+                        'interfaces': [{
                             'type': 1, 'main': 1, 'useip': 1,
-                            'ip': ip, 'dns': '', 'port': '10050'},
+                            'ip': ip, 'dns': '', 'port': '10050'}],
                         'groups': [{'groupid': groupid}],
                         'templates': [{'templateid': templateid}]
                     }))
             except Exception as e:
                 sys.stderr.write('Host create error: {0}\n'.format(e))
+                sys.exit(4)
             finally:
                 return
 
