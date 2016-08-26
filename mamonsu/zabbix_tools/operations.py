@@ -8,7 +8,7 @@ from mamonsu.zabbix_tools.request import Request
 class Operations(object):
 
     _help_msg = """
-Must be arguments: template|hostgroup|host
+Arguments must be:
 
 mamonsu zabbix template list
 mamonsu zabbix template export <file>
@@ -206,7 +206,7 @@ mamonsu zabbix host id <hostname>
             return self._generic_show('host', args[1], onlyid=True)
 
         if args[0] == 'create':
-            if not len(args) == 4:
+            if not len(args) == 5:
                 return self._print_help()
             name, groupid, templateid, ip = args[1], args[2], args[3], args[4]
             try:
