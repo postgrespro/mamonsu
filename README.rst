@@ -284,9 +284,9 @@ Create report about used hardware and PostgreSQL:
 
     $ mamonsu report --help
 
-=====================
-Tool: tune PostgreSQL
-=====================
+==========
+Tool: Tune
+==========
 
 Make generic optimization for system and PostgreSQL, based on hardware information:
 
@@ -294,9 +294,9 @@ Make generic optimization for system and PostgreSQL, based on hardware informati
 
     $ mamonsu tune --help
 
-========================
-Tool: Zabbix API manager
-========================
+================
+Tool: Zabbix CLI
+================
 
 Simple tools for control of your Zabbix Server
 
