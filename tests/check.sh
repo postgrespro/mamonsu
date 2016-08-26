@@ -101,6 +101,9 @@ sleep 125
 grep utilization /tmp/localhost.log || exit 3
 grep 'pgsql\.uptime' /tmp/localhost.log || exit 3
 
+# error in zabbix
+mamonsu zabbix item error $ZABBIX_CLIENT_HOST
+
 # all plugin alive
 grep -i 'Plugin exception' /var/log/mamonsu/agent.log && exit 4
 
