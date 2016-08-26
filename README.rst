@@ -85,13 +85,13 @@ Export template for zabbix:
 
 Import this file in web interface of zabbix: Configuration => Templates => Import, or deploy with mamonsu:
 
-... code-block:: bash
+.. code-block:: bash
 
     $ mamonsu zabbix template export /usr/share/mamonsu/template.xml --url=http://zabbix/ --user=Admin --password=zabbix
 
 Add this template like `PostgresPro-Linux` at your monitoring host, or create host with mamonsu:
 
-... code-block:: bash
+.. code-block:: bash
 
     $ mamonsu zabbix host create <client name> <hostgroup id> <template id> <ip> --url=http://zabbix/ --user=Admin --password=zabbix
 
@@ -278,7 +278,7 @@ Screenshots
 Tool: report
 ============
 
-Create report about hardware and PostgreSQL:
+Create report about used hardware and PostgreSQL:
 
 .. code-block:: bash
 
@@ -288,7 +288,7 @@ Create report about hardware and PostgreSQL:
 Tool: tune PostgreSQL
 =====================
 
-Make generic optimization for system and PostgreSQL based on hardware information:
+Make generic optimization for system and PostgreSQL, based on hardware information:
 
 .. code-block:: bash
 
