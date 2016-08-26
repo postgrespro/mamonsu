@@ -40,61 +40,50 @@ mamonsu zabbix host id <hostname>
 
         if self.arg.arguments[0] == 'template':
             return self.template(self.arg.arguments[1:])
-
-        if self.arg.arguments[0] == 'hostgroup':
+        elif self.arg.arguments[0] == 'hostgroup':
             return self.hostgroup(self.arg.arguments[1:])
-
-        if self.arg.arguments[0] == 'host':
+        elif self.arg.arguments[0] == 'host':
             return self.host(self.arg.arguments[1:])
-
-        self._print_help()
+        else:
+            self._print_help()
 
     def _print_help(self):
         sys.stderr.write(self._help_msg)
         sys.exit(1)
 
     def _generic_list(self, typ):
-        method = 'unknown'
-        fltr = {}
-        name = 'name'
         if typ == 'template':
-            method = 'template.get'
-            fltr = {'host': []}
-        if typ == 'hostgroup':
-            method = 'hostgroup.get'
-            fltr = {'name': []}
-        if typ == 'host':
-            method = 'host.get'
-            fltr = {'host': []}
-            name = 'host'
+            name, fltr = 'name', 'host'
+        elif typ == 'hostgroup':
+            name, fltr = 'name', 'host'
+        elif typ == 'host':
+            fltr, name = 'host', 'host'
+        else:
+            sys.stderr.write('Unknown type: {0} for listing'.format(typ))
+            sys.exit(4)
         try:
             for x in self.req.post(
-                method=method,
+                method='{0}.get'.format(typ),
                 params={
-                    'filter': fltr}):
+                    'filter': {fltr: []}}):
                 print x[name]
         except Exception as e:
-            sys.stderr.write('List error {0}\n'.format(e))
+            sys.stderr.write('List error: {0}\n'.format(e))
+            sys.exit(3)
 
     def _generic_show(self, typ, name, onlyid=False):
-        method = 'unknown'
-        fltr = {}
-        ids = 'unknown'
         if typ == 'template':
-            method = 'template.get'
-            fltr = {'host': [name]}
-            ids = 'templateid'
-        if typ == 'hostgroup':
-            method = 'hostgroup.get'
-            fltr = {'name': [name]}
-            ids = 'groupid'
-        if typ == 'host':
-            method = 'host.get'
-            fltr = {'output': 'extend', 'host': [name]}
-            ids = 'hostid'
+            fltr, ids = {'host': [name]}, 'templateid'
+        elif typ == 'hostgroup':
+            fltr, ids = {'name': [name]}, 'groupid'
+        elif typ == 'host':
+            fltr, ids = {'host': [name]}, 'hostid'
+        else:
+            sys.stderr.write('Unknown type: {0} for showing'.format(typ))
+            sys.exit(4)
         try:
             x = self.req.post(
-                method=method,
+                method='{0}.get'.format(typ),
                 params={'filter': fltr})
             if len(x) == 0:
                 sys.stderr.write('{0} not found!\n'.format(name))
@@ -108,22 +97,30 @@ mamonsu zabbix host id <hostname>
             else:
                 print(json.dumps(x[0], indent=2))
         except Exception as e:
-            sys.stderr.write('show error {0}\n'.format(e))
+            sys.stderr.write('Show error: {0}\n'.format(e))
+            sys.exit(3)
+
+    def _use_generic(self, args, typ):
+        if args[0] == 'list':
+            self._generic_list(typ)
+            return True
+        elif args[0] == 'show':
+            if not len(args) == 2:
+                return self._print_help()
+            self._generic_show(typ, args[1])
+            return True
+        elif args[0] == 'id':
+            if not len(args) == 2:
+                return self._print_help()
+            self._generic_show(typ, args[1], onlyid=True)
+            return True
+        else:
+            return False
 
     def template(self, args):
 
-        if args[0] == 'list':
-            return self._generic_list('template')
-
-        if args[0] == 'show':
-            if not len(args) == 2:
-                return self._print_help()
-            return self._generic_show('template', args[1])
-
-        if args[0] == 'id':
-            if not len(args) == 2:
-                return self._print_help()
-            return self._generic_show('template', args[1], onlyid=True)
+        if self._use_generic(args, 'template'):
+            return
 
         if args[0] == 'export':
             if not len(args) == 2:
@@ -140,7 +137,8 @@ mamonsu zabbix host id <hostname>
                         'source': open(file).read()}):
                     raise Exception('Export template error')
             except Exception as e:
-                sys.stderr.write('Template export error {0}\n'.format(e))
+                sys.stderr.write('Template export error: {0}\n'.format(e))
+                sys.exit(3)
             finally:
                 return
 
@@ -148,18 +146,8 @@ mamonsu zabbix host id <hostname>
 
     def hostgroup(self, args):
 
-        if args[0] == 'list':
-            return self._generic_list('hostgroup')
-
-        if args[0] == 'show':
-            if not len(args) == 2:
-                return self._print_help()
-            return self._generic_show('hostgroup', args[1])
-
-        if args[0] == 'id':
-            if not len(args) == 2:
-                return self._print_help()
-            return self._generic_show('hostgroup', args[1], onlyid=True)
+        if self._use_generic(args, 'hostgroup'):
+            return
 
         if args[0] == 'create':
             if not len(args) == 2:
@@ -171,11 +159,11 @@ mamonsu zabbix host id <hostname>
                     params={'name': name})
                 print(result['groupids'][0])
             except Exception as e:
-                sys.stderr.write('Hostgroup create error {0}\n'.format(e))
+                sys.stderr.write('Hostgroup create error: {0}\n'.format(e))
             finally:
                 return
 
-        if args[0] == 'del' or args[0] == 'delete':
+        if args[0] == 'delete':
             if not len(args) == 2:
                 return self._print_help()
             ids = args[1]
@@ -184,7 +172,7 @@ mamonsu zabbix host id <hostname>
                     method='hostgroup.delete',
                     params=[ids]))
             except Exception as e:
-                sys.stderr.write('Hostgroup delete error {0}\n'.format(e))
+                sys.stderr.write('Hostgroup delete error: {0}\n'.format(e))
             finally:
                 return
 
@@ -192,18 +180,8 @@ mamonsu zabbix host id <hostname>
 
     def host(self, args):
 
-        if args[0] == 'list':
-            return self._generic_list('host')
-
-        if args[0] == 'show':
-            if not len(args) == 2:
-                return self._print_help()
-            return self._generic_show('host', args[1])
-
-        if args[0] == 'id':
-            if not len(args) == 2:
-                return self._print_help()
-            return self._generic_show('host', args[1], onlyid=True)
+        if self._use_generic(args, 'host'):
+            return
 
         if args[0] == 'create':
             if not len(args) == 5:
@@ -221,7 +199,7 @@ mamonsu zabbix host id <hostname>
                         'templates': [{'templateid': templateid}]
                     }))
             except Exception as e:
-                sys.stderr.write('Host create error {0}\n'.format(e))
+                sys.stderr.write('Host create error: {0}\n'.format(e))
             finally:
                 return
 
