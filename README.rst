@@ -298,7 +298,7 @@ Make generic optimization for system and PostgreSQL, based on hardware informati
 Tool: Zabbix CLI
 ================
 
-Simple tools for control of your Zabbix Server
+Simple cli for control your Zabbix Server
 
 .. code-block:: bash
 
