@@ -1,6 +1,6 @@
-*******************************
-mamonsu: Active zabbix agent
-*******************************
+****************************************
+mamonsu: Monitoring agent for PostgreSQL
+****************************************
 
 ============
 Build status
@@ -50,7 +50,7 @@ Build rpm:
     $ yum install make rpm-build python2-devel python-setuptools
     $ git clone ... && cd mamonsu && make rpm && rpm -i mamonsu*.rpm
 
-Build exe (worked with python v3.4, py2exe v0.9.2.2, pywin32 v220):
+Build win32 exe (worked with python v3.4, py2exe v0.9.2.2, pywin32 v220):
 
 If you have error with ctypes: try to extend bootstrap_modules (add "ctypes") in Lib\site-packages\py2exe\runtime.py
 
@@ -62,7 +62,7 @@ If you have error with ctypes: try to extend bootstrap_modules (add "ctypes") in
     $ c:\mamonsu\service_win32.exe -install
     $ net start mamonsu
 
-Build nsis installer(Don`t forget to sign it afterwards):
+Build nsis installer:
 
 .. code-block:: bash
 
@@ -83,9 +83,17 @@ Export template for zabbix:
     or
     $ cp /usr/share/mamonsu/template.xml .
 
-Import this file in web interface of zabbix: Configuration => Templates => Import.
+Import this file in web interface of zabbix: Configuration => Templates => Import, or deploy with mamonsu:
 
-Add this template like `PostgresPro-Linux` at your monitoring host.
+... code-block:: bash
+
+    $ mamonsu zabbix template export /usr/share/mamonsu/template.xml --url=http://zabbix/ --user=Admin --password=zabbix
+
+Add this template like `PostgresPro-Linux` at your monitoring host, or create host with mamonsu:
+
+... code-block:: bash
+
+    $ mamonsu zabbix host create <client name> <hostgroup id> <template id> <ip> --url=http://zabbix/ --user=Admin --password=zabbix
 
 Generate config on monitring host (or use preinstalled):
 
@@ -145,71 +153,13 @@ Run
 
 .. code-block:: bash
 
-    $ service mamonsu status
+    $ service mamonsu start
     or by hand:
     $ mamonsu -c /etc/mamonsu/agent.conf -p /var/run/mamonsu.pid
 
-===============
-Report tool
-===============
-
-.. code-block:: bash
-
-    $ mamonsu report --help
-
 ====================
-Auto tune PostgreSQL
+Metrics:  PostgreSQL
 ====================
-
-.. code-block:: bash
-
-    $ mamonsu tune --help
-
-==========================
-Zabbix API manage tools
-==========================
-
-.. code-block:: bash
-
-    $ export ZABBIX_USER=Admin
-    $ export ZABBIX_PASSWD=zabbix
-    $ export ZABBIX_URL='http://localhost/zabbix'
-
-    $ mamonsu zabbix template list
-    $ mamonsu zabbix template show <template name>
-    $ mamonsu zabbix template id <template name>
-    $ mamonsu zabbix template delete <template id>
-    $ mamonsu zabbix template export <file>
-
-    $ mamonsu zabbix host list
-    $ mamonsu zabbix host show <hostname>
-    $ mamonsu zabbix host id <hostname>
-    $ mamonsu zabbix host delete <host id>
-    $ mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
-    $ mamonsu zabbix host info templates <host id>
-    $ mamonsu zabbix host info hostgroups <host id>
-    $ mamonsu zabbix host info graphs <host id>
-    $ mamonsu zabbix host info items <host id>
-
-    $ mamonsu zabbix hostgroup list
-    $ mamonsu zabbix hostgroup show <hostgroup name>
-    $ mamonsu zabbix hostgroup id <hostgroup name>
-    $ mamonsu zabbix hostgroup delete <hostgroup id>
-    $ mamonsu zabbix hostgroup create <hostgroup name>
-
-    $ mamonsu zabbix item error <host name>
-    $ mamonsu zabbix item lastvalue <host name>
-    $ mamonsu zabbix item lastclock <host name>
-
-===============
-Screenshots
-===============
-
-.. image::  https://raw.githubusercontent.com/postgrespro/mamonsu/master/examples/statistics.png
-
-==================
-PostgreSQL metrics
-==================
 
 .. code-block:: bash
 
@@ -253,9 +203,9 @@ PostgreSQL metrics
     'Max age (datfrozenxid) in: {#DATABASE}': pgsql.database.bloating_tables[{#DATABASE}]
 
 
-====================
-Linux system metrics
-====================
+=====================
+Metrics: Linux system
+=====================
 
 .. code-block:: bash
 
@@ -302,9 +252,9 @@ Linux system metrics
     'Net device {#NETDEVICE}: TX errors/s': system.net.tx_errors[{#NETDEVICE}]
     'Net device {#NETDEVICE}: TX drops/s': system.net.tx_drops[{#NETDEVICE}]
 
-======================
-Windows system metrics
-======================
+=======================
+Metrics: Windows system
+=======================
 
 .. code-block:: bash
 
@@ -316,3 +266,68 @@ Windows system metrics
     'CPU privileged time': system.cpu[privileged_time]
     'Network bytes total': system.network[total_bytes]
     'Network output queue length': system.network[total_output_queue]
+
+============
+Screenshots
+============
+
+.. image::  https://raw.githubusercontent.com/postgrespro/mamonsu/master/examples/statistics.png
+
+
+============
+Tool: report
+============
+
+Create report about hardware and PostgreSQL:
+
+.. code-block:: bash
+
+    $ mamonsu report --help
+
+=====================
+Tool: tune PostgreSQL
+=====================
+
+Make generic optimization for system and PostgreSQL based on hardware information:
+
+.. code-block:: bash
+
+    $ mamonsu tune --help
+
+========================
+Tool: Zabbix API manager
+========================
+
+Simple tools for control of your Zabbix Server
+
+.. code-block:: bash
+
+    $ export ZABBIX_USER=Admin
+    $ export ZABBIX_PASSWD=zabbix
+    $ export ZABBIX_URL='http://localhost/zabbix'
+
+    $ mamonsu zabbix template list
+    $ mamonsu zabbix template show <template name>
+    $ mamonsu zabbix template id <template name>
+    $ mamonsu zabbix template delete <template id>
+    $ mamonsu zabbix template export <file>
+
+    $ mamonsu zabbix host list
+    $ mamonsu zabbix host show <hostname>
+    $ mamonsu zabbix host id <hostname>
+    $ mamonsu zabbix host delete <host id>
+    $ mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
+    $ mamonsu zabbix host info templates <host id>
+    $ mamonsu zabbix host info hostgroups <host id>
+    $ mamonsu zabbix host info graphs <host id>
+    $ mamonsu zabbix host info items <host id>
+
+    $ mamonsu zabbix hostgroup list
+    $ mamonsu zabbix hostgroup show <hostgroup name>
+    $ mamonsu zabbix hostgroup id <hostgroup name>
+    $ mamonsu zabbix hostgroup delete <hostgroup id>
+    $ mamonsu zabbix hostgroup create <hostgroup name>
+
+    $ mamonsu zabbix item error <host name>
+    $ mamonsu zabbix item lastvalue <host name>
+    $ mamonsu zabbix item lastclock <host name>
