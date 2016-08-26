@@ -22,6 +22,9 @@ su postgres -c '/usr/pgsql-9.5/bin/initdb -D /var/lib/pgsql/9.5/data'
 # mamonsu report
 (mamonsu report | grep version | grep 'PostgreSQL 9.5') || exit 1
 
+# mamonsu tune
+mamonsu tune
+
 # export config
 mamonsu -w /dev/null
 
@@ -71,10 +74,8 @@ cp /usr/share/zabbix/conf/zabbix.conf.php /etc/zabbix/web/zabbix.conf.php
 /etc/init.d/httpd start
 
 # export template to zabbix
-MAMONSU_ZABBIX="mamonsu zabbix --url=http://localhost/zabbix --user=Admin --password=zabbix"
-
 mamonsu zabbix template export $ZABBIX_TEMPLATE
-template_id=$(mamonsu zabbix template id $ZABBIX_TEMPLATE)
+template_id=$(mamonsu zabbix template id $ZABBIX_TEMPLATE_NAME)
 hostgroup_id=$(mamonsu zabbix hostgroup id 'Linux servers')
 mamonsu zabbix host create $ZABBIX_CLIENT_HOST $hostgroup_id $template_id 127.0.0.1
 
