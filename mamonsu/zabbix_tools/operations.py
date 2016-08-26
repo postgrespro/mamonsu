@@ -14,17 +14,20 @@ mamonsu zabbix template list
 mamonsu zabbix template export <file>
 mamonsu zabbix template show <template name>
 mamonsu zabbix template id <template name>
+mamonsu zabbix template delete <template id>
+
+mamonsu zabbix host list
+mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
+mamonsu zabbix host show <hostname>
+mamonsu zabbix host id <hostname>
+mamonsu zabbix host delete <host id>
 
 mamonsu zabbix hostgroup list
 mamonsu zabbix hostgroup create <hostgroup name>
 mamonsu zabbix hostgroup delete <hostgroup id>
 mamonsu zabbix hostgroup show <hostgroup name>
 mamonsu zabbix hostgroup id <hostgroup name>
-
-mamonsu zabbix host list
-mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
-mamonsu zabbix host show <hostname>
-mamonsu zabbix host id <hostname>
+mamonsu zabbix hostgroup delete <hostgroup id>
 """
 
     def __init__(self, arg):
@@ -50,6 +53,24 @@ mamonsu zabbix host id <hostname>
     def _print_help(self):
         sys.stderr.write(self._help_msg)
         sys.exit(1)
+
+    def _generic_delete(self, typ, ids):
+        if typ == 'template':
+            params = [ids]
+        elif typ == 'hostgroup':
+            params = [ids]
+        elif typ == 'host':
+            params = [{'hostid': ids}]
+        else:
+            sys.stderr.write('Unknown type: {0} for deleting'.format(typ))
+            sys.exit(4)
+        try:
+            print(self.req.post(
+                method='{0}.delete'.format(typ),
+                params=params))
+        except Exception as e:
+            sys.stderr.write('List error: {0}\n'.format(e))
+            sys.exit(3)
 
     def _generic_list(self, typ):
         if typ == 'template':
@@ -114,6 +135,11 @@ mamonsu zabbix host id <hostname>
                 return self._print_help()
             self._generic_show(typ, args[1], onlyid=True)
             return True
+        elif args[0] == 'delete':
+            if not len(args) == 2:
+                return self._print_help()
+            self._generic_delete(typ, args[1])
+            return True
         else:
             return False
 
@@ -160,19 +186,6 @@ mamonsu zabbix host id <hostname>
                 print(result['groupids'][0])
             except Exception as e:
                 sys.stderr.write('Hostgroup create error: {0}\n'.format(e))
-            finally:
-                return
-
-        if args[0] == 'delete':
-            if not len(args) == 2:
-                return self._print_help()
-            ids = args[1]
-            try:
-                print(self.req.post(
-                    method='hostgroup.delete',
-                    params=[ids]))
-            except Exception as e:
-                sys.stderr.write('Hostgroup delete error: {0}\n'.format(e))
             finally:
                 return
 
