@@ -17,8 +17,8 @@ mamonsu zabbix template delete <template id>
 mamonsu zabbix template export <file>
 
 mamonsu zabbix host list
-mamonsu zabbix host show <hostname>
-mamonsu zabbix host id <hostname>
+mamonsu zabbix host show <host name>
+mamonsu zabbix host id <host name>
 mamonsu zabbix host delete <host id>
 mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
 
@@ -27,12 +27,14 @@ mamonsu zabbix hostgroup show <hostgroup name>
 mamonsu zabbix hostgroup id <hostgroup name>
 mamonsu zabbix hostgroup delete <hostgroup id>
 mamonsu zabbix hostgroup create <hostgroup name>
+
+mamonsu zabbix latest-data <host name>
 """
 
     def __init__(self, arg):
 
         self.arg = arg
-        if len(self.arg.arguments) < 2:
+        if len(self.arg.commands) < 2:
             self._print_help()
 
         self.req = Request(
@@ -40,12 +42,14 @@ mamonsu zabbix hostgroup create <hostgroup name>
             user=arg.zabbix_user,
             passwd=arg.zabbix_password)
 
-        if self.arg.arguments[0] == 'template':
-            return self.template(self.arg.arguments[1:])
-        elif self.arg.arguments[0] == 'hostgroup':
-            return self.hostgroup(self.arg.arguments[1:])
-        elif self.arg.arguments[0] == 'host':
-            return self.host(self.arg.arguments[1:])
+        if self.arg.commands[0] == 'template':
+            return self.template(self.arg.commands[1:])
+        elif self.arg.commands[0] == 'hostgroup':
+            return self.hostgroup(self.arg.commands[1:])
+        elif self.arg.commands[0] == 'host':
+            return self.host(self.arg.commands[1:])
+        elif self.arg.commands[0] == 'latest-data':
+            return self.latest_data(self.arg.commands[1:])
         else:
             self._print_help()
 
@@ -185,6 +189,7 @@ mamonsu zabbix hostgroup create <hostgroup name>
                 print(result['groupids'][0])
             except Exception as e:
                 sys.stderr.write('Hostgroup create error: {0}\n'.format(e))
+                sys.exit(3)
             finally:
                 return
 
@@ -216,3 +221,19 @@ mamonsu zabbix hostgroup create <hostgroup name>
                 return
 
         return self._print_help()
+
+    def latest_data(self, args):
+        if len(args) == 0:
+            return self._print_help()
+        hostname = args[0]
+        try:
+            hosts = self.req.post('host.get', {'host': [hostname]})
+            if len(hosts) != 1:
+                sys.stderr.write('{0} not found!\n'.format(hostname))
+                sys.exit(2)
+            host_id = hosts[0]['hostid']
+            for item in self.req.post('item.get', {'hostids': [host_id]}):
+                print('{0}\t{1}'.format(item['key_'], item['lastvalue']))
+        except Exception as e:
+            sys.stderr.write('Error find latest data: {0}'.format(e))
+            sys.exit(3)

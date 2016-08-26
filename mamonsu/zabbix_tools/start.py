@@ -42,8 +42,8 @@ class Args(DefaultConfig):
             default='INFO', help='Log level (default: %default)')
         parser.add_option_group(group)
 
-        self.args, arguments = parser.parse_args()
-        self.args.arguments = arguments
+        self.args, commands = parser.parse_args()
+        self.args.commands = commands
 
         # apply logging
         logging.basicConfig(
