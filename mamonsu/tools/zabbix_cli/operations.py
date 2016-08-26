@@ -2,7 +2,7 @@
 
 import sys
 import json
-from mamonsu.zabbix_tools.request import Request
+from mamonsu.tools.zabbix_cli.request import Request
 
 
 class Operations(object):

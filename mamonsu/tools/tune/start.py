@@ -9,8 +9,8 @@ from mamonsu import __version__
 import mamonsu.lib.platform as platform
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.checks import is_conn_to_db
-from mamonsu.tune.pgsql import AutoTunePgsl
-from mamonsu.tune.system import AutoTuneSystem
+from mamonsu.tools.tune.pgsql import AutoTunePgsl
+from mamonsu.tools.tune.system import AutoTuneSystem
 
 
 class Args(DefaultConfig):

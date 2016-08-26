@@ -6,7 +6,7 @@ import optparse
 
 from mamonsu import __version__
 from mamonsu.lib.default_config import DefaultConfig
-from mamonsu.zabbix_tools.operations import Operations
+from mamonsu.tools.zabbix_cli.operations import Operations
 
 
 class Args(DefaultConfig):
@@ -15,9 +15,9 @@ class Args(DefaultConfig):
 
         parser = optparse.OptionParser(
             usage='%prog zabbix [--url] [--user] '
-            '[--password] [--log-level] template|host',
-            version='%prog zabbix tools {0}'.format(__version__),
-            description='Zabbix API adminstative tools')
+            '[--password] [--log-level] commands',
+            version='%prog zabbix cli tools {0}'.format(__version__),
+            description='Zabbix CLI tools')
         group = optparse.OptionGroup(
             parser,
             'Zabbix API connection settings')

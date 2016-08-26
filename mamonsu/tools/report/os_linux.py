@@ -4,7 +4,7 @@ import sys
 import logging
 
 from mamonsu import __version__ as mamonsu_version
-from mamonsu.sysinfo.linux import SysInfoLinux
+from mamonsu.tools.sysinfo.linux import SysInfoLinux
 
 
 class SystemInfo(SysInfoLinux):

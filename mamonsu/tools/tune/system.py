@@ -4,7 +4,7 @@ import os
 import logging
 
 import mamonsu.lib.platform as platform
-from mamonsu.sysinfo.linux import SysInfoLinux
+from mamonsu.tools.sysinfo.linux import SysInfoLinux
 
 
 class AutoTuneSystem(SysInfoLinux):

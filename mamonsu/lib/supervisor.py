@@ -5,15 +5,16 @@ import logging
 import signal
 import sys
 
-from mamonsu.report.start import run_report
-from mamonsu.tune.start import run_tune
-from mamonsu.zabbix_tools.start import run_zabbix
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.config import Config
 from mamonsu.lib.sender import *
 from mamonsu.lib.senders import *
 from mamonsu.plugins import *
+
+from mamonsu.tools.report.start import run_report
+from mamonsu.tools.tune.start import run_tune
+from mamonsu.tools.zabbix_cli.start import run_zabbix
 
 
 class Supervisor(object):

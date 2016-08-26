@@ -9,12 +9,12 @@ import mamonsu.lib.platform as platform
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.checks import is_conn_to_db
 
-from mamonsu.report.pgsql import PostgresInfo
+from mamonsu.tools.report.pgsql import PostgresInfo
 if platform.LINUX:
-    from mamonsu.report.os_linux import SystemInfo
+    from mamonsu.tools.report.os_linux import SystemInfo
 else:
     if platform.WINDOWS:
-        from mamonsu.report.os_win import SystemInfo
+        from mamonsu.tools.report.os_win import SystemInfo
 if platform.LINUX:
     import pwd
 

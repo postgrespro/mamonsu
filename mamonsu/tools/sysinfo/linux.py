@@ -5,7 +5,7 @@ import re
 import glob
 import logging
 
-from mamonsu.sysinfo.linux_shell import Shell
+from mamonsu.tools.sysinfo.linux_shell import Shell
 
 NA = 'N/A'
 UNKNOWN = 'Unknown'
@@ -54,57 +54,57 @@ class SysInfoLinux(object):
         try:
             if name == 'hostname':
                 return remember(self, name, self._shell_out('uname -n'))
-            if name == 'date':
+            elif name == 'date':
                 return remember(self, name, self._date())
-            if name == 'sysctl':
+            elif name == 'sysctl':
                 return remember(self, name, self._sysctl())
-            if name == 'dmesg_raw':
+            elif name == 'dmesg_raw':
                 return remember(self, name, self._dmesg_raw())
-            if name == 'kernel':
+            elif name == 'kernel':
                 return remember(self, name, self._shell_out('uname -r'))
-            if name == 'uptime_raw':
+            elif name == 'uptime_raw':
                 return remember(self, name, self._shell_out('uptime'))
-            if name == 'mount_raw':
+            elif name == 'mount_raw':
                 return remember(self, name, self._shell_out('mount'))
-            if name == 'iostat_raw':
+            elif name == 'iostat_raw':
                 return remember(self, name, self._shell_out(
                         'iostat -x -N -m 1 2', timeout=3))
-            if name == 'df_raw':
+            elif name == 'df_raw':
                 return remember(self, name, self._shell_out('df -h -P'))
-            if name == 'lspci_raw':
+            elif name == 'lspci_raw':
                 return remember(self, name, self._shell_out('lspci'))
-            if name == 'mdstat_raw':
+            elif name == 'mdstat_raw':
                 return remember(self, name, self._read_file('/proc/mdstat'))
-            if name == 'lvs_raw':
+            elif name == 'lvs_raw':
                 return remember(self, name, self._shell_out('lvs', sudo=True))
-            if name == 'vgs_raw':
+            elif name == 'vgs_raw':
                 return remember(self, name, self._shell_out(
                     'vgs -o vg_name,vg_size,vg_free', sudo=True))
-            if name == 'os_arch':
+            elif name == 'os_arch':
                 return remember(self, name, self._os_arch())
-            if name == 'cpu_arch':
+            elif name == 'cpu_arch':
                 return remember(self, name, self._cpu_arch())
-            if name == 'dmi_raw':
+            elif name == 'dmi_raw':
                 return remember(self, name, self._shell_out(
                     'dmidecode', sudo=True))
-            if name == 'dmi_info':
+            elif name == 'dmi_info':
                 return remember(self, name, self._dmi_info())
-            if name == 'cpu_model':
+            elif name == 'cpu_model':
                 return remember(self, name, self._cpu_model())
-            if name == 'meminfo':
+            elif name == 'meminfo':
                 return remember(self, name, self._meminfo())
-            if name == 'virtualization':
+            elif name == 'virtualization':
                 return remember(self, name, self._virtualization())
-            if name == 'release':
+            elif name == 'release':
                 return remember(self, name, self._release())
-            if name == 'raid':
+            elif name == 'raid':
                 return remember(self, name, self._raid())
-            if name == 'block_info':
+            elif name == 'block_info':
                 return remember(self, name, self._block_info())
-            if name == 'systemd':
+            elif name == 'systemd':
                 return remember(self, name, self._systemd())
         except KeyError:
-            return UNKNOWN
+            raise Exception('Unknown parameter: {0}'.format(name))
 
     def _shell_out(self, cmd, timeout=1, sudo=False):
         sudo = sudo and self.use_sudo
