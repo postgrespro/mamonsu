@@ -17,7 +17,7 @@ class Args(DefaultConfig):
             usage='%prog zabbix [--url] [--user] '
             '[--password] [--log-level] template|host',
             version='%prog zabbix tools {0}'.format(__version__),
-            description='Zabbix adminstative tools via api')
+            description='Zabbix API adminstative tools')
         group = optparse.OptionGroup(
             parser,
             'Zabbix API connection settings')
@@ -25,7 +25,7 @@ class Args(DefaultConfig):
             '--url',
             dest='zabbix_url',
             default=os.environ.get('ZABBIX_URL') or 'http://localhost/zabbix',
-            help='Web interface of Zabbix URL (default: %default)')
+            help='URL of Zabbix Web interface (default: %default)')
         group.add_option(
             '--user',
             dest='zabbix_user',

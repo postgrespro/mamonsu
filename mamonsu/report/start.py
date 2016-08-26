@@ -24,8 +24,8 @@ class Args(DefaultConfig):
     def __init__(self):
 
         parser = optparse.OptionParser(
-            usage='%prog first-look',
-            version='%prog first-look {0}'.format(__version__),
+            usage='%prog report',
+            version='%prog report {0}'.format(__version__),
             description='First look report')
         group = optparse.OptionGroup(
             parser,

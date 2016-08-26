@@ -18,9 +18,9 @@ class Args(DefaultConfig):
     def __init__(self):
 
         parser = optparse.OptionParser(
-            usage='%prog autotune',
-            version='%prog autotune {0}'.format(__version__),
-            description='Autotune config')
+            usage='%prog tune',
+            version='%prog tune {0}'.format(__version__),
+            description='Tune config')
         group = optparse.OptionGroup(
             parser,
             'Start options')
@@ -97,7 +97,7 @@ class Args(DefaultConfig):
 
         if not self._auto_host_is_working():
             logging.error(
-                'Miss postgres checking, can\'t connected with auto options')
+                'Can\'t connected with auto options to PostgreSQL')
             sys.exit(3)
 
         if not is_conn_to_db(

@@ -83,17 +83,13 @@ def start():
         signal.signal(signal.SIGQUIT, quit_handler)
 
     for arg in sys.argv:
-        if arg == '--run-first-look' or arg == '--run-look'\
-                or arg == 'first' or arg == '--first'\
-                or arg == 'first-look' or arg == 'report':
+        if arg == 'report':
             sys.argv.remove(arg)
             run_report()
             return
 
     for arg in sys.argv:
-        if arg == 'auto-tune' or arg == '--auto-tune'\
-                or arg == 'tune' or arg == 'autotune'\
-                or arg == '--autotune':
+        if arg == 'tune':
             sys.argv.remove(arg)
             run_tune()
             return

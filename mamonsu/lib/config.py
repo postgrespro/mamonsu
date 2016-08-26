@@ -77,7 +77,10 @@ class Config(DefaultConfig):
             help='Application for generated template')
         parser.add_option_group(group)
 
-        args, _ = parser.parse_args()
+        args, commands = parser.parse_args()
+        if len(commands) > 0:
+            sys.stderr.write('Unknown command: {0}\n'.format(commands[0]))
+            sys.exit(6)
 
         config = configparser.ConfigParser()
 
