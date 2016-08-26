@@ -11,23 +11,22 @@ class Operations(object):
 Arguments must be:
 
 mamonsu zabbix template list
-mamonsu zabbix template export <file>
 mamonsu zabbix template show <template name>
 mamonsu zabbix template id <template name>
 mamonsu zabbix template delete <template id>
+mamonsu zabbix template export <file>
 
 mamonsu zabbix host list
-mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
 mamonsu zabbix host show <hostname>
 mamonsu zabbix host id <hostname>
 mamonsu zabbix host delete <host id>
+mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
 
 mamonsu zabbix hostgroup list
-mamonsu zabbix hostgroup create <hostgroup name>
-mamonsu zabbix hostgroup delete <hostgroup id>
 mamonsu zabbix hostgroup show <hostgroup name>
 mamonsu zabbix hostgroup id <hostgroup name>
 mamonsu zabbix hostgroup delete <hostgroup id>
+mamonsu zabbix hostgroup create <hostgroup name>
 """
 
     def __init__(self, arg):
