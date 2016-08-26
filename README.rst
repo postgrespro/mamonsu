@@ -193,7 +193,9 @@ Zabbix API manage tools
     $ mamonsu zabbix hostgroup delete <hostgroup id>
     $ mamonsu zabbix hostgroup create <hostgroup name>
 
-    $ mamonsu zabbix latest-data <host name>
+    $ mamonsu zabbix item error <host name>
+    $ mamonsu zabbix item lastvalue <host name>
+    $ mamonsu zabbix item lastclock <host name>
 
 ===============
 Screenshots

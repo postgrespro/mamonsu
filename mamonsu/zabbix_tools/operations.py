@@ -28,7 +28,9 @@ mamonsu zabbix hostgroup id <hostgroup name>
 mamonsu zabbix hostgroup delete <hostgroup id>
 mamonsu zabbix hostgroup create <hostgroup name>
 
-mamonsu zabbix latest-data <host name>
+mamonsu zabbix item error <host name>
+mamonsu zabbix item lastvalue <host name>
+mamonsu zabbix item lastclock <host name>
 """
 
     def __init__(self, arg):
@@ -48,8 +50,8 @@ mamonsu zabbix latest-data <host name>
             return self.hostgroup(self.arg.commands[1:])
         elif self.arg.commands[0] == 'host':
             return self.host(self.arg.commands[1:])
-        elif self.arg.commands[0] == 'latest-data':
-            return self.latest_data(self.arg.commands[1:])
+        elif self.arg.commands[0] == 'item':
+            return self.item(self.arg.commands[1:])
         else:
             self._print_help()
 
@@ -114,7 +116,7 @@ mamonsu zabbix latest-data <host name>
                 sys.exit(2)
             if len(x) > 1:
                 sys.stderr.write(
-                    'Found too many: {0}\n'.format(x))
+                    'Too many found: {0}\n'.format(x))
                 sys.exit(2)
             if onlyid:
                 print(x[0][ids])
@@ -222,18 +224,29 @@ mamonsu zabbix latest-data <host name>
 
         return self._print_help()
 
-    def latest_data(self, args):
-        if len(args) == 0:
+    def item(self, args):
+        if len(args) != 2:
             return self._print_help()
-        hostname = args[0]
+        typ, hostname = args[0], args[1]
         try:
-            hosts = self.req.post('host.get', {'host': [hostname]})
-            if len(hosts) != 1:
+            hosts = self.req.post('host.get', {'filter': {'host': [hostname]}})
+            if len(hosts) == 0:
                 sys.stderr.write('{0} not found!\n'.format(hostname))
                 sys.exit(2)
+            if len(hosts) > 1:
+                sys.stderr.write('Too many found for {0}!\n'.format(hostname))
+                sys.exit(2)
             host_id = hosts[0]['hostid']
+            print('{0}\t{1}'.format(
+                'key',
+                typ))
             for item in self.req.post('item.get', {'hostids': [host_id]}):
-                print('{0}\t{1}'.format(item['key_'], item['lastvalue']))
+                if typ == 'error':
+                    if item['error'] == '':
+                        continue
+                print('{0}\t{1}'.format(
+                    item['key_'],
+                    item[typ]))
         except Exception as e:
-            sys.stderr.write('Error find latest data: {0}'.format(e))
+            sys.stderr.write('Error find: {0}\n'.format(e))
             sys.exit(3)
