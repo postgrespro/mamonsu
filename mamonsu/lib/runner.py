@@ -59,9 +59,8 @@ def start():
         for klass in Plugin.get_childs():
             plugins.append(klass(cfg))
         template = ZbxTemplate(cfg.args.template, cfg.args.application)
-        with codecs.open(
-                cfg.args.template_file, 'w', 'utf-8') as templatefile:
-            templatefile.write(template.xml(plugins))
+        with codecs.open(cfg.args.template_file, 'w', 'utf-8') as f:
+            f.write(template.xml(plugins))
             sys.exit(0)
 
     supervisor = Supervisor(cfg)
@@ -72,7 +71,7 @@ def start():
             with open(cfg.args.pid, 'w') as pidfile:
                 pidfile.write(str(os.getpid()))
         except Exception as e:
-            logging.error('Can\'t write pid file, error: %s'.format(e))
+            sys.stderr.write('Can\'t write pid file, error: %s'.format(e))
             sys.exit(2)
 
     try:
