@@ -23,7 +23,7 @@ setup(
     license=mamonsu.__licence__,
     entry_points={
         'console_scripts': [
-            'mamonsu=mamonsu.lib.supervisor:start'
+            'mamonsu=mamonsu.lib.runner:start'
         ],
     },
     zip_safe=True,

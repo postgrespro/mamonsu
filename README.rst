@@ -67,7 +67,7 @@ Build nsis installer:
 .. code-block:: bash
 
     $ git clone ... && cd mamonsu && python setup_win32.py py2exe
-    $ nsis win/mamonsu.nsis
+    $ nsis packaging/win/mamonsu.nsis
 
 ==========
 Configure
@@ -79,7 +79,7 @@ Export template for zabbix:
 
     $ mamonsu -e template.xml
     or
-    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/conf/template.xml
+    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/template.xml
     or
     $ cp /usr/share/mamonsu/template.xml .
 

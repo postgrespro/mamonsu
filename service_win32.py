@@ -13,8 +13,8 @@ from mamonsu.lib.supervisor import Supervisor
 class MamonsuSvc(win32serviceutil.ServiceFramework):
 
     _svc_name_ = 'mamonsu'
-    _svc_description_ = 'Zabbix monitoring agent: mamonsu'
-    _svc_display_name_ = 'Zabbix monitoring agent: mamonsu'
+    _svc_description_ = 'monitoring agent: mamonsu'
+    _svc_display_name_ = 'monitoring agent: mamonsu'
     _svc_deps_ = ['EventLog']
 
     def __init__(self, args):

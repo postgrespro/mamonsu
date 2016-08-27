@@ -10,6 +10,6 @@ class PgsqlPlugin(Plugin):
         self._enabled = config.fetch('postgres', 'enabled', bool)
 
     @classmethod
-    def childs(self):
+    def get_childs(self):
         # return all childs
         return self.__subclasses__()

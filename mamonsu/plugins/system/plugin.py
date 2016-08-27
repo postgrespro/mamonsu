@@ -10,6 +10,6 @@ class SystemPlugin(Plugin):
         self._enabled = config.fetch('system', 'enabled', bool)
 
     @classmethod
-    def childs(self):
+    def get_childs(self):
         # return all childs
         return self.__subclasses__()

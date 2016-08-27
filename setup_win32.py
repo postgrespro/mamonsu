@@ -23,7 +23,7 @@ setup(
     service=[
         Target(
             name='mamonsu',
-            description='Zabbix active agent',
+            description='monitoring agent',
             modules=['service_win32'],
             cmdline_style='pywin32'
         )
@@ -34,8 +34,9 @@ setup(
             'packages': [
                 'mamonsu',
                 'mamonsu.plugins',
-                'mamonsu.plugins.windows',
-                'mamonsu.plugins.pgsql'
+                'mamonsu.plugins.pgsql',
+                'mamonsu.plugins.system.windows',
+                'mamonsu.tools.zabbix_cli'
             ],
             'bundle_files': 1,
             'dist_dir': 'dist',

@@ -35,12 +35,12 @@ class Plugin(object):
         self.last_error_text = ''
 
     @classmethod
-    def childs(self):
+    def get_childs(self):
         childs = []
         for klass in self.__subclasses__():
             if klass._child:
                 childs.append(klass)
-            childs.extend(klass.childs())
+            childs.extend(klass.get_childs())
         return childs
 
     def start(self):

@@ -1,3 +1,22 @@
+prepare_builddir: clean
+	mkdir build
+	tar --transform='s,^\.,mamonsu-$(VERSION),'\
+		-czf build/mamonsu-$(VERSION).tar.gz .\
+		--exclude=build
+	tar xvf build/mamonsu-$(VERSION).tar.gz -C build
+	cp build/mamonsu-$(VERSION).tar.gz \
+		$(BUILDDIR)/packaging/rpm/SOURCES
+	chown -R root.root $(BUILDDIR)
+
+deb: prepare_builddir
+	cd $(BUILDDIR) && cp -a $(CURDIR)/packaging/debian . && dpkg-buildpackage -b
+	cp -av build/mamonsu*.deb .
+
+rpm: prepare_builddir
+	rpmbuild -ba --define '_topdir $(BUILDDIR)/packaging/rpm'\
+		$(BUILDDIR)/packaging/rpm/SPECS/mamonsu.spec
+	cp -av $(BUILDDIR)/packaging/rpm/RPMS/noarch/mamonsu*.rpm .
+
 pkg: build/pkg_debian build/pkg_ubuntu build/pkg_centos
 	@echo Cloud done
 

@@ -6,15 +6,12 @@ import os
 import logging
 import sys
 import glob
-import codecs
 
 import mamonsu.lib.platform as platform
 from mamonsu.plugins.pgsql.checks import is_conn_to_db
 from mamonsu.lib.default_config import DefaultConfig
 
 from mamonsu import __version__
-from mamonsu.lib.plugin import Plugin
-from mamonsu.lib.zbx_template import *
 
 if platform.PY2:
     import ConfigParser as configparser
@@ -78,9 +75,7 @@ class Config(DefaultConfig):
         parser.add_option_group(group)
 
         args, commands = parser.parse_args()
-        if len(commands) > 0:
-            sys.stderr.write('Unknown command: {0}\n'.format(commands[0]))
-            sys.exit(6)
+        args.commands = commands
 
         config = configparser.ConfigParser()
 
@@ -138,32 +133,12 @@ class Config(DefaultConfig):
         else:
             if args.config_filename is not None:
                 self.config.read(args.config_filename)
+
         self._apply_log_setting()
         self._apply_environ()
         self._load_additional_plugins()
 
-        if args.write_config_file is not None:
-            with open(args.write_config_file, 'w') as fd:
-                config.write(fd)
-                sys.exit(0)
-
-        if args.template_file is not None:
-            plugins = []
-            for klass in Plugin.childs():
-                plugins.append(klass(self))
-            template = ZbxTemplate(args.template, args.application)
-            with codecs.open(args.template_file, 'w', 'utf-8') as templatefile:
-                templatefile.write(template.xml(plugins))
-                sys.exit(0)
-
-        if args.pid is not None:
-            try:
-                with open(args.pid, 'w') as pidfile:
-                    pidfile.write(str(os.getpid()))
-            except Exception as e:
-                logging.error('Can\'t write pid file, error: %s'.format(e))
-                sys.exit(2)
-
+        self.args = args
         self._override_auto_variables()
 
     def fetch(self, sec, key, klass=None, raw=False):
