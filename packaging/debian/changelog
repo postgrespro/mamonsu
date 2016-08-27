@@ -1,3 +1,9 @@
+mamonsu (1.5.1-1) stable; urgency=low
+
+  * Runner fixes
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Sat, 27 Aug 2016 14:00:00 +0300
+
 mamonsu (1.5.0-1) stable; urgency=low
 
   * Zabbix tool feature

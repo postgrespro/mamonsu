@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        1.5.0
+Version:        1.5.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Sat Aug 27 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.5.1-1
+- Runner fixes
+
 * Fri Aug 26 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.5.0-1
 - Zabbix tool feature
 

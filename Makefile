@@ -5,8 +5,8 @@ all:
 	pip install --upgrade --editable .
 
 publish: clean test
-	grep ^Version ./rpm/SPECS/mamonsu.spec | grep $(VERSION)
-	grep ^mamonsu ./debian/changelog | grep $(VERSION)
+	grep ^Version ./packaging/rpm/SPECS/mamonsu.spec | grep $(VERSION)
+	grep ^mamonsu ./packaging/debian/changelog | grep $(VERSION)
 	python setup.py register
 	python setup.py sdist upload
 	git push
