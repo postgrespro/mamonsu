@@ -15,6 +15,8 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.tools.report.start import run_report
 from mamonsu.tools.tune.start import run_tune
 from mamonsu.tools.zabbix_cli.start import run_zabbix
+from mamonsu.lib.agent import get_api_metric
+from mamonsu.lib.agent import get_api_metric_list, get_api_version
 
 
 def start():
@@ -30,20 +32,17 @@ def start():
     for arg in sys.argv:
         if arg == 'report':
             sys.argv.remove(arg)
-            run_report()
-            return
+            return run_report()
 
     for arg in sys.argv:
         if arg == 'tune':
             sys.argv.remove(arg)
-            run_tune()
-            return
+            return run_tune()
 
     for arg in sys.argv:
         if arg == 'zabbix':
             sys.argv.remove(arg)
-            run_zabbix()
-            return
+            return run_zabbix()
 
     cfg = Config()
 
@@ -73,6 +72,34 @@ def start():
         except Exception as e:
             sys.stderr.write('Can\'t write pid file, error: %s'.format(e))
             sys.exit(2)
+
+    if len(cfg.args.commands) > 0:
+
+        def _print_help():
+            msg = 'mamonsu agent '
+            msg += '[run|version|metric-get <metric key>|metric-list]\n'
+            sys.stderr.write(msg)
+            sys.exit(7)
+
+        commands = cfg.args.commands
+        if 'agent' == commands[0]:
+            if len(commands) <= 1:
+                _print_help()
+            if 'run' == commands[1]:
+                pass
+            elif 'version' == commands[1]:
+                return get_api_version(cfg)
+            elif 'metric-get' == commands[1]:
+                if len(commands) == 3:
+                    return get_api_metric(cfg, commands[2])
+                else:
+                    _print_help()
+            elif 'metric-list' == commands[1]:
+                return get_api_metric_list(cfg)
+            else:
+                _print_help()
+        else:
+            _print_help()
 
     try:
         logging.info("Start agent")

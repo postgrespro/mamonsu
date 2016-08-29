@@ -96,7 +96,7 @@ mamonsu zabbix item lastclock <host name>
                 method='{0}.get'.format(typ),
                 params={
                     'filter': {fltr: []}}):
-                print x[name]
+                print(x[name])
         except Exception as e:
             sys.stderr.write('List error: {0}\n'.format(e))
             sys.exit(3)

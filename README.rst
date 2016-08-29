@@ -294,6 +294,16 @@ Make generic optimization for system and PostgreSQL, based on hardware informati
 
     $ mamonsu tune --help
 
+==========================
+Tool: analog of zabbix_get
+==========================
+
+.. code-block:: bash
+
+    $ mamonsu agent version
+    $ mamonsu agent metric-list
+    $ mamonsu agent metric-get <key>
+
 ================
 Tool: Zabbix CLI
 ================

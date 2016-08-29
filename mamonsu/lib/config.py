@@ -105,6 +105,11 @@ class Config(DefaultConfig):
         config.add_section('sender')
         config.set('sender', 'queue', str(300))
 
+        config.add_section('agent')
+        config.set('agent', 'enabled', str(True))
+        config.set('agent', 'host', '127.0.0.1')
+        config.set('agent', 'port', str(10052))
+
         config.add_section('zabbix')
         config.set('zabbix', 'enabled', str(True))
         config.set('zabbix', 'client', socket.gethostname())

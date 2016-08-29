@@ -1,5 +1,8 @@
 from collections import namedtuple
 
+from mamonsu import __version__
+import mamonsu.lib.platform as platform
+
 
 class _template(object):
     # item delta
@@ -22,4 +25,26 @@ class _template(object):
     UNITS = _item_type(None, 'b', 'ms', 'uptime', '%')
 
 
+class _api(object):
+
+    if platform.PY2:
+        UNKNOWN_VERSION = 'UNKNOWN_API_VERSION\n'
+    else:
+        UNKNOWN_VERSION = b'UNKNOWN_API_VERSION\n'
+
+    if platform.PY2:
+        METRIC_NOT_FOUND = 'METRIC_NOT_FOUND\n'
+    else:
+        METRIC_NOT_FOUND = b'METRIC_NOT_FOUND\n'
+
+    if platform.PY2:
+        VERSION = '{0}'.format(__version__)
+    else:
+        VERSION = bytearray('{0}'.format(__version__), 'utf-8')
+
+    METRIC_LIST_URLS = ['/list', '/list/']
+    METRIC_GET_URLS = ['/get', '/get/']
+
+
 Template = _template()
+API = _api()

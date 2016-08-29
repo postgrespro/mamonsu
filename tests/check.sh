@@ -97,6 +97,11 @@ EOF
 /etc/init.d/mamonsu start
 sleep 125
 
+# check metric from agent
+mamonsu agent version
+mamonsu agent metric-get system.disk.all_read[]
+mamonsu agent metric-list | grep system
+
 # metric log
 grep utilization /tmp/localhost.log || exit 3
 grep 'pgsql\.uptime' /tmp/localhost.log || exit 3

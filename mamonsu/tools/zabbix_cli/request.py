@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import json
-import urllib2
 import logging
 from collections import OrderedDict
+
+
+import mamonsu.lib.platform as platform
+if platform.PY3:
+    import urllib.request as urllib2
+else:
+    import urllib2
 
 
 class Request(object):
