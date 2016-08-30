@@ -10,14 +10,14 @@ else:
     import urllib2
 
 
-def run_agent(cfg):
+def run_agent(cmds, cfg):
 
     def _print_help():
         msg = """mamonsu agent [version|metric-get <metric key>|metric-list]\n"""
         sys.stderr.write(msg)
         sys.exit(7)
 
-    commands = cfg.commands
+    commands = cmds
     commands.remove('agent')
     if len(commands) == 0:
         return _print_help()

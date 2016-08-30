@@ -49,13 +49,6 @@ class Args(DefaultConfig):
         group = optparse.OptionGroup(
             parser,
             'Postgres connection options')
-        # if platform.LINUX:
-        #    group.add_option(
-        #        '-t', '--try-connect-as-user-postgres',
-        #        dest='try_postgres',
-        #        default=True,
-        #        help='Try connect as unix user postgres'
-        #        ' (only with auto opts, default: %default)')
         group.add_option(
             '-d', '--dbname',
             dest='dbname',

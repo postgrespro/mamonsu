@@ -284,7 +284,7 @@ Create report about used hardware and PostgreSQL:
 
 .. code-block:: bash
 
-    $ mamonsu report --help
+    $ mamonsu report
 
 ==========
 Tool: Tune
@@ -294,7 +294,7 @@ Make generic optimization for system and PostgreSQL, based on hardware informati
 
 .. code-block:: bash
 
-    $ mamonsu tune --help
+    $ mamonsu tune
 
 ==========================
 Tool: analog of zabbix_get

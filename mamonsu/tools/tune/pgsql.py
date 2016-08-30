@@ -84,6 +84,8 @@ class AutoTunePgsl(object):
         self._run_query(
             "alter system set log_autovacuum_min_duration to 0;")
         self._run_query(
+            "alter system set track_io_timing to on;")
+        self._run_query(
             "alter system set log_line_prefix to "
             "'%%t [%%p]: [%%l-1] db=%%d,user=%%u,app=%%a,client=%%h ';")
 

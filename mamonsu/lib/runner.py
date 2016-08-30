@@ -7,6 +7,7 @@ import codecs
 import os
 
 import mamonsu.lib.platform as platform
+from mamonsu.lib.parser import parse_args
 from mamonsu.lib.config import Config
 from mamonsu.lib.supervisor import Supervisor
 from mamonsu.lib.plugin import Plugin
@@ -28,54 +29,49 @@ def start():
     if platform.LINUX:
         signal.signal(signal.SIGQUIT, quit_handler)
 
-    cfg = Config()
+    args, commands = parse_args()
+    cfg = Config(args.config_file)
+    if len(commands) > 0:
+        tool = commands[0]
+        if tool == 'report':
+            sys.argv.remove('report')
+            return run_report()
+        elif tool == 'tune':
+            sys.argv.remove('tune')
+            return run_tune()
+        elif tool == 'zabbix':
+            sys.argv.remove('zabbix')
+            return run_zabbix()
+        elif tool == 'agent':
+            sys.argv.remove('agent')
+            return run_agent(commands, cfg)
 
     # config
-    if cfg.args.write_config_file is not None:
-        with open(cfg.args.write_config_file, 'w') as fd:
+    if args.write_config_file is not None:
+        with open(args.write_config_file, 'w') as fd:
             cfg.config.write(fd)
             sys.exit(0)
 
     # template
-    if cfg.args.template_file is not None:
+    if args.template_file is not None:
         plugins = []
         for klass in Plugin.get_childs():
             plugins.append(klass(cfg))
-        template = ZbxTemplate(cfg.args.template, cfg.args.application)
-        with codecs.open(cfg.args.template_file, 'w', 'utf-8') as f:
+        template = ZbxTemplate(args.template, args.application)
+        with codecs.open(args.template_file, 'w', 'utf-8') as f:
             f.write(template.xml(plugins))
             sys.exit(0)
 
-    supervisor = Supervisor(cfg)
-
     # write pid file
-    if cfg.args.pid is not None:
+    if args.pid is not None:
         try:
-            with open(cfg.args.pid, 'w') as pidfile:
+            with open(args.pid, 'w') as pidfile:
                 pidfile.write(str(os.getpid()))
         except Exception as e:
             sys.stderr.write('Can\'t write pid file, error: %s'.format(e))
             sys.exit(2)
 
-    if len(cfg.commands) > 0:
-
-        tool = cfg.commands[0]
-
-        if tool == 'report':
-            sys.argv.remove('report')
-            return run_report()
-
-        elif tool == 'tune':
-            sys.argv.remove('tune')
-            return run_tune()
-
-        elif tool == 'zabbix':
-            sys.argv.remove('zabbix')
-            return run_zabbix()
-
-        elif tool == 'agent':
-            sys.argv.remove('agent')
-            return run_agent(cfg)
+    supervisor = Supervisor(cfg)
 
     try:
         logging.info("Start mamonsu")

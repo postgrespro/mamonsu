@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-import optparse
 import socket
 import os
 import logging
@@ -11,8 +9,6 @@ import mamonsu.lib.platform as platform
 from mamonsu.plugins.pgsql.checks import is_conn_to_db
 from mamonsu.lib.default_config import DefaultConfig
 
-from mamonsu import __version__
-
 if platform.PY2:
     import ConfigParser as configparser
 else:
@@ -21,61 +17,7 @@ else:
 
 class Config(DefaultConfig):
 
-    def __init__(self, override_config_filename=None):
-
-        parser = optparse.OptionParser(
-            usage='%prog [-c] [-p]',
-            version='%prog {0}'.format(__version__))
-
-        group = optparse.OptionGroup(
-            parser,
-            'Start options')
-        group.add_option(
-            '-c',
-            dest='config_filename',
-            default=None,
-            help='Path to config file')
-        group.add_option(
-            '-p',
-            dest='pid',
-            default=None,
-            help='Path to pid file')
-        parser.add_option_group(group)
-
-        group = optparse.OptionGroup(
-            parser,
-            'Example options',
-            'Export default options')
-        group.add_option(
-            '-w',
-            dest='write_config_file',
-            default=None,
-            help='Write default config to file and exit')
-        parser.add_option_group(group)
-
-        group = optparse.OptionGroup(
-            parser,
-            'Export to zabbix',
-            'Export zabbix template options')
-        group.add_option(
-            '-e',
-            dest='template_file',
-            default=None,
-            help='Write template to file and exit')
-        group.add_option(
-            '-t',
-            dest='template',
-            default='PostgresPro-{0}'.format(sys.platform.title()),
-            help='Generated template name')
-        group.add_option(
-            '-a',
-            dest='application',
-            default='App-PostgresPro-{0}'.format(sys.platform.title()),
-            help='Application for generated template')
-        parser.add_option_group(group)
-
-        args, commands = parser.parse_args()
-        self.commands = commands
+    def __init__(self, cfg_file=None):
 
         config = configparser.ConfigParser()
 
@@ -128,22 +70,16 @@ class Config(DefaultConfig):
             'log', 'format',
             '[%(levelname)s] %(asctime)s - %(name)s\t-\t%(message)s')
 
-        # override config file name
-        if override_config_filename is not None:
-            args.config_filename = override_config_filename
-
         self.config = config
-        if args.config_filename and not os.path.isfile(args.config_filename):
+        if cfg_file and not os.path.isfile(cfg_file):
             sys.exit(1)
         else:
-            if args.config_filename is not None:
-                self.config.read(args.config_filename)
+            if cfg_file is not None:
+                self.config.read(cfg_file)
 
         self._apply_log_setting()
         self._apply_environ()
         self._load_additional_plugins()
-
-        self.args = args
         self._override_auto_variables()
 
     def fetch(self, sec, key, klass=None, raw=False):
