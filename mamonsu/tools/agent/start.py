@@ -42,12 +42,14 @@ def run_agent(cfg):
     try:
         response = urllib2.urlopen(request)
     except Exception as e:
-        sys.stderr.write('Can\'t open url: {0}, error: {1}\n'.format(
+        sys.stderr.write('Open url: {0}, error: {1}\n'.format(
             url, e))
         sys.exit(9)
 
     if not response.code == 200:
-        sys.stderr.write('Bad response code: {0}\n'.format(response.code))
+        sys.stderr.write('Bad response from url {0}, code: {1}\n'.format(
+            url,
+            response.code))
         sys.exit(8)
     else:
         try:
