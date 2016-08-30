@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import time
-from threading import Thread
 import logging
+import traceback
+
+from threading import Thread
 
 from mamonsu.lib.const import Template
 
@@ -77,10 +79,11 @@ class Plugin(object):
     def discovery_rules(self, template):
         return None
 
-    def _log_exception(self, e):
+    def _log_exception(self, e, trace):
         name = e.__class__.__name__
         self.last_error_text = 'Plugin exception [{0}]: {1}'.format(name, e)
         self.log.error(self.last_error_text)
+        self.log.debug(self.trace)
 
     def _loop(self):
         while(True):
@@ -88,7 +91,8 @@ class Plugin(object):
             try:
                 self.run(self.sender)
             except Exception as e:
-                self._log_exception(e)
+                trace = traceback.format_exc()
+                self._log_exception(e, trace)
                 return
             sleep_time = self.Interval - int(time.time() - last_start)
             if sleep_time > 0:
