@@ -1,7 +1,7 @@
 __author__ = 'Dmitry Vasilyev'
 __author_email__ = 'info@postgrespro.ru'
 __description__ = 'Monitoring agent for PostgreSQL'
-__version__ = '1.6.0'
+__version__ = '1.6.1'
 __licence__ = 'BSD'
 
 __url__ = 'https://github.com/postgrespro/mamonsu'
