@@ -130,6 +130,8 @@ Change previously zabbix server address and client hostname:
     enabled = True
 
     [plugins]
+    ; disabled by default
+    enabled = True
     ; directory with user plugins
     directory = /etc/mamonsu/plugins
 
