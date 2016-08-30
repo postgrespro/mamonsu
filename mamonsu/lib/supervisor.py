@@ -4,7 +4,6 @@ import time
 
 from mamonsu.lib.sender import *
 from mamonsu.lib.senders import *
-from mamonsu.lib.agent import *
 from mamonsu.plugins import *
 
 

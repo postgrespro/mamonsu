@@ -75,7 +75,7 @@ class Config(DefaultConfig):
         parser.add_option_group(group)
 
         args, commands = parser.parse_args()
-        args.commands = commands
+        self.commands = commands
 
         config = configparser.ConfigParser()
 

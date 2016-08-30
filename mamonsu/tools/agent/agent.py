@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import sys
 from mamonsu.lib.plugin import Plugin
 
 from mamonsu.lib.const import API
@@ -9,12 +8,10 @@ if platform.PY3:
     from urllib.parse import urlparse as parse
     from urllib.parse import parse_qs
     from http.server import BaseHTTPRequestHandler, HTTPServer
-    import urllib.request as urllib2
 else:
     from urlparse import urlparse as parse
     from urlparse import parse_qs
     from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-    import urllib2
 
 
 class AgentApi(Plugin):
@@ -86,44 +83,3 @@ class AgentApiHandler(BaseHTTPRequestHandler):
         else:
             # unknown path
             self.wfile.write(API.UNKNOWN_VERSION)
-
-
-def _print_response(cfg, key=None, version=False):
-    host = cfg.fetch('agent', 'host')
-    port = cfg.fetch('agent', 'port', int)
-    if version:
-        url = 'http://{0}:{1}/version'.format(host, port)
-    elif key is None:
-        url = 'http://{0}:{1}/list'.format(host, port)
-    else:
-        url = 'http://{0}:{1}/get?key={2}'.format(host, port, key)
-    request = urllib2.Request(url)
-    response = urllib2.urlopen(request)
-    if not response.code == 200:
-        sys.stderr.write('Bad response code: {0}\n'.format(response.code))
-        sys.exit(8)
-    else:
-        body = response.read()
-        if body == API.UNKNOWN_VERSION:
-            sys.stderr.write('Unknown API version\n')
-            sys.exit(9)
-        elif body == API.METRIC_NOT_FOUND and key is not None:
-            sys.stderr.write('Metric \'{0}\' not found\n'.format(key))
-            sys.exit(9)
-        elif body == API.METRIC_NOT_FOUND and key is None:
-            sys.stderr.write('Unknown API version\n')
-            sys.exit(9)
-        else:
-            print(body)
-
-
-def get_api_version(cfg):
-    _print_response(cfg, version=True)
-
-
-def get_api_metric(cfg, key):
-    _print_response(cfg, key)
-
-
-def get_api_metric_list(cfg):
-    _print_response(cfg)
