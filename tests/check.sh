@@ -86,6 +86,9 @@ enabled = True
 address = 127.0.0.1
 client = $ZABBIX_CLIENT_HOST
 
+[agent]
+enabled = True
+
 [metric_log]
 enabled = True
 directory = /tmp
