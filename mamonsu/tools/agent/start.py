@@ -11,14 +11,14 @@ else:
 
 
 def run_agent(cfg):
+
     def _print_help():
-        msg = 'mamonsu agent '
-        msg += '[version|metric-get <metric key>|metric-list]\n'
+        msg = """mamonsu agent [version|metric-get <metric key>|metric-list]\n"""
         sys.stderr.write(msg)
         sys.exit(7)
 
-    commands = sys.argv
-    commands.remove(sys.argv[0])
+    commands = cfg.commands
+    commands.remove('agent')
     if len(commands) == 0:
         return _print_help()
 

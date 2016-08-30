@@ -88,6 +88,8 @@ client = $ZABBIX_CLIENT_HOST
 
 [agent]
 enabled = True
+host = 127.0.0.1
+port = 10053
 
 [metric_log]
 enabled = True
@@ -101,9 +103,9 @@ EOF
 sleep 125
 
 # check metric from agent
-mamonsu agent version
-mamonsu agent metric-get system.disk.all_read[]
-mamonsu agent metric-list | grep system
+mamonsu agent -c /etc/mamonsu/agent.conf version
+mamonsu agent metric-get system.disk.all_read[] -c /etc/mamonsu/agent.conf
+mamonsu agent -c /etc/mamonsu/agent.conf metric-list | grep system
 
 # metric log
 grep utilization /tmp/localhost.log || exit 3
