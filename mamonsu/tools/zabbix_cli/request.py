@@ -61,6 +61,8 @@ class Request(object):
             logging.debug('Zabbix response body: {0}'.format(body))
         else:
             raise Exception('Response code: {0}'.format(response.code))
+        if platform.PY3:
+            body = str(body)
         data = json.loads(body)
         if 'error' in data:
             raise Exception('Error response from zabbix api: {0}'.format(

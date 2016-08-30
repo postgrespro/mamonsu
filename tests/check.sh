@@ -26,10 +26,10 @@ su postgres -c '/usr/pgsql-9.5/bin/initdb -D /var/lib/pgsql/9.5/data'
 mamonsu tune
 
 # export config
-mamonsu -w /dev/null
+mamonsu export config /dev/null
 
 # write zabbix template
-mamonsu -e $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME
+mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME
 grep 'pgsql\.uptime\[\]' /tmp/template.xml || exit 2
 grep 'system\.disk\.all_read' /tmp/template.xml || exit 2
 

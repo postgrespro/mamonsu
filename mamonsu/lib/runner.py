@@ -7,7 +7,7 @@ import codecs
 import os
 
 import mamonsu.lib.platform as platform
-from mamonsu.lib.parser import parse_args
+from mamonsu.lib.parser import parse_args, print_help
 from mamonsu.lib.config import Config
 from mamonsu.lib.supervisor import Supervisor
 from mamonsu.lib.plugin import Plugin
@@ -29,8 +29,7 @@ def start():
     if platform.LINUX:
         signal.signal(signal.SIGQUIT, quit_handler)
 
-    args, commands = parse_args()
-    cfg = Config(args.config_file)
+    commands = sys.argv[1:]
     if len(commands) > 0:
         tool = commands[0]
         if tool == 'report':
@@ -42,26 +41,34 @@ def start():
         elif tool == 'zabbix':
             sys.argv.remove('zabbix')
             return run_zabbix()
-        elif tool == 'agent':
+    if len(commands) > 0:
+        args, commands = parse_args()
+        cfg = Config(args.config_file)
+        if tool == 'agent':
             sys.argv.remove('agent')
             return run_agent(commands, cfg)
+        elif tool == 'export':
+            if not len(commands) == 3:
+                print_help()
+            elif commands[1] == 'config':
+                with open(commands[2], 'w') as fd:
+                    cfg.config.write(fd)
+                    sys.exit(0)
+            elif commands[1] == 'template':
+                plugins = []
+                for klass in Plugin.get_childs():
+                    plugins.append(klass(cfg))
+                template = ZbxTemplate(args.template, args.application)
+                with codecs.open(commands[2], 'w', 'utf-8') as f:
+                    f.write(template.xml(plugins))
+                    sys.exit(0)
+            else:
+                print_help()
+        else:
+            print_help()
 
-    # config
-    if args.write_config_file is not None:
-        with open(args.write_config_file, 'w') as fd:
-            cfg.config.write(fd)
-            sys.exit(0)
-
-    # template
-    if args.template_file is not None:
-        plugins = []
-        for klass in Plugin.get_childs():
-            plugins.append(klass(cfg))
-        template = ZbxTemplate(args.template, args.application)
-        with codecs.open(args.template_file, 'w', 'utf-8') as f:
-            f.write(template.xml(plugins))
-            sys.exit(0)
-
+    args, commands = parse_args()
+    cfg = Config(args.config_file)
     # write pid file
     if args.pid is not None:
         try:

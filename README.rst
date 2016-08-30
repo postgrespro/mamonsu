@@ -77,7 +77,7 @@ Export template for zabbix:
 
 .. code-block:: bash
 
-    $ mamonsu -e template.xml
+    $ mamonsu export template template.xml
     or
     $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/template.xml
     or
@@ -99,7 +99,7 @@ Generate config on monitring host (or use preinstalled):
 
 .. code-block:: bash
 
-    $ mamonsu -w /etc/mamonsu/agent.conf
+    $ mamonsu export config /etc/mamonsu/agent.conf
 
 Change previously zabbix server address and client hostname:
 

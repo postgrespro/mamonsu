@@ -13,8 +13,9 @@ else:
 def run_agent(cmds, cfg):
 
     def _print_help():
-        msg = """mamonsu agent [version|metric-get <metric key>|metric-list]\n"""
-        sys.stderr.write(msg)
+        sys.stderr.write("""
+mamonsu agent [version|metric-get <metric key>|metric-list]
+""")
         sys.exit(7)
 
     commands = cmds
