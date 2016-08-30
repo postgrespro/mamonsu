@@ -83,7 +83,7 @@ class Plugin(object):
         name = e.__class__.__name__
         self.last_error_text = 'Plugin exception [{0}]: {1}'.format(name, e)
         self.log.error(self.last_error_text)
-        self.log.debug(self.trace)
+        self.log.debug(trace)
 
     def _loop(self):
         while(True):
