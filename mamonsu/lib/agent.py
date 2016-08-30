@@ -55,6 +55,7 @@ class AgentApiHandler(BaseHTTPRequestHandler):
         req = parse(self.path)
         if req.path in '/version':
             self.wfile.write(API.VERSION)
+        # get metric
         elif req.path in API.METRIC_GET_URLS:
             query = parse_qs(req.query)
             key, host = None, None
@@ -64,10 +65,14 @@ class AgentApiHandler(BaseHTTPRequestHandler):
                 host = query['host'][0]
             resp = self.sender.get_metric(key, host)
             if resp[0] is not None:
-                self.wfile.write('{0}\t{1}\t{2}'.format(
-                    key, resp[0], resp[1]))
+                result = '{0}\t{1}\t{2}'.format(
+                    key, resp[0], resp[1])
+                if platform.PY3:
+                    result = bytearray(result, 'utf-8')
+                self.wfile.write(result)
             else:
                 self.wfile.write(API.METRIC_NOT_FOUND)
+        # get list of metric
         elif req.path in API.METRIC_LIST_URLS:
             query, host, result = parse_qs(req.query), None, ''
             if 'host' in query:
@@ -75,6 +80,8 @@ class AgentApiHandler(BaseHTTPRequestHandler):
             for val in self.sender.list_metrics(host):
                 result += '{0}\t{1}\t{2}\n'.format(
                     val[0], val[1][0], val[1][1])
+            if platform.PY3:
+                result = bytearray(result, 'utf-8')
             self.wfile.write(result)
         else:
             # unknown path
