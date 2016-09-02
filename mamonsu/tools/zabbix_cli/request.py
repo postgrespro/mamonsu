@@ -58,11 +58,11 @@ class Request(object):
         logging.debug('Zabbix response code: {0}'.format(response.code))
         if response.code == 200:
             body = response.read()
+            if platform.PY3:
+                body = body.decode('utf-8')
             logging.debug('Zabbix response body: {0}'.format(body))
         else:
             raise Exception('Response code: {0}'.format(response.code))
-        if platform.PY3:
-            body = str(body)
         data = json.loads(body)
         if 'error' in data:
             raise Exception('Error response from zabbix api: {0}'.format(
