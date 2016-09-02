@@ -42,12 +42,12 @@ def start():
             sys.argv.remove('zabbix')
             return run_zabbix()
     if len(commands) > 0:
-        args, commands = parse_args()
-        cfg = Config(args.config_file)
         if tool == 'agent':
             sys.argv.remove('agent')
-            return run_agent(commands, cfg)
+            return run_agent()
         elif tool == 'export':
+            args, commands = parse_args()
+            cfg = Config(args.config_file)
             if not len(commands) == 3:
                 print_help()
             elif commands[1] == 'config':

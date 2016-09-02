@@ -22,7 +22,7 @@ Options:
 
 Command: agent
 Options:
-    --config <file>
+    -c, --config <file>
 Examples:
     {prog} agent version
     {prog} agent metric-list

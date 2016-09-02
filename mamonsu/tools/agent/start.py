@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 import sys
+import optparse
 
+from mamonsu import __version__
 from mamonsu.lib.const import API
+from mamonsu.lib.config import Config
 import mamonsu.lib.platform as platform
 
 if platform.PY3:
@@ -10,34 +13,49 @@ else:
     import urllib2
 
 
-def run_agent(cmds, cfg):
+def run_agent():
 
-    def _print_help():
-        sys.stderr.write("""
-mamonsu agent [version|metric-get <metric key>|metric-list]
-""")
+    usage_msg = """
+{prog} agent [OPTIONS] COMMANDS
+
+Examples:
+    {prog} agent version
+    {prog} agent metric-list
+    {prog} agent metric-get <metric key>
+""".format(prog=sys.argv[0])
+
+    def print_help():
+        print(usage_msg)
         sys.exit(7)
 
-    commands = cmds
-    commands.remove('agent')
-    if len(commands) == 0:
-        return _print_help()
+    parser = optparse.OptionParser(
+        usage=usage_msg,
+        version='%prog agent {0}'.format(__version__))
+    parser.add_option(
+        '-c', '--config', dest='config',
+        help=optparse.SUPPRESS_HELP)
+    args, commands = parser.parse_args()
 
+    cfg = Config(args.config)
     host = cfg.fetch('agent', 'host')
     port = cfg.fetch('agent', 'port', int)
     url, key = None, None
 
     if commands[0] == 'version':
+        if len(commands) >= 2:
+            return print_help()
         url = 'http://{0}:{1}/version'.format(host, port)
     elif commands[0] == 'metric-list':
+        if len(commands) >= 2:
+            return print_help()
         url = 'http://{0}:{1}/list'.format(host, port)
     elif commands[0] == 'metric-get':
         if not len(commands) == 2:
-            return _print_help()
+            return print_help()
         key = commands[1]
         url = 'http://{0}:{1}/get?key={2}'.format(host, port, key)
     else:
-        _print_help()
+        return print_help()
 
     request = urllib2.Request(url)
     try:
