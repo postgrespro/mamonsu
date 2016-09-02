@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        1.6.1
+Version:        1.6.2
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Fri Sep 2 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.6.1-1
+- mamonsu zabbix fixes for python3
+
 * Tue Aug 30 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.6.1-1
 - mamonsu agent fixes for python3
 
