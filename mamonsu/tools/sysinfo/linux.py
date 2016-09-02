@@ -259,6 +259,7 @@ class SysInfoLinux(object):
         result['_SWAP'] = NA
         result['_CACHED'] = NA
         result['_DIRTY'] = NA
+        result['_BUFFERS'] = NA
         if self.is_empty(data):
             return result
 
@@ -273,6 +274,8 @@ class SysInfoLinux(object):
             result['_CACHED'] = result['Cached']
         if 'Dirty' in result:
             result['_DIRTY'] = result['Dirty']
+        if 'Buffers' in result:
+            result['_BUFFERS'] = result['Buffers']
 
         return result
 

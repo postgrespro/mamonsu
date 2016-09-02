@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import time
+import math
 import sys
 import logging
 
@@ -45,9 +47,11 @@ class SystemInfo(SysInfoLinux):
         out += format_out('Speed', self.cpu_model['speed'])
         out += format_out('Model', self.cpu_model['model'])
         out += format_out('Cache', self.cpu_model['cache'])
+        out += format_out('Bench', self.cpu_bench())
         out += format_header('Memory')
         out += format_out('Total', self._humansize(self.meminfo['_TOTAL']))
         out += format_out('Cached', self._humansize(self.meminfo['_CACHED']))
+        out += format_out('Buffers', self._humansize(self.meminfo['_BUFFERS']))
         out += format_out('Dirty', self._humansize(self.meminfo['_DIRTY']))
         if 'vm.dirty_ratio' in self.sysctl:
             if 'vm.dirty_background_ratio' in self.sysctl:
@@ -117,3 +121,19 @@ class SystemInfo(SysInfoLinux):
             i += 1
         f = ('%.2f' % nbytes).rstrip('0').rstrip('.')
         return '%s %s' % (f, self._suffixes[i])
+
+    def cpu_bench(self):
+        def _is_prime(n):
+            if n % 2 == 0:
+                return False
+            sqrt_n = int(math.floor(math.sqrt(n)))
+            for i in range(3, sqrt_n + 1, 2):
+                if n % i == 0:
+                    return False
+            return True
+
+        begin, y = time.time(), 0
+        for x in range(1, 500000):
+            if _is_prime(x):
+                y = max(x, y)
+        return str(round(100*float(time.time() - begin))/100)
