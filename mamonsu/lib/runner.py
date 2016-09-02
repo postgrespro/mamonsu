@@ -64,8 +64,6 @@ def start():
                     sys.exit(0)
             else:
                 print_help()
-        else:
-            print_help()
 
     args, commands = parse_args()
     cfg = Config(args.config_file)
