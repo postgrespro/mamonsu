@@ -31,7 +31,10 @@ except:
     SEABORN_LOADED = False
 
 plt.rcParams.update({'font.size': 20})
-plt.style.use('seaborn-white')
+try:
+    plt.style.use('seaborn-white')
+except:
+    pass
 
 parser = optparse.OptionParser()
 group = optparse.OptionGroup(parser, 'General')
