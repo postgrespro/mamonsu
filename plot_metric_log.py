@@ -7,13 +7,19 @@ import optparse
 import re
 import logging
 import datetime as dt
-import dateutil.parser as dateparser
+try:
+    import dateutil.parser as dateparser
+except:
+    sys.stderr.write('Please install dateutil\n')
+    sys.exit(1)
 import time
 
 import matplotlib as mpl
 mpl.use('Agg')
 
 import matplotlib.pyplot as plt
+plt.rcParams.update({'font.size': 20})
+
 import matplotlib.dates as md
 import matplotlib.ticker as tk
 
@@ -27,14 +33,9 @@ except:
 SEABORN_LOADED = True
 try:
     import seaborn as sns
-except:
-    SEABORN_LOADED = False
-
-plt.rcParams.update({'font.size': 20})
-try:
     plt.style.use('seaborn-white')
 except:
-    pass
+    SEABORN_LOADED = False
 
 parser = optparse.OptionParser()
 group = optparse.OptionGroup(parser, 'General')
