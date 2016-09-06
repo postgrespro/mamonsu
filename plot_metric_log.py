@@ -9,6 +9,10 @@ import logging
 import datetime as dt
 import dateutil.parser as dateparser
 import time
+
+import matplotlib as mpl
+mpl.use('Agg')
+
 import matplotlib.pyplot as plt
 import matplotlib.dates as md
 import matplotlib.ticker as tk
