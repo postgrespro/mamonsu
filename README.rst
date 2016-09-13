@@ -22,7 +22,7 @@ Pre-Build packages for:
 
     Linux distros: https://packagecloud.io/postgrespro/mamonsu
 
-    `Windows installers <https://oc.postgrespro.ru/index.php/s/qkGzj8MPLIqNhQv>`_
+    `Windows installers <https://oc.postgrespro.ru/index.php/s/qu7YsFvOE55LdXo>`_
 
 Install via pip:
 
