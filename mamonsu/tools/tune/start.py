@@ -3,7 +3,7 @@
 import logging
 import optparse
 import os
-import sys
+import pwd
 
 from mamonsu import __version__
 import mamonsu.lib.platform as platform
@@ -88,21 +88,28 @@ class Args(DefaultConfig):
         os.environ['PGDATABASE'] = self.args.dbname
         os.environ['PGAPPNAME'] = 'mamonsu autotune'
 
-        if not self._auto_host_is_working():
-            logging.error(
-                'Can\'t connected with auto options to PostgreSQL')
-            sys.exit(3)
+    def try_configure_connect_to_pg(self):
+        if not self._configure_auto_host():
+            if self._try_run_as_postgres():
+                if not self._configure_auto_host():
+                    logging.error('Can\'t run as postgres')
+                    return False
+            else:
+                logging.error('Can\'t configure auto-host for postgresql')
+                return False
 
-        if not is_conn_to_db(
-            host=self.args.hostname,
-            db=self.args.dbname,
-            port=self.args.port,
-            user=self.args.username,
-                paswd=self.args.password):
-            logging.error('Can\'t connected to PostgreSQL')
-            sys.exit(4)
+    def _try_run_as_postgres(self):
+        if platform.LINUX and os.getegid() == 0:
+            try:
+                uid = pwd.getpwnam('postgres').pw_uid
+                os.seteuid(uid)
+                return True
+            except Exception as e:
+                logging.error('Failed run as postgres: {0}'.format(e))
+                pass
+        return False
 
-    def _auto_host_is_working(self):
+    def _configure_auto_host(self):
 
         def test_db(self, host_pre):
             logging.debug('Test host: {0}'.format(host_pre))
@@ -117,6 +124,7 @@ class Args(DefaultConfig):
                 logging.debug('Connected via: {0}'.format(host_pre))
                 return True
             return False
+
         host = self.args.hostname
         port = self.args.port
         if host == 'auto' and platform.LINUX:
@@ -142,4 +150,5 @@ class Args(DefaultConfig):
 def run_tune():
     args = Args()
     AutoTuneSystem(args)
+    args.try_configure_connect_to_pg()
     AutoTunePgsl(args)

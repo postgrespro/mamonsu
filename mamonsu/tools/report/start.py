@@ -105,7 +105,7 @@ class Args(DefaultConfig):
         os.environ['PGDATABASE'] = self.args.dbname
         os.environ['PGAPPNAME'] = 'mamonsu first look'
 
-    def try_configure_pg(self):
+    def try_configure_connect_to_pg(self):
         if not self._configure_auto_host():
             if self._try_run_as_postgres():
                 if not self._configure_auto_host():
@@ -116,7 +116,7 @@ class Args(DefaultConfig):
                 self.run_postgres = False
 
     def _configure_auto_host(self):
-        if self.args.run_postgres and not self._auto_host_is_working():
+        if self.run_postgres and not self._auto_host_is_working():
             return False
         return True
 
@@ -177,7 +177,7 @@ def run_report():
         sys_info = SystemInfo(args)
         sys_report = sys_info.collect()
 
-    args.try_configure_pg()
+    args.try_configure_connect_to_pg()
     if args.run_postgres:
         pg_info = PostgresInfo(args)
         pg_report = pg_info.collect()
