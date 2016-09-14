@@ -98,6 +98,7 @@ class Args(DefaultConfig):
             else:
                 logging.error('Can\'t configure auto-host for postgresql')
                 return False
+        return True
 
     def _try_run_as_postgres(self):
         if platform.LINUX and os.getegid() == 0:
