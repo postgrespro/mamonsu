@@ -3,6 +3,7 @@
 import logging
 import optparse
 import os
+import sys
 import pwd
 
 from mamonsu import __version__
@@ -150,5 +151,6 @@ class Args(DefaultConfig):
 def run_tune():
     args = Args()
     AutoTuneSystem(args)
-    args.try_configure_connect_to_pg()
+    if not args.try_configure_connect_to_pg():
+        sys.exit(3)
     AutoTunePgsl(args)
