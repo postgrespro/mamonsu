@@ -32,22 +32,17 @@ class Sender():
 
         hash_key = self._hash(key, host)
         if delta is not None:
-            is_float = isinstance(value, float)
-            is_int = isinstance(value, int)
-            if is_float or is_int:
-                if hash_key not in self._last_values:
-                    self._last_values[hash_key] = (value, clock)
-                    return
-                else:
-                    last_value = self._last_values[hash_key][0]
-                    last_time = self._last_values[hash_key][1]
+            if isinstance(value, float) or isinstance(value, int):
+                if hash_key in self._last_values:
+                    last_value, last_time = self._last_values[hash_key]
                     self._last_values[hash_key] = (value, clock)
                     if delta == Plugin.DELTA.speed_per_second:
                         value = float(value - last_value)/(clock - last_time)
                     if delta == Plugin.DELTA.simple_change:
                         value = float(value - last_value)
-                    if is_int:
-                        value = int(value)
+                else:
+                    self._last_values[hash_key] = (value, clock)
+                    return
         else:
             self._last_values[hash_key] = (value, clock)
 

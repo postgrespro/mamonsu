@@ -15,6 +15,10 @@ else:
 
 def run_agent():
 
+    def print_help():
+        print(usage_msg)
+        sys.exit(7)
+
     usage_msg = """
 {prog} agent [OPTIONS] COMMANDS
 
@@ -23,10 +27,6 @@ Examples:
     {prog} agent metric-list
     {prog} agent metric-get <metric key>
 """.format(prog=sys.argv[0])
-
-    def print_help():
-        print(usage_msg)
-        sys.exit(7)
 
     parser = optparse.OptionParser(
         usage=usage_msg,

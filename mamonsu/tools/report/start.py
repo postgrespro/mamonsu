@@ -105,13 +105,14 @@ class Args(DefaultConfig):
         os.environ['PGDATABASE'] = self.args.dbname
         os.environ['PGAPPNAME'] = 'mamonsu first look'
 
+    def try_configure_pg(self):
         if not self._configure_auto_host():
             if self._try_run_as_postgres():
                 if not self._configure_auto_host():
-                    logging.error('Miss postgres config')
+                    logging.error('Can\'t run as postgres')
                     self.run_postgres = False
             else:
-                logging.error('Miss postgres config')
+                logging.error('Can\'t configure auto-host for postgresql')
                 self.run_postgres = False
 
     def _configure_auto_host(self):
@@ -122,10 +123,11 @@ class Args(DefaultConfig):
     def _try_run_as_postgres(self):
         if platform.LINUX and os.getegid() == 0:
             try:
-                uid = pwd.getpwnam('postgres').pw_uid()
+                uid = pwd.getpwnam('postgres').pw_uid
                 os.seteuid(uid)
                 return True
-            except:
+            except Exception as e:
+                logging.error('Failed run as postgres: {0}'.format(e))
                 pass
         return False
 
@@ -174,6 +176,8 @@ def run_report():
     if args.run_system:
         sys_info = SystemInfo(args)
         sys_report = sys_info.collect()
+
+    args.try_configure_pg()
     if args.run_postgres:
         pg_info = PostgresInfo(args)
         pg_report = pg_info.collect()
