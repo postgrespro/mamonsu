@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        1.6.4
+Version:        1.6.5
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Wed Sep 14 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.6.5-1
+- improve mamonsu tune
+
 * Wed Sep 14 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.6.4-1
 - improve mamonsu report
 
