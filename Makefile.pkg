@@ -1,8 +1,8 @@
 prepare_builddir: clean
-	mkdir build
+	mkdir -p build
 	tar --transform='s,^\.,mamonsu-$(VERSION),'\
 		-czf build/mamonsu-$(VERSION).tar.gz .\
-		--exclude=build
+		--exclude=build || echo ok
 	tar xvf build/mamonsu-$(VERSION).tar.gz -C build
 	cp build/mamonsu-$(VERSION).tar.gz \
 		$(BUILDDIR)/packaging/rpm/SOURCES
@@ -57,32 +57,32 @@ endef
 
 build/pkg_debian_7:
 	$(call build_and_publish_debian,7,wheezy)
-	sudo touch build/pkg_debian_7
+	touch build/pkg_debian_7
 
 build/pkg_debian_8:
 	$(call build_and_publish_debian,8,jessie)
-	sudo touch build/pkg_debian_8
+	touch build/pkg_debian_8
 
 build/pkg_ubuntu_12_04:
 	$(call build_and_publish_ubuntu,12.04,precise)
-	sudo touch build/pkg_ubuntu_12_04
+	touch build/pkg_ubuntu_12_04
 
 build/pkg_ubuntu_14_04:
 	$(call build_and_publish_ubuntu,14.04,trusty)
-	sudo touch build/pkg_ubuntu_14_04
+	touch build/pkg_ubuntu_14_04
 
 build/pkg_ubuntu_15_10:
 	$(call build_and_publish_ubuntu,15.10,wily)
-	sudo touch build/pkg_ubuntu_15_10
+	touch build/pkg_ubuntu_15_10
 
 build/pkg_ubuntu_16_04:
 	$(call build_and_publish_ubuntu,16.04,xenial)
-	sudo touch build/pkg_ubuntu_16_04
+	touch build/pkg_ubuntu_16_04
 
 build/pkg_centos_6:
 	$(call build_and_publish_centos,6)
-	sudo touch build/pkg_centos_6
+	touch build/pkg_centos_6
 
 build/pkg_centos_7:
 	$(call build_and_publish_centos,7)
-	sudo touch build/pkg_centos_7
+	touch build/pkg_centos_7
