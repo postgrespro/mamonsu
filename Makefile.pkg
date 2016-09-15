@@ -9,7 +9,7 @@ prepare_builddir: clean
 	chown -R root.root $(BUILDDIR)
 
 deb: prepare_builddir
-	cd $(BUILDDIR) && cp -a $(CURDIR)/packaging/debian . && dpkg-buildpackage -b
+	cd $(BUILDDIR) && cp -a $(WORKDIR)/packaging/debian . && dpkg-buildpackage -b
 	cp -av build/mamonsu*.deb .
 
 rpm: prepare_builddir
@@ -30,11 +30,11 @@ build/pkg_centos: build/pkg_centos_6 build/pkg_centos_7
 	@echo Centos done
 
 define build_deb
-	docker run -v $$(pwd):/var/tmp --rm $1:$2 bash -exc "cd /var/tmp && apt-get update -m && apt-get install -y make dpkg-dev debhelper python-dev python-setuptools && make deb"
+	docker run -v "$(WORKDIR)":/var/tmp --rm $1:$2 bash -exc "cd /var/tmp && apt-get update -m && apt-get install -y make dpkg-dev debhelper python-dev python-setuptools && make deb"
 endef
 
 define build_rpm
-	docker run -v $$(pwd):/var/tmp --rm $1:$2 bash -exc "cd /var/tmp && yum install -y tar make rpm-build python2-devel python-setuptools && make rpm"
+	docker run -v "$(WORKDIR)":/var/tmp --rm $1:$2 bash -exc "cd /var/tmp && yum install -y tar make rpm-build python2-devel python-setuptools && make rpm"
 endef
 
 define build_and_publish_debian

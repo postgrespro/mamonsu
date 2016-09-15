@@ -1,5 +1,6 @@
-VERSION=$(shell python -c 'import mamonsu; print(mamonsu.__version__)')
-BUILDDIR=$(CURDIR)/build/mamonsu-$(VERSION)
+WORKDIR ?= $(CURDIR)
+BUILDDIR = $(WORKDIR)/build/mamonsu-$(VERSION)
+VERSION  = $(shell python -c 'import mamonsu; print(mamonsu.__version__)')
 
 all:
 	pip install --upgrade --editable .
