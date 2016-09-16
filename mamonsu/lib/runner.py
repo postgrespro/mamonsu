@@ -13,11 +13,6 @@ from mamonsu.lib.supervisor import Supervisor
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
 
-from mamonsu.tools.report.start import run_report
-from mamonsu.tools.tune.start import run_tune
-from mamonsu.tools.zabbix_cli.start import run_zabbix
-from mamonsu.tools.agent.start import run_agent
-
 
 def start():
 
@@ -34,16 +29,20 @@ def start():
         tool = commands[0]
         if tool == 'report':
             sys.argv.remove('report')
+            from mamonsu.tools.report.start import run_report
             return run_report()
         elif tool == 'tune':
             sys.argv.remove('tune')
+            from mamonsu.tools.tune.start import run_tune
             return run_tune()
         elif tool == 'zabbix':
             sys.argv.remove('zabbix')
+            from mamonsu.tools.zabbix_cli.start import run_zabbix
             return run_zabbix()
     if len(commands) > 0:
         if tool == 'agent':
             sys.argv.remove('agent')
+            from mamonsu.tools.agent.start import run_agent
             return run_agent()
         elif tool == 'export':
             args, commands = parse_args()
