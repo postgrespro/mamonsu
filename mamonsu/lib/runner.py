@@ -28,21 +28,21 @@ def start():
     if len(commands) > 0:
         tool = commands[0]
         if tool == 'report':
-            sys.argv.remove('report')
             from mamonsu.tools.report.start import run_report
+            sys.argv.remove('report')
             return run_report()
         elif tool == 'tune':
-            sys.argv.remove('tune')
             from mamonsu.tools.tune.start import run_tune
+            sys.argv.remove('tune')
             return run_tune()
         elif tool == 'zabbix':
-            sys.argv.remove('zabbix')
             from mamonsu.tools.zabbix_cli.start import run_zabbix
+            sys.argv.remove('zabbix')
             return run_zabbix()
     if len(commands) > 0:
         if tool == 'agent':
-            sys.argv.remove('agent')
             from mamonsu.tools.agent.start import run_agent
+            sys.argv.remove('agent')
             return run_agent()
         elif tool == 'export':
             args, commands = parse_args()

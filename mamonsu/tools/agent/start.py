@@ -41,6 +41,8 @@ Examples:
     port = cfg.fetch('agent', 'port', int)
     url, key = None, None
 
+    if len(commands) == 0:
+        return print_help()
     if commands[0] == 'version':
         if len(commands) >= 2:
             return print_help()
