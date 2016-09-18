@@ -39,8 +39,7 @@ def start():
             from mamonsu.tools.zabbix_cli.start import run_zabbix
             sys.argv.remove('zabbix')
             return run_zabbix()
-    if len(commands) > 0:
-        if tool == 'agent':
+        elif tool == 'agent':
             from mamonsu.tools.agent.start import run_agent
             sys.argv.remove('agent')
             return run_agent()
