@@ -7,6 +7,11 @@ import optparse
 import re
 import logging
 import datetime as dt
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.dates as md
+import matplotlib.ticker as tk
+
 try:
     import dateutil.parser as dateparser
 except:
@@ -14,14 +19,8 @@ except:
     sys.exit(1)
 import time
 
-import matplotlib as mpl
 mpl.use('Agg')
-
-import matplotlib.pyplot as plt
 plt.rcParams.update({'font.size': 20})
-
-import matplotlib.dates as md
-import matplotlib.ticker as tk
 
 INTERPOLATION_LOADED = True
 try:
@@ -101,8 +100,8 @@ def parse_date(date):
             sys.exit(2)
     return date
 
-services = {}
 
+services = {}
 to_date = parse_date(args.to_date)
 from_date = parse_date(args.from_date)
 

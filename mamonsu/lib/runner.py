@@ -7,7 +7,7 @@ import codecs
 import os
 
 import mamonsu.lib.platform as platform
-from mamonsu.lib.parser import parse_args, print_help
+from mamonsu.lib.parser import parse_args, print_total_help
 from mamonsu.lib.config import Config
 from mamonsu.lib.supervisor import Supervisor
 from mamonsu.lib.plugin import Plugin

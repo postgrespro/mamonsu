@@ -9,17 +9,23 @@ Options:
     -c, --config <file>
     -p, --pid    <pid-file>
 
+Export example config with default variables:
+Command: export
+Examples:
+    {prog} export config <file>
 
-Command: export config <file>
 
-
-Command: export template <file>
+Export zabbix template with additional plugins included in config file:
+Command: export
+Examples:
+    {prog} export template <file>
 Options:
     --config <file>
     -t <template name>
-    -a <application name>
+    -a <application name in template>
 
 
+Information about working mamonsu:
 Command: agent
 Options:
     -c, --config <file>
@@ -29,6 +35,7 @@ Examples:
     {prog} agent metric-get <metric key>
 
 
+Zabbix API toolbox:
 Command: zabbix
 Options:
     --url=http://zabbix/web/face
@@ -63,6 +70,7 @@ Examples:
 if platform.LINUX:
     usage_msg += """
 
+Report about hardware and software:
 Command: report
 Options:
     --run-system
@@ -76,6 +84,7 @@ Options:
     -w, --report-path <path to file>
 
 
+AutoTune config and system:
 Command: tune
 Options:
     -l, --log-level INFO|DEBUG|WARN
@@ -86,7 +95,7 @@ Options:
 """
 
 
-def print_help():
+def print_total_help():
     print(usage_msg.format(prog=sys.argv[0]))
     sys.exit(2)
 
@@ -94,7 +103,27 @@ def print_help():
 class MissOptsParser(OptionParser):
 
     def print_help(self):
-        print_help()
+        print("""
+Options:
+    -c, --config <file>
+    -p, --pid    <pid-file>
+
+Export example config with default variables:
+Command: export
+Examples:
+    {prog} export config <file>
+
+
+Export zabbix template with additional plugins included in config file:
+Command: export
+Examples:
+    {prog} export template <file>
+Options:
+    --config <file>
+    -t <template name>
+    -a <application name in template>
+""")
+        sys.exit(2)
 
     def _process_long_opt(self, rargs, values):
         try:
