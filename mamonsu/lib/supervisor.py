@@ -20,8 +20,7 @@ class Supervisor(object):
 
     def start(self):
         self._load_plugins()
-        self._find_senders()
-        self._set_senders()
+        self._update_senders()
         self._start_plugins()
         self._loop()
 
@@ -30,17 +29,11 @@ class Supervisor(object):
             plugin = klass(self.config)
             self.Plugins.append(plugin)
 
-    def _find_senders(self):
+    def _update_senders(self):
         for plugin in self.Plugins:
+            plugin.set_sender(self._sender)
             if plugin.is_sender():
-                self._senders.append(plugin)
-        if len(self._senders) == 0:
-            raise RuntimeError('Can\'t find any senders')
-
-    def _set_senders(self):
-        for plugin in self.Plugins:
-            plugin.update_sender(self._sender)
-        self._sender.update_senders(self._senders)
+                self._sender.add_sender(plugin)
 
     def _start_plugins(self):
         for plugin in self.Plugins:

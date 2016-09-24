@@ -64,7 +64,7 @@ class Plugin(object):
     def is_enabled(self):
         return self._enabled
 
-    def update_sender(self, sender):
+    def set_sender(self, sender):
         self.sender = sender
 
     def items(self, template):
@@ -81,7 +81,7 @@ class Plugin(object):
 
     def _log_exception(self, e, trace):
         name = e.__class__.__name__
-        self.last_error_text = 'Plugin exception [{0}]: {1}'.format(name, e)
+        self.last_error_text = 'Plugin exception [{0}]: {1}.'.format(name, e)
         self.log.error(self.last_error_text)
         self.log.debug(trace)
 

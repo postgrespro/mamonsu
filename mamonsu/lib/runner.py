@@ -64,6 +64,8 @@ def start():
                 print_help()
 
     args, commands = parse_args()
+    if len(commands) > 0:
+        print_help()
     cfg = Config(args.config_file)
     # write pid file
     if args.pid is not None:

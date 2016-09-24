@@ -14,15 +14,15 @@ class Sender():
     def _hash(self, key, host=None):
         return '{0}_+_{1}'.format(host, key)
 
-    def _parse_hash(self, hash_key, host=None):
-        result = hash_key.split('{0}_+_'.format(host))
+    def _key_from_hash(self, hash, host=None):
+        result = hash.split('{0}_+_'.format(host))
         if len(result) == 1:
-            return hash_key
+            return hash
         else:
             return result[1]
 
-    def update_senders(self, senders=[]):
-        self._senders = senders
+    def add_sender(self, sender):
+        self._senders.append(sender)
 
     # resend all values to senders
     def send(self, key, value, delta=None, host=None, clock=None):
@@ -37,7 +37,7 @@ class Sender():
                     last_value, last_time = self._last_values[hash_key]
                     self._last_values[hash_key] = (value, clock)
                     if delta == Plugin.DELTA.speed_per_second:
-                        value = float(value - last_value)/(clock - last_time)
+                        value = float(value - last_value) / (clock - last_time)
                     if delta == Plugin.DELTA.simple_change:
                         value = float(value - last_value)
                 else:
@@ -60,10 +60,10 @@ class Sender():
 
     # list of metrics: [(key, (value, clock))]
     def list_metrics(self, host=None):
-        hash_key_list, result = self._last_values.keys(), []
-        for h in hash_key_list:
+        hash_list, result = self._last_values.keys(), []
+        for h in hash_list:
             result.append(
-                (self._parse_hash(h, host), self._last_values[h])
+                (self._key_from_hash(h, host), self._last_values[h])
             )
         return result
 
