@@ -16,6 +16,7 @@ publish: clean test
 
 clean: python_clean
 	rm -rf build
+	rm -rf dist
 	rm -f rpm-tmp*
 	rm -rf mamonsu.egg-info
 	rm -rf *.deb *.rpm yum-root-*
