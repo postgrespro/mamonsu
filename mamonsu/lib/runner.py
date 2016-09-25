@@ -47,7 +47,7 @@ def start():
             args, commands = parse_args()
             cfg = Config(args.config_file)
             if not len(commands) == 3:
-                print_help()
+                print_total_help()
             elif commands[1] == 'config':
                 with open(commands[2], 'w') as fd:
                     cfg.config.write(fd)
@@ -61,11 +61,11 @@ def start():
                     f.write(template.xml(plugins))
                     sys.exit(0)
             else:
-                print_help()
+                print_total_help()
 
     args, commands = parse_args()
     if len(commands) > 0:
-        print_help()
+        print_total_help()
     cfg = Config(args.config_file)
     # write pid file
     if args.pid is not None:
