@@ -27,7 +27,9 @@ def start():
     commands = sys.argv[1:]
     if len(commands) > 0:
         tool = commands[0]
-        if tool == 'report':
+        if tool == '-h' or tool == '--help':
+            print_total_help()
+        elif tool == 'report':
             from mamonsu.tools.report.start import run_report
             sys.argv.remove('report')
             return run_report()
