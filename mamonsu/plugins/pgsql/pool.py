@@ -1,20 +1,20 @@
-import os
-from ._connection import Connection
+from ._connection import Connection, ConnectionInfo
 
 
-class Pool(object):
+class Pool(ConnectionInfo):
 
     ExcludeDBs = ['template0', 'template1', 'postgres']
 
     def __init__(self):
-        self.connections = {}
+        super(Pool, self).__init__()
+        self.all_connections = {}
         self._server_version = {}
 
     def query(self, query, db=None):
         if db is None:
-            db = os.environ.get('PGDATABASE')
-        self.__install_connection(db)
-        return self.connections[db].query(query)
+            db = self.db
+        self._init_conn_(db)
+        return self.all_connections[db].query(query)
 
     def server_version(self, db=None):
         if db in self._server_version:
@@ -35,10 +35,12 @@ class Pool(object):
                 databases.append(row[0])
         return databases
 
-    def __install_connection(self, db):
-        conn = self.connections.get(db)
+    def _init_conn_(self, db):
+        conn = self.all_connections.get(db)
         if conn is None:
-            self.connections[db] = Connection(db)
+            info = self._connection_info
+            info['db'] = db
+            self.all_connections[db] = Connection(info)
 
 
 Pooler = Pool()
