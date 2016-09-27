@@ -10,21 +10,21 @@ class Pool(object):
         self.connections = {}
         self._server_version = {}
 
-    def query(self, query, database=None):
-        if database is None:
-            database = os.environ.get('PGDATABASE')
-        self.__install_connection(database)
-        return self.connections[database].query(query)
+    def query(self, query, db=None):
+        if db is None:
+            db = os.environ.get('PGDATABASE')
+        self.__install_connection(db)
+        return self.connections[db].query(query)
 
-    def server_version(self, database=None):
-        if database in self._server_version:
-            return self._server_version[database]
-        self._server_version[database] = self.query('show server_version', database)
-        return self._server_version[database]
+    def server_version(self, db=None):
+        if db in self._server_version:
+            return self._server_version[db]
+        self._server_version[db] = self.query('show server_version', db)
+        return self._server_version[db]
 
-    def is_extension_installed(self, ext, database):
+    def is_extension_installed(self, ext, db):
         result = self.query('select count(*) from pg_catalog.pg_extension\
-            where extname = "{0}"'.format(ext), database)
+            where extname = "{0}"'.format(ext), db)
         return (int(result[0][0])) == 1
 
     def databases(self):
@@ -35,9 +35,10 @@ class Pool(object):
                 databases.append(row[0])
         return databases
 
-    def __install_connection(self, database):
-        conn = self.connections.get(database)
+    def __install_connection(self, db):
+        conn = self.connections.get(db)
         if conn is None:
-            self.connections[database] = Connection(database)
+            self.connections[db] = Connection(db)
+
 
 Pooler = Pool()

@@ -17,7 +17,7 @@ class Connections(Plugin):
     def run(self, zbx):
 
         result = Pooler.query('select state, count(*) \
-            from pg_stat_activity group by state')
+            from pg_catalog.pg_stat_activity group by state')
         for item in self.Items:
             state, key, val = item[0], item[1], 0
             for row in result:
@@ -29,12 +29,12 @@ class Connections(Plugin):
             zbx.send('pgsql.connections[{0}]'.format(key), float(val))
 
         result = Pooler.query('select count(*) \
-            from pg_stat_activity')
+            from pg_catalog.pg_stat_activity')
         zbx.send('pgsql.connections[total]', int(result[0][0]))
 
         if Pooler.server_version() <= '9.5':
             result = Pooler.query('select count(*) \
-                from pg_stat_activity where waiting')
+                from pg_catalog.pg_stat_activity where waiting')
             zbx.send('pgsql.connections[waiting]', int(result[0][0]))
 
     def items(self, template):
