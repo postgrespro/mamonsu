@@ -8,7 +8,7 @@ class Pool(object):
 
     def __init__(self):
         self.connections = {}
-        self._server_version = None
+        self._server_version = {}
 
     def query(self, query, database=None):
         if database is None:
@@ -16,11 +16,11 @@ class Pool(object):
         self.__install_connection(database)
         return self.connections[database].query(query)
 
-    def server_version(self):
-        if self._server_version is not None:
-            return self._server_version
-        self._server_version = self.query('show server_version')
-        return self._server_version
+    def server_version(self, database=None):
+        if database in self._server_version:
+            return self._server_version[database]
+        self._server_version[database] = self.query('show server_version', database)
+        return self._server_version[database]
 
     def is_extension_installed(self, ext, database):
         result = self.query('select count(*) from pg_catalog.pg_extension\
