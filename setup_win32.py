@@ -22,9 +22,9 @@ setup(
     license=mamonsu.__licence__,
     service=[
         Target(
-            name='service',
+            name='mamonsu',
             description='monitoring agent',
-            modules=['service_win32'],
+            modules=['mamonsu_service'],
             cmdline_style='pywin32'
         )
     ],
