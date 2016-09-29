@@ -50,9 +50,8 @@ Build rpm:
     $ yum install make rpm-build python2-devel python-setuptools
     $ git clone ... && cd mamonsu && make rpm && rpm -i mamonsu*.rpm
 
-Build win32 exe (worked with python v3.4, py2exe v0.9.2.2, pywin32 v220):
-
-If you have error with ctypes: try to extend bootstrap_modules (add "ctypes") in Lib\site-packages\py2exe\runtime.py
+Build win32 exe: (worked with python v3.4: py2exe v0.9.2.2 and pywin32 v220 or python v2.7: py2exe v0.6.9 and pywin32 v220):
+If you have error with ctypes and python v3.4: try to extend bootstrap_modules (add "ctypes") in Lib\site-packages\py2exe\runtime.py
 
 .. code-block:: bash
 
