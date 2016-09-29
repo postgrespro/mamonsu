@@ -57,32 +57,32 @@ endef
 
 build/pkg_debian_7:
 	$(call build_and_publish_debian,7,wheezy)
-	touch build/pkg_debian_7
+	sudo touch build/pkg_debian_7
 
 build/pkg_debian_8:
 	$(call build_and_publish_debian,8,jessie)
-	touch build/pkg_debian_8
+	sudo touch build/pkg_debian_8
 
 build/pkg_ubuntu_12_04:
 	$(call build_and_publish_ubuntu,12.04,precise)
-	touch build/pkg_ubuntu_12_04
+	sudo touch build/pkg_ubuntu_12_04
 
 build/pkg_ubuntu_14_04:
 	$(call build_and_publish_ubuntu,14.04,trusty)
-	touch build/pkg_ubuntu_14_04
+	sudo touch build/pkg_ubuntu_14_04
 
 build/pkg_ubuntu_15_10:
 	$(call build_and_publish_ubuntu,15.10,wily)
-	touch build/pkg_ubuntu_15_10
+	sudo touch build/pkg_ubuntu_15_10
 
 build/pkg_ubuntu_16_04:
 	$(call build_and_publish_ubuntu,16.04,xenial)
-	touch build/pkg_ubuntu_16_04
+	sudo touch build/pkg_ubuntu_16_04
 
 build/pkg_centos_6:
 	$(call build_and_publish_centos,6)
-	touch build/pkg_centos_6
+	sudo touch build/pkg_centos_6
 
 build/pkg_centos_7:
 	$(call build_and_publish_centos,7)
-	touch build/pkg_centos_7
+	sudo touch build/pkg_centos_7

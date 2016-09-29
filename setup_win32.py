@@ -22,13 +22,13 @@ setup(
     license=mamonsu.__licence__,
     service=[
         Target(
-            name='mamonsu',
+            name='service',
             description='monitoring agent',
             modules=['service_win32'],
             cmdline_style='pywin32'
         )
     ],
-    console=[{'script': 'mamonsu.py', 'dest_base': 'agent'}],
+    console=[{'script': 'mamonsu.py', 'dest_base': 'mamonsu'}],
     options={
         'py2exe': {
             'packages': [

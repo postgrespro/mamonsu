@@ -40,7 +40,7 @@ class AutoTuneSystem(SysInfoLinux):
         if not platform.LINUX:
             return
         total = self.meminfo['_TOTAL']
-        self._add_sysctl('vm.min_free_kbytes', int(5*total/100))
+        self._add_sysctl('vm.min_free_kbytes', int(5*total/(100*1024)))
 
     def _add_sysctl(self, key, value):
         self._sysctl_data.append("{0} = {1}\n".format(key, value))
