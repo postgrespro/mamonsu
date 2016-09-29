@@ -21,7 +21,7 @@ class Pool(ConnectionInfo):
         if db in self._server_version:
             return self._server_version[db]
         result = self.query('show server_version', db)[0][0]
-        self._server_version[db] = result.decode('ascii')
+        self._server_version[db] = "{0}".format(result.decode('ascii'))
         return self._server_version[db]
 
     def server_version_greater(self, version, db=None):
