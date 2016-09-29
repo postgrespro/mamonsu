@@ -915,7 +915,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -957,7 +957,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -999,7 +999,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -1041,7 +1041,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -1083,7 +1083,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -1125,7 +1125,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -1167,7 +1167,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units>b</units>
@@ -1209,7 +1209,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -1251,7 +1251,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -1293,7 +1293,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -1335,7 +1335,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -1377,7 +1377,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -1419,7 +1419,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>60</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -2181,7 +2181,7 @@
                     <key>system.disk.discovery[]</key>
                     <item_prototypes>
                         <item_prototype>
-                            <name>Logical device {#LOGICALDEVICE}: read operations/sec</name>
+                            <name>Logical device {#LOGICALDEVICE}: read op/sec</name>
                             <type>7</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
@@ -2223,7 +2223,7 @@
                             </applications>
                         </item_prototype>
                         <item_prototype>
-                            <name>Logical device {#LOGICALDEVICE}: write operations/sec</name>
+                            <name>Logical device {#LOGICALDEVICE}: write op/sec</name>
                             <type>7</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
