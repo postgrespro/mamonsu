@@ -20,7 +20,7 @@ class Pool(ConnectionInfo):
     def server_version(self, db=None):
         if db in self._server_version:
             return self._server_version[db]
-        result = self.query('show server_version', db)[0]
+        result = self.query('show server_version', db)[0][0]
         self._server_version[db] = result.decode('ascii')
         return self._server_version[db]
 
