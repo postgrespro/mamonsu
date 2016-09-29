@@ -32,7 +32,7 @@ class Connections(Plugin):
             from pg_catalog.pg_stat_activity')
         zbx.send('pgsql.connections[total]', int(result[0][0]))
 
-        if Pooler.server_version() <= '9.5':
+        if Pooler.server_version_less('9.5.0'):
             result = Pooler.query('select count(*) \
                 from pg_catalog.pg_stat_activity where waiting')
             zbx.send('pgsql.connections[waiting]', int(result[0][0]))

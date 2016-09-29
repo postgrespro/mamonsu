@@ -1,3 +1,4 @@
+from distutils.version import LooseVersion
 from ._connection import Connection, ConnectionInfo
 
 
@@ -19,8 +20,15 @@ class Pool(ConnectionInfo):
     def server_version(self, db=None):
         if db in self._server_version:
             return self._server_version[db]
-        self._server_version[db] = self.query('show server_version', db)
+        result = self.query('show server_version', db)[0]
+        self._server_version[db] = result.decode('ascii')
         return self._server_version[db]
+
+    def server_version_greater(self, version, db=None):
+        return self.server_version(db) >= LooseVersion(version)
+
+    def server_version_less(self, version, db=None):
+        return self.server_version(db) <= LooseVersion(version)
 
     def is_extension_installed(self, ext, db):
         result = self.query('select count(*) from pg_catalog.pg_extension\
