@@ -72,7 +72,7 @@ class Instance(Plugin):
             result += template.item({
                 'key': 'pgsql.{0}'.format(item[1]),
                 'name': 'PostgreSQL {0}'.format(item[2]),
-                'value_type': self.VALUE_TYPE.numeric_unsigned,
+                'value_type': self.VALUE_TYPE.numeric_float,
                 'units': item[4]
             })
         return result
