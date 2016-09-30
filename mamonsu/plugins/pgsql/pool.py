@@ -35,9 +35,9 @@ class Pool(ConnectionInfo):
     def server_version_less(self, version, db=None):
         return self.server_version(db) <= LooseVersion(version)
 
-    def is_extension_installed(self, ext, db):
+    def extension_installed(self, ext, db=None):
         result = self.query('select count(*) from pg_catalog.pg_extension\
-            where extname = "{0}"'.format(ext), db)
+            where extname = \'{0}\''.format(ext), db)
         return (int(result[0][0])) == 1
 
     def databases(self):

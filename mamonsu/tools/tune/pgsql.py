@@ -10,6 +10,8 @@ from mamonsu.tools.sysinfo.linux import SysInfoLinux as SysInfo
 
 class AutoTunePgsl(object):
 
+    _libraries = 'pg_stat_statements'
+
     def __init__(self, args):
 
         if not self._is_connection_work():
@@ -23,8 +25,32 @@ class AutoTunePgsl(object):
         self._auto_vacuum()
         self._bgwriter()
         self._configure_pgbadger()
+        self._configure_extensions()
 
         self._reload_config()
+
+    def _configure_extensions(self):
+
+        libraries = self._run_query('show shared_preload_libraries;')
+        if libraries is None:
+            return
+        elif not len(libraries) == 1:
+            return
+        elif not len(libraries[0]) == 1:
+            return
+
+        libraries = libraries[0][0]
+        needed_libraries = self._libraries
+        if len(libraries) == 0:
+            libraries = needed_libraries
+        else:
+            libraries = libraries.split(',')
+            if needed_libraries not in libraries:
+                libraries.append(needed_libraries)
+            libraries = ','.join(libraries)
+        self._run_query(
+            "alter system set shared_preload_libraries to '{0}';".format(
+                libraries))
 
     def _memory(self):
         if platform.WINDOWS:
@@ -37,16 +63,16 @@ class AutoTunePgsl(object):
 
         self._run_query(
             "alter system set shared_buffers to '{0}';".format(
-                self._humansize_and_round_bytes(sysmemory/4)))
+                self._humansize_and_round_bytes(sysmemory / 4)))
         self._run_query(
             "alter system set effective_cache_size to '{0}';".format(
-                self._humansize_and_round_bytes(3*sysmemory/4)))
+                self._humansize_and_round_bytes(3 * sysmemory / 4)))
         self._run_query(
             "alter system set work_mem to '{0}';".format(
-                self._humansize_and_round_bytes(sysmemory/100)))
+                self._humansize_and_round_bytes(sysmemory / 100)))
         self._run_query(
             "alter system set maintenance_work_mem to '{0}';".format(
-                self._humansize_and_round_bytes(sysmemory/10)))
+                self._humansize_and_round_bytes(sysmemory / 10)))
 
     def _auto_vacuum(self):
         self._run_query(
@@ -106,12 +132,12 @@ class AutoTunePgsl(object):
         if self.args.dry_run:
             logging.info('dry run (query):\t{0}'.format(
                 query.replace('%%', '%')))
-            return
+            return None
         try:
-            Pooler.query(query)
+            return Pooler.query(query)
         except ProgrammingError as e:
             if '{0}'.format(e) == 'no result set':
-                return
+                return None
         except Exception as e:
             logging.error('Query {0} error: {1}'.format(query, e))
             if exit_on_fail:
@@ -122,7 +148,7 @@ class AutoTunePgsl(object):
         if nbytes < 1024:
             return str(nbytes)
         i = 0
-        while nbytes >= 1024 and i < len(suffixes)-1:
+        while nbytes >= 1024 and i < len(suffixes) - 1:
             nbytes /= 1024.
             i += 1
         f = ('%.2f' % nbytes).rstrip('0').rstrip('.')

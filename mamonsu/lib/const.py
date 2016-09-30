@@ -21,8 +21,8 @@ class _template(object):
     VALUE_TYPE = _value_type(0, 1, 2, 3, 4)
     # item unit
     _item_type = namedtuple(
-        'item_type', ['none', 'bytes', 'ms', 'uptime', 'percent'])
-    UNITS = _item_type(None, 'b', 'ms', 'uptime', '%')
+        'item_type', ['none', 'bytes', 's', 'ms', 'uptime', 'percent'])
+    UNITS = _item_type(None, 'b', 's', 'ms', 'uptime', '%')
 
 
 class _api(object):

@@ -36,7 +36,7 @@ class Databases(Plugin):
 
         result = Pooler.query("select count(*) from pg_catalog.pg_stat_activity\
             where query like '%%autovacuum%%' and state <> 'idle'")
-        zbx.send('pgsql.autovacumm.count[]', int(result[0][0])-1)
+        zbx.send('pgsql.autovacumm.count[]', int(result[0][0]) - 1)
 
     def items(self, template):
         return template.item({

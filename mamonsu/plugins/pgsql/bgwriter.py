@@ -68,7 +68,7 @@ class BgWriter(Plugin):
 
     def run(self, zbx):
         params = [x[0] for x in self.Items]
-        result = Pooler.query('select {0} from pg_stat_bgwriter'.format(
+        result = Pooler.query('select {0} from pg_catalog.pg_stat_bgwriter'.format(
             ', '.join(params)))
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(
