@@ -1,15 +1,25 @@
+import mamonsu.lib.platform as platform
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 from .helpers import PerfData
 
 
 class Network(Plugin):
 
+    if platform.PY2:
+        _item = [
+            r'\\Network Interface(*)\Output Queue Length',
+            r'\\Network Interface(*)\Bytes Total/sec']
+    elif platform.PY3:
+        _item = [
+            r'\Network Interface(*)\Output Queue Length',
+            r'\Network Interface(*)\Bytes Total/sec']
+
     Items = [
         # perf_item, zbx_key, desc, delta, unit, (color, site)
-        (r'\Network Interface(*)\Output Queue Length', '[total_output_queue]',
+        (_item[0], '[total_output_queue]',
             'Output Queue Length', None, ('0000CC', 0)),
 
-        (r'\Network Interface(*)\Bytes Total/sec', '[total_bytes]',
+        (_item[1], '[total_bytes]',
             'Bytes Total', 'b', ('00CC00', 1))
     ]
 
