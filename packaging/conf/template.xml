@@ -3032,7 +3032,7 @@
                             <trends>365</trends>
                             <status>0</status>
                             <delay>60</delay>
-                            <value_type>0</value_type>
+                            <value_type>3</value_type>
                             <allowed_hosts/>
                             <valuemap/>
                             <units>b</units>
@@ -3074,7 +3074,7 @@
                             <trends>365</trends>
                             <status>0</status>
                             <delay>60</delay>
-                            <value_type>0</value_type>
+                            <value_type>3</value_type>
                             <allowed_hosts/>
                             <valuemap/>
                             <units>b</units>

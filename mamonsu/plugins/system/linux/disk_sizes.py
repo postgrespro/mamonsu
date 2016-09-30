@@ -46,16 +46,16 @@ class DiskSizes(Plugin):
                 points.append({'{#MOUNTPOINT}': point})
                 zbx.send(
                     'system.vfs.used[{0}]'.format(point),
-                    (vfs.f_blocks - vfs.f_bfree) * vfs.f_bsize)
+                    int((vfs.f_blocks - vfs.f_bfree) * vfs.f_bsize))
                 zbx.send(
                     'system.vfs.free[{0}]'.format(point),
-                    vfs.f_bfree * vfs.f_bsize)
+                    int(vfs.f_bfree * vfs.f_bsize))
                 zbx.send(
                     'system.vfs.percent_free[{0}]'.format(point),
-                    100 - (float(vfs.f_blocks - vfs.f_bfree)*100/vfs.f_blocks))
+                    100 - (float(vfs.f_blocks - vfs.f_bfree) * 100 / vfs.f_blocks))
                 zbx.send(
                     'system.vfs.percent_inode_free[{0}]'.format(point),
-                    100 - (float(vfs.f_files - vfs.f_ffree)*100/vfs.f_files))
+                    100 - (float(vfs.f_files - vfs.f_ffree) * 100 / vfs.f_files))
 
             zbx.send('system.vfs.discovery[]', zbx.json({'data': points}))
 
@@ -71,10 +71,12 @@ class DiskSizes(Plugin):
             {
                 'key': 'system.vfs.used[{#MOUNTPOINT}]',
                 'name': 'Mount point {#MOUNTPOINT}: used',
+                'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
                 'units': Plugin.UNITS.bytes},
             {
                 'key': 'system.vfs.free[{#MOUNTPOINT}]',
                 'name': 'Mount point {#MOUNTPOINT}: free',
+                'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
                 'units': Plugin.UNITS.bytes},
             {
                 'key': 'system.vfs.percent_free[{#MOUNTPOINT}]',
