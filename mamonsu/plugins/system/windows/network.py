@@ -6,10 +6,10 @@ class Network(Plugin):
 
     Items = [
         # perf_item, zbx_key, desc, delta, unit, (color, site)
-        (r'\\Network Interface(*)\Output Queue Length', '[total_output_queue]',
+        (r'\Network Interface(*)\Output Queue Length', '[total_output_queue]',
             'Output Queue Length', None, ('0000CC', 0)),
 
-        (r'\\Network Interface(*)\Bytes Total/sec', '[total_bytes]',
+        (r'\Network Interface(*)\Bytes Total/sec', '[total_bytes]',
             'Bytes Total', 'b', ('00CC00', 1))
     ]
 
