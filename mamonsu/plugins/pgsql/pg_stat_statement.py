@@ -12,7 +12,7 @@ class PgStatStatement(Plugin):
         ('stat[read_bytes]',
             'sum(shared_blks_read+local_blks_read+temp_blks_read)*8*1024',
             'read bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: bytes', 'CC0000', 0)),
+            ('PostgreSQL statements: bytes', 'BBBB00', 1)),
         ('stat[write_bytes]',
             'sum(shared_blks_written+local_blks_written+temp_blks_written)*8*1024',
             'write bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
@@ -25,7 +25,7 @@ class PgStatStatement(Plugin):
         ('stat[total_time]',
             'sum(total_time)/float4(100*60)',
             'total execution time', Plugin.UNITS.s, Plugin.DELTA.simple_change,
-            ('PostgreSQL statements: total spend time', 'CC0000', 0)),
+            ('PostgreSQL statements: total spend time', 'BBBB00', 0)),
         ('stat[read_time]',
             'sum(blk_read_time)/float4(100*60)',
             'wait read time', Plugin.UNITS.s, Plugin.DELTA.simple_change,
@@ -33,7 +33,7 @@ class PgStatStatement(Plugin):
         ('stat[write_time]',
             'sum(blk_write_time)/float4(100*60)',
             'wait write time', Plugin.UNITS.s, Plugin.DELTA.simple_change,
-            ('PostgreSQL statements: read/write spend time', '0000CC', 0))
+            ('PostgreSQL statements: read/write spend time', '0000CC', 1))
     ]
 
     def run(self, zbx):
@@ -62,9 +62,9 @@ class PgStatStatement(Plugin):
 
     def graphs(self, template):
         all_graphs = [
-            ('PostgreSQL statements: bytes', 1),
-            ('PostgreSQL statements: read/write spend time', 1),
-            ('PostgreSQL statements: total spend time', 1)]
+            ('PostgreSQL statements: bytes'),
+            ('PostgreSQL statements: read/write spend time'),
+            ('PostgreSQL statements: total spend time')]
         result = ''
         for graph in all_graphs:
             items = []
@@ -76,6 +76,5 @@ class PgStatStatement(Plugin):
                         'yaxisside': item[5][2]})
             result += template.graph({
                 'name': graph[0],
-                'items': items,
-                'type': graph[1]})
+                'items': items})
         return result

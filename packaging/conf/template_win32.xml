@@ -3415,14 +3415,14 @@
             </graph_items>
         </graph>
         <graph>
-            <name>PostgreSQL statements: bytes</name>
+            <name>P</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0</yaxismin>
             <yaxismax>100.0</yaxismax>
             <show_work_period>1</show_work_period>
             <show_triggers>1</show_triggers>
-            <type>1</type>
+            <type>0</type>
             <show_legend>1</show_legend>
             <show_3d>0</show_3d>
             <percent_left>0.0</percent_left>
@@ -3431,54 +3431,17 @@
             <ymax_type_1>0</ymax_type_1>
             <ymin_item_1>0</ymin_item_1>
             <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Win32</host>
-                        <key>pgsql.stat[read_bytes]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00CC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Win32</host>
-                        <key>pgsql.stat[write_bytes]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>0000CC</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Win32</host>
-                        <key>pgsql.stat[dirty_bytes]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
+            <graph_items/>
         </graph>
         <graph>
-            <name>PostgreSQL statements: read/write spend time</name>
+            <name>P</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0</yaxismin>
             <yaxismax>100.0</yaxismax>
             <show_work_period>1</show_work_period>
             <show_triggers>1</show_triggers>
-            <type>1</type>
+            <type>0</type>
             <show_legend>1</show_legend>
             <show_3d>0</show_3d>
             <percent_left>0.0</percent_left>
@@ -3487,42 +3450,17 @@
             <ymax_type_1>0</ymax_type_1>
             <ymin_item_1>0</ymin_item_1>
             <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00CC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Win32</host>
-                        <key>pgsql.stat[read_time]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>0000CC</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Win32</host>
-                        <key>pgsql.stat[write_time]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
+            <graph_items/>
         </graph>
         <graph>
-            <name>PostgreSQL statements: total spend time</name>
+            <name>P</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0</yaxismin>
             <yaxismax>100.0</yaxismax>
             <show_work_period>1</show_work_period>
             <show_triggers>1</show_triggers>
-            <type>1</type>
+            <type>0</type>
             <show_legend>1</show_legend>
             <show_3d>0</show_3d>
             <percent_left>0.0</percent_left>
@@ -3531,20 +3469,7 @@
             <ymax_type_1>0</ymax_type_1>
             <ymin_item_1>0</ymin_item_1>
             <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>CC0000</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Win32</host>
-                        <key>pgsql.stat[total_time]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
+            <graph_items/>
         </graph>
         <graph>
             <name>PostgreSQL write-ahead log generation speed</name>
