@@ -28,11 +28,11 @@ class PgStatStatement(Plugin):
             ('PostgreSQL statements: total spend time', 'BBBB00', 0)),
         ('stat[read_time]',
             'sum(blk_read_time)/float4(100*60)',
-            'wait read time', Plugin.UNITS.s, Plugin.DELTA.simple_change,
+            'read io time', Plugin.UNITS.s, Plugin.DELTA.simple_change,
             ('PostgreSQL statements: read/write spend time', '00CC00', 0)),
         ('stat[write_time]',
             'sum(blk_write_time)/float4(100*60)',
-            'wait write time', Plugin.UNITS.s, Plugin.DELTA.simple_change,
+            'write io time', Plugin.UNITS.s, Plugin.DELTA.simple_change,
             ('PostgreSQL statements: read/write spend time', '0000CC', 1))
     ]
 
@@ -62,19 +62,19 @@ class PgStatStatement(Plugin):
 
     def graphs(self, template):
         all_graphs = [
-            ('PostgreSQL statements: bytes'),
-            ('PostgreSQL statements: read/write spend time'),
-            ('PostgreSQL statements: total spend time')]
+            'PostgreSQL statements: bytes',
+            'PostgreSQL statements: read/write spend time',
+            'PostgreSQL statements: total spend time']
         result = ''
         for graph in all_graphs:
             items = []
             for item in self.Items:
-                if item[5][0] == graph[0]:
+                if item[5][0] == graph:
                     items.append({
                         'key': 'pgsql.{0}'.format(item[0]),
                         'color': item[5][1],
                         'yaxisside': item[5][2]})
             result += template.graph({
-                'name': graph[0],
+                'name': graph,
                 'items': items})
         return result
