@@ -23,16 +23,16 @@ class PgStatStatement(Plugin):
             ('PostgreSQL statements: bytes', '0000CC', 0)),
 
         ('stat[total_time]',
-            'sum(total_time)/float4(100*60)',
-            'total execution time', Plugin.UNITS.s, Plugin.DELTA.simple_change,
+            'sum(total_time)/float4(100)',
+            'total execution time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
             ('PostgreSQL statements: total spend time', 'BBBB00', 0)),
         ('stat[read_time]',
-            'sum(blk_read_time)/float4(100*60)',
-            'read io time', Plugin.UNITS.s, Plugin.DELTA.simple_change,
+            'sum(blk_read_time)/float4(100)',
+            'read io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
             ('PostgreSQL statements: read/write spend time', '00CC00', 0)),
         ('stat[write_time]',
-            'sum(blk_write_time)/float4(100*60)',
-            'write io time', Plugin.UNITS.s, Plugin.DELTA.simple_change,
+            'sum(blk_write_time)/float4(100)',
+            'write io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
             ('PostgreSQL statements: read/write spend time', '0000CC', 1))
     ]
 
