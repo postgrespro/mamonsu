@@ -36,7 +36,7 @@ class AutoTunePgsl(object):
         if available is None:
             return
         elif not len(available[0]) == 1:
-            logging.warning("Please install postgres 'contrib' modules")
+            logging.warning("Please install 'contrib' modules: need for 'pg_stat_statements'")
             return
 
         libraries = self._run_query('show shared_preload_libraries;')

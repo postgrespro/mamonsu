@@ -32,9 +32,6 @@ class ProcStat(Plugin):
         (3, 'cpu[system]',
             'by the kernel in system activities',
             Plugin.DELTA.speed_per_second, 'CC0000', 0),
-        (4, 'cpu[idle]',
-            'Idle CPU time',
-            Plugin.DELTA.speed_per_second, '00CC00', 0),
         (5, 'cpu[iowait]',
             'waiting for I/O operations',
             Plugin.DELTA.speed_per_second, 'CCCC00', 0),
@@ -44,6 +41,9 @@ class ProcStat(Plugin):
         (7, 'cpu[softirq]',
             'handling batched interrupts',
             Plugin.DELTA.speed_per_second, '000077', 0),
+        (4, 'cpu[idle]',
+            'Idle CPU time',
+            Plugin.DELTA.speed_per_second, '00CC00', 0),
     ]
 
     def run(self, zbx):
