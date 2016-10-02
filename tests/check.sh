@@ -15,15 +15,16 @@ make rpm && yum install -y mamonsu*.rpm
 
 # install postgres
 yum install -y https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-2.noarch.rpm
-yum install -y postgresql95-server
+yum install -y postgresql95-server postgresql95-contrib
 su postgres -c '/usr/pgsql-9.5/bin/initdb -D /var/lib/pgsql/9.5/data'
 /etc/init.d/postgresql-9.5 start
 
-# mamonsu report
-(mamonsu report | grep version | grep 'PostgreSQL 9.5') || exit 1
-
 # mamonsu tune
 mamonsu tune
+su postgres -c '/usr/pgsql-9.5/bin/pg_ctl restart -w -D /var/lib/pgsql/9.5/data'
+
+# mamonsu report
+(mamonsu report | grep version | grep 'PostgreSQL 9.5') || exit 1
 
 # export config
 mamonsu export config /dev/null
