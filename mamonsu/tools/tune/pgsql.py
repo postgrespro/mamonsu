@@ -31,11 +31,11 @@ class AutoTunePgsl(object):
 
     def _configure_extensions(self):
 
-        available = self._run_query("select 1 from pg_available_\
-            extensions where name = 'pg_stat_statements'")
+        available = self._run_query("select 1 from pg_available_extensions \
+            where name = 'pg_stat_statements'")
         if available is None:
             return
-        elif not len(available[0]) == 1:
+        elif not len(available) == 1:
             logging.warning("Please install 'contrib' modules: need for 'pg_stat_statements'")
             return
 
