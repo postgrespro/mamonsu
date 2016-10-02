@@ -22,25 +22,23 @@ class PgStatStatement(Plugin):
             'dirty bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
             ('PostgreSQL statements: bytes', '0000CC', 0)),
 
-        ('stat[total_time]',
-            'sum(total_time)/float4(100)',
-            'total execution time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: total spend time', 'BBBB00', 0)),
+        ('stat[other_time]',
+            'sum(total_time-blk_read_time+blk_write_time)/float4(100)',
+            'other (mostly cpu) time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+            ('PostgreSQL statements: spend time', 'BBBB00', 0)),
         ('stat[read_time]',
             'sum(blk_read_time)/float4(100)',
             'read io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: read/write spend time', '00CC00', 0)),
+            ('PostgreSQL statements: spend time', '00CC00', 0)),
         ('stat[write_time]',
             'sum(blk_write_time)/float4(100)',
             'write io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: read/write spend time', '0000CC', 1))
+            ('PostgreSQL statements: spend time', '0000CC', 1))
     ]
 
     def run(self, zbx):
-
         if not self.extension_installed('pg_stat_statements'):
             return
-
         params = [x[1] for x in self.Items]
         result = Pooler.query('\
             select {0} from public.pg_stat_statements'.format(
@@ -62,19 +60,20 @@ class PgStatStatement(Plugin):
 
     def graphs(self, template):
         all_graphs = [
-            'PostgreSQL statements: bytes',
-            'PostgreSQL statements: read/write spend time',
-            'PostgreSQL statements: total spend time']
+            ('PostgreSQL statements: bytes', None),
+            ('PostgreSQL statements: spend time', 1)]
         result = ''
-        for graph in all_graphs:
+        for graph_item in all_graphs:
             items = []
             for item in self.Items:
-                if item[5][0] == graph:
+                if item[5][0] == graph_item[0]:
                     items.append({
                         'key': 'pgsql.{0}'.format(item[0]),
                         'color': item[5][1],
                         'yaxisside': item[5][2]})
-            result += template.graph({
-                'name': graph,
-                'items': items})
+            # create graph
+            graph = {'name': graph_item[0], 'items': items}
+            if graph_item[1] is not None:
+                graph['type'] = graph_item[1]
+            result += template.graph(graph)
         return result

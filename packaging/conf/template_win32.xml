@@ -1912,12 +1912,12 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL statements: total execution time</name>
+                    <name>PostgreSQL statements: other (mostly cpu) time</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
-                    <key>pgsql.stat[total_time]</key>
+                    <key>pgsql.stat[other_time]</key>
                     <snmp_oid/>
                     <history>7</history>
                     <trends>365</trends>
@@ -3471,14 +3471,14 @@
             </graph_items>
         </graph>
         <graph>
-            <name>PostgreSQL statements: read/write spend time</name>
+            <name>PostgreSQL statements: spend time</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0</yaxismin>
             <yaxismax>100.0</yaxismax>
             <show_work_period>1</show_work_period>
             <show_triggers>1</show_triggers>
-            <type>0</type>
+            <type>1</type>
             <show_legend>1</show_legend>
             <show_3d>0</show_3d>
             <percent_left>0.0</percent_left>
@@ -3488,6 +3488,18 @@
             <ymin_item_1>0</ymin_item_1>
             <ymax_item_1>0</ymax_item_1>
             <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>BBBB00</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Win32</host>
+                        <key>pgsql.stat[other_time]</key>
+                    </item>
+                </graph_item>
                 <graph_item>
                     <sortorder>0</sortorder>
                     <drawtype>0</drawtype>
@@ -3510,38 +3522,6 @@
                     <item>
                         <host>PostgresPro-Win32</host>
                         <key>pgsql.stat[write_time]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL statements: total spend time</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0</yaxismin>
-            <yaxismax>100.0</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0</percent_left>
-            <percent_right>0.0</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>BBBB00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>PostgresPro-Win32</host>
-                        <key>pgsql.stat[total_time]</key>
                     </item>
                 </graph_item>
             </graph_items>
