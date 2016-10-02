@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        1.7.2
+Version:        1.7.3
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,8 +73,11 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Oct 3 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.7.3-1
+- improve pg_stat_statement plugin
+
 * Fri Sep 30 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.7.2-1
-- add pg_stat_statement plugin 
+- add pg_stat_statement plugin
 
 * Fri Sep 30 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.7.1-1
 - disk-stat plugin problem with sizes > 1Tb

@@ -49,7 +49,7 @@ class AutoTunePgsl(object):
                 libraries.append(needed_libraries)
             libraries = ','.join(libraries)
         self._run_query(
-            "alter system set shared_preload_libraries to '{0}';".format(
+            "alter system set shared_preload_libraries to {0};".format(
                 libraries))
 
     def _memory(self):
