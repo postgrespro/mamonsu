@@ -33,7 +33,7 @@ class PgStatStatement(Plugin):
         ('stat[write_time]',
             'sum(blk_write_time)/float4(100)',
             'write io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: spend time', '0000CC', 1))
+            ('PostgreSQL statements: spend time', '0000CC', 0))
     ]
 
     def run(self, zbx):

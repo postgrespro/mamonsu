@@ -1,3 +1,9 @@
+mamonsu (1.7.4-1) stable; urgency=low
+
+  * improve zabbix template
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 3 Oct 2016 01:00:00 +0300
+
 mamonsu (1.7.3-1) stable; urgency=low
 
   * improve pg_stat_statement plugin
