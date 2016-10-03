@@ -198,6 +198,12 @@ Metrics:  PostgreSQL
     'PostgreSQL tuples: updated': pgsql.tuples[updated]
     'PostgreSQL: streaming replication lag in seconds': pgsql.replication_lag[sec]
     'PostgreSQL: wal write speed': pgsql.wal.write[]
+    'PostgreSQL statements: read bytes/s': pgsql.stat[read_bytes]
+    'PostgreSQL statements: write bytes/s': pgsql.stat[write_bytes]
+    'PostgreSQL statements: dirty bytes/s': pgsql.stat[dirty_bytes]
+    'PostgreSQL statements: read io time': pgsql.stat[read_time]
+    'PostgreSQL statements: write io time': pgsql.stat[write_time]
+    'PostgreSQL statements: other (mostly cpu) time': pgsql.stat[other_time]
 
     'Database {#DATABASE}: size': pgsql.database.size[{#DATABASE}]
     'Count of bloating tables in database: {#DATABASE}': pgsql.database.bloating_tables[{#DATABASE}]
