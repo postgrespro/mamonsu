@@ -2416,7 +2416,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: Lightweight locks</name>
+                    <name>PostgreSQL waits: Lightweight locks</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2458,7 +2458,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: Heavyweight locks</name>
+                    <name>PostgreSQL waits: Heavyweight locks</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2500,7 +2500,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: Buffer locks</name>
+                    <name>PostgreSQL waits: Buffer locks</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2542,7 +2542,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: XID access</name>
+                    <name>PostgreSQL waits: XID access</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2584,7 +2584,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: WAL access</name>
+                    <name>PostgreSQL waits: WAL access</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2626,7 +2626,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: CLOG access</name>
+                    <name>PostgreSQL waits: CLOG access</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2668,7 +2668,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: Replication Locks</name>
+                    <name>PostgreSQL waits: Replication Locks</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2710,7 +2710,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: Buffer operations</name>
+                    <name>PostgreSQL waits: Buffer operations</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2752,7 +2752,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: acquire a lock on a relation</name>
+                    <name>PostgreSQL waits: acquire a lock on a relation</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2794,7 +2794,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: extend a relation</name>
+                    <name>PostgreSQL waits: extend a relation</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2836,7 +2836,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: acquire a lock on page of a relation</name>
+                    <name>PostgreSQL waits: acquire a lock on page of a relation</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2878,7 +2878,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: acquire a lock on a tuple</name>
+                    <name>PostgreSQL waits: acquire a lock on a tuple</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2920,7 +2920,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: Waiting for a transaction to finish</name>
+                    <name>PostgreSQL waits: Waiting for a transaction to finish</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -2962,7 +2962,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: acquire a virtual xid lock</name>
+                    <name>PostgreSQL waits: acquire a virtual xid lock</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -3004,7 +3004,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: acquire a speculative insertion lock</name>
+                    <name>PostgreSQL waits: acquire a speculative insertion lock</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -3046,7 +3046,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: acquire a lock on a non-relation database object</name>
+                    <name>PostgreSQL waits: acquire a lock on a non-relation database object</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -3088,7 +3088,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: acquire a userlock</name>
+                    <name>PostgreSQL waits: acquire a userlock</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -3130,7 +3130,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL wait sampling: acquire an advisory user lock</name>
+                    <name>PostgreSQL waits: acquire an advisory user lock</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -5814,7 +5814,7 @@
             </graph_items>
         </graph>
         <graph>
-            <name>PostgreSQL wait sampling: Locks by type</name>
+            <name>PostgreSQL waits: Locks by type</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0</yaxismin>
@@ -5840,7 +5840,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.lwlock</key>
+                        <key>pgsql.all_lock[lwlock]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5852,7 +5852,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.hwlock</key>
+                        <key>pgsql.all_lock[hwlock]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5864,13 +5864,13 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.buffer</key>
+                        <key>pgsql.all_lock[buffer]</key>
                     </item>
                 </graph_item>
             </graph_items>
         </graph>
         <graph>
-            <name>PostgreSQL wait sampling: Heavyweight locks</name>
+            <name>PostgreSQL waits: Heavyweight locks</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0</yaxismin>
@@ -5896,7 +5896,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.relation</key>
+                        <key>pgsql.hwlock[relation]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5908,7 +5908,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.extend</key>
+                        <key>pgsql.hwlock[extend]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5920,7 +5920,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.page</key>
+                        <key>pgsql.hwlock[page]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5932,7 +5932,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.tuple</key>
+                        <key>pgsql.hwlock[tuple]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5944,7 +5944,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.transactionid</key>
+                        <key>pgsql.hwlock[transactionid]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5956,7 +5956,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.virtualxid</key>
+                        <key>pgsql.hwlock[virtualxid]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5968,7 +5968,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.speculative token</key>
+                        <key>pgsql.hwlock[speculative_token]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5980,7 +5980,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.object</key>
+                        <key>pgsql.hwlock[object]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5992,7 +5992,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.userlock</key>
+                        <key>pgsql.hwlock[userlock]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6004,13 +6004,13 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.advisory</key>
+                        <key>pgsql.hwlock[advisory]</key>
                     </item>
                 </graph_item>
             </graph_items>
         </graph>
         <graph>
-            <name>PostgreSQL wait sampling: Lightweight locks</name>
+            <name>PostgreSQL waits: Lightweight locks</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0</yaxismin>
@@ -6030,13 +6030,13 @@
                 <graph_item>
                     <sortorder>0</sortorder>
                     <drawtype>0</drawtype>
-                    <color>CC0000</color>
+                    <color>BBBB00</color>
                     <yaxisside>0</yaxisside>
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.xid</key>
+                        <key>pgsql.lwlock[xid]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6048,7 +6048,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.wal</key>
+                        <key>pgsql.lwlock[wal]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6060,7 +6060,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.clog</key>
+                        <key>pgsql.lwlock[clog]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6072,7 +6072,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.replication</key>
+                        <key>pgsql.lwlock[replication]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6084,7 +6084,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.buffer</key>
+                        <key>pgsql.lwlock[buffer]</key>
                     </item>
                 </graph_item>
             </graph_items>

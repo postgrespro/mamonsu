@@ -66,7 +66,7 @@ order by count desc"""
 
     LWLockItems = [
         # (sql_key, zbx_key, name, color)
-        ('xid', 'lwlock[xid]', 'XID access', 'CC0000'),
+        ('xid', 'lwlock[xid]', 'XID access', 'BBBB00'),
         ('wal', 'lwlock[wal]', 'WAL access', 'CC0000'),
         ('clog', 'lwlock[clog]', 'CLOG access', '00CC00'),
         ('replication', 'lwlock[replication]', 'Replication Locks', '0000CC'),
@@ -107,11 +107,17 @@ order by count desc"""
                 for result in where:
                     if item[0] == result[0]:
                         zbx.send(
-                            item[2], result[1], Plugin.DELTA.speed_per_second)
+                            'pgsql.{0}'.format(item[1]),
+                            float(result[1]), Plugin.DELTA.speed_per_second)
                         item_found = True
                         break
                 if not item_found:
-                    zbx.send(item[2], 0, Plugin.DELTA.speed_per_second)
+                    zbx.send(
+                        'pgsql.{0}'.format(item[1]),
+                        float(0), Plugin.DELTA.speed_per_second)
+
+        if not self.extension_installed('pg_wait_sampling'):
+            return
 
         find_and_send(Pooler.query(self.AllLockQuery), self.AllLockItems, zbx)
         find_and_send(Pooler.query(self.HWLockQuery), self.HWLockItems, zbx)
@@ -135,10 +141,8 @@ order by count desc"""
             items = []
             for item in graph_items:
                 items.append({
-                    'key': 'pgsql.{0}'.format(item[0]),
+                    'key': 'pgsql.{0}'.format(item[1]),
                     'color': item[3]})
             result += template.graph({
-                'name': graph_name,
-                'type': 1,
-                'items': items})
+                'name': graph_name, 'type': 1, 'items': items})
         return result

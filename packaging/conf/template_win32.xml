@@ -4309,7 +4309,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.lwlock</key>
+                        <key>pgsql.all_lock[lwlock]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4321,7 +4321,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.hwlock</key>
+                        <key>pgsql.all_lock[hwlock]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4333,7 +4333,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.buffer</key>
+                        <key>pgsql.all_lock[buffer]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -4365,7 +4365,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.relation</key>
+                        <key>pgsql.hwlock[relation]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4377,7 +4377,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.extend</key>
+                        <key>pgsql.hwlock[extend]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4389,7 +4389,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.page</key>
+                        <key>pgsql.hwlock[page]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4401,7 +4401,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.tuple</key>
+                        <key>pgsql.hwlock[tuple]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4413,7 +4413,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.transactionid</key>
+                        <key>pgsql.hwlock[transactionid]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4425,7 +4425,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.virtualxid</key>
+                        <key>pgsql.hwlock[virtualxid]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4437,7 +4437,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.speculative token</key>
+                        <key>pgsql.hwlock[speculative_token]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4449,7 +4449,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.object</key>
+                        <key>pgsql.hwlock[object]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4461,7 +4461,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.userlock</key>
+                        <key>pgsql.hwlock[userlock]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4473,7 +4473,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.advisory</key>
+                        <key>pgsql.hwlock[advisory]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -4499,13 +4499,13 @@
                 <graph_item>
                     <sortorder>0</sortorder>
                     <drawtype>0</drawtype>
-                    <color>CC0000</color>
+                    <color>BBBB00</color>
                     <yaxisside>0</yaxisside>
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.xid</key>
+                        <key>pgsql.lwlock[xid]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4517,7 +4517,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.wal</key>
+                        <key>pgsql.lwlock[wal]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4529,7 +4529,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.clog</key>
+                        <key>pgsql.lwlock[clog]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4541,7 +4541,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.replication</key>
+                        <key>pgsql.lwlock[replication]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4553,7 +4553,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.buffer</key>
+                        <key>pgsql.lwlock[buffer]</key>
                     </item>
                 </graph_item>
             </graph_items>
