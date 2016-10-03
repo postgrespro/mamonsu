@@ -33,26 +33,26 @@ order by count desc"""
     HWLockItems = [
         # (sql_key, zbx_key, name, color)
         ('relation', 'hwlock[relation]',
-            'acquire a lock on a relation', 'CC0000'),
+            'lock on a relation', 'CC0000'),
         ('extend', 'hwlock[extend]',
             'extend a relation', '00CC00'),
         ('page', 'hwlock[page]',
-            'acquire a lock on page of a relation', '0000CC'),
+            'lock on page', '0000CC'),
         ('tuple', 'hwlock[tuple]',
-            'acquire a lock on a tuple', 'CC00CC'),
+            'lock on a tuple', 'CC00CC'),
         ('transactionid', 'hwlock[transactionid]',
-            'Waiting for a transaction to finish', '000000'),
+            'transaction to finish', '000000'),
         ('virtualxid', 'hwlock[virtualxid]',
-            'acquire a virtual xid lock', 'CCCC00'),
+            'virtual xid lock', 'CCCC00'),
         ('speculative token', 'hwlock[speculative_token]',
-            'acquire a speculative insertion lock', '777777'),
+            'speculative insertion lock', '777777'),
         ('object', 'hwlock[object]',
-            'acquire a lock on a non-relation database object',
+            'lock on database object',
             '770000'),
         ('userlock', 'hwlock[userlock]',
-            'acquire a userlock', '000077'),
+            'userlock', '000077'),
         ('advisory', 'hwlock[advisory]',
-            'acquire an advisory user lock', '007700')
+            'advisory user lock', '007700')
     ]
 
     HWLockQuery = """
