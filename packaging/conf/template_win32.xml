@@ -3436,7 +3436,7 @@
                     <sortorder>0</sortorder>
                     <drawtype>0</drawtype>
                     <color>BBBB00</color>
-                    <yaxisside>1</yaxisside>
+                    <yaxisside>0</yaxisside>
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
