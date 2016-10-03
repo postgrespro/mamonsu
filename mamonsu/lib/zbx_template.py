@@ -77,7 +77,7 @@ class ZbxTemplate(object):
     ]
 
     graph_items_defaults = [
-        ('sortorder', 0), ('drawtype', 0),
+        ('sortorder', None), ('drawtype', 0),
         ('color', '00CC00'), ('yaxisside', 0),
         ('calc_fnc', 2), ('type', Template.GRAPH_TYPE.normal)
     ]
@@ -150,12 +150,14 @@ class ZbxTemplate(object):
             raise LookupError(
                 'Miss item in graph: {0}.'.format(args))
         graph_items = ''
-        for item in items:
+        for idx, item in enumerate(items):
             try:
                 key = item['key']
             except KeyError:
                 raise LookupError(
                     'Missed key in graph item: {0}.'.format(item))
+            if 'sortorder' not in item:
+                item['sortorder'] = idx
             row = '<graph_item>{0}<item><host>{1}'
             row += '</host><key>{2}</key></item></graph_item>'
             graph_items += row.format(

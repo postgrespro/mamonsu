@@ -3184,7 +3184,7 @@
                                     </item>
                                 </graph_item>
                                 <graph_item>
-                                    <sortorder>0</sortorder>
+                                    <sortorder>1</sortorder>
                                     <drawtype>0</drawtype>
                                     <color>00CC00</color>
                                     <yaxisside>1</yaxisside>
@@ -3228,7 +3228,7 @@
                                     </item>
                                 </graph_item>
                                 <graph_item>
-                                    <sortorder>0</sortorder>
+                                    <sortorder>1</sortorder>
                                     <drawtype>0</drawtype>
                                     <color>00CC00</color>
                                     <yaxisside>1</yaxisside>
@@ -3493,7 +3493,7 @@
                                     </item>
                                 </graph_item>
                                 <graph_item>
-                                    <sortorder>0</sortorder>
+                                    <sortorder>1</sortorder>
                                     <drawtype>0</drawtype>
                                     <color>0000CC</color>
                                     <yaxisside>0</yaxisside>
@@ -3697,7 +3697,7 @@
                                     </item>
                                 </graph_item>
                                 <graph_item>
-                                    <sortorder>0</sortorder>
+                                    <sortorder>1</sortorder>
                                     <drawtype>0</drawtype>
                                     <color>0000CC</color>
                                     <yaxisside>0</yaxisside>
@@ -3709,7 +3709,7 @@
                                     </item>
                                 </graph_item>
                                 <graph_item>
-                                    <sortorder>0</sortorder>
+                                    <sortorder>2</sortorder>
                                     <drawtype>0</drawtype>
                                     <color>00CC00</color>
                                     <yaxisside>1</yaxisside>
@@ -4039,7 +4039,7 @@
                                     </item>
                                 </graph_item>
                                 <graph_item>
-                                    <sortorder>0</sortorder>
+                                    <sortorder>1</sortorder>
                                     <drawtype>0</drawtype>
                                     <color>0000CC</color>
                                     <yaxisside>0</yaxisside>
@@ -4172,7 +4172,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000CC</color>
                     <yaxisside>1</yaxisside>
@@ -4184,7 +4184,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>777777</color>
                     <yaxisside>0</yaxisside>
@@ -4196,7 +4196,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>3</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC0000</color>
                     <yaxisside>1</yaxisside>
@@ -4208,7 +4208,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>4</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC00CC</color>
                     <yaxisside>0</yaxisside>
@@ -4220,7 +4220,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>5</sortorder>
                     <drawtype>0</drawtype>
                     <color>00CC00</color>
                     <yaxisside>1</yaxisside>
@@ -4264,7 +4264,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC0000</color>
                     <yaxisside>0</yaxisside>
@@ -4276,7 +4276,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000CC</color>
                     <yaxisside>1</yaxisside>
@@ -4288,7 +4288,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>3</sortorder>
                     <drawtype>0</drawtype>
                     <color>000000</color>
                     <yaxisside>1</yaxisside>
@@ -4332,7 +4332,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000BB</color>
                     <yaxisside>0</yaxisside>
@@ -4344,7 +4344,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC00CC</color>
                     <yaxisside>0</yaxisside>
@@ -4356,7 +4356,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>3</sortorder>
                     <drawtype>0</drawtype>
                     <color>EEEEEE</color>
                     <yaxisside>0</yaxisside>
@@ -4368,7 +4368,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>4</sortorder>
                     <drawtype>0</drawtype>
                     <color>BB0000</color>
                     <yaxisside>0</yaxisside>
@@ -4412,7 +4412,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000CC</color>
                     <yaxisside>0</yaxisside>
@@ -4456,7 +4456,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>00CC00</color>
                     <yaxisside>0</yaxisside>
@@ -4468,7 +4468,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC0000</color>
                     <yaxisside>0</yaxisside>
@@ -4512,7 +4512,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>000000</color>
                     <yaxisside>0</yaxisside>
@@ -4524,7 +4524,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC0000</color>
                     <yaxisside>0</yaxisside>
@@ -4568,7 +4568,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000CC</color>
                     <yaxisside>1</yaxisside>
@@ -4612,7 +4612,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000CC</color>
                     <yaxisside>0</yaxisside>
@@ -4624,7 +4624,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>00CC00</color>
                     <yaxisside>0</yaxisside>
@@ -4636,7 +4636,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>3</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC00CC</color>
                     <yaxisside>1</yaxisside>
@@ -4648,7 +4648,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>4</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC0000</color>
                     <yaxisside>0</yaxisside>
@@ -4724,7 +4724,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>00CC00</color>
                     <yaxisside>0</yaxisside>
@@ -4736,7 +4736,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000CC</color>
                     <yaxisside>0</yaxisside>
@@ -4748,7 +4748,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>3</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC00CC</color>
                     <yaxisside>0</yaxisside>
@@ -4760,7 +4760,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>4</sortorder>
                     <drawtype>0</drawtype>
                     <color>000000</color>
                     <yaxisside>0</yaxisside>
@@ -4772,7 +4772,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>5</sortorder>
                     <drawtype>0</drawtype>
                     <color>CCCC00</color>
                     <yaxisside>0</yaxisside>
@@ -4784,7 +4784,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>6</sortorder>
                     <drawtype>0</drawtype>
                     <color>777777</color>
                     <yaxisside>0</yaxisside>
@@ -4796,7 +4796,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>7</sortorder>
                     <drawtype>0</drawtype>
                     <color>770000</color>
                     <yaxisside>0</yaxisside>
@@ -4808,7 +4808,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>8</sortorder>
                     <drawtype>0</drawtype>
                     <color>000077</color>
                     <yaxisside>0</yaxisside>
@@ -4820,7 +4820,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>9</sortorder>
                     <drawtype>0</drawtype>
                     <color>007700</color>
                     <yaxisside>0</yaxisside>
@@ -4832,7 +4832,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>10</sortorder>
                     <drawtype>0</drawtype>
                     <color>DF0000</color>
                     <yaxisside>0</yaxisside>
@@ -4844,7 +4844,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>11</sortorder>
                     <drawtype>0</drawtype>
                     <color>00DF00</color>
                     <yaxisside>0</yaxisside>
@@ -4856,7 +4856,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>12</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000DF</color>
                     <yaxisside>0</yaxisside>
@@ -4932,7 +4932,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>DF0101</color>
                     <yaxisside>1</yaxisside>
@@ -4976,7 +4976,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>00CC00</color>
                     <yaxisside>0</yaxisside>
@@ -4988,7 +4988,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000CC</color>
                     <yaxisside>0</yaxisside>
@@ -5032,7 +5032,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>00CC00</color>
                     <yaxisside>0</yaxisside>
@@ -5044,7 +5044,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000CC</color>
                     <yaxisside>0</yaxisside>
@@ -5088,7 +5088,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>00CC00</color>
                     <yaxisside>0</yaxisside>
@@ -5100,7 +5100,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>0000CC</color>
                     <yaxisside>1</yaxisside>
@@ -5144,7 +5144,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>1</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC00CC</color>
                     <yaxisside>0</yaxisside>
@@ -5156,7 +5156,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>2</sortorder>
                     <drawtype>0</drawtype>
                     <color>CC0000</color>
                     <yaxisside>0</yaxisside>
@@ -5168,7 +5168,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>3</sortorder>
                     <drawtype>0</drawtype>
                     <color>CCCC00</color>
                     <yaxisside>0</yaxisside>
@@ -5180,7 +5180,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>4</sortorder>
                     <drawtype>0</drawtype>
                     <color>777777</color>
                     <yaxisside>0</yaxisside>
@@ -5192,7 +5192,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>5</sortorder>
                     <drawtype>0</drawtype>
                     <color>000077</color>
                     <yaxisside>0</yaxisside>
@@ -5204,7 +5204,7 @@
                     </item>
                 </graph_item>
                 <graph_item>
-                    <sortorder>0</sortorder>
+                    <sortorder>6</sortorder>
                     <drawtype>0</drawtype>
                     <color>00CC00</color>
                     <yaxisside>0</yaxisside>
