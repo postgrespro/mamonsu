@@ -70,7 +70,8 @@ order by count desc"""
         ('wal', 'lwlock[wal]', 'WAL access', 'CC0000'),
         ('clog', 'lwlock[clog]', 'CLOG access', '00CC00'),
         ('replication', 'lwlock[replication]', 'Replication Locks', '0000CC'),
-        ('buffer', 'lwlock[buffer]', 'Buffer operations', '0000CC')]
+        ('buffer', 'lwlock[buffer]', 'Buffer operations', '0000CC'),
+        ('other', 'lwlock[other]', 'Other operations', '007700')]
 
     LWLockQuery = """
 select
