@@ -49,7 +49,7 @@ class Request(object):
 
     def post(self, method, params):
         request = urllib2.Request(self._url)
-        request.add_header('Content-Type', 'application/json')
+        request.add_header('Content-Type', 'application/json; charset=utf-8')
         data = self._get_json(method, params)
         logging.debug('Post to zabbix: {0}'.format(data))
         if platform.PY3:
