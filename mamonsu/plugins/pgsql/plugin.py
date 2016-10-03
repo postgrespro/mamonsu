@@ -27,7 +27,7 @@ class PgsqlPlugin(Plugin):
         if self._ext_check_count is None:
             # first check
             check(self, ext)
-        elif self._ext_installed > 5:
+        elif self._ext_check_count > 5:
             # try to RE-check
             check(self, ext)
         self._ext_check_count += 1

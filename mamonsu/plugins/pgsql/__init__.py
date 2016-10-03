@@ -1,4 +1,5 @@
 __all__ = ['bgwriter', 'connections', 'databases']
-__all__ += ['health', 'instance', 'xlog', 'pg_stat_statement']
+__all__ += ['health', 'instance', 'xlog']
+__all__ += ['pg_stat_statement', 'pg_wait_sampling']
 
 from . import *

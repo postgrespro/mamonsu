@@ -4,63 +4,141 @@ from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
 
 
-class WaitSampling(Plugin):
+class PgWaitSampling(Plugin):
 
     AllLockItems = [
-        # (key, [wait_event_type], name, color)
-        ('pgsql.all_lock[lwlock]', ['LWLockNamed', 'LWLockTranche'],
-            'PostgreSQL: Lightweight locks', '0000CC'),
-        ('pgsql.all_lock[hwlock]', ['Lock'],
-            'PostgreSQL: Heavyweight locks', '00CC00'),
-        ('pgsql.all_lock[buffer]', ['BufferPin'],
-            'PostgreSQL: Buffer locks', 'CC0000')
+        # (sql_key, zbx_key, name, color)
+        ('lwlock', 'all_lock[lwlock]',
+            'Lightweight locks', '0000CC'),
+        ('hwlock', 'all_lock[hwlock]',
+            'Heavyweight locks', '00CC00'),
+        ('buffer', 'all_lock[buffer]',
+            'Buffer locks', 'CC0000')
     ]
 
-    HWLockItems = [
-        # (key, wait_event, name, color)
-        ('pgsql.hwlock[relation]', 'relation',
-            'Waiting to acquire a lock on a relation', 'CC0000'),
-        ('pgsql.hwlock[extend]', 'extend',
-            'Waiting to extend a relation', '00CC00'),
-        ('pgsql.hwlock[page]', 'page',
-            'Waiting to acquire a lock on page of a relation', '0000CC'),
-        ('pgsql.hwlock[tuple]', 'tuple',
-            'Waiting to acquire a lock on a tuple', 'CC00CC'),
-        ('pgsql.hwlock[transactionid]', 'transactionid',
-            'Waiting for a transaction to finish', '000000'),
-        ('pgsql.hwlock[virtualxid]', 'virtualxid',
-            'Waiting to acquire a virtual xid lock', 'CCCC00'),
-        ('pgsql.hwlock[speculative_token]', 'speculative token',
-            'Waiting to acquire a speculative insertion lock', '777777'),
-        ('pgsql.hwlock[object]', 'object',
-            'Waiting to acquire a lock on a non-relation database object',
-            '770000'),
-        ('pgsql.hwlock[userlock]', 'userlock',
-            'Waiting to acquire a userlock', '000077'),
-        ('pgsql.hwlock[advisory]', 'advisory',
-            'Waiting to acquire an advisory user lock', '007700')
-    ]
-
-    LWLockItems = [
-        ('pgsql.lwlock[wal]' 'WAL Locks', 'CC0000',
-            ['WALBufMappingLock', 'WALWriteLock',
-                'ControlFileLock', 'wal_insert']),
-        ('pgsql.lwlock[clog]' 'CLOG Locks', '00CC00',
-            ['CLogControlLock', 'clog']),
-        ('pgsql.lwlock[replication]' 'Replication Locks', '0000CC',
-            ['SyncRepLock', 'ReplicationSlotAllocationLock',
-                'ReplicationSlotControlLock', 'ReplicationOriginLock',
-                'replication_origin', 'replication_slot_io']),
-        ('pgsql.lwlock[buffer]' 'Buffer operations', '0000CC',
-            ['buffer_content', 'buffer_io', 'buffer_mapping']),
-    ]
-
-    def run(self, zbx):
-        Pooler.query("""
+    AllLockQuery = """
 select
-    event_type,
+    CASE
+        WHEN event_type = 'LWLockNamed' THEN 'lwlock'
+        WHEN event_type = 'LWLockTranche' THEN 'lwlock'
+        WHEN event_type = 'Lock' THEN 'hwlock'
+        ELSE 'buffer'
+    END,
     sum(count) as count
 from pg_wait_sampling_profile
     where event_type is not null
-group by event_type
-order by count desc""")
+group by 1
+order by count desc"""
+
+    HWLockItems = [
+        # (sql_key, zbx_key, name, color)
+        ('relation', 'hwlock[relation]',
+            'acquire a lock on a relation', 'CC0000'),
+        ('extend', 'hwlock[extend]',
+            'extend a relation', '00CC00'),
+        ('page', 'hwlock[page]',
+            'acquire a lock on page of a relation', '0000CC'),
+        ('tuple', 'hwlock[tuple]',
+            'acquire a lock on a tuple', 'CC00CC'),
+        ('transactionid', 'hwlock[transactionid]',
+            'Waiting for a transaction to finish', '000000'),
+        ('virtualxid', 'hwlock[virtualxid]',
+            'acquire a virtual xid lock', 'CCCC00'),
+        ('speculative token', 'hwlock[speculative_token]',
+            'acquire a speculative insertion lock', '777777'),
+        ('object', 'hwlock[object]',
+            'acquire a lock on a non-relation database object',
+            '770000'),
+        ('userlock', 'hwlock[userlock]',
+            'acquire a userlock', '000077'),
+        ('advisory', 'hwlock[advisory]',
+            'acquire an advisory user lock', '007700')
+    ]
+
+    HWLockQuery = """
+select
+    event,
+    sum(count) as count
+from pg_wait_sampling_profile
+    where event_type = 'Lock'
+group by 1
+order by count desc"""
+
+    LWLockItems = [
+        # (sql_key, zbx_key, name, color)
+        ('xid', 'lwlock[xid]', 'XID access', 'CC0000'),
+        ('wal', 'lwlock[wal]', 'WAL access', 'CC0000'),
+        ('clog', 'lwlock[clog]', 'CLOG access', '00CC00'),
+        ('replication', 'lwlock[replication]', 'Replication Locks', '0000CC'),
+        ('buffer', 'lwlock[buffer]', 'Buffer operations', '0000CC')]
+
+    LWLockQuery = """
+select
+    CASE
+        WHEN event = 'ProcArrayLock' THEN 'xid'
+        WHEN event = 'WALBufMappingLock' THEN 'wal'
+        WHEN event = 'WALWriteLock' THEN 'wal'
+        WHEN event = 'ControlFileLock' THEN 'wal'
+        WHEN event = 'wal_insert' THEN 'wal'
+        WHEN event = 'CLogControlLock' THEN 'clog'
+        WHEN event = 'clog' THEN 'clog'
+        WHEN event = 'SyncRepLock' THEN 'replication'
+        WHEN event = 'ReplicationSlotAllocationLock' THEN 'replication'
+        WHEN event = 'ReplicationSlotControlLock' THEN 'replication'
+        WHEN event = 'ReplicationOriginLock' THEN 'replication'
+        WHEN event = 'replication_origin' THEN 'replication'
+        WHEN event = 'replication_slot_io' THEN 'replication'
+        WHEN event = 'buffer_content' THEN 'buffer'
+        WHEN event = 'buffer_io' THEN 'buffer'
+        WHEN event = 'buffer_mapping' THEN 'buffer'
+        ELSE 'other'
+    END,
+    sum(count) as count
+from pg_wait_sampling_profile
+    where event_type = 'LWLockTranche' or event_type = 'LWLockNamed'
+group by 1
+order by count desc"""
+
+    def run(self, zbx):
+
+        def find_and_send(where, what, zbx):
+            for item in what:
+                item_found = False
+                for result in where:
+                    if item[0] == result[0]:
+                        zbx.send(
+                            item[2], result[1], Plugin.DELTA.speed_per_second)
+                        item_found = True
+                        break
+                if not item_found:
+                    zbx.send(item[2], 0, Plugin.DELTA.speed_per_second)
+
+        find_and_send(Pooler.query(self.AllLockQuery), self.AllLockItems, zbx)
+        find_and_send(Pooler.query(self.HWLockQuery), self.HWLockItems, zbx)
+        find_and_send(Pooler.query(self.LWLockQuery), self.LWLockItems, zbx)
+
+    def items(self, template):
+        result = ''
+        for item in (self.AllLockItems + self.LWLockItems + self.HWLockItems):
+            result += template.item({
+                'key': 'pgsql.{0}'.format(item[1]),
+                'name': 'PostgreSQL waits: {0}'.format(item[2]),
+                'value_type': self.VALUE_TYPE.numeric_float})
+        return result
+
+    def graphs(self, template):
+        result = ''
+        for graph_name, graph_items in [
+                ('PostgreSQL waits: Locks by type', self.AllLockItems),
+                ('PostgreSQL waits: Heavyweight locks', self.HWLockItems),
+                ('PostgreSQL waits: Lightweight locks', self.LWLockItems)]:
+            items = []
+            for item in graph_items:
+                items.append({
+                    'key': 'pgsql.{0}'.format(item[0]),
+                    'color': item[3]})
+            result += template.graph({
+                'name': graph_name,
+                'type': 1,
+                'items': items})
+        return result

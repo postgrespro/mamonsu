@@ -23,7 +23,7 @@ class PgStatStatement(Plugin):
             ('PostgreSQL statements: bytes', '0000CC', 0)),
 
         ('stat[other_time]',
-            'sum(total_time-blk_read_time+blk_write_time)/float4(100)',
+            'sum(total_time-blk_read_time-blk_write_time)/float4(100)',
             'other (mostly cpu) time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
             ('PostgreSQL statements: spend time', 'BBBB00', 0)),
         ('stat[read_time]',
