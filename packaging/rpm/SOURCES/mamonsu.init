@@ -23,7 +23,7 @@ PIDDIR=/var/run/mamonsu
 PIDFILE=$PIDDIR/mamonsu.pid
 LOGFILE=/var/log/mamonsu/agent.log
 
-COMMAND="/usr/bin/$NAME -c $CONFIG -p $PIDFILE"
+COMMAND="/usr/bin/$NAME -d -c $CONFIG -p $PIDFILE"
 RUNAS=mamonsu
 
 [ ! -d $PIDDIR ] && mkdir -p $PIDDIR

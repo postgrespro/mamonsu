@@ -8,6 +8,7 @@ usage_msg = """
 Options:
     -c, --config <file>
     -p, --pid    <pid-file>
+    -d           run in foreground
 
 Export example config with default variables:
 Command: export
@@ -147,6 +148,9 @@ def parse_args():
     # pid
     parser.add_option(
         '-p', '--pid', dest='pid', default=None)
+    # daemonize
+    parser.add_option(
+        '-d', '--daemon', dest='daemon', action='store_true')
     # template
     parser.add_option(
         '-t', dest='template',

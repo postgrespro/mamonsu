@@ -69,13 +69,27 @@ def start():
     if len(commands) > 0:
         print_total_help()
     cfg = Config(args.config_file)
-    # write pid file
+
+    # simple daemon
+    if platform.LINUX and args.daemon and args.pid:
+        if args.pid is None:
+            sys.stderr.write('Can\'t be daemon without pid-file\n')
+            sys.exit(2)
+        try:
+            pid = os.fork()
+            if pid > 0:
+                sys.exit(0)
+        except Exception as e:
+            sys.stderr.write('Can\'t fork: {0}\n'.format(e))
+            sys.exit(2)
+
+    # write pid-file
     if args.pid is not None:
         try:
             with open(args.pid, 'w') as pidfile:
                 pidfile.write(str(os.getpid()))
         except Exception as e:
-            sys.stderr.write('Can\'t write pid file, error: %s'.format(e))
+            sys.stderr.write('Can\'t write pid file, error: %s\n'.format(e))
             sys.exit(2)
 
     supervisor = Supervisor(cfg)
