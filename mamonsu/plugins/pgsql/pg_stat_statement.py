@@ -22,10 +22,6 @@ class PgStatStatement(Plugin):
             'dirty bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
             ('PostgreSQL statements: bytes', '0000CC', 0)),
 
-        ('stat[other_time]',
-            'sum(total_time-blk_read_time-blk_write_time)/float4(100)',
-            'other (mostly cpu) time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: spend time', 'BBBB00', 0)),
         ('stat[read_time]',
             'sum(blk_read_time)/float4(100)',
             'read io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
@@ -33,7 +29,11 @@ class PgStatStatement(Plugin):
         ('stat[write_time]',
             'sum(blk_write_time)/float4(100)',
             'write io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: spend time', '0000CC', 0))
+            ('PostgreSQL statements: spend time', '0000CC', 0)),
+        ('stat[other_time]',
+            'sum(total_time-blk_read_time-blk_write_time)/float4(100)',
+            'other (mostly cpu) time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+            ('PostgreSQL statements: spend time', 'BBBB00', 0))
     ]
 
     def run(self, zbx):
