@@ -10,8 +10,6 @@ from mamonsu.tools.sysinfo.linux import SysInfoLinux as SysInfo
 
 class AutoTunePgsl(object):
 
-    _libraries = 'pg_stat_statements'
-
     def __init__(self, args):
 
         if not self._is_connection_work():
@@ -31,12 +29,25 @@ class AutoTunePgsl(object):
 
     def _configure_extensions(self):
 
-        available = self._run_query("select 1 from pg_available_extensions \
-            where name = 'pg_stat_statements'")
-        if available is None:
+        extensions = self._run_query(
+            "select name from pg_available_extensions")
+        if extensions is None:
             return
-        elif not len(available) == 1:
+        extensions = [row[0] for row in extensions]
+
+        needed_libraries = []
+
+        if 'pg_stat_statements' in extensions:
+            needed_libraries.append('pg_stat_statements')
+        else:
             logging.warning("Please install 'contrib' modules: need for 'pg_stat_statements'")
+
+        if 'pg_wait_sampling' in extensions:
+            needed_libraries.append('pg_wait_sampling')
+        else:
+            logging.warning("Please install 'https://github.com/postgrespro/pg_wait_sampling' modules: need for 'pg_wait_sampling'")
+
+        if len(needed_libraries) == 0:
             return
 
         libraries = self._run_query('show shared_preload_libraries;')
@@ -48,13 +59,15 @@ class AutoTunePgsl(object):
             return
 
         libraries = libraries[0][0]
-        needed_libraries = self._libraries
         if len(libraries) == 0:
             libraries = needed_libraries
         else:
             libraries = libraries.split(',')
+            libraries = [ext.strip() for ext in libraries]
             if needed_libraries not in libraries:
-                libraries.append(needed_libraries)
+                for ext in needed_libraries:
+                    if ext not in libraries:
+                        libraries.append(ext)
             libraries = ','.join(libraries)
         self._run_query(
             "alter system set shared_preload_libraries to {0};".format(

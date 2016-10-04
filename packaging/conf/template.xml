@@ -6108,7 +6108,7 @@
                 <graph_item>
                     <sortorder>3</sortorder>
                     <drawtype>0</drawtype>
-                    <color>0000CC</color>
+                    <color>FFFFCC</color>
                     <yaxisside>0</yaxisside>
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>

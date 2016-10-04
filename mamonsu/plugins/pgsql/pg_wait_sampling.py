@@ -69,7 +69,7 @@ order by count desc"""
         ('xid', 'lwlock[xid]', 'XID access', 'BBBB00'),
         ('wal', 'lwlock[wal]', 'WAL access', 'CC0000'),
         ('clog', 'lwlock[clog]', 'CLOG access', '00CC00'),
-        ('replication', 'lwlock[replication]', 'Replication Locks', '0000CC'),
+        ('replication', 'lwlock[replication]', 'Replication Locks', 'FFFFCC'),
         ('buffer', 'lwlock[buffer]', 'Buffer operations', '0000CC'),
         ('other', 'lwlock[other]', 'Other operations', '007700')]
 

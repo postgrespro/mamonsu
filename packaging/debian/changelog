@@ -1,3 +1,9 @@
+mamonsu (1.8.2-1) stable; urgency=low
+
+  * import tune tool
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Tue, 4 Oct 2016 10:00:00 +0300
+
 mamonsu (1.8.1-1) stable; urgency=low
 
   * improve pg_wait_sampling
