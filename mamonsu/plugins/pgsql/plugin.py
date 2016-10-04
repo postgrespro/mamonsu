@@ -16,12 +16,12 @@ class PgsqlPlugin(Plugin):
         # return all childs
         return self.__subclasses__()
 
-    def extension_installed(self, ext, db=None):
+    def extension_installed(self, ext, db=None, silent=False):
 
         def check(self, ext):
             self._ext_installed = Pooler.extension_installed(ext, db)
             self._ext_check_count = 0
-            if not self._ext_installed:
+            if not self._ext_installed and not silent:
                 self.log.error("Extension '{0}' is not installed".format(ext))
 
         if self._ext_check_count is None:
@@ -33,3 +33,11 @@ class PgsqlPlugin(Plugin):
         self._ext_check_count += 1
 
         return self._ext_installed
+
+    def disable_and_exit_if_extension_is_not_installed(self, ext, db=None):
+        if not self.extension_installed(ext, db=db, silent=True):
+            self.disable()
+            raise Exception("""
+Disable plugin and exit, because '{0}' \
+extension is not installed. Enable it in PostgreSQL instance: '{1}', \
+if needed and restart.""".format(ext, Pooler.connection_string(db)))

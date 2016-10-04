@@ -117,8 +117,7 @@ order by count desc"""
                         'pgsql.{0}'.format(item[1]),
                         float(0), Plugin.DELTA.speed_per_second)
 
-        if not self.extension_installed('pg_wait_sampling'):
-            return
+        self.disable_and_exit_if_extension_is_not_installed('pg_wait_sampling')
 
         find_and_send(Pooler.query(self.AllLockQuery), self.AllLockItems, zbx)
         find_and_send(Pooler.query(self.HWLockQuery), self.HWLockItems, zbx)

@@ -12,6 +12,10 @@ class Pool(ConnectionInfo):
         self.all_connections = {}
         self._server_version = {}
 
+    def connection_string(self, db=None):
+        self._init_conn_(db)
+        return self.all_connections[db].conn_str()
+
     def query(self, query, db=None):
         if db is None:
             db = self.db

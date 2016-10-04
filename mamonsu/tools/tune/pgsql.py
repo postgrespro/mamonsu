@@ -45,7 +45,7 @@ class AutoTunePgsl(object):
         if 'pg_wait_sampling' in extensions:
             needed_libraries.append('pg_wait_sampling')
         else:
-            logging.warning("Please install 'https://github.com/postgrespro/pg_wait_sampling' modules: need for 'pg_wait_sampling'")
+            logging.warning("Install 'https://github.com/postgrespro/pg_wait_sampling' module'")
 
         if len(needed_libraries) == 0:
             return

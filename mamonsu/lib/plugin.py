@@ -64,6 +64,9 @@ class Plugin(object):
     def is_enabled(self):
         return self._enabled
 
+    def disable(self):
+        self._enabled = False
+
     def set_sender(self, sender):
         self.sender = sender
 
