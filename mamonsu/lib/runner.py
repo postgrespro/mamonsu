@@ -71,10 +71,7 @@ def start():
     cfg = Config(args.config_file)
 
     # simple daemon
-    if platform.LINUX and args.daemon and args.pid:
-        if args.pid is None:
-            sys.stderr.write('Can\'t be daemon without pid-file\n')
-            sys.exit(2)
+    if args.daemon:
         try:
             pid = os.fork()
             if pid > 0:
