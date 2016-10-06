@@ -17,7 +17,6 @@ class Plugin(object):
 
     # plugin config
     DEFAULT_CONFIG = {}
-    _plugin_config = {}
 
     _thread = None
     _sender = False
@@ -42,11 +41,11 @@ class Plugin(object):
         self.last_error_text = ''
 
         # from config => _plugin_config
+        self._plugin_config = {}
         name = self.__class__.__name__.lower()
-        if not self.config.has_plugin_config(name):
-            return
-        for x in self.config.plugin_options(name):
-            self._plugin_config[x] = self.config.fetch(name, x)
+        if self.config.has_plugin_config(name):
+            for x in self.config.plugin_options(name):
+                self._plugin_config[x] = self.config.fetch(name, x)
 
     @classmethod
     def get_childs(self):
