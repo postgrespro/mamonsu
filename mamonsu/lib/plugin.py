@@ -68,8 +68,10 @@ class Plugin(object):
                 sys.stderr.write('Config value {0} in section {1} not string! Fix plugin please.\n'.format(x, name))
             config.set(name, x, '{0}'.format(cls.DEFAULT_CONFIG[x]))
 
-    # get value from config, it raise error!
+    # get value from config
     def plugin_config(self, name):
+        if name not in self._plugin_config:
+            return None
         return self._plugin_config[name]
 
     def start(self):
@@ -89,6 +91,8 @@ class Plugin(object):
         return self._sender
 
     def is_enabled(self):
+        if self.plugin_config('enabled') == 'False':
+            return False
         return self._enabled
 
     def disable(self):
