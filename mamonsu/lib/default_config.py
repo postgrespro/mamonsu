@@ -23,6 +23,8 @@ class PgsqlConfig(object):
             host = os.environ.get('PGHOST') or 'localhost'
         if platform.LINUX:
             host = os.environ.get('PGHOST') or 'auto'
+        if platform.FREEBSD:
+            host = os.environ.get('PGHOST') or 'auto'
         return host
 
     @staticmethod
