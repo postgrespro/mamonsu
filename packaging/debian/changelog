@@ -1,3 +1,9 @@
+mamonsu (1.8.4-1) stable; urgency=low
+
+  * simply plugin config
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 6 Oct 2016 15:00:00 +0300
+
 mamonsu (1.8.3-1) stable; urgency=low
 
   * simple daemonize
