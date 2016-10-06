@@ -3,6 +3,7 @@
 import time
 import logging
 import traceback
+import sys
 
 from threading import Thread
 
@@ -13,6 +14,10 @@ class Plugin(object):
 
     # plugin interval run
     Interval = 60
+
+    # plugin config
+    DEFAULT_CONFIG = {}
+    _plugin_config = {}
 
     _thread = None
     _sender = False
@@ -36,6 +41,13 @@ class Plugin(object):
         self.sender = None
         self.last_error_text = ''
 
+        # from config => _plugin_config
+        name = self.__class__.__name__.lower()
+        if not self.config.has_plugin_config(name):
+            return
+        for x in self.config.plugin_options(name):
+            self._plugin_config[x] = self.config.fetch(name, x)
+
     @classmethod
     def get_childs(self):
         childs = []
@@ -44,6 +56,21 @@ class Plugin(object):
                 childs.append(klass)
             childs.extend(klass.get_childs())
         return childs
+
+    @classmethod
+    def set_default_config(cls, config):
+        name = cls.__name__.lower()
+        if len(cls.DEFAULT_CONFIG) > 0:
+            config.add_section(name)
+        for x in cls.DEFAULT_CONFIG:
+            value = cls.DEFAULT_CONFIG[x]
+            if not isinstance(value, str):
+                sys.stderr.write('Config value {0} in section {1} not string! Fix plugin please.\n'.format(x, name))
+            config.set(name, x, '{0}'.format(cls.DEFAULT_CONFIG[x]))
+
+    # get value from config, it raise error!
+    def plugin_config(self, name):
+        return self._plugin_config[name]
 
     def start(self):
         self._thread = Thread(target=self._loop)

@@ -27,10 +27,12 @@ su postgres -c '/usr/pgsql-9.5/bin/pg_ctl restart -w -D /var/lib/pgsql/9.5/data'
 (mamonsu report | grep version | grep 'PostgreSQL 9.5') || exit 1
 
 # export config
-mamonsu export config /dev/null
+mamonsu export config /tmp/config
+sed -i 's|.*max_checkpoints_req =.*|max_checkpoints_req = 5555555555555|g' /tmp/config
 
 # write zabbix template
-mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME
+mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME -c /tmp/config
+grep 5555555555555 /tmp/template.xml || exit 2
 grep 'pgsql\.uptime\[\]' /tmp/template.xml || exit 2
 grep 'system\.disk\.all_read' /tmp/template.xml || exit 2
 

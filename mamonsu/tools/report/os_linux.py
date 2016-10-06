@@ -56,13 +56,14 @@ class SystemInfo(SysInfoLinux):
         if 'vm.dirty_ratio' in self.sysctl:
             if 'vm.dirty_background_ratio' in self.sysctl:
                 out += format_out('Dirty ratio', '{0} {1}'.format(
-                     self.sysctl['vm.dirty_ratio'],
-                     self.sysctl['vm.dirty_background_ratio']))
+                    self.sysctl['vm.dirty_ratio'],
+                    self.sysctl['vm.dirty_background_ratio']))
         if 'vm.dirty_bytes' in self.sysctl:
             if 'vm.dirty_background_bytes' in self.sysctl:
                 out += format_out('Dirty bytes', '{0} {1}'.format(
-                     self.sysctl['vm.dirty_bytes'],
-                     self.sysctl['vm.dirty_background_bytes']))
+                    self.sysctl['vm.dirty_bytes'],
+                    self.sysctl['vm.dirty_background_bytes']))
+        # todo: overcommit
         out += format_out('Swap', self._humansize(self.meminfo['_SWAP']))
         if 'vm.swappiness' in self.sysctl:
             out += format_out('Swappines', self.sysctl['vm.swappiness'])
@@ -116,7 +117,7 @@ class SystemInfo(SysInfoLinux):
         if nbytes == 0:
             return '0 B'
         i = 0
-        while nbytes >= 1024 and i < len(self._suffixes)-1:
+        while nbytes >= 1024 and i < len(self._suffixes) - 1:
             nbytes /= 1024.
             i += 1
         f = ('%.2f' % nbytes).rstrip('0').rstrip('.')
@@ -136,4 +137,4 @@ class SystemInfo(SysInfoLinux):
         for x in range(1, 500000):
             if _is_prime(x):
                 y = max(x, y)
-        return str(round(100*float(time.time() - begin))/100)
+        return str(round(100 * float(time.time() - begin)) / 100)

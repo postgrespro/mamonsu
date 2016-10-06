@@ -6,6 +6,7 @@ import sys
 import glob
 
 import mamonsu.lib.platform as platform
+from mamonsu.lib.plugin import Plugin
 from mamonsu.plugins.pgsql.checks import is_conn_to_db
 from mamonsu.lib.default_config import DefaultConfig
 
@@ -29,16 +30,10 @@ class Config(DefaultConfig):
         config.set('postgres', 'host', Config.default_host())
         config.set('postgres', 'port', str(Config.default_port()))
         config.set('postgres', 'application_name', str(Config.default_app()))
-        config.set('postgres', 'max_checkpoints_req', '5')
         config.set('postgres', 'query_timeout', '10')
-        config.set('postgres', 'uptime', str(60 * 10))
-        config.set('postgres', 'cache', str(80))
 
         config.add_section('system')
         config.set('system', 'enabled', str(True))
-        config.set('system', 'uptime', str(60*5))
-        config.set('system', 'vfs_percent_free', str(10))
-        config.set('system', 'vfs_inode_percent_free', str(10))
 
         config.add_section('plugins')
         config.set('plugins', 'enabled', str(False))
@@ -70,8 +65,12 @@ class Config(DefaultConfig):
             'log', 'format',
             '[%(levelname)s] %(asctime)s - %(name)s\t-\t%(message)s')
 
+        for plugin in Plugin.get_childs():
+            plugin.set_default_config(config)
+
         self.config = config
         if cfg_file and not os.path.isfile(cfg_file):
+            sys.stderr.write('Can\'t found file: {0}'.format(cfg_file))
             sys.exit(1)
         else:
             if cfg_file is not None:
@@ -81,6 +80,12 @@ class Config(DefaultConfig):
         self._apply_environ()
         self._load_additional_plugins()
         self._override_auto_variables()
+
+    def has_plugin_config(self, name):
+        return self.config.has_section(name)
+
+    def plugin_options(self, name):
+        return self.config.options(name)
 
     def fetch(self, sec, key, klass=None, raw=False):
         try:

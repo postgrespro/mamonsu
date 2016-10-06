@@ -156,7 +156,7 @@ Run
 
     $ service mamonsu start
     or by hand:
-    $ mamonsu -c /etc/mamonsu/agent.conf -p /var/run/mamonsu.pid
+    $ mamonsu -d -c /etc/mamonsu/agent.conf -p /var/run/mamonsu.pid
 
 ====================
 Metrics:  PostgreSQL

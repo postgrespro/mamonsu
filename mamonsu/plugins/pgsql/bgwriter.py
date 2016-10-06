@@ -6,10 +6,7 @@ from .pool import Pooler
 
 class BgWriter(Plugin):
 
-    def __init__(self, config):
-        super(BgWriter, self).__init__(config)
-        self.CheckpointsReq = self.config.fetch(
-            'postgres', 'max_checkpoints_req', int)
+    DEFAULT_CONFIG = {'max_checkpoints_req': '5'}
 
     Items = [
         # key, zbx_key, description,
@@ -121,5 +118,5 @@ class BgWriter(Plugin):
             'name': 'PostgreSQL required checkpoints occurs to '
             'frequently on {HOSTNAME}',
             'expression': '{#TEMPLATE:pgsql.checkpoints[checkpoints_req]'
-            '.last()}&gt;' + str(self.CheckpointsReq)
+            '.last()}&gt;' + self.plugin_config('max_checkpoints_req')
         })

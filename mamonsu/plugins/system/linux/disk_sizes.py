@@ -4,6 +4,10 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 class DiskSizes(Plugin):
 
+    DEFAULT_CONFIG = {
+        'vfs_percent_free': str(10),
+        'vfs_inode_percent_free': str(10)}
+
     ExcludeFsTypes = [
         'none', 'unknown', 'rootfs', 'iso9660',
         'squashfs', 'udf', 'romfs', 'ramfs',
@@ -15,13 +19,6 @@ class DiskSizes(Plugin):
         'nfsd', 'proc', 'pstore',
         'rpc_pipefs', 'securityfs', 'sysfs',
         'nsfs', 'tmpfs', 'tracefs']
-
-    def __init__(self, config):
-        super(DiskSizes, self).__init__(config)
-        self.TriggerPfreeLessThen = self.config.fetch(
-            'system', 'vfs_percent_free', int)
-        self.TriggerPIfreeLessThen = self.config.fetch(
-            'system', 'vfs_inode_percent_free', int)
 
     def run(self, zbx):
         with open('/proc/self/mountinfo', 'r') as f:
@@ -103,13 +100,13 @@ class DiskSizes(Plugin):
             '{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:system.vfs.'
             'percent_free[{#MOUNTPOINT}].last'
-            '()}&lt;' + str(self.TriggerPfreeLessThen)},
+            '()}&lt;' + self.plugin_config('vfs_percent_free')},
             {
             'name': 'Free inode space less then 10% on mountpoint '
             '{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:system.vfs.'
             'percent_inode_free[{#MOUNTPOINT}].last'
-            '()}&lt;' + str(self.TriggerPIfreeLessThen)
+            '()}&lt;' + self.plugin_config('vfs_inode_percent_free')
         }]
 
         return template.discovery_rule(

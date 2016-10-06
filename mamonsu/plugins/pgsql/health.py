@@ -7,22 +7,13 @@ import time
 
 class PgHealth(Plugin):
 
-    def __init__(self, config):
-        super(PgHealth, self).__init__(config)
-        # сообщаем что у сервиса низкий аптайм, пока аптайм меньше 10 минут
-        self.TriggerUptimeLessThen = self.config.fetch(
-            'postgres', 'uptime', int)
-        # алертим, если cache hit меньше чем %
-        self.TriggerCacheHitLessThen = self.config.fetch(
-            'postgres', 'cache', int)
-        # счетчик, для сообщения в лог
-        self.counter = 0
+    DEFAULT_CONFIG = {'uptime': str(60 * 10), 'cache': str(80)}
 
     def run(self, zbx):
 
         start_time = time.time()
         Pooler.query('select 1')
-        zbx.send('pgsql.ping[]', (time.time() - start_time)*100)
+        zbx.send('pgsql.ping[]', (time.time() - start_time) * 100)
 
         result = Pooler.query("select \
             date_part('epoch', now() - pg_postmaster_start_time())")
@@ -65,11 +56,11 @@ class PgHealth(Plugin):
             'name': 'PostgreSQL service was restarted on '
             '{HOSTNAME} (uptime={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:pgsql.uptime[].last'
-            '()}&lt;' + str(self.TriggerUptimeLessThen)
+            '()}&lt;' + str(self.plugin_config('uptime'))
         }) + template.trigger({
             'name': 'PostgreSQL cache hit ratio too low on '
             '{HOSTNAME} ({ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:pgsql.cache[hit].last'
-            '()}&lt;' + str(self.TriggerCacheHitLessThen)
+            '()}&lt;' + str(self.plugin_config('cache'))
         })
         return result

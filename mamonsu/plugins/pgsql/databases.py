@@ -7,8 +7,7 @@ from .pool import Pooler
 class Databases(Plugin):
 
     Interval = 300
-    BloatScale = 0.2
-    MinRows = 50
+    DEFAULT_CONFIG = {'min_rows': str(50), 'bloat_scale': str(0.2)}
 
     def run(self, zbx):
 
@@ -26,7 +25,8 @@ class Databases(Plugin):
                 'select count(*) from pg_catalog.pg_stat_all_tables where\
                 (n_dead_tup/(n_live_tup+n_dead_tup)::float8) > {0}\
                 and (n_live_tup+n_dead_tup) > {1}'.format(
-                    self.BloatScale, self.MinRows),
+                    self.plugin_config('bloat_scale'),
+                    self.plugin_config('min_rows')),
                 info[0])[0][0]
             zbx.send(
                 'pgsql.database.bloating_tables[{0}]'.format(info[0]),

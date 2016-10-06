@@ -1,12 +1,9 @@
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
-class Uptime(Plugin):
+class SystemUptime(Plugin):
 
-    def __init__(self, config):
-        super(Uptime, self).__init__(config)
-        self.TriggerUptimeLessThen = self.config.fetch(
-            'system', 'uptime', int)
+    DEFAULT_CONFIG = {'uptime': str(60 * 5)}
 
     def run(self, zbx):
         uptime = open('/proc/uptime', 'r').read().split(' ')[0]
@@ -30,5 +27,5 @@ class Uptime(Plugin):
             'name': 'System was restarted on '
             '{HOSTNAME} (uptime={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:system.uptime[].last'
-            '()}&lt;' + str(self.TriggerUptimeLessThen)
+            '()}&lt;' + self.plugin_config('uptime')
         })
