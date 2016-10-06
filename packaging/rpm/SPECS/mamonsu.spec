@@ -73,10 +73,10 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
-* Thu Oct 6 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.8.2-1
+* Thu Oct 6 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.8.4-1
 - simply plugin config
 
-* Tue Oct 4 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.8.2-1
+* Tue Oct 4 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.8.3.1
 - simple daemonize
 
 * Tue Oct 4 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.8.2-1
