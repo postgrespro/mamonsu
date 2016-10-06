@@ -3,9 +3,7 @@ from mamonsu.lib.plugin import Plugin
 
 class Health(Plugin):
 
-    def __init__(self, config):
-        super(Health, self).__init__(config)
-        self.counter = 0
+    counter = 0
 
     def run(self, zbx):
         zbx.send('mamonsu.plugin.keepalive[]', 0)

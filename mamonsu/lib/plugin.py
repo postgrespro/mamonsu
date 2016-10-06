@@ -48,23 +48,24 @@ class Plugin(object):
                 self._plugin_config[x] = self.config.fetch(name, x)
 
     @classmethod
-    def get_childs(self):
-        childs = []
+    def get_childs(self, only_childs=False):
+        plugins = []
         for klass in self.__subclasses__():
             if klass._child:
-                childs.append(klass)
-            childs.extend(klass.get_childs())
-        return childs
+                plugins.append(klass)
+            plugins.extend(klass.get_childs())
+        return plugins
 
     @classmethod
     def set_default_config(cls, config):
         name = cls.__name__.lower()
-        if len(cls.DEFAULT_CONFIG) > 0:
+        # if section already loaded via config file
+        if not config.has_section(name) and len(cls.DEFAULT_CONFIG) > 0:
             config.add_section(name)
         for x in cls.DEFAULT_CONFIG:
             value = cls.DEFAULT_CONFIG[x]
             if not isinstance(value, str):
-                sys.stderr.write('Config value {0} in section {1} not string! Fix plugin please.\n'.format(x, name))
+                sys.stderr.write('Config value {0} in section {1} must be string! Fix plugin please.\n'.format(x, name))
             config.set(name, x, '{0}'.format(cls.DEFAULT_CONFIG[x]))
 
     # get value from config

@@ -18,7 +18,7 @@ else:
 
 class Config(DefaultConfig):
 
-    def __init__(self, cfg_file=None):
+    def __init__(self, cfg_file=None, plugin_directories=[]):
 
         config = configparser.ConfigParser()
 
@@ -34,10 +34,6 @@ class Config(DefaultConfig):
 
         config.add_section('system')
         config.set('system', 'enabled', str(True))
-
-        config.add_section('plugins')
-        config.set('plugins', 'enabled', str(False))
-        config.set('plugins', 'directory', '/etc/mamonsu/plugins')
 
         config.add_section('sender')
         config.set('sender', 'queue', str(300))
@@ -65,10 +61,10 @@ class Config(DefaultConfig):
             'log', 'format',
             '[%(levelname)s] %(asctime)s - %(name)s\t-\t%(message)s')
 
-        for plugin in Plugin.get_childs():
-            plugin.set_default_config(config)
-
         self.config = config
+        self._load_external_plugins(plugin_directories)
+        self._apply_default_config()
+
         if cfg_file and not os.path.isfile(cfg_file):
             sys.stderr.write('Can\'t found file: {0}'.format(cfg_file))
             sys.exit(1)
@@ -78,7 +74,6 @@ class Config(DefaultConfig):
 
         self._apply_log_setting()
         self._apply_environ()
-        self._load_additional_plugins()
         self._override_auto_variables()
 
     def has_plugin_config(self, name):
@@ -117,15 +112,13 @@ class Config(DefaultConfig):
             filename=self.fetch('log', 'file'),
             level=self.get_logger_level(self.fetch('log', 'level')))
 
-    def _load_additional_plugins(self):
-
-        if not self.fetch('plugins', 'enabled', bool):
+    def _load_external_plugins(self, directories):
+        if directories is None:
             return
+        for dir in directories:
+            self._load_external_plugins_from_directory(dir)
 
-        directory = self.fetch('plugins', 'directory')
-        if not os.path.isdir(directory):
-            logging.error("Can't find directory: %s", directory)
-            sys.exit(3)
+    def _load_external_plugins_from_directory(self, directory):
 
         sys.path.append(directory)
         logging.info(
@@ -144,7 +137,7 @@ class Config(DefaultConfig):
                 # filename.py => filename
                 filename, _ = os.path.splitext(filename)
                 logging.info(
-                    'Import plugin \'%s\' from module \'%s\'',
+                    'Import file \'%s\' from module \'%s\'',
                     filename,
                     os.path.basename(directory))
                 __import__(filename)
@@ -183,3 +176,7 @@ class Config(DefaultConfig):
             #  не выходим, так как ожидаем коннекта до localhost
             self.config.set('postgres', 'host', 'localhost')
             self._apply_environ()
+
+    def _apply_default_config(self):
+        for plugin in Plugin.get_childs():
+            plugin.set_default_config(self.config)

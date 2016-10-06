@@ -6,14 +6,17 @@ import mamonsu.lib.platform as platform
 
 usage_msg = """
 Options:
-    -c, --config <file>
-    -p, --pid    <pid-file>
-    -d           run in foreground
+    -a, --add-plugins  <directory>
+    -c, --config       <file>
+    -p, --pid          <pid-file>
+    -d                 run in foreground
 
 Export example config with default variables:
 Command: export
 Examples:
     {prog} export config <file>
+Options:
+    --add-plugins <directory>
 
 
 Export zabbix template with additional plugins included in config file:
@@ -21,9 +24,9 @@ Command: export
 Examples:
     {prog} export template <file>
 Options:
-    --config <file>
-    -t <template name>
-    -a <application name in template>
+    --add-plugins <directory>
+    --template-name <template name>
+    --application <application name in template>
 
 
 Information about working mamonsu:
@@ -151,11 +154,14 @@ def parse_args():
     # daemonize
     parser.add_option(
         '-d', '--daemon', dest='daemon', action='store_true')
+    # external plugins
+    parser.add_option(
+        '-a', '--add-plugins', dest='plugins_dirs', action='append')
     # template
     parser.add_option(
-        '-t', dest='template',
+        '-t', '--template-name', dest='template',
         default='PostgresPro-{0}'.format(sys.platform.title()))
     parser.add_option(
-        '-a', dest='application',
+        '--application', dest='application',
         default='App-PostgresPro-{0}'.format(sys.platform.title()))
     return parser.parse_args()

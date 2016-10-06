@@ -47,7 +47,7 @@ def start():
             return run_agent()
         elif tool == 'export':
             args, commands = parse_args()
-            cfg = Config(args.config_file)
+            cfg = Config(args.config_file, args.plugins_dirs)
             if not len(commands) == 3:
                 print_total_help()
             elif commands[1] == 'config':
@@ -68,7 +68,7 @@ def start():
     args, commands = parse_args()
     if len(commands) > 0:
         print_total_help()
-    cfg = Config(args.config_file)
+    cfg = Config(args.config_file, args.plugins_dirs)
 
     # simple daemon
     if args.daemon:

@@ -1,3 +1,9 @@
+mamonsu (1.8.6-1) stable; urgency=low
+
+  * fix config in external plugins
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 6 Oct 2016 19:00:00 +0300
+
 mamonsu (1.8.5-1) stable; urgency=low
 
   * every plugin can enabled/disabled via config

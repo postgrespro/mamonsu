@@ -76,7 +76,7 @@ Export template for zabbix:
 
 .. code-block:: bash
 
-    $ mamonsu export template template.xml
+    $ mamonsu export template template.xml --add-plugins /etc/mamonsu/plugins
     or
     $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/template.xml
     or
@@ -98,7 +98,7 @@ Generate config on monitring host (or use preinstalled):
 
 .. code-block:: bash
 
-    $ mamonsu export config /etc/mamonsu/agent.conf
+    $ mamonsu export config /etc/mamonsu/agent.conf --add-plugins /etc/mamonsu/plugins
 
 Change previously zabbix server address and client hostname:
 
@@ -128,12 +128,6 @@ Change previously zabbix server address and client hostname:
     ; enabled by default
     enabled = True
 
-    [plugins]
-    ; disabled by default
-    enabled = True
-    ; directory with user plugins
-    directory = /etc/mamonsu/plugins
-
     [log]
     file = /var/log/mamonsu/agent.log
     level = INFO
@@ -156,7 +150,7 @@ Run
 
     $ service mamonsu start
     or by hand:
-    $ mamonsu -d -c /etc/mamonsu/agent.conf -p /var/run/mamonsu.pid
+    $ mamonsu -d -a /etc/mamonsu/plugins -c /etc/mamonsu/agent.conf -p /var/run/mamonsu.pid
 
 ====================
 Metrics:  PostgreSQL

@@ -17,7 +17,7 @@ make rpm && yum install -y mamonsu*.rpm
 yum install -y https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-2.noarch.rpm
 yum install -y postgresql95-server postgresql95-contrib
 su postgres -c '/usr/pgsql-9.5/bin/initdb -D /var/lib/pgsql/9.5/data'
-/etc/init.d/postgresql-9.5 start
+su postgres -c '/usr/pgsql-9.5/bin/pg_ctl start -w -D /var/lib/pgsql/9.5/data'
 
 # mamonsu tune
 mamonsu tune
@@ -27,14 +27,27 @@ su postgres -c '/usr/pgsql-9.5/bin/pg_ctl restart -w -D /var/lib/pgsql/9.5/data'
 (mamonsu report | grep version | grep 'PostgreSQL 9.5') || exit 1
 
 # export config
-mamonsu export config /tmp/config
+cat <<EOF > /etc/mamonsu/plugins/def_conf_test.py
+from mamonsu.lib.plugin import Plugin
+
+class DefConfTest(Plugin):
+
+    DEFAULT_CONFIG = {
+        'config': 'external_plugin_config',
+    }
+
+    def run(self, zbx):
+        self.log.error(self.plugin_config('config'))
+EOF
+mamonsu export config /tmp/config -a /etc/mamonsu/plugins
+grep external_plugin_config /tmp/config || exit 2
 sed -i 's|.*max_checkpoints_req =.*|max_checkpoints_req = 5555555555555|g' /tmp/config
 
 # write zabbix template
-mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME -c /tmp/config
-grep 5555555555555 /tmp/template.xml || exit 2
-grep 'pgsql\.uptime\[\]' /tmp/template.xml || exit 2
-grep 'system\.disk\.all_read' /tmp/template.xml || exit 2
+mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME -a /etc/mamonsu/plugins -c /tmp/config
+grep 5555555555555 /tmp/template.xml || exit 3
+grep 'pgsql\.uptime\[\]' /tmp/template.xml || exit 3
+grep 'system\.disk\.all_read' /tmp/template.xml || exit 3
 
 # install zabbix
 yum install -y http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm
@@ -111,16 +124,16 @@ mamonsu agent metric-get system.disk.all_read[] -c /etc/mamonsu/agent.conf
 mamonsu agent -c /etc/mamonsu/agent.conf metric-list | grep system
 
 # metric log
-grep utilization /tmp/localhost.log || exit 3
-grep 'pgsql\.uptime' /tmp/localhost.log || exit 3
+grep utilization /tmp/localhost.log || exit 4
+grep 'pgsql\.uptime' /tmp/localhost.log || exit 4
 
 # error in zabbix server
-(mamonsu zabbix item error $ZABBIX_CLIENT_HOST | grep ZBX_NOTSUPPORTED) && exit 4
+(mamonsu zabbix item error $ZABBIX_CLIENT_HOST | grep ZBX_NOTSUPPORTED) && exit 5
 
 # other metric in zabbix server
-(mamonsu zabbix item lastvalue $ZABBIX_CLIENT_HOST | grep uptime) || exit 5
+(mamonsu zabbix item lastvalue $ZABBIX_CLIENT_HOST | grep uptime) || exit 6
 
 # all plugin alive, exclude pg_wait_sampling
-(grep -v 'PGWAITSAMPLING' /var/log/mamonsu/agent.log | grep -i 'Plugin exception') && exit 6
+(grep -v 'PGWAITSAMPLING' /var/log/mamonsu/agent.log | grep -i 'Plugin exception') && exit 7
 
 exit 0
