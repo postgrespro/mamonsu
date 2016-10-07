@@ -56,7 +56,7 @@ def start():
                     sys.exit(0)
             elif commands[1] == 'template':
                 plugins = []
-                for klass in Plugin.get_childs():
+                for klass in Plugin.only_child_subclasses():
                     plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template, args.application)
                 with codecs.open(commands[2], 'w', 'utf-8') as f:

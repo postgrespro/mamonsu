@@ -25,7 +25,7 @@ class Supervisor(object):
         self._loop()
 
     def _load_plugins(self):
-        for klass in Plugin.get_childs():
+        for klass in Plugin.only_child_subclasses():
             plugin = klass(self.config)
             self.Plugins.append(plugin)
 

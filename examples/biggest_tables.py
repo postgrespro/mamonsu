@@ -7,7 +7,7 @@ from mamonsu.plugins.pgsql.pool import Pooler
 class BiggestTables(Plugin):
 
     # every 5 min
-    Interval = 5*60
+    Interval = 5 * 60
     # only 10 biggest tables
     Limit = 10
 

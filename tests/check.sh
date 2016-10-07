@@ -28,6 +28,7 @@ su postgres -c '/usr/pgsql-9.5/bin/pg_ctl restart -w -D /var/lib/pgsql/9.5/data'
 
 # export config
 cat <<EOF > /etc/mamonsu/plugins/def_conf_test.py
+import os
 from mamonsu.lib.plugin import Plugin
 
 class DefConfTest(Plugin):
@@ -38,6 +39,7 @@ class DefConfTest(Plugin):
 
     def run(self, zbx):
         self.log.error(self.plugin_config('config'))
+        os.system("touch /tmp/extenal_plugin_is_called")
 EOF
 mamonsu export config /tmp/config -a /etc/mamonsu/plugins
 grep external_plugin_config /tmp/config || exit 2
@@ -118,22 +120,25 @@ EOF
 /etc/init.d/mamonsu start
 sleep 125
 
+# check external plugin is worked
+file /tmp/extenal_plugin_is_called || exit 4
+
 # check metric from agent
 mamonsu agent -c /etc/mamonsu/agent.conf version
 mamonsu agent metric-get system.disk.all_read[] -c /etc/mamonsu/agent.conf
 mamonsu agent -c /etc/mamonsu/agent.conf metric-list | grep system
 
 # metric log
-grep utilization /tmp/localhost.log || exit 4
-grep 'pgsql\.uptime' /tmp/localhost.log || exit 4
+grep utilization /tmp/localhost.log || exit 5
+grep 'pgsql\.uptime' /tmp/localhost.log || exit 5
 
 # error in zabbix server
-(mamonsu zabbix item error $ZABBIX_CLIENT_HOST | grep ZBX_NOTSUPPORTED) && exit 5
+(mamonsu zabbix item error $ZABBIX_CLIENT_HOST | grep ZBX_NOTSUPPORTED) && exit 6
 
 # other metric in zabbix server
-(mamonsu zabbix item lastvalue $ZABBIX_CLIENT_HOST | grep uptime) || exit 6
+(mamonsu zabbix item lastvalue $ZABBIX_CLIENT_HOST | grep uptime) || exit 7
 
 # all plugin alive, exclude pg_wait_sampling
-(grep -v 'PGWAITSAMPLING' /var/log/mamonsu/agent.log | grep -i 'Plugin exception') && exit 7
+(grep -v 'PGWAITSAMPLING' /var/log/mamonsu/agent.log | grep -i 'Plugin exception') && exit 8
 
 exit 0

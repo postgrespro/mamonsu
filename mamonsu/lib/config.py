@@ -119,13 +119,7 @@ class Config(DefaultConfig):
             self._load_external_plugins_from_directory(dir)
 
     def _load_external_plugins_from_directory(self, directory):
-
         sys.path.append(directory)
-        logging.info(
-            'Import module \'%s\' from directory %s',
-            os.path.basename(directory),
-            directory)
-
         try:
             for filename in glob.glob(os.path.join(directory, '*.py')):
                 if not os.path.isfile(filename):
@@ -136,14 +130,9 @@ class Config(DefaultConfig):
                     continue
                 # filename.py => filename
                 filename, _ = os.path.splitext(filename)
-                logging.info(
-                    'Import file \'%s\' from module \'%s\'',
-                    filename,
-                    os.path.basename(directory))
                 __import__(filename)
         except Exception as e:
-            logging.error(
-                'Can\'t load module: %s', e)
+            sys.stderr.write('Can\'t load module: %s', e)
             sys.exit(3)
 
     def _override_auto_variables(self):
@@ -178,5 +167,5 @@ class Config(DefaultConfig):
             self._apply_environ()
 
     def _apply_default_config(self):
-        for plugin in Plugin.get_childs():
+        for plugin in Plugin.only_child_subclasses():
             plugin.set_default_config(self.config)

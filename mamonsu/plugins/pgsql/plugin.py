@@ -4,7 +4,7 @@ from .pool import Pooler
 
 class PgsqlPlugin(Plugin):
 
-    _child = False
+    is_child = False
 
     def __init__(self, config):
         super(PgsqlPlugin, self).__init__(config)
@@ -12,7 +12,7 @@ class PgsqlPlugin(Plugin):
         self._ext_installed, self._ext_check_count = False, None
 
     @classmethod
-    def get_childs(self):
+    def only_child_subclasses(self):
         # return all childs
         return self.__subclasses__()
 

@@ -21,8 +21,9 @@ class Plugin(object):
     _thread = None
     _sender = False
     _enabled = True
+
     # for all childs
-    _child = True
+    is_child = True
 
     # const
     DELTA = Template.DELTA
@@ -48,12 +49,12 @@ class Plugin(object):
                 self._plugin_config[x] = self.config.fetch(name, x)
 
     @classmethod
-    def get_childs(self, only_childs=False):
+    def only_child_subclasses(self):
         plugins = []
         for klass in self.__subclasses__():
-            if klass._child:
+            if klass.is_child:
                 plugins.append(klass)
-            plugins.extend(klass.get_childs())
+            plugins.extend(klass.only_child_subclasses())
         return plugins
 
     @classmethod
