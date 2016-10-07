@@ -64,6 +64,8 @@ class Plugin(object):
         if not config.has_section(name) and len(cls.DEFAULT_CONFIG) > 0:
             config.add_section(name)
         for x in cls.DEFAULT_CONFIG:
+            if config.has_option(name, x):
+                continue
             value = cls.DEFAULT_CONFIG[x]
             if not isinstance(value, str):
                 sys.stderr.write('Config value {0} in section {1} must be string! Fix plugin please.\n'.format(x, name))

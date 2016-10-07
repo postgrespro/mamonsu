@@ -43,6 +43,10 @@ class Config(DefaultConfig):
         config.set('agent', 'host', '127.0.0.1')
         config.set('agent', 'port', str(10052))
 
+        config.add_section('plugins')
+        config.set('plugins', 'enabled', str(False))
+        config.set('plugins', 'directory', '/etc/mamonsu/plugins')
+
         config.add_section('zabbix')
         config.set('zabbix', 'enabled', str(True))
         config.set('zabbix', 'client', socket.gethostname())
@@ -71,6 +75,11 @@ class Config(DefaultConfig):
         else:
             if cfg_file is not None:
                 self.config.read(cfg_file)
+
+        plugins = self.fetch('plugins', 'directory', str)
+        if not plugins == 'None':
+            self._load_external_plugins_from_directory(plugins)
+        self._apply_default_config()
 
         self._apply_log_setting()
         self._apply_environ()
@@ -132,7 +141,7 @@ class Config(DefaultConfig):
                 filename, _ = os.path.splitext(filename)
                 __import__(filename)
         except Exception as e:
-            sys.stderr.write('Can\'t load module: %s', e)
+            sys.stderr.write('Can\'t load module: {0}'.format(e))
             sys.exit(3)
 
     def _override_auto_variables(self):

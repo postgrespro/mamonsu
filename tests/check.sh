@@ -41,15 +41,32 @@ class DefConfTest(Plugin):
         self.log.error(self.plugin_config('config'))
         os.system("touch /tmp/extenal_plugin_is_called")
 EOF
-mamonsu export config /tmp/config -a /etc/mamonsu/plugins
+mamonsu export config /tmp/config
 grep external_plugin_config /tmp/config || exit 2
 sed -i 's|.*max_checkpoints_req =.*|max_checkpoints_req = 5555555555555|g' /tmp/config
 
 # write zabbix template
-mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME -a /etc/mamonsu/plugins -c /tmp/config
+mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME -c /tmp/config
 grep 5555555555555 /tmp/template.xml || exit 3
 grep 'pgsql\.uptime\[\]' /tmp/template.xml || exit 3
 grep 'system\.disk\.all_read' /tmp/template.xml || exit 3
+
+# test export config
+cat <<EOF > /etc/mamonsu/agent.conf
+[zabbix]
+enabled = False
+
+[agent]
+enabled = False
+
+[plugins]
+enabled = False
+
+[defconftest]
+config = external_plugin_config2
+EOF
+mamonsu export config /tmp/config -a /etc/mamonsu/plugins -c /etc/mamonsu/agent.conf
+grep external_plugin_config2 /tmp/config || exit 2
 
 # install zabbix
 yum install -y http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm
