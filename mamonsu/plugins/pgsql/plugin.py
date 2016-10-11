@@ -1,4 +1,4 @@
-from mamonsu.lib.plugin import Plugin
+from mamonsu.lib.plugin import Plugin, PluginExitException
 from .pool import Pooler
 
 
@@ -37,7 +37,7 @@ class PgsqlPlugin(Plugin):
     def disable_and_exit_if_extension_is_not_installed(self, ext, db=None):
         if not self.extension_installed(ext, db=db, silent=True):
             self.disable()
-            raise Exception("""
+            raise PluginExitException("""
 Disable plugin and exit, because '{0}' \
 extension is not installed. Enable it in PostgreSQL instance: '{1}', \
 if needed and restart.""".format(ext, Pooler.connection_string(db)))

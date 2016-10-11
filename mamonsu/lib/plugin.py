@@ -10,6 +10,10 @@ from threading import Thread
 from mamonsu.lib.const import Template
 
 
+class PluginExitException(Exception):
+    pass
+
+
 class Plugin(object):
 
     # plugin interval run
@@ -127,6 +131,10 @@ class Plugin(object):
             last_start = time.time()
             try:
                 self.run(self.sender)
+            except PluginExitException as e:
+                text = 'Exit: {0}.'.format(e)
+                self.log.info(text)
+                return
             except Exception as e:
                 trace = traceback.format_exc()
                 self._log_exception(e, trace)
