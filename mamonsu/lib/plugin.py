@@ -85,6 +85,7 @@ class Plugin(object):
         self._thread = Thread(target=self._loop)
         self._thread.daemon = True
         self._thread.start()
+        self.log.info('started ...')
 
     def is_alive(self):
         if self._thread is not None:
