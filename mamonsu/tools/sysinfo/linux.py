@@ -103,6 +103,12 @@ class SysInfoLinux(object):
                 return remember(self, name, self._block_info())
             elif name == 'systemd':
                 return remember(self, name, self._systemd())
+            elif name == 'top_by_cpu':
+                return remember(self, name, self._shell_out(
+                    'ps aux --sort=-pcpu | head -n 21'))
+            elif name == 'top_by_memory':
+                return remember(self, name, self._shell_out(
+                    'ps aux --sort=-rss | head -n 21'))
         except KeyError:
             raise Exception('Unknown parameter: {0}'.format(name))
 
@@ -352,14 +358,14 @@ class SysInfoLinux(object):
                 try:
                     with open(file, 'r') as f:
                         result = f.read()
-                    return result
+                    return result.strip()
                 except:
                     pass
         if os.path.isfile('/etc/debian_version'):
             try:
                 with open('/etc/debian_version', 'r') as f:
                     result = f.read()
-                    return 'Debian-based version {0}'.format(result)
+                    return 'Debian-based version {0}'.format(result).strip()
             except:
                 pass
         return NA

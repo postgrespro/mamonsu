@@ -48,6 +48,8 @@ class SystemInfo(SysInfoLinux):
         out += format_out('Model', self.cpu_model['model'])
         out += format_out('Cache', self.cpu_model['cache'])
         out += format_out('Bench', self.cpu_bench())
+        out += format_header('TOP (by cpu)')
+        out += self.top_by_cpu + "\n"
         out += format_header('Memory')
         out += format_out('Total', self._humansize(self.meminfo['_TOTAL']))
         out += format_out('Cached', self._humansize(self.meminfo['_CACHED']))
@@ -67,6 +69,8 @@ class SystemInfo(SysInfoLinux):
         out += format_out('Swap', self._humansize(self.meminfo['_SWAP']))
         if 'vm.swappiness' in self.sysctl:
             out += format_out('Swappines', self.sysctl['vm.swappiness'])
+        out += format_header('TOP (by memory)')
+        out += self.top_by_memory + "\n"
         out += format_header('System settings')
         for k in self.systemd['_main']:
             out += format_out(k, self.systemd['_main'][k])

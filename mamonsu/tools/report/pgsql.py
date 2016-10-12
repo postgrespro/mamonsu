@@ -23,8 +23,6 @@ from
         """
 select count(*), 'total' from pg_catalog.pg_stat_activity
 union all
-select count(*), 'waiting' from pg_catalog.pg_stat_activity where waiting
-union all
 select count(*), 'active' from pg_catalog.pg_stat_activity
     where state = 'active'
 union all
