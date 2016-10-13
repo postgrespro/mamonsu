@@ -73,7 +73,7 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
-* Wed Oct 13 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.8.9-1
+* Thu Oct 13 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.9.0-1
 - improve report
 
 * Wed Oct 12 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.8.9-1
