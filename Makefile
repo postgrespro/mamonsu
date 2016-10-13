@@ -8,8 +8,8 @@ all:
 publish: clean test
 	grep ^Version ./packaging/rpm/SPECS/mamonsu.spec | grep $(VERSION)
 	grep ^mamonsu ./packaging/debian/changelog | grep $(VERSION)
-	python setup.py register
-	python setup.py sdist upload
+	python setup.py register -r pypi
+	python setup.py sdist upload -r pypi
 	git push
 	git tag $(VERSION)
 	git push --tags
