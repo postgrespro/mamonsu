@@ -1,6 +1,6 @@
 test: run_functional_tests
 
 run_functional_tests:
-	docker run --rm -v "$(WORKDIR)":/var/tmp centos:7 /var/tmp/tests/build_rpm.sh
-	docker run --rm -v "$(WORKDIR)":/var/tmp debian:7 /var/tmp/tests/build_deb.sh
-	docker run --rm -v "$(WORKDIR)":/var/tmp centos:6 /var/tmp/tests/check.sh
+	docker run --rm -v "$(WORKDIR)":/var/tmp centos:7 /bin/sh -ex "/var/tmp/tests/build_rpm.sh"
+	docker run --rm -v "$(WORKDIR)":/var/tmp debian:7 /bin/sh -ex "/var/tmp/tests/build_deb.sh"
+	docker run --rm -v "$(WORKDIR)":/var/tmp centos:6 /bin/sh -ex "/var/tmp/tests/check.sh"
