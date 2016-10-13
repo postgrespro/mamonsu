@@ -20,11 +20,11 @@ class SystemInfo(SysInfoLinux):
 
         def format_header(info):
             return "\n###### {0:20} ###########################\n".format(
-                info.encode('utf-8'))
+                info)
 
         def format_out(key, val):
             return "{0:40}|    {1}\n".format(
-                key.encode('utf-8'), val.encode('utf-8'))
+                key, val)
 
         out = ''
         out += format_header('Report')
@@ -95,7 +95,7 @@ class SystemInfo(SysInfoLinux):
     def store_raw(self):
         def format_out(info, val):
             return "# {0} ##################################\n{1}\n".format(
-                info.encode('utf-8'), val.encode('utf-8'))
+                info, val)
         out = format_out('SYSCTL', self.sysctl['_RAW'])
         out += format_out('DMESG', self.dmesg_raw)
         out += format_out('LSPCI', self.lspci_raw)
@@ -108,12 +108,12 @@ class SystemInfo(SysInfoLinux):
         out += format_out('IOSTAT', self.iostat_raw)
         out += format_out('LVS', self.lvs_raw)
         out += format_out('VGS', self.vgs_raw)
-        return out
+        return out.encode('ascii', 'ignore').decode('ascii')
 
     def collect(self):
         info = self.printable_info()
         logging.error("\n{0}\n".format(self.store_raw()))
-        return info
+        return info.encode('ascii', 'ignore').decode('ascii')
 
     _suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 

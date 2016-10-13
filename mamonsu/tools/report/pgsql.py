@@ -177,7 +177,7 @@ order by b.size desc
     def collect(self):
         info = self.printable_info()
         logging.error("\n{0}\n".format(self.store_raw()))
-        return info
+        return info.encode('ascii', 'ignore').decode('ascii')
 
     def _is_connection_work(self):
         try:
