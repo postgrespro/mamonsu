@@ -30,7 +30,7 @@ class AutoTunePgsl(object):
     def _configure_extensions(self):
 
         extensions = self._run_query(
-            "select name from pg_available_extensions")
+            "select name from pg_catalog.pg_available_extensions")
         if extensions is None:
             return
         extensions = [row[0] for row in extensions]
@@ -40,12 +40,14 @@ class AutoTunePgsl(object):
         if 'pg_stat_statements' in extensions:
             needed_libraries.append('pg_stat_statements')
         else:
-            logging.warning("Please install 'contrib' modules: need for 'pg_stat_statements'")
+            logging.warning("Please install 'contrib' modules: "
+                            "need for 'pg_stat_statements'")
 
         if 'pg_wait_sampling' in extensions:
             needed_libraries.append('pg_wait_sampling')
         else:
-            logging.warning("Install 'https://github.com/postgrespro/pg_wait_sampling' module'")
+            logging.warning("Install 'https://github.com/postgrespro/"
+                            "pg_wait_sampling' module'")
 
         if len(needed_libraries) == 0:
             return
@@ -68,7 +70,7 @@ class AutoTunePgsl(object):
                 for ext in needed_libraries:
                     if ext not in libraries:
                         libraries.append(ext)
-            libraries = ','.join(libraries)
+        libraries = ','.join(libraries)
         self._run_query(
             "alter system set shared_preload_libraries to {0};".format(
                 libraries))
