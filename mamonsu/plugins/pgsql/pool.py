@@ -11,7 +11,7 @@ class Pool(ConnectionInfo):
         # query type: ( 'if_not_installed', 'if_installed' )
         'replication_lag_master_query': (
             'select 1',
-            'select public.mamonsu_timestamp_get()'
+            'select public.mamonsu_timestamp_master_update()'
         ),
         'replication_lag_slave_query': (
             'select extract(epoch from now()-pg_last_xact_replay_timestamp())',
