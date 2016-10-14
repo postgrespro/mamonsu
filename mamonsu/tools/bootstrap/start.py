@@ -80,9 +80,9 @@ class Args(DefaultConfig):
 
     def __init__(self):
         parser = optparse.OptionParser(
-            usage='%prog deploy',
-            version='%prog deploy {0}'.format(mamonsu_version),
-            description='Deploy DDL for monitoring')
+            usage='%prog bootstrap',
+            version='%prog bootstrap {0}'.format(mamonsu_version),
+            description='Bootstrap DDL for monitoring')
         group = optparse.OptionGroup(
             parser,
             'Postgres connection options')

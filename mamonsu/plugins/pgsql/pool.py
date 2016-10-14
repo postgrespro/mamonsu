@@ -66,14 +66,13 @@ and pid <> pg_catalog.pg_backend_pid()
     def mamonsu_deployed(self, db=None):
         if db in self._mamonsu_deployed:
             return self._mamonsu_deployed[db]
-        sql = """
-select count(*) from pg_catalog.pg_class where relname = 'mamonsu_config';
-"""
+        sql = """select count(*) from pg_catalog.pg_class
+            where relname = 'mamonsu_config'"""
         if platform.PY2:
             result = self.query(sql, db)[0][0]
         elif platform.PY3:
             result = bytes(self.query(sql, db)[0][0], 'utf-8')
-        self._mamonsu_deployed[db] = (result == '1')
+        self._mamonsu_deployed[db] = (result == 1)
 
     def extension_installed(self, ext, db=None):
         result = self.query('select count(*) from pg_catalog.pg_extension\

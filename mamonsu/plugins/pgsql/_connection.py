@@ -46,8 +46,11 @@ class Connection(ConnectionInfo):
             cursor.close()
             self.connected = True
         except ProgrammingError as e:
-            if '{0}'.format(e) == 'no result set':
+            error_text = '{0}'.format(e)
+            if error_text == 'no result set':
                 return None
+            else:
+                raise ProgrammingError(error_text)
         finally:
             self.lock.release()
         return result

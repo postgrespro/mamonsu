@@ -133,7 +133,7 @@ class Plugin(object):
             try:
                 self.run(self.sender)
             except PluginExitException as e:
-                text = 'Exit: {0}.'.format(e)
+                text = 'Plugin is exited: {0}.'.format(e)
                 self.log.info(text)
                 return
             except Exception as e:

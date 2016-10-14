@@ -141,7 +141,7 @@ directory = /tmp
 file = /var/log/mamonsu/agent.log
 level = DEBUG
 EOF
-mamonsu deploy -U postgres -d mamonsu
+mamonsu bootstrap -U postgres -d mamonsu
 /etc/init.d/mamonsu start
 sleep 125
 

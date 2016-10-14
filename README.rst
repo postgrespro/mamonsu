@@ -132,11 +132,11 @@ Change previously zabbix server address and client hostname:
     file = /var/log/mamonsu/agent.log
     level = INFO
 
-Deploy DDL for monitoring (if you want to monitoring without superuser rights)
+Bootstrap DDL for monitoring (if you want to monitoring without superuser rights)
 
 .. code-block:: bash
 
-    $ mamonsu deploy -U postgres -d mamonsu
+    $ mamonsu bootstrap -U postgres -d mamonsu
 
 ==================
 Write your plugin

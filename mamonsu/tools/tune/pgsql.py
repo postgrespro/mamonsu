@@ -165,9 +165,6 @@ class AutoTunePgsl(object):
             return None
         try:
             return Pooler.query(query)
-        except ProgrammingError as e:
-            if '{0}'.format(e) == 'no result set':
-                return None
         except Exception as e:
             logging.error('Query {0} error: {1}'.format(query, e))
             if exit_on_fail:

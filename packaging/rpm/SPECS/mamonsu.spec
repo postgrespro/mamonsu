@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        1.9.5
+Version:        1.9.6
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Fri Oct 14 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.9.6-1
+- delay renamed to bootstrap, fix bootstrap detection
+
 * Fri Oct 14 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 1.9.5-1
 - fix pgsql plugin replication lag
 

@@ -29,10 +29,10 @@ Options:
     --application <application name in template>
 
 
-Deploy DDL for monitoring:
-Command: deploy
+Bootstrap DDL for monitoring:
+Command: bootstrap
 Examples:
-    {prog} deploy
+    {prog} bootstrap
 Options:
     --port <PGPORT>
     -W <PGPASSWORD>
