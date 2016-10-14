@@ -191,8 +191,7 @@ mamonsu zabbix item lastclock <host name>
             except Exception as e:
                 sys.stderr.write('Template export error: {0}\n'.format(e))
                 sys.exit(3)
-            finally:
-                return
+            return
 
         return self._print_help()
 
