@@ -29,6 +29,17 @@ Options:
     --application <application name in template>
 
 
+Deploy DDL for monitoring:
+Command: deploy
+Examples:
+    {prog} deploy
+Options:
+    --port <PGPORT>
+    -W <PGPASSWORD>
+    -d, --dbname <DBNAME>
+    -U, --username <USERNAME>
+
+
 Information about working mamonsu:
 Command: agent
 Options:

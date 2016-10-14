@@ -117,8 +117,8 @@ Change previously zabbix server address and client hostname:
     [postgres]
     ; enabled by default
     enabled = True
-    user = postgres
-    database = postgres
+    user = mamonsu
+    database = mamonsu
     ; empty password
     password = None
     port = 5432
@@ -131,6 +131,12 @@ Change previously zabbix server address and client hostname:
     [log]
     file = /var/log/mamonsu/agent.log
     level = INFO
+
+Deploy DDL for monitoring (if you want to monitoring without superuser rights)
+
+.. code-block:: bash
+
+    $ mamonsu deploy -U postgres -d mamonsu
 
 ==================
 Write your plugin

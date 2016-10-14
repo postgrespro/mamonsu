@@ -2,7 +2,9 @@
 import os
 import threading
 import logging
-from .pg8000 import connect
+
+from mamonsu.plugins.pgsql.pg8000 import connect
+from mamonsu.plugins.pgsql.pg8000.core import ProgrammingError
 
 
 class ConnectionInfo(object):
@@ -43,6 +45,9 @@ class Connection(ConnectionInfo):
             result = cursor.fetchall()
             cursor.close()
             self.connected = True
+        except ProgrammingError as e:
+            if '{0}'.format(e) == 'no result set':
+                return None
         finally:
             self.lock.release()
         return result

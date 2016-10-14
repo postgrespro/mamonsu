@@ -1,3 +1,15 @@
+mamonsu (1.9.3-1) stable; urgency=low
+
+  * mamonsu deploy
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Fri, 14 Oct 2016 18:00:00 +0300
+
+mamonsu (1.9.2-1) stable; urgency=low
+
+  * improve tune
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 13 Oct 2016 18:00:00 +0300
+
 mamonsu (1.9.1-1) stable; urgency=low
 
   * improve report

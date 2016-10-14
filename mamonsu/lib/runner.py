@@ -29,6 +29,10 @@ def start():
         tool = commands[0]
         if tool == '-h' or tool == '--help':
             print_total_help()
+        elif tool == 'deploy':
+            from mamonsu.tools.deploy.start import run_deploy
+            sys.argv.remove('deploy')
+            return run_deploy()
         elif tool == 'report':
             from mamonsu.tools.report.start import run_report
             sys.argv.remove('report')

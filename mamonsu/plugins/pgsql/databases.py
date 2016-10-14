@@ -34,8 +34,7 @@ class Databases(Plugin):
         zbx.send('pgsql.database.discovery[]', zbx.json({'data': dbs}))
         del dbs, bloat_count
 
-        result = Pooler.query("select count(*) from pg_catalog.pg_stat_activity\
-            where query like '%%autovacuum%%' and state <> 'idle'")
+        result = Pooler.run_sql_type('count_autovacuum')
         zbx.send('pgsql.autovacumm.count[]', int(result[0][0]) - 1)
 
     def items(self, template):

@@ -112,6 +112,9 @@ class SysInfoLinux(object):
         except KeyError:
             raise Exception('Unknown parameter: {0}'.format(name))
 
+    def is_virt_guest(self):
+        return not (self.virtualization == NA)
+
     def _shell_out(self, cmd, timeout=1, sudo=False):
         sudo = sudo and self.use_sudo
         shell = Shell(cmd, timeout=timeout, sudo=sudo)

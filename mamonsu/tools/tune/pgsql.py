@@ -24,6 +24,7 @@ class AutoTunePgsl(object):
         self._bgwriter()
         self._configure_pgbadger()
         self._configure_extensions()
+        self._configure_virt_guest()
 
         self._reload_config()
 
@@ -137,6 +138,12 @@ class AutoTunePgsl(object):
         self._run_query(
             "alter system set log_line_prefix to "
             "'%%t [%%p]: [%%l-1] db=%%d,user=%%u,app=%%a,client=%%h ';")
+
+    def _configure_virt_guest(self):
+        if not self.sys_info.is_virt_guest():
+            return
+        self._run_query(
+            "alter system set synchronous_commit to off;")
 
     def _reload_config(self):
         if self.args.reload_config is not None:

@@ -129,7 +129,7 @@ class Args(DefaultConfig):
 
         host = self.args.hostname
         port = self.args.port
-        if host == 'auto' and platform.LINUX:
+        if host == 'auto' and platform.UNIX:
             logging.debug('Host set to auto, test variables')
             if test_db(self, '/tmp/.s.PGSQL.{0}'.format(port)):
                 return True

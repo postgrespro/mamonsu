@@ -114,8 +114,15 @@ template_id=$(mamonsu zabbix template id $ZABBIX_TEMPLATE_NAME)
 hostgroup_id=$(mamonsu zabbix hostgroup id 'Linux servers')
 mamonsu zabbix host create $ZABBIX_CLIENT_HOST $hostgroup_id $template_id 127.0.0.1
 
+su postgres -c 'createdb mamonsu'
+su postgres -c 'createuser -a -d -E mamonsu'
 # start mamonsu and sleep
 cat <<EOF > /etc/mamonsu/agent.conf
+[postgres]
+host = auto
+user = mamonsu
+database = mamonsu
+
 [zabbix]
 enabled = True
 address = 127.0.0.1
@@ -134,6 +141,7 @@ directory = /tmp
 file = /var/log/mamonsu/agent.log
 level = DEBUG
 EOF
+mamonsu deploy -U postgres -d mamonsu
 /etc/init.d/mamonsu start
 sleep 125
 

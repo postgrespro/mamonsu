@@ -153,7 +153,7 @@ order by b.size desc
         """,
         ('table', 'size', 'idx scan', 'seq scan', '% since analyze',
             '% dead', '% heap', '% idx')
-        )
+    )
 
     def __init__(self, args):
         self.args = args
@@ -193,7 +193,7 @@ order by b.size desc
         if nbytes == 0:
             return '0 B'
         i = 0
-        while nbytes >= 1024 and i < len(self._suffixes)-1:
+        while nbytes >= 1024 and i < len(self._suffixes) - 1:
             nbytes /= 1024.
             i += 1
         f = ('%.2f' % nbytes).rstrip('0').rstrip('.')
@@ -212,19 +212,19 @@ order by b.size desc
         if suff == 'B':
             return self._humansize_bytes(val)
         if suff == 'KB':
-            return self._humansize_bytes(val*1024)
+            return self._humansize_bytes(val * 1024)
         if suff == '4KB':
-            return self._humansize_bytes(val*1024*4)
+            return self._humansize_bytes(val * 1024 * 4)
         if suff == '8KB':
-            return self._humansize_bytes(val*1024*8)
+            return self._humansize_bytes(val * 1024 * 8)
         if suff == '16KB':
-            return self._humansize_bytes(val*1024*16)
+            return self._humansize_bytes(val * 1024 * 16)
         if suff == 'MB':
-            return self._humansize_bytes(val*1024*1024)
+            return self._humansize_bytes(val * 1024 * 1024)
         if suff == 'GB':
-            return self._humansize_bytes(val*1024*1024*1024)
+            return self._humansize_bytes(val * 1024 * 1024 * 1024)
         if suff == 'TB':
-            return self._humansize_bytes(val*1024*1024*1024*1024)
+            return self._humansize_bytes(val * 1024 * 1024 * 1024 * 1024)
         return value
 
     def store_raw(self):
