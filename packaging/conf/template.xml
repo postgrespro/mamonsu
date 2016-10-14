@@ -6468,7 +6468,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Linux</host>
-                        <key>pgsql.pgsql.wal.count[]</key>
+                        <key>pgsql.wal.count[]</key>
                     </item>
                 </graph_item>
             </graph_items>

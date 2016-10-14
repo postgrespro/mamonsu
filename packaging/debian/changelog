@@ -1,3 +1,9 @@
+mamonsu (1.9.7-1) stable; urgency=low
+
+  * update template
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Fri, 14 Oct 2016 23:00:00 +0300
+
 mamonsu (1.9.6-1) stable; urgency=low
 
   * delay renamed to bootstrap, fix pgsql bootstrap detection

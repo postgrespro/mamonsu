@@ -4745,7 +4745,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.pgsql.wal.count[]</key>
+                        <key>pgsql.wal.count[]</key>
                     </item>
                 </graph_item>
             </graph_items>
