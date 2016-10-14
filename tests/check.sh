@@ -115,7 +115,7 @@ hostgroup_id=$(mamonsu zabbix hostgroup id 'Linux servers')
 mamonsu zabbix host create $ZABBIX_CLIENT_HOST $hostgroup_id $template_id 127.0.0.1
 
 su postgres -c 'createdb mamonsu'
-su postgres -c 'createuser -a -d -E mamonsu'
+su postgres -c 'createuser mamonsu'
 # start mamonsu and sleep
 cat <<EOF > /etc/mamonsu/agent.conf
 [postgres]

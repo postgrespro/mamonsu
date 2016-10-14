@@ -136,6 +136,8 @@ Bootstrap DDL for monitoring (if you want to monitoring without superuser rights
 
 .. code-block:: bash
 
+    $ createdb mamonsu
+    $ createuser mamonsu
     $ mamonsu bootstrap -U postgres -d mamonsu
 
 ==================
