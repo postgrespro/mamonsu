@@ -20,9 +20,9 @@ class Plugin(object):
     Interval = 60
 
     # plugin config
-    DEFAULT_CONFIG = {}
+    DEFAULT_CONFIG = {} # type: Dict[str, str]
 
-    _thread = None
+    _thread = None # type: Thread
     _sender = False
     _enabled = True
 

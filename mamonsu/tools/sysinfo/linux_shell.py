@@ -38,7 +38,7 @@ class Shell(object):
     # exit status of timeout code
     TimeoutCode = -1
     # local var
-    _sudo_result = None
+    _sudo_result = None # type: bool
 
     def __init__(self, cmd, timeout=10, sudo=False):
         self.status = self.TimeoutCode
