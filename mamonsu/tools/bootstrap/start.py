@@ -10,77 +10,14 @@ from mamonsu.plugins.pgsql.checks import is_conn_to_db
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.pool import Pooler
-
-
-QuerySplit = """
-
-"""
-
-CreateSchemaSQL = """
-CREATE TABLE IF NOT EXISTS public.mamonsu_config (
-  version text,
-  inserted_at timestamp DEFAULT NOW()
-);
-
-INSERT INTO public.mamonsu_config(version) VALUES('{0}');
-
-DROP TABLE IF EXISTS public.mamonsu_timestamp_master_{1};
-
-CREATE TABLE public.mamonsu_timestamp_master_{1}(
-    id int primary key,
-    ts double precision,
-    lsn pg_lsn
-);
-
-INSERT INTO public.mamonsu_timestamp_master_{1} (id) values (1);
-
-CREATE OR REPLACE FUNCTION public.mamonsu_timestamp_master_update()
-RETURNS void AS $$
-  UPDATE public.mamonsu_timestamp_master_{1} SET
-    ts = extract(epoch from now() at time zone 'utc')::double precision,
-    lsn = pg_catalog.pg_current_xlog_location()
-  WHERE
-    id = 1;
-$$ LANGUAGE SQL SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION public.mamonsu_timestamp_get()
-RETURNS double precision AS $$
-  SELECT
-    (extract(epoch from now() at time zone 'utc') - ts)::double precision
-  FROM public.mamonsu_timestamp_master_{1}
-  WHERE id = 1 LIMIT 1;
-$$ LANGUAGE SQL SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION public.mamonsu_count_autovacuum()
-RETURNS BIGINT AS $$
-    SELECT
-        count(*)::BIGINT
-    FROM pg_catalog.pg_stat_activity
-    WHERE
-        query like '%%autovacuum%%'
-        and state <> 'idle'
-        and pid <> pg_catalog.pg_backend_pid()
-$$ LANGUAGE SQL SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION public.mamonsu_count_xlog_files()
-RETURNS BIGINT AS $$
-WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_xlog'))
-SELECT
-    COUNT(*)::BIGINT
-FROM
-    list
-WHERE filename similar to '{2}'
-$$ LANGUAGE SQL SECURITY DEFINER;
-""".format(
-    mamonsu_version,
-    mamonsu_version.replace('.', '_'), '[0-9A-F]{24}')
+from mamonsu.tools.bootstrap.sql import CreateSchemaSQL, QuerySplit
 
 
 class Args(DefaultConfig):
 
     def __init__(self):
         parser = optparse.OptionParser(
-            usage='%prog bootstrap',
+            usage='%prog bootstrap <DBNAME>',
             version='%prog bootstrap {0}'.format(mamonsu_version),
             description='Bootstrap DDL for monitoring')
         group = optparse.OptionGroup(
@@ -113,7 +50,14 @@ class Args(DefaultConfig):
             help='password (should happen automatically) ')
         parser.add_option_group(group)
 
-        self.args, _ = parser.parse_args()
+        self.args, commands = parser.parse_args()
+
+        if len(commands) > 0:
+            if len(commands) == 1:
+                self.args.dbname = commands[0]
+            else:
+                parser.print_help()
+                sys.exit(1)
 
         # apply env
         os.environ['PGUSER'] = self.args.username
@@ -126,10 +70,14 @@ class Args(DefaultConfig):
         if not self._configure_auto_host():
             if self._try_run_as_postgres():
                 if not self._configure_auto_host():
-                    sys.stderr.write("Can't run as postgres\n")
+                    sys.stderr.write(
+                        "Can't connect as user postgres,"
+                        " may be database settings wrong?\n")
                     return False
             else:
-                sys.stderr.write("Can't configure auto-host for postgresql\n")
+                sys.stderr.write(
+                    "Can't connect with host=auto,"
+                    " may be database settings wrong?\n")
                 return False
         return True
 
@@ -176,11 +124,12 @@ class Args(DefaultConfig):
 def run_deploy():
 
     args = Args()
-    args.try_configure_connect_to_pg()
+    if not args.try_configure_connect_to_pg():
+        sys.exit(1)
 
     try:
         for sql in CreateSchemaSQL.split(QuerySplit):
             Pooler.query(sql)
     except Exception as e:
         sys.stderr.write("Query:\n{0}\nerror: {1}\n".format(sql, e))
-        sys.exit(1)
+        sys.exit(2)

@@ -32,7 +32,7 @@ Options:
 Bootstrap DDL for monitoring:
 Command: bootstrap
 Examples:
-    {prog} bootstrap
+    {prog} bootstrap <DBNAME>
 Options:
     --port <PGPORT>
     -W <PGPASSWORD>
