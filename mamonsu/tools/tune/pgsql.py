@@ -126,7 +126,7 @@ class AutoTunePgsl(object):
         wal_size = min(sysmemory / 4, 8.0 * 1024 * 1024 * 1024)
         if Pooler.server_version_greater('9.5'):
             self._run_query(
-                "alter system set wal_size to '{0}';".format(
+                "alter system set max_wal_size to '{0}';".format(
                     self._humansize_and_round_bytes(wal_size)))
 
     def _configure_pgbadger(self):

@@ -1,3 +1,9 @@
+mamonsu (2.0.0-1) stable; urgency=low
+
+  * fix mamonsu tune
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 17 Oct 2016 16:00:00 +0300
+
 mamonsu (1.9.9-1) stable; urgency=low
 
   * improve mamonsu tune
