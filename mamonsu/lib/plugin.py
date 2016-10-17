@@ -123,9 +123,9 @@ class Plugin(object):
         return None
 
     def _log_exception(self, e, trace):
-        name = e.__class__.__name__
-        self.last_error_text = 'Plugin exception [{0}]: {1}.'.format(name, e)
+        self.last_error_text = 'catch exception: {0}'.format(e)
         self.log.error(self.last_error_text)
+        self.log.info('hint: enable debug level to full exception trace')
         self.log.debug(trace)
 
     def _loop(self):

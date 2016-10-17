@@ -30,14 +30,14 @@ class Connection(ConnectionInfo):
     def __init__(self, info={}):
         super(Connection, self).__init__()
         self.lock = threading.Lock()
-        self.log = logging.getLogger('PGSQL')
+        self.log = logging.getLogger('PGSQL-({0})'.format(self.conn_str()))
         self.conn = None
         self.connected = False
 
     def query(self, query):
         self.lock.acquire()
         try:
-            self.log.debug('[{0}] Run: "{1}"'.format(self.conn_str(), query))
+            self.log.debug('Run: "{0}"'.format(query))
             self._check_connect()
             self.connected = False
             cursor = self.conn.cursor()
@@ -57,16 +57,14 @@ class Connection(ConnectionInfo):
 
     def _close(self):
         if self.conn is not None:
-            self.log.debug(
-                '[{0}] Closing old connection...'.format(self.conn_str()))
+            self.log.debug('closing old connection')
             try:
                 self.conn.close()
             except Exception as e:
-                self.log.error(
-                    '[{0}] Close error: {1}'.format(self.conn_str(), e))
+                self.log.error('close error: {0}'.format(e))
 
     def _connect(self):
-        self.log.debug('[{0}] Connecting...'.format(self.conn_str()))
+        self.log.debug('connecting')
         host, unix_sock = self.host, None
         if host.startswith('/'):
             unix_sock, host = host, None
@@ -79,15 +77,15 @@ class Connection(ConnectionInfo):
             database=self.db,
             application_name=self.appname
         )
-        self.log.debug('[{0}] Connected!'.format(self.conn_str()))
+        self.log.debug('connected')
         self.conn.autocommit = True
         cur = self.conn.cursor()
         cur.execute('set statement_timeout to {0}'.format(self.timeout * 1000))
         cur.close()
-        self.log.debug('[{0}] Ready!'.format(self.conn_str()))
+        self.log.debug('ready')
 
     def _check_connect(self):
         if not self.connected:
-            self.log.debug('[{0}] Reconnecting...'.format(self.conn_str()))
+            self.log.debug('reconnecting')
             self._close()
             self._connect()

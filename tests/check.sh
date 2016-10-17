@@ -164,6 +164,6 @@ grep 'pgsql\.uptime' /tmp/localhost.log || exit 5
 (mamonsu zabbix item lastvalue $ZABBIX_CLIENT_HOST | grep uptime) || exit 7
 
 # all plugin alive, exclude pg_wait_sampling
-(grep -v 'PGWAITSAMPLING' /var/log/mamonsu/agent.log | grep -i 'Plugin exception') && exit 8
+(grep -v 'PGWAITSAMPLING' /var/log/mamonsu/agent.log | grep -i 'error') && exit 8
 
 exit 0
