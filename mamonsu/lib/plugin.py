@@ -73,7 +73,8 @@ class Plugin(object):
             value = cls.DEFAULT_CONFIG[x]
             if not isinstance(value, str):
                 sys.stderr.write(
-                    'Config value {0} in section {1} must be string! Fix plugin please.\n'.format(x, name))
+                    'Config value {0} in section {1} must'
+                    ' be string! Fix plugin please.\n'.format(x, name))
             config.set(name, x, '{0}'.format(cls.DEFAULT_CONFIG[x]))
 
     # get value from config
