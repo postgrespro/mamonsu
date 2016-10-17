@@ -6,7 +6,7 @@ import pwd
 import sys
 
 import mamonsu.lib.platform as platform
-from mamonsu.plugins.pgsql.checks import is_conn_to_db
+from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.pool import Pooler

@@ -3,7 +3,6 @@ import sys
 import logging
 
 import mamonsu.lib.platform as platform
-from mamonsu.plugins.pgsql.pg8000.core import ProgrammingError
 from mamonsu.plugins.pgsql.pool import Pooler
 from mamonsu.tools.sysinfo.linux import SysInfoLinux as SysInfo
 

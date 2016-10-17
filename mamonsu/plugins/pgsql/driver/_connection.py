@@ -3,8 +3,8 @@ import os
 import threading
 import logging
 
-from mamonsu.plugins.pgsql.pg8000 import connect
-from mamonsu.plugins.pgsql.pg8000.core import ProgrammingError
+from mamonsu.plugins.pgsql.driver.pg8000 import connect
+from mamonsu.plugins.pgsql.driver.pg8000.core import ProgrammingError
 
 
 class ConnectionInfo(object):
@@ -81,10 +81,8 @@ class Connection(ConnectionInfo):
         )
         self.log.debug('[{0}] Connected!'.format(self.conn_str()))
         self.conn.autocommit = True
-        self.log.debug('[{0}] Set timeout...'.format(self.conn_str()))
         cur = self.conn.cursor()
-        cur.execute('set statement_timeout to {0}'.format(
-            self.timeout * 1000))
+        cur.execute('set statement_timeout to {0}'.format(self.timeout * 1000))
         cur.close()
         self.log.debug('[{0}] Ready!'.format(self.conn_str()))
 

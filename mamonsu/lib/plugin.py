@@ -10,7 +10,7 @@ from threading import Thread
 from mamonsu.lib.const import Template
 
 
-class PluginExitException(Exception):
+class PluginDisableException(Exception):
     pass
 
 
@@ -20,9 +20,9 @@ class Plugin(object):
     Interval = 60
 
     # plugin config
-    DEFAULT_CONFIG = {} # type: Dict[str, str]
+    DEFAULT_CONFIG = {}  # type: Dict[str, str]
 
-    _thread = None # type: Thread
+    _thread = None  # type: Thread
     _sender = False
     _enabled = True
 
@@ -72,7 +72,8 @@ class Plugin(object):
                 continue
             value = cls.DEFAULT_CONFIG[x]
             if not isinstance(value, str):
-                sys.stderr.write('Config value {0} in section {1} must be string! Fix plugin please.\n'.format(x, name))
+                sys.stderr.write(
+                    'Config value {0} in section {1} must be string! Fix plugin please.\n'.format(x, name))
             config.set(name, x, '{0}'.format(cls.DEFAULT_CONFIG[x]))
 
     # get value from config
@@ -132,8 +133,8 @@ class Plugin(object):
             last_start = time.time()
             try:
                 self.run(self.sender)
-            except PluginExitException as e:
-                text = 'Plugin is exited: {0}.'.format(e)
+            except PluginDisableException as e:
+                text = 'disable plugin: {0}.'.format(e)
                 self.log.info(text)
                 return
             except Exception as e:

@@ -14,7 +14,8 @@ class PgStatStatement(Plugin):
             'read bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
             ('PostgreSQL statements: bytes', 'BBBB00', 0)),
         ('stat[write_bytes]',
-            'sum(shared_blks_written+local_blks_written+temp_blks_written)*8*1024',
+            'sum(shared_blks_written+local_blks_written'
+            '+temp_blks_written)*8*1024',
             'write bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
             ('PostgreSQL statements: bytes', '00CC00', 0)),
         ('stat[dirty_bytes]',
@@ -32,7 +33,8 @@ class PgStatStatement(Plugin):
             ('PostgreSQL statements: spend time', '0000CC', 0)),
         ('stat[other_time]',
             'sum(total_time-blk_read_time-blk_write_time)/float4(100)',
-            'other (mostly cpu) time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+            'other (mostly cpu) time',
+            Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
             ('PostgreSQL statements: spend time', 'BBBB00', 0))
     ]
 

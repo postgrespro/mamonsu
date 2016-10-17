@@ -7,7 +7,7 @@ import os
 from mamonsu import __version__
 import mamonsu.lib.platform as platform
 from mamonsu.lib.default_config import DefaultConfig
-from mamonsu.plugins.pgsql.checks import is_conn_to_db
+from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 
 from mamonsu.tools.report.pgsql import PostgresInfo
 if platform.LINUX:
