@@ -177,8 +177,8 @@ def run_report():
         sys_info = SystemInfo(args)
         sys_report = sys_info.collect()
 
-    args.try_configure_connect_to_pg()
     if args.run_postgres:
+        args.try_configure_connect_to_pg()
         pg_info = PostgresInfo(args)
         pg_report = pg_info.collect()
 

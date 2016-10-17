@@ -21,6 +21,7 @@ class AutoTunePgsl(object):
         self._memory()
         self._auto_vacuum()
         self._bgwriter()
+        self._checkpointer()
         self._configure_pgbadger()
         self._configure_extensions()
         self._configure_virt_guest()
@@ -112,6 +113,21 @@ class AutoTunePgsl(object):
             "alter system set bgwriter_delay to 10;")
         self._run_query(
             "alter system set bgwriter_lru_maxpages to 800;")
+
+    def _checkpointer(self):
+
+        self._run_query(
+            "alter system set checkpoint_completion_target to 0.75")
+
+        sysmemory = self.sys_info.meminfo['_TOTAL']
+        if sysmemory < 4 * 1024 * 1024 * 1024:
+            return
+
+        wal_size = min(sysmemory / 4, 8.0 * 1024 * 1024 * 1024)
+        if Pooler.server_version_greater('9.5'):
+            self._run_query(
+                "alter system set wal_size to '{0}';".format(
+                    self._humansize_and_round_bytes(wal_size)))
 
     def _configure_pgbadger(self):
         if self.args.pgbadger is not None:

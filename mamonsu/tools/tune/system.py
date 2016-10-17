@@ -33,14 +33,14 @@ class AutoTuneSystem(SysInfoLinux):
         # if total < 1Gb, dont tune dirty bytes
         if total > 1024 * 1024 * 1024:
             self._add_sysctl('vm.dirty_background_bytes', 32 * 1024 * 1024)
-            self._add_sysctl('vm.dirty_bytes',            64 * 1024 * 1024)
+            self._add_sysctl('vm.dirty_bytes', 64 * 1024 * 1024)
 
     # defragment
     def _min_free(self):
         if not platform.LINUX:
             return
         total = self.meminfo['_TOTAL']
-        self._add_sysctl('vm.min_free_kbytes', int(5*total/(100*1024)))
+        self._add_sysctl('vm.min_free_kbytes', int(5 * total / (100 * 1024)))
 
     def _add_sysctl(self, key, value):
         self._sysctl_data.append("{0} = {1}\n".format(key, value))
