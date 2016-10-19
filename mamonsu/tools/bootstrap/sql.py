@@ -59,6 +59,17 @@ FROM
     list
 WHERE filename similar to '{2}'
 $$ LANGUAGE SQL SECURITY DEFINER;
+
+CREATE EXTENSION IF NOT EXISTS pg_buffercache;
+
+CREATE OR REPLACE FUNCTION public.mamonsu_buffer_cache()
+RETURNS TABLE(SIZE BIGINT, TWICE_USED BIGINT, DIRTY BIGINT) AS $$
+SELECT
+   COUNT(*) * 8 * 1024,
+   COUNT(CASE WHEN usagecount > 1 THEN 1 ELSE 0 END) * 8 * 1024,
+   COUNT(CASE isdirty WHEN true THEN 1 ELSE 0 END) * 8 * 1024
+FROM public.pg_buffercache
+$$ LANGUAGE SQL SECURITY DEFINER;
 """.format(
     mamonsu_version,
     mamonsu_version.replace('.', '_'), '[0-9A-F]{24}')
