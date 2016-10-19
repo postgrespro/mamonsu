@@ -341,10 +341,10 @@ class SysInfoLinux(object):
             return VIRT_XEN
         if re.search(r'qemu', self.dmesg_raw, re.I):
             return VIRT_QEMU
-        if re.search(r'paravirtualized kernel on KVM', self.dmesg_raw, re.I):
-            return VIRT_KVM
         if re.search(r'VBOX', self.dmesg_raw, re.I):
             return VIRT_VIRTUALBOX
+        if re.search(r'paravirtualized kernel on KVM', self.dmesg_raw, re.I):
+            return VIRT_KVM
         if re.search(r'hd.: Virtual .., ATA.*drive', self.dmesg_raw, re.I):
             return VIRT_MICROSOFT_VIRTUALPC
 
