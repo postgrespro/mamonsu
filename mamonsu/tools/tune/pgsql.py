@@ -40,15 +40,14 @@ class AutoTunePgsl(object):
 
         if 'pg_stat_statements' in extensions:
             needed_libraries.append('pg_stat_statements')
+        elif 'pg_buffercache' in extensions:
+            needed_libraries.append('pg_buffercache')
         else:
             logging.warning("Please install 'contrib' modules: "
                             "need for 'pg_stat_statements'")
 
         if 'pg_wait_sampling' in extensions:
             needed_libraries.append('pg_wait_sampling')
-        else:
-            logging.warning("Install 'https://github.com/postgrespro/"
-                            "pg_wait_sampling' module'")
 
         if len(needed_libraries) == 0:
             return

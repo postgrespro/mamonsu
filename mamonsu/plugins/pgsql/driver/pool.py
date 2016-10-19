@@ -35,6 +35,8 @@ and pid <> pg_catalog.pg_backend_pid()
         self.all_connections = {}
         self._server_version = {}
         self._mamonsu_deployed = {}
+        self._in_recovery = {}
+        self._in_recovery_cache = 0
 
     def connection_string(self, db=None):
         self._init_conn_(db)
@@ -56,6 +58,15 @@ and pid <> pg_catalog.pg_backend_pid()
                 self.query('show server_version', db)[0][0], 'utf-8')
         self._server_version[db] = "{0}".format(result.decode('ascii'))
         return self._server_version[db]
+
+    def in_recovery(self, db=None):
+        if (db in self._in_recovery) and (self._in_recovery_cache < 10):
+            self._in_recovery_cache += 1
+            return self._server_version[db]
+        self._in_recovery_cache = 0
+        self._in_recovery[db] = self.query(
+            "select pg_catalog.pg_is_in_recovery()")
+        return self._in_recovery[db]
 
     def server_version_greater(self, version, db=None):
         return self.server_version(db) >= LooseVersion(version)

@@ -9,9 +9,7 @@ class Xlog(Plugin):
     DEFAULT_CONFIG = {'lag_more_then_in_sec': str(60 * 5)}
 
     def run(self, zbx):
-        # is in recovery?
-        result = Pooler.query('select pg_catalog.pg_is_in_recovery()')
-        if str(result[0][0]) == 't' or str(result[0][0]) == 'True':
+        if Pooler.in_recovery():
             # replication lag
             lag = Pooler.run_sql_type('replication_lag_slave_query')
             if lag[0][0] is not None:
