@@ -36,7 +36,12 @@ setup(
                 'mamonsu.plugins',
                 'mamonsu.plugins.pgsql',
                 'mamonsu.plugins.system.windows',
-                'mamonsu.tools.zabbix_cli'
+                'mamonsu.tools.agent',
+                'mamonsu.tools.bootstrap',
+                'mamonsu.tools.report',
+                'mamonsu.tools.sysinfo',
+                'mamonsu.tools.tune',
+                'mamonsu.tools.zabbix_cli',
             ],
             'bundle_files': 1,
             'dist_dir': 'dist',
