@@ -15,8 +15,9 @@ def is_conn_to_db(host, db, port, user, paswd):
             host=host,
             port=port,
             database=db)
+        conn.autocommit = True
         cur = conn.cursor()
-        cur.execute('select 1')
+        cur.execute('select 1 as check')
         cur.close()
     except:
         return False

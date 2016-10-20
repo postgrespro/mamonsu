@@ -12,7 +12,7 @@ class PgHealth(Plugin):
     def run(self, zbx):
 
         start_time = time.time()
-        Pooler.query('select 1')
+        Pooler.query('select 1 as health')
         zbx.send('pgsql.ping[]', (time.time() - start_time) * 100)
 
         result = Pooler.query("select \
