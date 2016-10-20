@@ -82,6 +82,10 @@ build/pkg_ubuntu_16_04:
 	$(call build_and_publish_ubuntu,16.04,xenial)
 	touch build/pkg_ubuntu_16_04
 
+build/pkg_ubuntu_16_10:
+	$(call build_and_publish_ubuntu,16.10,yakkety)
+	touch build/pkg_ubuntu_16_10
+
 build/pkg_centos_6:
 	$(call build_and_publish_centos,6)
 	touch build/pkg_centos_6
