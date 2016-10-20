@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import sys
 import logging
 import optparse
 import os
@@ -17,6 +18,9 @@ else:
         from mamonsu.tools.report.os_win import SystemInfo
 if platform.LINUX:
     import pwd
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 class Args(DefaultConfig):
