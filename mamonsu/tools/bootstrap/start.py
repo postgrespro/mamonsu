@@ -2,7 +2,6 @@
 
 import os
 import optparse
-import pwd
 import sys
 
 import mamonsu.lib.platform as platform
@@ -84,6 +83,7 @@ class Args(DefaultConfig):
     def _try_run_as_postgres(self):
         if platform.UNIX and os.getegid() == 0:
             try:
+                import pwd
                 uid = pwd.getpwnam('postgres').pw_uid
                 os.seteuid(uid)
                 return True
