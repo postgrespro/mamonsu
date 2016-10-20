@@ -30,9 +30,9 @@ and pid <> pg_catalog.pg_backend_pid()
         ),
         'buffer_cache': (
             """select
-count(*) * 8 * 1024 as size,
-count(case when usagecount > 1 then 1 else 0 end) * 8 * 1024 as twice_used,
-count(case isdirty when true then 1 else 0 end) * 8 * 1024 as dirty
+sum(1) * 8 * 1024 as size,
+sum(case when usagecount > 1 then 1 else 0 end) * 8 * 1024 as twice_used,
+sum(case isdirty when true then 1 else 0 end) * 8 * 1024 as dirty
 from public.pg_buffercache""",
             'select size, twice_used, dirty from public.mamonsu_buffer_cache()'
         ),
@@ -87,11 +87,9 @@ from public.pg_buffercache""",
             return self._mamonsu_deployed[db]
         sql = """select count(*) from pg_catalog.pg_class
             where relname = 'mamonsu_config'"""
-        if platform.PY2:
-            result = self.query(sql, db)[0][0]
-        elif platform.PY3:
-            result = bytes(self.query(sql, db)[0][0], 'utf-8')
+        result = int(self.query(sql, db)[0][0])
         self._mamonsu_deployed[db] = (result == 1)
+        return self._mamonsu_deployed[db]
 
     def extension_installed(self, ext, db=None):
         result = self.query('select count(*) from pg_catalog.pg_extension\

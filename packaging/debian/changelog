@@ -1,3 +1,9 @@
+mamonsu (2.0.3-1) stable; urgency=low
+
+  * fix pg_buffercache plugin
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 20 Oct 2016 11:00:00 +0300
+
 mamonsu (2.0.2-1) stable; urgency=low
 
   * fix security issue for pg_buffercache plugin: add to bootstrap
