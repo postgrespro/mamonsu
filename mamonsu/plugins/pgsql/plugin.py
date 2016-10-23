@@ -22,7 +22,7 @@ class PgsqlPlugin(Plugin):
             self._ext_installed = Pooler.extension_installed(ext, db)
             self._ext_check_count = 0
             if not self._ext_installed and not silent:
-                self.log.error("Extension '{0}' is not installed".format(ext))
+                self.log.info("Extension '{0}' is not installed".format(ext))
 
         if self._ext_check_count is None:
             # first check

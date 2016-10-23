@@ -42,7 +42,7 @@ from public.pg_buffercache""",
         super(Pool, self).__init__()
         self.all_connections = {}
         self._server_version = {}
-        self._mamonsu_deployed = {}
+        self._mamonsu_bootstrap = {}
         self._in_recovery = {}
         self._in_recovery_cache = 0
 
@@ -73,7 +73,7 @@ from public.pg_buffercache""",
             return self._server_version[db]
         self._in_recovery_cache = 0
         self._in_recovery[db] = self.query(
-            "select pg_catalog.pg_is_in_recovery()")
+            "select pg_catalog.pg_is_in_recovery()")[0][0]
         return self._in_recovery[db]
 
     def server_version_greater(self, version, db=None):
@@ -82,14 +82,18 @@ from public.pg_buffercache""",
     def server_version_less(self, version, db=None):
         return self.server_version(db) <= LooseVersion(version)
 
-    def mamonsu_deployed(self, db=None):
-        if db in self._mamonsu_deployed:
-            return self._mamonsu_deployed[db]
+    def mamonsu_bootstrap(self, db=None):
+        if db in self._mamonsu_bootstrap:
+            return self._mamonsu_bootstrap[db]
         sql = """select count(*) from pg_catalog.pg_class
             where relname = 'mamonsu_config'"""
         result = int(self.query(sql, db)[0][0])
-        self._mamonsu_deployed[db] = (result == 1)
-        return self._mamonsu_deployed[db]
+        self._mamonsu_bootstrap[db] = (result == 1)
+        if self._mamonsu_bootstrap[db]:
+            self.log.info("Detect mamonsu bootstrap")
+        else:
+            self.log.info("Can't detect mamonsu bootstrap")
+        return self._mamonsu_bootstrap[db]
 
     def extension_installed(self, ext, db=None):
         result = self.query('select count(*) from pg_catalog.pg_extension\
@@ -108,7 +112,7 @@ from public.pg_buffercache""",
         if typ not in self.SQL:
             raise LookupError("Unknown SQL type: '{0}'".format(typ))
         result = self.SQL[typ]
-        if self.mamonsu_deployed(db):
+        if self.mamonsu_bootstrap(db):
             return result[1]
         else:
             return result[0]

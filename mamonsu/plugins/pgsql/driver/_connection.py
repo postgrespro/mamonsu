@@ -19,6 +19,7 @@ class ConnectionInfo(object):
         self.timeout = info.get('timeout') or int(
             os.environ.get('PGTIMEOUT') or 1)
         self.appname = info.get('appname') or os.environ.get('PGAPPNAME')
+        self.log = logging.getLogger('PGSQL-({0})'.format(self.conn_str()))
 
     def conn_str(self):
         return 'host={0} db={1} user={2} port={3}'.format(
@@ -30,7 +31,6 @@ class Connection(ConnectionInfo):
     def __init__(self, info={}):
         super(Connection, self).__init__()
         self.lock = threading.Lock()
-        self.log = logging.getLogger('PGSQL-({0})'.format(self.conn_str()))
         self.conn = None
         self.connected = False
 
