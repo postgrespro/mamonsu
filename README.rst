@@ -300,8 +300,8 @@ Metrics: Windows system
 Screenshots
 ============
 
-.. image::  https://raw.githubusercontent.com/postgrespro/mamonsu/master/examples/statistics.png
-
+.. image::  https://raw.githubusercontent.com/postgrespro/mamonsu/master/examples/statistics-1.png
+.. image::  https://raw.githubusercontent.com/postgrespro/mamonsu/master/examples/statistics-2.png
 
 ============
 Tool: Report
