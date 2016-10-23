@@ -6,31 +6,9 @@ from .pool import Pooler
 
 class BgWriter(Plugin):
 
-    DEFAULT_CONFIG = {'max_checkpoints_req': '5'}
-
     Items = [
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta
-
-        ('checkpoints_timed', 'checkpoints[checkpoints_timed]',
-            'checkpoints: by timeout',
-            ('PostgreSQL checkpoints', '00CC00', 0),
-            Plugin.UNITS.none, Plugin.DELTA.simple_change),
-
-        ('checkpoints_req', 'checkpoints[checkpoints_req]',
-            'checkpoints: required',
-            ('PostgreSQL checkpoints', 'CC0000', 0),
-            Plugin.UNITS.none, Plugin.DELTA.simple_change),
-
-        ('checkpoint_write_time', 'checkpoint[write_time]',
-            'checkpoint: write time',
-            ('PostgreSQL checkpoints', '0000CC', 1),
-            Plugin.UNITS.ms, Plugin.DELTA.simple_change),
-
-        ('checkpoint_sync_time', 'checkpoint[checkpoint_sync_time]',
-            'checkpoint: sync time',
-            ('PostgreSQL checkpoints', '000000', 1),
-            Plugin.UNITS.ms, Plugin.DELTA.simple_change),
 
         ('buffers_checkpoint', 'bgwriter[buffers_checkpoint]',
             'bgwriter: buffers written during checkpoints',
@@ -96,28 +74,4 @@ class BgWriter(Plugin):
                         'color': item[3][1],
                         'yaxisside': item[3][2]
                     })
-        graph = {'name': name, 'items': items}
-        result = template.graph(graph)
-
-        name = 'PostgreSQL checkpoints'
-        items = []
-        for item in self.Items:
-            if not item[3] is None:
-                if item[3][0] == name:
-                    items.append({
-                        'key': 'pgsql.{0}'.format(item[1]),
-                        'color': item[3][1],
-                        'yaxisside': item[3][2]
-                    })
-        graph = {'name': name, 'items': items}
-        result += template.graph(graph)
-
-        return result
-
-    def triggers(self, template):
-        return template.trigger({
-            'name': 'PostgreSQL required checkpoints occurs to '
-            'frequently on {HOSTNAME}',
-            'expression': '{#TEMPLATE:pgsql.checkpoints[checkpoints_req]'
-            '.last()}&gt;' + self.plugin_config('max_checkpoints_req')
-        })
+        return template.graph({'name': name, 'items': items})

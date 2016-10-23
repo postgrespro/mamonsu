@@ -6,7 +6,8 @@ from .pool import Pooler
 
 class Databases(Plugin):
 
-    Interval = 300
+    Interval = 60 * 5
+
     DEFAULT_CONFIG = {'min_rows': str(50), 'bloat_scale': str(0.2)}
 
     def run(self, zbx):
