@@ -19,6 +19,7 @@ def is_conn_to_db(host, db, port, user, paswd):
         cur = conn.cursor()
         cur.execute('select 1 as check')
         cur.close()
+        conn.close()
     except:
         return False
     else:
