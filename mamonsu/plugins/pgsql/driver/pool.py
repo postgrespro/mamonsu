@@ -70,7 +70,7 @@ from public.pg_buffercache""",
     def in_recovery(self, db=None):
         if (db in self._in_recovery) and (self._in_recovery_cache < 10):
             self._in_recovery_cache += 1
-            return self._server_version[db]
+            return self._in_recovery[db]
         self._in_recovery_cache = 0
         self._in_recovery[db] = self.query(
             "select pg_catalog.pg_is_in_recovery()")[0][0]
