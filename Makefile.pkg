@@ -39,8 +39,8 @@ define build_deb
 		cp -a /var/tmp /var/build && \
 		find /var/build -type d -exec chmod 0755 {} \; && find /var/build -type f -exec chmod 0644 {} \; && \
 		cd /var/build && (apt-get update -m || apt-get update -m || apt-get update -m) && \
-		apt-get install -y make dpkg-dev debhelper python-dev python-setuptools ruby-dev rubygems && make deb && \
-		gem install package_cloud --no-ri --no-rdoc && \
+		apt-get install -y make dpkg-dev debhelper python-dev python-setuptools ruby-dev && make deb && \
+		(type gem | apt-get install -y rubygems) && gem install package_cloud --no-ri --no-rdoc && \
 		PACKAGECLOUD_TOKEN=$(PACKAGECLOUD_TOKEN) package_cloud push postgrespro/mamonsu/$1/$2 *.deb"
 endef
 
