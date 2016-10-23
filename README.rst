@@ -206,6 +206,8 @@ Metrics:  PostgreSQL
     'PostgreSQL statements: read io time': pgsql.stat[read_time]
     'PostgreSQL statements: write io time': pgsql.stat[write_time]
     'PostgreSQL statements: other (mostly cpu) time': pgsql.stat[other_time]
+    'PostgreSQL oldest query running time': pgsql.oldest[query_time]
+    'PostgreSQL age of oldest xid': pgsql.oldest[xid_age]
     'PostgreSQL waits: Lightweight locks': pgsql.all_lock[lwlock]
     'PostgreSQL waits: Heavyweight locks': pgsql.all_lock[hwlock]
     'PostgreSQL waits: Buffer locks': pgsql.all_lock[buffer]
