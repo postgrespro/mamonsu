@@ -1,4 +1,4 @@
-mamonsu (2.1.4-1) stable; urgency=low
+mamonsu (2.1.5-1) stable; urgency=low
 
   * pg_locks fixes
 

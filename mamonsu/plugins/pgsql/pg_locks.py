@@ -39,10 +39,14 @@ class PgLocks(Plugin):
         result = Pooler.query("""
             select lower(mode), count(mode) FROM pg_catalog.pg_locks group by 1
             """)
-        for row in result:
-            for item in self.Items:
+        for item in self.Items:
+            found = False
+            for row in result:
                 if row[0] == '{0}lock'.format(item[0]):
-                    zbx.send('pgsql.pg_locks[{0}]'.format(item[1]), row[1])
+                    found = True
+                    zbx.send('pgsql.pg_locks[{0}]'.format(item[0]), row[1])
+            if not found:
+                zbx.send('pgsql.pg_locks[{0}]'.format(item[0]), 0)
 
     def items(self, template):
         result = ''
