@@ -64,14 +64,11 @@ class BgWriter(Plugin):
         return result
 
     def graphs(self, template):
-        name = 'PostgreSQL bgwriter'
-        items = []
+        name, items = 'PostgreSQL bgwriter', []
         for item in self.Items:
-            if not item[3] is None:
-                if item[3][0] == name:
-                    items.append({
-                        'key': 'pgsql.{0}'.format(item[1]),
-                        'color': item[3][1],
-                        'yaxisside': item[3][2]
-                    })
+            items.append({
+                'key': 'pgsql.{0}'.format(item[1]),
+                'color': item[3][1],
+                'yaxisside': item[3][2]
+            })
         return template.graph({'name': name, 'items': items})

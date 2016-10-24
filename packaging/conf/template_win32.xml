@@ -274,12 +274,12 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL checkpoints: by timeout</name>
+                    <name>PostgreSQL checkpoints: by timeout (in hour)</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
-                    <key>pgsql.checkpoints[checkpoints_timed]</key>
+                    <key>pgsql.checkpoint[count_timed]</key>
                     <snmp_oid/>
                     <history>7</history>
                     <trends>365</trends>
@@ -316,12 +316,12 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL checkpoints: required</name>
+                    <name>PostgreSQL checkpoints: by wal (in hour)</name>
                     <type>7</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
-                    <key>pgsql.checkpoints[checkpoints_req]</key>
+                    <key>pgsql.checkpoint[count_wal]</key>
                     <snmp_oid/>
                     <history>7</history>
                     <trends>365</trends>
@@ -1969,6 +1969,342 @@
                     <allowed_hosts/>
                     <valuemap/>
                     <units>%</units>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Win32</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL locks: Read only queries</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.pg_locks[accessshare]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Win32</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL locks: SELECT FOR SHARE and SELECT FOR UPDATE</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.pg_locks[rowshare]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Win32</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL locks: Write queries</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.pg_locks[rowexclusive]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Win32</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL locks: VACUUM, ANALYZE, CREATE INDEX CONCURRENTLY</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.pg_locks[shareupdateexclusive]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Win32</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL locks: CREATE INDEX</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.pg_locks[share]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Win32</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL locks: Locks from application</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.pg_locks[sharerowexclusive]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Win32</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL locks: Locks from application or some operation on system catalogs</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.pg_locks[exclusive]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <applications>
+                        <application>
+                            <name>App-PostgresPro-Win32</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>PostgreSQL locks: ALTER TABLE, DROP TABLE, TRUNCATE, REINDEX, CLUSTER, VACUUM FULL, LOCK TABLE</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <inventory_link>0</inventory_link>
+                    <key>pgsql.pg_locks[accessexclusive]</key>
+                    <snmp_oid/>
+                    <history>7</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <delay>60</delay>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <valuemap/>
+                    <units/>
                     <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
@@ -3717,7 +4053,7 @@
     </templates>
     <triggers>
         <trigger>
-            <expression>{PostgresPro-Win32:pgsql.checkpoints[checkpoints_req].last()}&gt;5</expression>
+            <expression>{PostgresPro-Win32:pgsql.checkpoint[count_wal].last()}&gt;12</expression>
             <name>PostgreSQL required checkpoints occurs to frequently on {HOSTNAME}</name>
             <url/>
             <status>0</status>
@@ -3927,7 +4263,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.checkpoints[checkpoints_timed]</key>
+                        <key>pgsql.checkpoint[count_timed]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -3939,7 +4275,7 @@
                     <type>0</type>
                     <item>
                         <host>PostgresPro-Win32</host>
-                        <key>pgsql.checkpoints[checkpoints_req]</key>
+                        <key>pgsql.checkpoint[count_wal]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -4600,6 +4936,122 @@
                     <item>
                         <host>PostgresPro-Win32</host>
                         <key>pgsql.uptime[]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>PostgreSQL locks sampling</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0</yaxismin>
+            <yaxismax>100.0</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0</percent_left>
+            <percent_right>0.0</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>0000CC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Win32</host>
+                        <key>pgsql.pg_locks[accessshare]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>00CC00</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Win32</host>
+                        <key>pgsql.pg_locks[rowshare]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC0000</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Win32</host>
+                        <key>pgsql.pg_locks[rowexclusive]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>3</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CC00CC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Win32</host>
+                        <key>pgsql.pg_locks[shareupdateexclusive]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>4</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>777777</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Win32</host>
+                        <key>pgsql.pg_locks[share]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>5</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CCCCCC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Win32</host>
+                        <key>pgsql.pg_locks[sharerowexclusive]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>6</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>CCCC00</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Win32</host>
+                        <key>pgsql.pg_locks[exclusive]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>7</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>00CCCC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>PostgresPro-Win32</host>
+                        <key>pgsql.pg_locks[accessexclusive]</key>
                     </item>
                 </graph_item>
             </graph_items>

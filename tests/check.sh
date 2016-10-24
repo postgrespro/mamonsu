@@ -43,7 +43,7 @@ class DefConfTest(Plugin):
 EOF
 mamonsu export config /tmp/config
 grep external_plugin_config /tmp/config || exit 2
-sed -i 's|.*max_checkpoints_req =.*|max_checkpoints_req = 5555555555555|g' /tmp/config
+sed -i 's|.*max_checkpoint_by_wal_in_hour =.*|max_checkpoint_by_wal_in_hour = 5555555555555|g' /tmp/config
 
 # write zabbix template
 mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME -c /tmp/config

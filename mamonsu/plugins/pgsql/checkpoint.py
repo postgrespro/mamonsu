@@ -4,35 +4,35 @@ from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
 
 
-class Checkpointer(Plugin):
+class Checkpoint(Plugin):
 
     Interval = 60 * 5
 
-    DEFAULT_CONFIG = {'max_checkpoints_req': '5'}
+    DEFAULT_CONFIG = {'max_checkpoint_by_wal_in_hour': str(12)}
 
     Items = [
         # key, zbx_key, description,
-        #    ('graph name', color, side), units, delta
+        #    ('graph name', color, side), units, delta, factor
 
-        ('checkpoints_timed', 'checkpoints[checkpoints_timed]',
-            'checkpoints: by timeout',
-            ('PostgreSQL checkpoints', '00CC00', 0),
-            Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
+        ('checkpoints_timed', 'checkpoint[count_timed]',
+            'checkpoints: by timeout (in hour)',
+            ('PostgreSQL checkpoint', '00CC00', 0),
+            Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
-        ('checkpoints_req', 'checkpoints[checkpoints_req]',
-            'checkpoints: required',
-            ('PostgreSQL checkpoints', 'CC0000', 0),
-            Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
+        ('checkpoints_req', 'checkpoint[count_wal]',
+            'checkpoints: by wal (in hour)',
+            ('PostgreSQL checkpoint', 'CC0000', 0),
+            Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
         ('checkpoint_write_time', 'checkpoint[write_time]',
             'checkpoint: write time',
             ('PostgreSQL checkpoints', '0000CC', 1),
-            Plugin.UNITS.ms, Plugin.DELTA.speed_per_second),
+            Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1),
 
         ('checkpoint_sync_time', 'checkpoint[checkpoint_sync_time]',
             'checkpoint: sync time',
             ('PostgreSQL checkpoints', '000000', 1),
-            Plugin.UNITS.ms, Plugin.DELTA.speed_per_second)
+            Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1)
     ]
 
     def run(self, zbx):
@@ -43,7 +43,7 @@ class Checkpointer(Plugin):
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(
                 self.Items[idx][1]), int(val)
-            zbx.send(key, val, self.Items[idx][5])
+            zbx.send(key, val * self.Items[idx][6], self.Items[idx][5])
         del params, result
 
     def items(self, template):
@@ -59,23 +59,21 @@ class Checkpointer(Plugin):
         return result
 
     def graphs(self, template):
-        name = 'PostgreSQL checkpoints'
-        items = []
+        name, items = 'PostgreSQL checkpoints', []
         for item in self.Items:
-            if not item[3] is None:
-                if item[3][0] == name:
-                    items.append({
-                        'key': 'pgsql.{0}'.format(item[1]),
-                        'color': item[3][1],
-                        'yaxisside': item[3][2],
-                        'delay': self.Interval
-                    })
+            items.append({
+                'key': 'pgsql.{0}'.format(item[1]),
+                'color': item[3][1],
+                'yaxisside': item[3][2],
+                'delay': self.Interval
+            })
         return template.graph({'name': name, 'items': items})
 
     def triggers(self, template):
         return template.trigger({
             'name': 'PostgreSQL required checkpoints occurs to '
             'frequently on {HOSTNAME}',
-            'expression': '{#TEMPLATE:pgsql.checkpoints[checkpoints_req]'
-            '.last()}&gt;' + self.plugin_config('max_checkpoints_req')
+            'expression': '{#TEMPLATE:pgsql.checkpoint[count_wal]'
+            '.last()}&gt;' + self.plugin_config(
+                'max_checkpoint_by_wal_in_hour')
         })
