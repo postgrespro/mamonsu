@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        2.1.0
+Version:        2.1.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -65,14 +65,14 @@ touch /etc/mamonsu/plugins/__init__.py
 mkdir -p /var/log/mamonsu
 chown mamonsu.mamonsu /var/log/mamonsu
 
-%post
-/sbin/chkconfig --add mamonsu || :
-
 %preun
 /sbin/service mamonsu stop >/dev/null 2>&1
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Oct 24 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 2.1.1-1
+- fix log messages, postinstal
+
 * Sun Oct 23 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 2.1.0-1
 - fix recovery detection
 

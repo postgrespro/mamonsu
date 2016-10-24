@@ -90,9 +90,9 @@ from public.pg_buffercache""",
         result = int(self.query(sql, db)[0][0])
         self._mamonsu_bootstrap[db] = (result == 1)
         if self._mamonsu_bootstrap[db]:
-            self.log.info("Detect mamonsu bootstrap")
+            self.all_connections[db].log.info("Detect mamonsu bootstrap")
         else:
-            self.log.info("Can't detect mamonsu bootstrap")
+            self.all_connections[db].log.info("Can't detect mamonsu bootstrap")
         return self._mamonsu_bootstrap[db]
 
     def extension_installed(self, ext, db=None):
