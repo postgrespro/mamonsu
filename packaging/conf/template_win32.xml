@@ -285,7 +285,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>300</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -327,7 +327,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>300</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units/>
@@ -369,7 +369,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>300</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units>ms</units>
@@ -411,7 +411,7 @@
                     <trends>365</trends>
                     <status>0</status>
                     <delay>300</delay>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
                     <units>ms</units>
