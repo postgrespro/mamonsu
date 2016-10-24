@@ -41,7 +41,7 @@ class PgLocks(Plugin):
             """)
         for row in result:
             for item in self.Items:
-                if item[0] == row[0]:
+                if row[0] == '{0}lock'.format(item[0]):
                     zbx.send('pgsql.pg_locks[{0}]'.format(item[1]), row[1])
 
     def items(self, template):
