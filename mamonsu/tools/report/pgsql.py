@@ -191,6 +191,8 @@ order by b.size desc
     def store_raw(self):
 
         def format_obj(val):
+            if val is None:
+                return 'ERROR'
             if isinstance(val, list) or isinstance(val, tuple):
                 result = ''
                 for row in val:

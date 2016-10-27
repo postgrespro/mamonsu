@@ -1,15 +1,34 @@
 # -*- coding: utf-8 -*-
 
 import re
+import sys
 
 
-class TermColor:
-    BOLD = '\033[0;0m\033[1;1m'
-    RED = '\033[1;31m'
-    GRAY = '\033[1;30m'
-    PURPLE = '\033[1;35m'
-    BLUE = '\033[1;34m'
-    END = '\033[1;m'
+class color(object):
+
+    mapping = {
+        'BOLD': '\033[0;0m\033[1;1m',
+        'RED': '\033[1;31m',
+        'GRAY': '\033[1;30m',
+        'PURPLE': '\033[1;35m',
+        'BLUE': '\033[1;34m',
+        'END': '\033[1;m'
+    }
+
+    def __init__(self):
+        self.color = sys.stdout.isatty()
+
+    def disable(self):
+        self.color = False
+
+    def __getattr__(self, name):
+        if self.color:
+            return self.mapping[name]
+        else:
+            return ''
+
+
+TermColor = color()
 
 
 # int (bytes) => str (human readable)

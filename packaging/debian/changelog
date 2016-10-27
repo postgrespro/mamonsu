@@ -1,3 +1,9 @@
+mamonsu (2.1.7-1) stable; urgency=low
+
+  * disable color for report tool if not have tty
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 27 Oct 2016 17:00:00 +0300
+
 mamonsu (2.1.6-1) stable; urgency=low
 
   * improve report tool
