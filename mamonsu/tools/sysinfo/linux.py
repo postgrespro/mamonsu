@@ -62,13 +62,18 @@ class SysInfoLinux(object):
                 return remember(self, name, self._dmesg_raw())
             elif name == 'kernel':
                 return remember(self, name, self._shell_out('uname -r'))
+            elif name == 'kernel_cmdline':
+                return remember(self, name, self._read_file('/proc/cmdline'))
             elif name == 'uptime_raw':
                 return remember(self, name, self._shell_out('uptime'))
+            elif name == 'boot_time_raw':
+                return remember(self, name, self._shell_out(
+                    "date --date=@$(grep ^btime /proc/stat | awk '{print $2}')"))
             elif name == 'mount_raw':
                 return remember(self, name, self._shell_out('mount'))
             elif name == 'iostat_raw':
                 return remember(self, name, self._shell_out(
-                        'iostat -x -N -m 1 2', timeout=3))
+                    'iostat -x -N -m 1 2', timeout=3))
             elif name == 'df_raw':
                 return remember(self, name, self._shell_out('df -h -P'))
             elif name == 'lspci_raw':
@@ -105,10 +110,10 @@ class SysInfoLinux(object):
                 return remember(self, name, self._systemd())
             elif name == 'top_by_cpu':
                 return remember(self, name, self._shell_out(
-                    'ps aux --sort=-pcpu | head -n 21'))
+                    'COLUMNS=150 ps aux --sort=-pcpu | head -n 21'))
             elif name == 'top_by_memory':
                 return remember(self, name, self._shell_out(
-                    'ps aux --sort=-rss | head -n 21'))
+                    'COLUMNS=150 ps aux --sort=-rss | head -n 21'))
         except KeyError:
             raise Exception('Unknown parameter: {0}'.format(name))
 
@@ -145,7 +150,7 @@ class SysInfoLinux(object):
             except Exception as e:
                 logging.debug('File "{0}" read error: {1}'.format(file, e))
                 pass
-        return result
+        return result.strip()
 
     def _cpu_arch(self):
         if os.path.isfile('/proc/cpuinfo'):
@@ -192,6 +197,12 @@ class SysInfoLinux(object):
             except:
                 continue
         return result
+
+    def sysctl_fetch(self, key):
+        try:
+            return self.sysctl[key]
+        except KeyError:
+            return '{sysctl not present}'
 
     def _dmesg_raw(self):
         shell = Shell('journalctl -k -n 1000')
@@ -251,6 +262,25 @@ class SysInfoLinux(object):
                 result['hyperthreading'] = True
         result['model'] = fetch_first(r'model name\s+\:\s+(.*)$', info)
         result['cache'] = fetch_first(r'cache size\s+\:\s+(.*)$', info)
+        result['flags'] = fetch_first(r'flags\s+\:\s+(.*)$', info)
+        flags = []
+        for flag in result['flags'].split():
+            flag = flag.strip()
+            if flag == 'ht':
+                flags.append('ht (hyper-threading)')
+            if flag == 'pae':
+                flags.append('pae (physical address extensions)')
+            if flag == 'lm':
+                flags.append('lm (64-bit)')
+            if flag == 'vmx':
+                flags.append('vmx (Intel hw-virt)')
+            if flag == 'svm':
+                flags.append('svm (AMD hw-virt)')
+            if flag == 'aes':
+                flags.append('aes (AES-NI)')
+            if flag == 'constant_tsc':
+                flags.append('constant_tsc (Constant Time Stamp Counter)')
+        result['_FLAGS_IMPORTANT'] = ', '.join(flags)
         result['speed'] = fetch_first(
             r'^cpu MHz\s+\:\s+(\d+\.\d+)$', info) + ' MHz'
         result['_TOTAL'] = 'physical = {0}, cores = {1}, '\
@@ -263,22 +293,31 @@ class SysInfoLinux(object):
     def _meminfo(self):
 
         data, result = self._read_file('/proc/meminfo'), {}
-        result['_RAW'] = NA
-        result['_TOTAL'] = NA
-        result['_SWAP'] = NA
-        result['_CACHED'] = NA
-        result['_DIRTY'] = NA
-        result['_BUFFERS'] = NA
+        for key in [
+                '_RAW', '_TOTAL', '_COMMITED', '_COMMITEDLIMIT', '_FREE', '_SWAPUSED'
+                '_SWAPTOTAL', '_CACHED', '_DIRTY', '_BUFFERS', '_HUGEPAGES']:
+            result[key] = NA
+
         if self.is_empty(data):
             return result
 
         result['_RAW'] = data
         for info in re.findall(r'^(\S+)\:\s+(\d+)\s+kB$', data, re.M):
-            result[info[0]] = int(info[1])*1024
+            result[info[0]] = int(info[1]) * 1024
         if 'MemTotal' in result:
             result['_TOTAL'] = result['MemTotal']
+        if 'CommitLimit' in result:
+            result['_COMMITLIMIT'] = result['CommitLimit']
+        if 'Committed_AS' in result:
+            result['_COMMITTED'] = result['Committed_AS']
+        if 'MemFree' in result:
+            result['_FREE'] = result['MemFree']
         if 'SwapTotal' in result:
-            result['_SWAP'] = result['SwapTotal']
+            result['_SWAPTOTAL'] = result['SwapTotal']
+        if 'SwapTotal' in result and 'SwapFree' in result:
+            result['_SWAPUSED'] = result['SwapTotal'] - result['SwapFree']
+        if 'HugePages_Total' in result:
+            result['_HUGEPAGES'] = result['HugePages_Total']
         if 'Cached' in result:
             result['_CACHED'] = result['Cached']
         if 'Dirty' in result:

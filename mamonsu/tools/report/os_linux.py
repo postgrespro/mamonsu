@@ -7,6 +7,7 @@ import logging
 
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.tools.sysinfo.linux import SysInfoLinux
+from mamonsu.tools.report.format import header_h1, header_h2, key_val_h1, key_val_h2, humansize_bytes
 
 
 class SystemInfo(SysInfoLinux):
@@ -17,79 +18,93 @@ class SystemInfo(SysInfoLinux):
         self.args = args
 
     def printable_info(self):
-
-        def format_header(info):
-            return "\n###### {0:20} ###########################\n".format(
-                info)
-
-        def format_out(key, val):
-            return "{0:40}|    {1}\n".format(
-                key, val)
-
         out = ''
-        out += format_header('Report')
-        out += format_out('Version', mamonsu_version)
-        out += format_out('Platform', sys.platform)
-        out += format_out('Python', ' '.join(sys.version.split("\n")))
-        out += format_header('System')
-        out += format_out('Date', self.date)
-        out += format_out('Host', self.hostname)
-        out += format_out('Uptime', self.uptime_raw)
-        out += format_out('System', self.dmi_info['TOTAL'])
-        out += format_out('Serial', self.dmi_info['SERIAL'])
-        out += format_out('Release', self.release)
-        out += format_out('Kernel', self.kernel)
-        out += format_out('Arch', 'CPU = {0}, OS = {1}'.format(
+        out += header_h1('Report')
+        out += key_val_h1('Version', mamonsu_version)
+        out += key_val_h1('Platform', sys.platform)
+        out += key_val_h1('Python', ' '.join(sys.version.split("\n")))
+        out += header_h1('System')
+        out += key_val_h1('Date', self.date)
+        out += key_val_h1('Host', self.hostname)
+        out += key_val_h1('Uptime', self.uptime_raw)
+        out += key_val_h1('Boot time', self.boot_time_raw)
+        out += key_val_h1('System', self.dmi_info['TOTAL'])
+        out += key_val_h1('Serial', self.dmi_info['SERIAL'])
+        out += key_val_h1('Release', self.release)
+        out += header_h2('Kernel:')
+        out += key_val_h2('name', self.kernel)
+        out += key_val_h2('cmdline', self.kernel_cmdline)
+        out += key_val_h1('Arch', 'CPU = {0}, OS = {1}'.format(
             self.cpu_arch, self.os_arch))
-        out += format_out('Virt', self.virtualization)
-        out += format_header('Processors')
-        out += format_out('Total', self.cpu_model['_TOTAL'])
-        out += format_out('Speed', self.cpu_model['speed'])
-        out += format_out('Model', self.cpu_model['model'])
-        out += format_out('Cache', self.cpu_model['cache'])
-        out += format_out('Bench', self.cpu_bench())
-        out += format_header('TOP (by cpu)')
+        out += key_val_h1('Virt', self.virtualization)
+        out += header_h1('Processors')
+        out += key_val_h1('Total', self.cpu_model['_TOTAL'])
+        out += key_val_h1('Speed', self.cpu_model['speed'])
+        out += key_val_h1('Model', self.cpu_model['model'])
+        out += key_val_h1('Flags', self.cpu_model['_FLAGS_IMPORTANT'])
+        out += key_val_h1('Cache', self.cpu_model['cache'])
+        out += key_val_h1('Bench', self.cpu_bench())
+        out += header_h1('TOP (by cpu)')
         out += self.top_by_cpu + "\n"
-        out += format_header('Memory')
-        out += format_out('Total', self._humansize(self.meminfo['_TOTAL']))
-        out += format_out('Cached', self._humansize(self.meminfo['_CACHED']))
-        out += format_out('Buffers', self._humansize(self.meminfo['_BUFFERS']))
-        out += format_out('Dirty', self._humansize(self.meminfo['_DIRTY']))
-        if 'vm.dirty_ratio' in self.sysctl:
-            if 'vm.dirty_background_ratio' in self.sysctl:
-                out += format_out('Dirty ratio', '{0} {1}'.format(
-                    self.sysctl['vm.dirty_ratio'],
-                    self.sysctl['vm.dirty_background_ratio']))
-        if 'vm.dirty_bytes' in self.sysctl:
-            if 'vm.dirty_background_bytes' in self.sysctl:
-                out += format_out('Dirty bytes', '{0} {1}'.format(
-                    self.sysctl['vm.dirty_bytes'],
-                    self.sysctl['vm.dirty_background_bytes']))
-        # todo: overcommit
-        out += format_out('Swap', self._humansize(self.meminfo['_SWAP']))
-        if 'vm.swappiness' in self.sysctl:
-            out += format_out('Swappines', self.sysctl['vm.swappiness'])
-        out += format_header('TOP (by memory)')
+        out += header_h1('Memory')
+        out += key_val_h1('Total', humansize_bytes(self.meminfo['_TOTAL']))
+        out += key_val_h1('Committed', humansize_bytes(self.meminfo['_COMMITTED']))
+        out += key_val_h1('CommitLimit', humansize_bytes(self.meminfo['_COMMITLIMIT']))
+        out += key_val_h1('Free', humansize_bytes(self.meminfo['_FREE']))
+        out += key_val_h1('Cached', humansize_bytes(self.meminfo['_CACHED']))
+        out += key_val_h1('Buffers', humansize_bytes(self.meminfo['_BUFFERS']))
+        out += key_val_h1('Dirty', humansize_bytes(self.meminfo['_DIRTY']))
+        out += key_val_h1('HugePages', humansize_bytes(self.meminfo['_HUGEPAGES']))
+        out += key_val_h1('SwapTotal', humansize_bytes(self.meminfo['_SWAPTOTAL']))
+        out += key_val_h1('SwapUsed', humansize_bytes(self.meminfo['_SWAPUSED']))
+        out += header_h1('TOP (by memory)')
         out += self.top_by_memory + "\n"
-        out += format_header('System settings')
+        out += header_h1('System settings')
         for k in self.systemd['_main']:
-            out += format_out(k, self.systemd['_main'][k])
-        out += format_header('Mount')
+            out += key_val_h1(k, self.systemd['_main'][k])
+        out += header_h1('Mount')
         out += self.df_raw + "\n"
-        out += format_header('Disks')
+        out += header_h1('Disks')
         for disk in self.block_info:
-            out += format_out(disk, 'Scheduler: {0} Queue: {1}'.format(
+            out += key_val_h1(disk, 'Scheduler: {0} Queue: {1}'.format(
                 self.block_info[disk]['scheduler'],
                 self.block_info[disk]['nr_requests']))
-        out += format_header('IOstat')
+        out += header_h1('Sysctl')
+        out += header_h2('kernel.')
+        out += key_val_h2('hostname', self.sysctl_fetch('kernel.hostname'), ' = ')
+        out += key_val_h2('osrelease', self.sysctl_fetch('kernel.osrelease'), ' = ')
+        out += key_val_h2('shmall', self.sysctl_fetch('kernel.shmall'), ' [4-KiB pages, max size of shared memory] = ')
+        out += key_val_h2('shmmax', self.sysctl_fetch('kernel.shmmax'), ' [max segment size in bytes] = ')
+        out += key_val_h2('shmmni', self.sysctl_fetch('kernel.shmmni'), ' [max number of segments] = ')
+        out += key_val_h2('sched_min_granularity_ns', self.sysctl_fetch('kernel.sched_min_granularity_ns'), ' [nanosecs, min execution time] = ')
+        out += key_val_h2('sched_latency_ns', self.sysctl_fetch('kernel.sched_latency_ns'), ' [nanosecs, rescheduling] = ')
+        out += header_h2('fs.')
+        out += key_val_h2('file-max', self.sysctl_fetch('fs.file-max'), ' [fd system] = ')
+        out += key_val_h2('nr_open', self.sysctl_fetch('fs.nr_open'), ' [fd per proc] = ')
+        out += key_val_h2('inode-nr', self.sysctl_fetch('fs.inode-nr'), ' [inode cache: total, free] = ')
+        out += header_h2('vm.')
+        out += key_val_h2('dirty_ratio', self.sysctl_fetch('vm.dirty_ratio'), ' [% of RAM for dirty pages, only if dirty_bytes=0] = ')
+        out += key_val_h2('dirty_bytes', self.sysctl_fetch('vm.dirty_bytes'), ' [bytes for dirty pages] = ')
+        out += key_val_h2('dirty_background_ratio', self.sysctl_fetch('vm.dirty_background_ratio'), ' [% of RAM then flusher start, only if dirty_background_bytes=0] = ')
+        out += key_val_h2('dirty_background_bytes', self.sysctl_fetch('vm.dirty_background_bytes'), ' [bytes then flusher start] = ')
+        out += key_val_h2('dirty_expire_centisecs', self.sysctl_fetch('vm.dirty_expire_centisecs'), ' [max age of dirty data] = ')
+        out += key_val_h2('dirty_writeback_centisecs', self.sysctl_fetch('vm.dirty_writeback_centisecs'), ' [flusher wakeup timer] = ')
+        out += key_val_h2('overcommit_memory', self.sysctl_fetch('vm.overcommit_memory'), ' [overcommit policy] = ')
+        out += key_val_h2('overcommit_ratio', self.sysctl_fetch('vm.overcommit_ratio'), ' [% physical RAM, if policy=2] = ')
+        out += key_val_h2('oom_kill_allocating_task', self.sysctl_fetch('vm.oom_kill_allocating_task'), ' [0 - heuristics, else simple kill task who triggered] = ')
+        out += key_val_h2('panic_on_oom', self.sysctl_fetch('vm.panic_on_oom'), ' [0 - no panic, 1 - panic only if only not limited (mempolicy/cpusets), 2 - panic] = ')
+        out += key_val_h2('swappiness', self.sysctl_fetch('vm.swappiness'), ' [how aggressive use swap] = ')
+        out += key_val_h2('nr_hugepages', self.sysctl_fetch('vm.nr_hugepages'), ' [count of persistent huge page pool] = ')
+        out += key_val_h2('nr_overcommit_hugepages', self.sysctl_fetch('vm.nr_overcommit_hugepages'), ' [max count of additional huge pages] = ')
+        out += header_h1('IOstat')
         out += self.iostat_raw + "\n"
-        out += format_header('LVM')
+        out += header_h1('LVM')
         out += self.vgs_raw + "\n"
         out += self.lvs_raw + "\n"
-        out += format_header('Raid')
+        out += header_h1('Raid')
         if not self.is_empty(self.raid):
             for raid in self.raid:
-                out += format_out('Controller', raid)
+                out += key_val_h1('Controller', raid)
         return out
 
     def store_raw(self):
@@ -114,18 +129,6 @@ class SystemInfo(SysInfoLinux):
         info = self.printable_info()
         logging.error("\n{0}\n".format(self.store_raw()))
         return info.encode('ascii', 'ignore').decode('ascii')
-
-    _suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
-
-    def _humansize(self, nbytes):
-        if nbytes == 0:
-            return '0 B'
-        i = 0
-        while nbytes >= 1024 and i < len(self._suffixes) - 1:
-            nbytes /= 1024.
-            i += 1
-        f = ('%.2f' % nbytes).rstrip('0').rstrip('.')
-        return '%s %s' % (f, self._suffixes[i])
 
     def cpu_bench(self):
         def _is_prime(n):

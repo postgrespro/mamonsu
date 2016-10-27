@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import re
 import time
+
 from mamonsu.plugins.pgsql.pool import Pooler
+from mamonsu.tools.report.format import header_h1, key_val_h1, topline_h1, humansize
 
 
 class PostgresInfo(object):
@@ -110,7 +111,7 @@ select
     pg_catalog.shobj_description(d.oid, 'pg_database')
 from pg_catalog.pg_database d
   join pg_catalog.pg_tablespace t on d.dattablespace = t.oid
-order by 1 desc""",
+order by 1""",
         ('name', 'size', 'owner', 'encoding', 'collate',
             'ctype', 'privileges', 'tablespace', 'description')
     )
@@ -187,46 +188,6 @@ order by b.size desc
             logging.error('Test query error: {0}'.format(e))
             return False
 
-    _suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
-
-    def _humansize_bytes(self, nbytes):
-        if nbytes == 0:
-            return '0 B'
-        i = 0
-        while nbytes >= 1024 and i < len(self._suffixes) - 1:
-            nbytes /= 1024.
-            i += 1
-        f = ('%.2f' % nbytes).rstrip('0').rstrip('.')
-        return '%s %s' % (f, self._suffixes[i])
-
-    def _humansize(self, value):
-        m = re.search('(\d+) (\S+)', value)
-        if m is None:
-            return value
-        val, suff = m.group(1), m.group(2)
-        val, suff = int(val), suff.upper()
-        if suff == 'S':
-            return value
-        if suff == 'MS':
-            return value
-        if suff == 'B':
-            return self._humansize_bytes(val)
-        if suff == 'KB':
-            return self._humansize_bytes(val * 1024)
-        if suff == '4KB':
-            return self._humansize_bytes(val * 1024 * 4)
-        if suff == '8KB':
-            return self._humansize_bytes(val * 1024 * 8)
-        if suff == '16KB':
-            return self._humansize_bytes(val * 1024 * 16)
-        if suff == 'MB':
-            return self._humansize_bytes(val * 1024 * 1024)
-        if suff == 'GB':
-            return self._humansize_bytes(val * 1024 * 1024 * 1024)
-        if suff == 'TB':
-            return self._humansize_bytes(val * 1024 * 1024 * 1024 * 1024)
-        return value
-
     def store_raw(self):
 
         def format_obj(val):
@@ -260,51 +221,44 @@ order by b.size desc
 
     def printable_info(self):
 
-        def format_header(info):
-            return "\n###### {0:20} ###########################\n".format(info)
-
         def format_out(key, val):
             return "{0:40s}|    {1}\n".format(key, val)
 
         out = ''
         if not self.connected:
-            out += format_header('PGSQL Error')
-            out += format_out('Test connection', 'Failed')
+            out += header_h1('PGSQL Error')
+            out += key_val_h1('Test connection', 'Failed')
             return out
-        out += format_header('PostgreSQL')
-        out += format_out('version', self.common_info[1][0])
-        out += format_out('uptime', self.common_info[1][1])
-        out += format_out('cache hit', '{0} %'.format(self.common_info[1][2]))
-        out += format_out('tps', self.rate['_TPS'])
-        out += format_out('rollbacks', self.rate['_ROLLBACKS'])
-        out += format_header('Connections')
+        out += header_h1('PostgreSQL')
+        out += key_val_h1('version', self.common_info[1][0])
+        out += key_val_h1('uptime', self.common_info[1][1])
+        out += key_val_h1('cache hit', '{0} %'.format(self.common_info[1][2]))
+        out += key_val_h1('tps', self.rate['_TPS'])
+        out += key_val_h1('rollbacks', self.rate['_ROLLBACKS'])
+        out += header_h1('Connections')
         for info in self.connections:
             count, name = info
-            out += format_out(name, count)
+            out += key_val_h1(name, count)
         for key in self.QueryPgSettings[2]:
-            out += format_header(key)
+            out += header_h1(key)
             for row in self.settings:
                 for name in self.QueryPgSettings[2][key]:
                     if row[0] == name:
                         val = row[1]
                         if row[2] is not None:
                             val += ' {0}'.format(row[2])
-                            val = self._humansize(val)
-                        out += format_out(
-                            name, val)
-        out += format_header('Database sizes')
+                            val = humansize(val)
+                        out += key_val_h1(
+                            name, val, 30)
+        out += header_h1('Database sizes')
         for i, row in enumerate(self.dblist):
             if i == 0:
                 continue
-            out += format_out(row[0], self._humansize(row[1]))
-        out += format_header('Biggest tables')
-        big_table_header = ''
-        for name in self.BigTableInfo[1][1:]:
-            big_table_header = "{0}\t{1}".format(
-                big_table_header, name)
-        out += "{0:40s}|{1}\n".format('table', big_table_header)
+            out += key_val_h1(row[0], humansize(row[1]))
+        out += header_h1('Biggest tables')
+        out += topline_h1(self.BigTableInfo[1])
         for i, key in enumerate(self.biggest_tables):
-            out += format_out(
+            out += key_val_h1(
                 key, self.biggest_tables[key])
         return out
 
