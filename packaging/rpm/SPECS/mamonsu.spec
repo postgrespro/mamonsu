@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        2.1.7
+Version:        2.1.8
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Oct 31 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 2.1.8-1
+- improve report
+
 * Thu Oct 27 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 2.1.7-1
 - disable color for report tool if not have tty
 

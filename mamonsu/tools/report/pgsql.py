@@ -4,7 +4,7 @@ import logging
 import time
 
 from mamonsu.plugins.pgsql.pool import Pooler
-from mamonsu.tools.report.format import header_h1, key_val_h1, topline_h1, humansize
+from mamonsu.tools.report.format import header_h1, key_val_h1, humansize
 
 
 class PostgresInfo(object):
@@ -152,8 +152,8 @@ from
     inner join big_tables b on b.relid = s.relid
 order by b.size desc
         """,
-        ('table', 'size', 'idx scan', 'seq scan', '% since analyze',
-            '% dead', '% heap', '% idx')
+        ('table', 'size', 'idx-count', 'seq-count', '%-since-analyze',
+            '%-dead', '%-heap-hit', '%-idx-hit')
     )
 
     def __init__(self, args):
@@ -258,10 +258,13 @@ order by b.size desc
                 continue
             out += key_val_h1(row[0], humansize(row[1]))
         out += header_h1('Biggest tables')
-        out += topline_h1(self.BigTableInfo[1])
-        for i, key in enumerate(self.biggest_tables):
+        out += key_val_h1(
+            self.BigTableInfo[1][0],
+            "\t\t" + "\t\t".join(self.BigTableInfo[1][1:]),
+            30)
+        for key in self.biggest_tables:
             out += key_val_h1(
-                key, self.biggest_tables[key])
+                key, self.biggest_tables[key], 30)
         return out
 
     def _collect_query(self, query_desc):
@@ -306,7 +309,7 @@ order by b.size desc
                     table_name = '{0}.{1}'.format(info_dbs[0], info[0])
                     result[table_name] = ''
                     for val in info[1:]:
-                        result[table_name] = "{0}\t{1}".format(
+                        result[table_name] = "{0}\t\t{1}".format(
                             result[table_name], val)
             except Exception as e:
                 logging.error("Connect to db {0} error: {1}".format(

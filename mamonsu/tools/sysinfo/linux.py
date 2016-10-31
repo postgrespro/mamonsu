@@ -58,6 +58,8 @@ class SysInfoLinux(object):
                 return remember(self, name, self._date())
             elif name == 'sysctl':
                 return remember(self, name, self._sysctl())
+            elif name == 'sockstat':
+                return remember(self, name, self._read_file('/proc/net/sockstat'))
             elif name == 'dmesg_raw':
                 return remember(self, name, self._dmesg_raw())
             elif name == 'kernel':
@@ -108,6 +110,10 @@ class SysInfoLinux(object):
                 return remember(self, name, self._block_info())
             elif name == 'systemd':
                 return remember(self, name, self._systemd())
+            elif name == 'pci_storage_devices':
+                return remember(self, name, self._pci_storage_devices())
+            elif name == 'pci_network_devices':
+                return remember(self, name, self._pci_network_devices())
             elif name == 'top_by_cpu':
                 return remember(self, name, self._shell_out(
                     'COLUMNS=150 ps aux --sort=-pcpu | head -n 21'))
@@ -204,6 +210,22 @@ class SysInfoLinux(object):
         except KeyError:
             return '{sysctl not present}'
 
+    def _pci_storage_devices(self):
+        result = []
+        for line in self.lspci_raw.split("\n"):
+            if re.search(r'(Fibre Channel|RAID bus controller|Mass storage controller|SCSI storage controller|SATA controller|Serial Attached SCSI controller)', line, re.M):
+                line = line[8:]
+                result.append(line)
+        return result
+
+    def _pci_network_devices(self):
+        result = []
+        for line in self.lspci_raw.split("\n"):
+            if re.search(r'(Ethernet controller|Network controller|InfiniBand)', line, re.M):
+                line = line[8:]
+                result.append(line)
+        return result
+
     def _dmesg_raw(self):
         shell = Shell('journalctl -k -n 1000')
         if shell.status == 0:
@@ -294,8 +316,10 @@ class SysInfoLinux(object):
 
         data, result = self._read_file('/proc/meminfo'), {}
         for key in [
-                '_RAW', '_TOTAL', '_COMMITED', '_COMMITEDLIMIT', '_FREE', '_SWAPUSED'
-                '_SWAPTOTAL', '_CACHED', '_DIRTY', '_BUFFERS', '_HUGEPAGES']:
+                '_RAW', '_TOTAL', '_COMMITED', '_COMMITEDLIMIT',
+                '_FREE', '_SWAPUSED', '_SLAB'
+                '_SWAPTOTAL', '_CACHED', '_DIRTY', '_BUFFERS',
+                '_HUGEPAGES', '_SHMEM', '_PAGETABLES']:
             result[key] = NA
 
         if self.is_empty(data):
@@ -324,6 +348,12 @@ class SysInfoLinux(object):
             result['_DIRTY'] = result['Dirty']
         if 'Buffers' in result:
             result['_BUFFERS'] = result['Buffers']
+        if 'Shmem' in result:
+            result['_SHMEM'] = result['Shmem']
+        if 'Slab' in result:
+            result['_SLAB'] = result['Slab']
+        if 'PageTables' in result:
+            result['_PAGETABLES'] = result['PageTables']
 
         return result
 

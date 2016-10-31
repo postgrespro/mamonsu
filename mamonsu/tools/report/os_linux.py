@@ -7,7 +7,7 @@ import logging
 
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.tools.sysinfo.linux import SysInfoLinux
-from mamonsu.tools.report.format import header_h1, header_h2, key_val_h1, key_val_h2, humansize_bytes
+from mamonsu.tools.report.format import header_h1, header_h2, key_val_h1, key_val_h2, humansize_bytes, format_raw_h1
 
 
 class SystemInfo(SysInfoLinux):
@@ -45,11 +45,14 @@ class SystemInfo(SysInfoLinux):
         out += key_val_h1('Cache', self.cpu_model['cache'])
         out += key_val_h1('Bench', self.cpu_bench())
         out += header_h1('TOP (by cpu)')
-        out += self.top_by_cpu + "\n"
+        out += format_raw_h1(self.top_by_cpu)
         out += header_h1('Memory')
         out += key_val_h1('Total', humansize_bytes(self.meminfo['_TOTAL']))
         out += key_val_h1('Committed', humansize_bytes(self.meminfo['_COMMITTED']))
         out += key_val_h1('CommitLimit', humansize_bytes(self.meminfo['_COMMITLIMIT']))
+        out += key_val_h1('Shmem', humansize_bytes(self.meminfo['_SHMEM']))
+        out += key_val_h1('Slab', humansize_bytes(self.meminfo['_SLAB']))
+        out += key_val_h1('PageTables', humansize_bytes(self.meminfo['_PAGETABLES']))
         out += key_val_h1('Free', humansize_bytes(self.meminfo['_FREE']))
         out += key_val_h1('Cached', humansize_bytes(self.meminfo['_CACHED']))
         out += key_val_h1('Buffers', humansize_bytes(self.meminfo['_BUFFERS']))
@@ -58,17 +61,10 @@ class SystemInfo(SysInfoLinux):
         out += key_val_h1('SwapTotal', humansize_bytes(self.meminfo['_SWAPTOTAL']))
         out += key_val_h1('SwapUsed', humansize_bytes(self.meminfo['_SWAPUSED']))
         out += header_h1('TOP (by memory)')
-        out += self.top_by_memory + "\n"
+        out += format_raw_h1(self.top_by_memory)
         out += header_h1('System settings')
         for k in self.systemd['_main']:
             out += key_val_h1(k, self.systemd['_main'][k])
-        out += header_h1('Mount')
-        out += self.df_raw + "\n"
-        out += header_h1('Disks')
-        for disk in self.block_info:
-            out += key_val_h1(disk, 'Scheduler: {0} Queue: {1}'.format(
-                self.block_info[disk]['scheduler'],
-                self.block_info[disk]['nr_requests']))
         out += header_h1('Sysctl')
         out += header_h2('kernel.')
         out += key_val_h2('hostname', self.sysctl_fetch('kernel.hostname'), ' = ')
@@ -81,6 +77,7 @@ class SystemInfo(SysInfoLinux):
         out += header_h2('fs.')
         out += key_val_h2('file-max', self.sysctl_fetch('fs.file-max'), ' [fd system] = ')
         out += key_val_h2('nr_open', self.sysctl_fetch('fs.nr_open'), ' [fd per proc] = ')
+        out += key_val_h2('file-nr', self.sysctl_fetch('fs.file-nr'), ' [fd: open, 0, max] = ')
         out += key_val_h2('inode-nr', self.sysctl_fetch('fs.inode-nr'), ' [inode cache: total, free] = ')
         out += header_h2('vm.')
         out += key_val_h2('dirty_ratio', self.sysctl_fetch('vm.dirty_ratio'), ' [% of RAM for dirty pages, only if dirty_bytes=0] = ')
@@ -96,15 +93,37 @@ class SystemInfo(SysInfoLinux):
         out += key_val_h2('swappiness', self.sysctl_fetch('vm.swappiness'), ' [how aggressive use swap] = ')
         out += key_val_h2('nr_hugepages', self.sysctl_fetch('vm.nr_hugepages'), ' [count of persistent huge page pool] = ')
         out += key_val_h2('nr_overcommit_hugepages', self.sysctl_fetch('vm.nr_overcommit_hugepages'), ' [max count of additional huge pages] = ')
+        out += header_h1('Mount')
+        out += format_raw_h1(self.df_raw)
+        out += header_h1('Disks')
+        for disk in self.block_info:
+            out += key_val_h1(disk, 'Scheduler: {0} Queue: {1}'.format(
+                self.block_info[disk]['scheduler'],
+                self.block_info[disk]['nr_requests']))
         out += header_h1('IOstat')
-        out += self.iostat_raw + "\n"
+        if not self.is_empty(self.iostat_raw):
+            out += format_raw_h1(self.iostat_raw)
         out += header_h1('LVM')
-        out += self.vgs_raw + "\n"
-        out += self.lvs_raw + "\n"
+        if not self.is_empty(self.vgs_raw):
+            out += format_raw_h1(self.vgs_raw)
+        if not self.is_empty(self.lvs_raw):
+            out += format_raw_h1(self.lvs_raw)
         out += header_h1('Raid')
         if not self.is_empty(self.raid):
             for raid in self.raid:
                 out += key_val_h1('Controller', raid)
+        out += header_h1('Sockstat')
+        for line in self.sockstat.split("\n"):
+            try:
+                key, val = line.split(":")
+                out += key_val_h1(key, val)
+            except:
+                pass
+        out += header_h1('LSPCI')
+        for line in self.pci_network_devices:
+            out += key_val_h1('net', line)
+        for line in self.pci_storage_devices:
+            out += key_val_h1('storage', line)
         return out
 
     def store_raw(self):
