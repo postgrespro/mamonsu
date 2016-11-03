@@ -38,7 +38,7 @@ class ZbxTemplate(object):
 
 # https://www.zabbix.com/documentation/2.0/manual/appendix/api/item/definitions
     item_defaults = [
-        ('name', None), ('type', 7), ('snmp_community', None),
+        ('name', None), ('type', 2), ('snmp_community', None),
         ('multiplier', 0), ('inventory_link', 0),
         ('key', None), ('snmp_oid', None), ('history', 7),
         ('trends', 365), ('status', 0), ('delay', 60),
@@ -83,7 +83,7 @@ class ZbxTemplate(object):
     ]
 
     discovery_defaults = [
-        ('name', None), ('type', 7), ('snmp_community', None),
+        ('name', None), ('type', 2), ('snmp_community', None),
         ('snmp_oid', None), ('delay', 60), ('status', 0),
         ('allowed_hosts', None), ('snmpv3_contextname', None),
         ('snmpv3_securityname', None), ('snmpv3_securitylevel', 0),

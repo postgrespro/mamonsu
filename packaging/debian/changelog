@@ -1,3 +1,9 @@
+mamonsu (2.2.0-1) stable; urgency=low
+
+  * change default item type to 'Zabbix trapper'
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 3 Nov 2016 16:00:00 +0300
+
 mamonsu (2.1.8-1) stable; urgency=low
 
   * improve report

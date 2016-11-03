@@ -43,6 +43,7 @@ from public.pg_buffercache""",
         self.all_connections = {}
         self._server_version = {}
         self._mamonsu_bootstrap = {}
+        self._mamonsu_bootstrap_cache = 0
         self._in_recovery = {}
         self._in_recovery_cache = 0
 
@@ -83,16 +84,19 @@ from public.pg_buffercache""",
         return self.server_version(db) <= LooseVersion(version)
 
     def mamonsu_bootstrap(self, db=None):
-        if db in self._mamonsu_bootstrap:
+        if (db in self._mamonsu_bootstrap) and (self._mamonsu_bootstrap_cache < 10):
+            self._mamonsu_bootstrap_cache += 1
             return self._mamonsu_bootstrap[db]
+        self._mamonsu_bootstrap_cache = 0
         sql = """select count(*) from pg_catalog.pg_class
             where relname = 'mamonsu_config'"""
         result = int(self.query(sql, db)[0][0])
         self._mamonsu_bootstrap[db] = (result == 1)
         if self._mamonsu_bootstrap[db]:
-            self.all_connections[db].log.info("Detect mamonsu bootstrap")
+            self.all_connections[db].log.info("Found mamonsu bootstrap")
         else:
-            self.all_connections[db].log.info("Can't detect mamonsu bootstrap")
+            self.all_connections[db].log.info("Can't found mamonsu bootstrap")
+            self.all_connections[db].log.info("hint: run `mamonsu bootstrap` if you want to run without superuser rights")
         return self._mamonsu_bootstrap[db]
 
     def extension_installed(self, ext, db=None):

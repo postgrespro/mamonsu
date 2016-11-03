@@ -23,7 +23,7 @@
             <items>
                 <item>
                     <name>PostgreSQL bgwriter: buffers written during checkpoints</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -65,7 +65,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: buffers written</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -107,7 +107,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: number of bgwriter stopped by max write count</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -149,7 +149,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: buffers written directly by a backend</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -191,7 +191,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: times a backend execute its own fsync</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -233,7 +233,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: buffers allocated</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -275,7 +275,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL checkpoints: by timeout (in hour)</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -317,7 +317,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL checkpoints: by wal (in hour)</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -359,7 +359,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL checkpoint: write time</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -401,7 +401,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL checkpoint: sync time</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -443,7 +443,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of total connections</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -485,7 +485,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of waiting connections</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -527,7 +527,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of active connections</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -569,7 +569,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of idle connections</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -611,7 +611,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of idle in transaction connections</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -653,7 +653,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: count of autovacuum workers</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -695,7 +695,7 @@
                 </item>
                 <item>
                     <name>Block devices: read requests</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -737,7 +737,7 @@
                 </item>
                 <item>
                     <name>Block devices: write requests</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -779,7 +779,7 @@
                 </item>
                 <item>
                     <name>Mamonsu: plugin errors</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -821,7 +821,7 @@
                 </item>
                 <item>
                     <name>Mamonsu: plugin keep alive</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -863,7 +863,7 @@
                 </item>
                 <item>
                     <name>Mamonsu: rss memory max usage</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -905,7 +905,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL transactions: total</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -947,7 +947,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL blocks: hit</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -989,7 +989,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL blocks: read</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1031,7 +1031,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL event: conflicts</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1073,7 +1073,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL event: deadlocks</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1115,7 +1115,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL event: rollbacks</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1157,7 +1157,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL temp: bytes written</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1199,7 +1199,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL temp: files created</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1241,7 +1241,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL tuples: deleted</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1283,7 +1283,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL tuples: fetched</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1325,7 +1325,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL tuples: inserted</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1367,7 +1367,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL tuples: returned</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1409,7 +1409,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL tuples: updated</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1451,7 +1451,7 @@
                 </item>
                 <item>
                     <name>System load average over 1 minute</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1493,7 +1493,7 @@
                 </item>
                 <item>
                     <name>Apps: User-space applications</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1535,7 +1535,7 @@
                 </item>
                 <item>
                     <name>Buffers: Block device cache and dirty</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1577,7 +1577,7 @@
                 </item>
                 <item>
                     <name>Swap: Swap space used</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1619,7 +1619,7 @@
                 </item>
                 <item>
                     <name>Cached: Parked file data (file content) cache</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1661,7 +1661,7 @@
                 </item>
                 <item>
                     <name>Free: Wasted memory</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1703,7 +1703,7 @@
                 </item>
                 <item>
                     <name>Slab: Kernel used memory (inode cache)</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1745,7 +1745,7 @@
                 </item>
                 <item>
                     <name>SwapCached: Fetched unmod yet swap pages</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1787,7 +1787,7 @@
                 </item>
                 <item>
                     <name>PageTables: Map bt virtual and physical</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1829,7 +1829,7 @@
                 </item>
                 <item>
                     <name>VMallocUsed: vmaloc() allocated by kernel</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1871,7 +1871,7 @@
                 </item>
                 <item>
                     <name>Committed_AS: Total committed memory</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1913,7 +1913,7 @@
                 </item>
                 <item>
                     <name>Mapped: All mmap()ed pages</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1955,7 +1955,7 @@
                 </item>
                 <item>
                     <name>Active: Memory recently used</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -1997,7 +1997,7 @@
                 </item>
                 <item>
                     <name>Inactive: Memory not currently used</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2039,7 +2039,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: age of oldest xid</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2081,7 +2081,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: oldest query running time in sec</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2123,7 +2123,7 @@
                 </item>
                 <item>
                     <name>Opened files</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2165,7 +2165,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: shared buffer size</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2207,7 +2207,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: shared buffer twice used size</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2249,7 +2249,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: shared buffer dirty size</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2291,7 +2291,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: ping</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2333,7 +2333,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: service uptime</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2375,7 +2375,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: cache hit ratio</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2417,7 +2417,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: Read only queries</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2459,7 +2459,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: SELECT FOR SHARE and SELECT FOR UPDATE</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2501,7 +2501,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: Write queries</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2543,7 +2543,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: VACUUM, ANALYZE, CREATE INDEX CONCURRENTLY</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2585,7 +2585,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: CREATE INDEX</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2627,7 +2627,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: Locks from application</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2669,7 +2669,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: Locks from application or some operation on system catalogs</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2711,7 +2711,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: ALTER TABLE, DROP TABLE, TRUNCATE, REINDEX, CLUSTER, VACUUM FULL, LOCK TABLE</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2753,7 +2753,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL statements: read bytes/s</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2795,7 +2795,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL statements: write bytes/s</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2837,7 +2837,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL statements: dirty bytes/s</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2879,7 +2879,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL statements: read io time</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2921,7 +2921,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL statements: write io time</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -2963,7 +2963,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL statements: other (mostly cpu) time</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3005,7 +3005,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: Lightweight locks</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3047,7 +3047,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: Heavyweight locks</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3089,7 +3089,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: Buffer locks</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3131,7 +3131,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: XID access</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3173,7 +3173,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: WAL access</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3215,7 +3215,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: CLOG access</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3257,7 +3257,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: Replication Locks</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3299,7 +3299,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: Buffer operations</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3341,7 +3341,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: Other operations</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3383,7 +3383,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: lock on a relation</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3425,7 +3425,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: extend a relation</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3467,7 +3467,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: lock on page</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3509,7 +3509,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: lock on a tuple</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3551,7 +3551,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: transaction to finish</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3593,7 +3593,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: virtual xid lock</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3635,7 +3635,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: speculative insertion lock</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3677,7 +3677,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: lock on database object</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3719,7 +3719,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: userlock</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3761,7 +3761,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL waits: advisory user lock</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3803,7 +3803,7 @@
                 </item>
                 <item>
                     <name>Processes: in state running</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3845,7 +3845,7 @@
                 </item>
                 <item>
                     <name>Processes: in state blocked</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3887,7 +3887,7 @@
                 </item>
                 <item>
                     <name>Processes: forkrate</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3929,7 +3929,7 @@
                 </item>
                 <item>
                     <name>CPU time spent by normal programs and daemons</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -3971,7 +3971,7 @@
                 </item>
                 <item>
                     <name>CPU time spent by nice(1)d programs</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -4013,7 +4013,7 @@
                 </item>
                 <item>
                     <name>CPU time spent by the kernel in system activities</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -4055,7 +4055,7 @@
                 </item>
                 <item>
                     <name>CPU time spent waiting for I/O operations</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -4097,7 +4097,7 @@
                 </item>
                 <item>
                     <name>CPU time spent handling interrupts</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -4139,7 +4139,7 @@
                 </item>
                 <item>
                     <name>CPU time spent handling batched interrupts</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -4181,7 +4181,7 @@
                 </item>
                 <item>
                     <name>CPU time spent Idle CPU time</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -4223,7 +4223,7 @@
                 </item>
                 <item>
                     <name>System uptime</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -4265,7 +4265,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: streaming replication lag</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -4307,7 +4307,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: wal write speed</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -4349,7 +4349,7 @@
                 </item>
                 <item>
                     <name>PostgreSQL: count of xlog files</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <inventory_link>0</inventory_link>
@@ -4393,7 +4393,7 @@
             <discovery_rules>
                 <discovery_rule>
                     <name>Database discovery</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <delay>60</delay>
@@ -4422,7 +4422,7 @@
                     <item_prototypes>
                         <item_prototype>
                             <name>Database {#DATABASE}: size</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -4464,7 +4464,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Max age (datfrozenxid) in: {#DATABASE}</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -4506,7 +4506,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Count of bloating tables in database: {#DATABASE}</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -4673,7 +4673,7 @@
                 </discovery_rule>
                 <discovery_rule>
                     <name>VFS discovery</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <delay>60</delay>
@@ -4702,7 +4702,7 @@
                     <item_prototypes>
                         <item_prototype>
                             <name>Mount point {#MOUNTPOINT}: used</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -4744,7 +4744,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Mount point {#MOUNTPOINT}: free</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -4786,7 +4786,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Mount point {#MOUNTPOINT}: free in percents</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -4828,7 +4828,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Mount point {#MOUNTPOINT}: free inodes in percent</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -4938,7 +4938,7 @@
                 </discovery_rule>
                 <discovery_rule>
                     <name>Block device discovery</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <delay>60</delay>
@@ -4967,7 +4967,7 @@
                     <item_prototypes>
                         <item_prototype>
                             <name>Block device {#BLOCKDEVICE}: utilization</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -5009,7 +5009,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Block device {#BLOCKDEVICE}: read operations</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -5051,7 +5051,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Block device {#BLOCKDEVICE}: write operations</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -5154,7 +5154,7 @@
                 </discovery_rule>
                 <discovery_rule>
                     <name>Net iface discovery</name>
-                    <type>7</type>
+                    <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <delay>60</delay>
@@ -5183,7 +5183,7 @@
                     <item_prototypes>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: RX bytes/s</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -5225,7 +5225,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: RX errors/s</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -5267,7 +5267,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: RX drops/s</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -5309,7 +5309,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: TX bytes/s</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -5351,7 +5351,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: TX errors/s</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>
@@ -5393,7 +5393,7 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: TX drops/s</name>
-                            <type>7</type>
+                            <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <inventory_link>0</inventory_link>

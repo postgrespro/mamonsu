@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        2.1.8
+Version:        2.2.0
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Thu Nov 3 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 2.2.0-1
+- change default item type to 'Zabbix trapper'
+
 * Mon Oct 31 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 2.1.8-1
 - improve report
 
