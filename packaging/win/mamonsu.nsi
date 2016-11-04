@@ -120,8 +120,8 @@ Section "${NAME} ${VERSION}" SectionMamonsu
  ${endif}
 
  SetOutPath "$INSTDIR"
- File "..\dist\service_win32.exe"
- File "..\dist\agent.exe"
+ File "..\..\dist\service_win32.exe"
+ File "..\..\dist\mamonsu.exe"
  CreateDirectory "$log_dir"
  WriteUninstaller "$INSTDIR\Uninstall.exe"
 

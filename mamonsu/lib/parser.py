@@ -109,6 +109,18 @@ Options:
     --dont-reload-postgresql
 """
 
+if platform.WINDOWS:
+    usage_msg += """
+
+AutoTune config and system:
+Command: tune
+Options:
+    -l, --log-level INFO|DEBUG|WARN
+    --dry-run
+    --disable-sudo
+    --dont-tune-pgbadger
+    --dont-reload-postgresql
+"""
 
 def print_total_help():
     print(usage_msg.format(prog=sys.argv[0]))

@@ -4,10 +4,11 @@ import logging
 import optparse
 import os
 import sys
-import pwd
+import mamonsu.lib.platform as platform
+if platform.LINUX:
+	import pwd
 
 from mamonsu import __version__
-import mamonsu.lib.platform as platform
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu.tools.tune.pgsql import AutoTunePgsl
