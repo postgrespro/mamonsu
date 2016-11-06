@@ -169,8 +169,8 @@ class AutoTunePgsl(object):
 
     def _miscellaneous(self):
         if platform.WINDOWS:
-		    self._run_query(
-            "alter system set update_process_title to off;")
+            self._run_query(
+                "alter system set update_process_title to off;")
 
     def _reload_config(self):
         if self.args.reload_config is not None:

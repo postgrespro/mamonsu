@@ -121,6 +121,7 @@ Options:
     --dont-reload-postgresql
 """
 
+
 def print_total_help():
     print(usage_msg.format(prog=sys.argv[0]))
     sys.exit(2)
