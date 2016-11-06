@@ -5,7 +5,7 @@ import optparse
 import os
 import sys
 import mamonsu.lib.platform as platform
-if platform.LINUX:
+if not platform.WINDOWS:
 	import pwd
 
 from mamonsu import __version__
