@@ -117,7 +117,6 @@ Command: tune
 Options:
     -l, --log-level INFO|DEBUG|WARN
     --dry-run
-    --disable-sudo
     --dont-tune-pgbadger
     --dont-reload-postgresql
 """
