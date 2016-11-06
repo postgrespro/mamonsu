@@ -90,7 +90,7 @@ SpaceTexts none
 ; Finish page
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_FINISHPAGE_SHOWREADME_TEXT "show config"
-!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\agent.conf"
+!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\mamonsu.conf"
 !insertmacro MUI_PAGE_FINISH
 
 ;Uninstall
@@ -122,12 +122,13 @@ Section "${NAME} ${VERSION}" SectionMamonsu
  SetOutPath "$INSTDIR"
  File "..\..\dist\service_win32.exe"
  File "..\..\dist\mamonsu.exe"
+ File "..\..\packaging\conf\template_win32.xml"
  CreateDirectory "$log_dir"
  WriteUninstaller "$INSTDIR\Uninstall.exe"
 
  ;create user
  Call CreateUser
- ;create agent.conf
+ ;create mamonsu.conf
  Call CreateConfig
  ;create service
  Call CreateService
@@ -467,11 +468,11 @@ Function CreateConfig
  ${if} $action == 'downgrade'
  ${OrIf} $action == 'upgrade'
 
-   ${if} ${FileExists} "$ext_inst_dir\agent.conf"
-     ${ConfigRead} "$ext_inst_dir\agent.conf" "file =" $0 ; put log_file_name in $0
+   ${if} ${FileExists} "$ext_inst_dir\mamonsu.conf"
+     ${ConfigRead} "$ext_inst_dir\mamonsu.conf" "file =" $0 ; put log_file_name in $0
      DetailPrint "Copying config file to new install directory ..."
-     CopyFiles "$ext_inst_dir\agent.conf" "$INSTDIR"
-     ${ConfigWrite} "$INSTDIR\agent.conf" "file = " "$log_dir\${LOG_FILE}" $0
+     CopyFiles "$ext_inst_dir\mamonsu.conf" "$INSTDIR"
+     ${ConfigWrite} "$INSTDIR\mamonsu.conf" "file = " "$log_dir\${LOG_FILE}" $0
      StrCpy $5 "exist"
      Goto recreate_config
    ${else} ;do not exist
@@ -479,9 +480,9 @@ Function CreateConfig
    ${endif}
 
  ${elseif} $action == 'reinstall'
-   ${if} ${FileExists} "$ext_inst_dir\agent.conf"
+   ${if} ${FileExists} "$ext_inst_dir\mamonsu.conf"
      #if user decided to choose different log directory while reinstalling
-     ${ConfigWrite} "$ext_inst_dir\agent.conf" "file = " "$log_dir\${LOG_FILE}" $0
+     ${ConfigWrite} "$ext_inst_dir\mamonsu.conf" "file = " "$log_dir\${LOG_FILE}" $0
      Goto cancel
    ${else}
      Goto recreate_config
@@ -510,7 +511,7 @@ Function CreateConfig
 [postgres]$\r$\nuser = $pg_user$\r$\ndatabase = $pg_db$\r$\npassword = $2$\r$\nhost = $pg_host$\r$\nport = $pg_port$\r$\n$\r$\n\
 [log]$\r$\nfile = $log_dir\${LOG_FILE}$\r$\nlevel = INFO$\r$\n'
   FileClose $0
-  Rename $1 "$INSTDIR\agent.conf"
+  Rename $1 "$INSTDIR\mamonsu.conf"
  ${endif}
 
  AccessControl::DisableFileInheritance "$INSTDIR"
@@ -537,8 +538,8 @@ Function CreateConfig
  AccessControl::SetFileOwner "$INSTDIR\service_win32.exe" "${USER}"
  AccessControl::GrantOnFile "$INSTDIR\service_win32.exe" "(S-1-3-0)" "FullAccess"
 
- AccessControl::SetFileOwner "$INSTDIR\agent.conf" "${USER}"
- AccessControl::GrantOnFile "$INSTDIR\agent.conf" "(S-1-3-0)" "FullAccess"
+ AccessControl::SetFileOwner "$INSTDIR\mamonsu.conf" "${USER}"
+ AccessControl::GrantOnFile "$INSTDIR\mamonsu.conf" "(S-1-3-0)" "FullAccess"
  cancel:
 FunctionEnd
 
@@ -659,8 +660,8 @@ Function DeleteDirectory
  ${if} $action == 'downgrade'
  ${orif} $action == 'upgrade'
    DetailPrint "Deleting old install directory ..."
-   Delete "$ext_inst_dir\agent.conf"
-   Delete "$ext_inst_dir\agent.exe"
+   Delete "$ext_inst_dir\mamonsu.conf"
+   Delete "$ext_inst_dir\mamonsu.exe"
    Delete "$ext_inst_dir\service_win32.exe"
    Delete "$ext_inst_dir\Uninstall.exe"
    compare_log_dirs:
@@ -732,8 +733,8 @@ Function un.DeleteReg
 FunctionEnd
 
 Function un.DeleteDirectory
- Delete "$INSTDIR\agent.conf"
- Delete "$INSTDIR\agent.exe"
+ Delete "$INSTDIR\mamonsu.conf"
+ Delete "$INSTDIR\mamonsu.exe"
  Delete "$INSTDIR\service_win32.exe"
  Delete "$INSTDIR\Uninstall.exe"
  Delete "$ext_log_dir\${LOG_FILE}"
