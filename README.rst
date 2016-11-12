@@ -149,6 +149,12 @@ See the `examples <https://github.com/postgrespro/mamonsu/tree/master/examples>`
 
 After add new plugin, you must to reexport template and import this file to zabbix.
 
+=========
+3rd-party
+=========
+
+* `repo mamonsu-plugins <https://github.com/tarabanton/mamonsu-plugins>`_ for skytools, nginx, rabbitmq, uwsgi, gdnsd.
+
 ====
 Run
 ====

@@ -40,3 +40,9 @@ class PgsqlPlugin(Plugin):
             raise PluginDisableException("""Disable plugin and exit, because '{0}' \
 extension is not installed. Enable it in PostgreSQL instance: '{1}', \
 if needed and restart.""".format(ext, Pooler.connection_string(db)))
+
+    def disable_and_exit_if_not_pgpro_ee(self, db=None):
+        if not Pooler.is_pgpro_ee(db):
+            raise PluginDisableException("""Disable plugin and exit, because \
+PostgresPro Enterprise Edition is not detected [instance: '{1}']
+""".format(Pooler.connection_string(db)))

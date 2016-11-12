@@ -41,11 +41,13 @@ from public.pg_buffercache""",
     def __init__(self):
         super(Pool, self).__init__()
         self.all_connections = {}
-        self._server_version = {}
-        self._mamonsu_bootstrap = {}
-        self._mamonsu_bootstrap_cache = 0
-        self._in_recovery = {}
-        self._in_recovery_cache = 0
+        self._cache = {
+            'server_version': {'storage': {}},
+            'bootstrap': {'storage': {}, 'counter': 0, 'cache': 10},
+            'recovery': {'storage': {}, 'counter': 0, 'cache': 10},
+            'pgpro': {'storage': {}},
+            'pgproee': {'storage': {}}
+        }
 
     def connection_string(self, db=None):
         self._init_conn_(db)
@@ -58,24 +60,16 @@ from public.pg_buffercache""",
         return self.all_connections[db].query(query)
 
     def server_version(self, db=None):
-        if db in self._server_version:
-            return self._server_version[db]
+        if db in self._cache['server_version']['storage']:
+            return self._cache['server_version']['storage'][db]
         if platform.PY2:
             result = self.query('show server_version', db)[0][0]
         elif platform.PY3:
             result = bytes(
                 self.query('show server_version', db)[0][0], 'utf-8')
-        self._server_version[db] = "{0}".format(result.decode('ascii'))
-        return self._server_version[db]
-
-    def in_recovery(self, db=None):
-        if (db in self._in_recovery) and (self._in_recovery_cache < 10):
-            self._in_recovery_cache += 1
-            return self._in_recovery[db]
-        self._in_recovery_cache = 0
-        self._in_recovery[db] = self.query(
-            "select pg_catalog.pg_is_in_recovery()")[0][0]
-        return self._in_recovery[db]
+        self._cache['server_version']['storage'][db] = '{0}'.format(
+            result.decode('ascii'))
+        return self.self._cache['server_version']['storage'][db]
 
     def server_version_greater(self, version, db=None):
         return self.server_version(db) >= LooseVersion(version)
@@ -83,21 +77,52 @@ from public.pg_buffercache""",
     def server_version_less(self, version, db=None):
         return self.server_version(db) <= LooseVersion(version)
 
-    def mamonsu_bootstrap(self, db=None):
-        if (db in self._mamonsu_bootstrap) and (self._mamonsu_bootstrap_cache < 10):
-            self._mamonsu_bootstrap_cache += 1
-            return self._mamonsu_bootstrap[db]
-        self._mamonsu_bootstrap_cache = 0
+    def in_recovery(self, db=None):
+        if db in self._cache['recovery']['storage']:
+            if self._cache['recovery']['counter'] < self._cache['recovery']['cache']:
+                self._cache['recovery']['counter'] += 1
+                return self._cache['recovery']['storage'][db]
+        self._cache['recovery']['counter'] = 0
+        self._cache['recovery']['storage'][db] = self.query(
+            "select pg_catalog.pg_is_in_recovery()")[0][0]
+        return self._cache['recovery']['storage'][db]
+
+    def is_bootstraped(self, db=None):
+        if db in self._cache['bootstrap']['storage']:
+            if self.cache['bootstrap']['counter'] < self._cache['bootstrap']['cache']:
+                self.cache['bootstrap']['counter'] += 1
+                return self._cache['bootstrap']['storage'][db]
+        self._cache['bootstrap']['counter'] = 0
         sql = """select count(*) from pg_catalog.pg_class
             where relname = 'mamonsu_config'"""
         result = int(self.query(sql, db)[0][0])
-        self._mamonsu_bootstrap[db] = (result == 1)
-        if self._mamonsu_bootstrap[db]:
-            self.all_connections[db].log.info("Found mamonsu bootstrap")
+        self._cache['bootstrap']['storage'][db] = (result == 1)
+        if self._cache['bootstrap']['storage'][db]:
+            self.all_connections[db].log.info('Found mamonsu bootstrap')
         else:
-            self.all_connections[db].log.info("Can't found mamonsu bootstrap")
-            self.all_connections[db].log.info("hint: run `mamonsu bootstrap` if you want to run without superuser rights")
-        return self._mamonsu_bootstrap[db]
+            self.all_connections[db].log.info('Can\'t found mamonsu bootstrap')
+            self.all_connections[db].log.info('hint: run `mamonsu bootstrap` if you want to run without superuser rights')
+        return self._cache['bootstrap']['storage'][db]
+
+    def is_pgpro(self, db=None):
+        if db in self._cache['pgpro']:
+            return self._cache['pgpro'][db]
+        try:
+            self.query('select pgpro_version()')
+            self._cache['pgpro'][db] = True
+        except:
+            self._cache['pgpro'][db] = False
+        return self._cache['pgpro'][db]
+
+    def is_pgpro_ee(self, db=None):
+        if not self.is_pgpro(self, db):
+            return False
+        if db in self._cache['pgproee']:
+            return self._cache['pgproee'][db]
+        self._cache['pgproee'][db] = (
+            self.query('select pgpro_edition()')[0][0].lower() == 'enterprise'
+        )
+        return self._cache['pgproee'][db]
 
     def extension_installed(self, ext, db=None):
         result = self.query('select count(*) from pg_catalog.pg_extension\
@@ -116,7 +141,7 @@ from public.pg_buffercache""",
         if typ not in self.SQL:
             raise LookupError("Unknown SQL type: '{0}'".format(typ))
         result = self.SQL[typ]
-        if self.mamonsu_bootstrap(db):
+        if self.is_bootstraped(db):
             return result[1]
         else:
             return result[0]
