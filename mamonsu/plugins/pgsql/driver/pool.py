@@ -89,8 +89,8 @@ from public.pg_buffercache""",
 
     def is_bootstraped(self, db=None):
         if db in self._cache['bootstrap']['storage']:
-            if self.cache['bootstrap']['counter'] < self._cache['bootstrap']['cache']:
-                self.cache['bootstrap']['counter'] += 1
+            if self._cache['bootstrap']['counter'] < self._cache['bootstrap']['cache']:
+                self._cache['bootstrap']['counter'] += 1
                 return self._cache['bootstrap']['storage'][db]
         self._cache['bootstrap']['counter'] = 0
         sql = """select count(*) from pg_catalog.pg_class
