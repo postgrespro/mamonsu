@@ -69,7 +69,7 @@ from public.pg_buffercache""",
                 self.query('show server_version', db)[0][0], 'utf-8')
         self._cache['server_version']['storage'][db] = '{0}'.format(
             result.decode('ascii'))
-        return self.self._cache['server_version']['storage'][db]
+        return self._cache['server_version']['storage'][db]
 
     def server_version_greater(self, version, db=None):
         return self.server_version(db) >= LooseVersion(version)
