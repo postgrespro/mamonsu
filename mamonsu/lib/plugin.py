@@ -4,6 +4,7 @@ import time
 import logging
 import traceback
 import sys
+import json
 
 from threading import Thread
 
@@ -78,10 +79,13 @@ class Plugin(object):
             config.set(name, x, '{0}'.format(cls.DEFAULT_CONFIG[x]))
 
     # get value from config
-    def plugin_config(self, name):
+    def plugin_config(self, name, as_json=False):
         if name not in self._plugin_config:
             return None
-        return self._plugin_config[name]
+        if as_json:
+            return json.loads(self._plugin_config[name])
+        else:
+            return self._plugin_config[name]
 
     def start(self):
         self._thread = Thread(target=self._loop)
