@@ -7,3 +7,8 @@ UNIX = LINUX or FREEBSD
 
 PY2 = (sys.version_info[0] == 2)
 PY3 = (sys.version_info[0] == 3)
+
+if PY2:
+    INTEGER_TYPES = (int, long)
+if PY3:
+    INTEGER_TYPES = int

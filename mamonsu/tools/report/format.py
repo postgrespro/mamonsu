@@ -2,6 +2,7 @@
 
 import re
 import sys
+import mamonsu.lib.platform as platform
 
 
 class color(object):
@@ -34,7 +35,7 @@ TermColor = color()
 # int (bytes) => str (human readable)
 def humansize_bytes(nbytes):
     fmt = '{0:>6} {1}'
-    if not isinstance(nbytes, int):
+    if not isinstance(nbytes, platform.INTEGER_TYPES):
         return 'ERROR'
     if nbytes == 0:
         return fmt.format(0, 'B')
