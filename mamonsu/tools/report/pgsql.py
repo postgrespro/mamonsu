@@ -102,6 +102,10 @@ select
          then pg_catalog.pg_size_pretty(pg_catalog.pg_database_size(d.datname))
          else 'No Access'
     end,
+    case when pg_catalog.has_database_privilege(d.datname, 'CONNECT')
+         then pg_catalog.pg_database_size(d.datname)::text
+         else 'No Access'
+    end,
     pg_catalog.pg_get_userbyid(d.datdba),
     pg_catalog.pg_encoding_to_char(d.encoding),
     d.datcollate,
@@ -111,8 +115,8 @@ select
     pg_catalog.shobj_description(d.oid, 'pg_database')
 from pg_catalog.pg_database d
   join pg_catalog.pg_tablespace t on d.dattablespace = t.oid
-order by 1""",
-        ('name', 'size', 'owner', 'encoding', 'collate',
+order by 2""",
+        ('name', 'size', 'size_b', 'owner', 'encoding', 'collate',
             'ctype', 'privileges', 'tablespace', 'description')
     )
 
