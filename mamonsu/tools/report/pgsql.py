@@ -2,7 +2,7 @@
 
 import logging
 import time
-
+from collections import OrderedDict
 from mamonsu.plugins.pgsql.pool import Pooler
 from mamonsu.tools.report.format import header_h1, key_val_h1, humansize
 
@@ -144,7 +144,9 @@ select
         else round(100*io.heap_blks_hit::float8/(io.heap_blks_read+io.heap_blks_hit)::float8) end as "heap_hit_perc",
 
     case coalesce(io.idx_blks_read + io.idx_blks_hit, 0) when 0 then 0
-        else round(100*io.idx_blks_hit::float8/(io.idx_blks_read + io.idx_blks_hit)::float8) end as "idx_hit_perc"
+        else round(100*io.idx_blks_hit::float8/(io.idx_blks_read + io.idx_blks_hit)::float8) end as "idx_hit_perc",
+
+    b.size as "size_b"
 
 from
     pg_catalog.pg_stat_all_tables as s
@@ -301,17 +303,21 @@ order by b.size desc
         return result
 
     def _collect_biggest(self):
-        result = {}
+        result, sizes, sorted_result = {}, {}, OrderedDict({})
         for info_dbs in Pooler.query('select datname \
                 from pg_catalog.pg_database where datistemplate = false'):
             try:
                 for info in Pooler.query(self.BigTableInfo[0], info_dbs[0]):
                     table_name = '{0}.{1}'.format(info_dbs[0], info[0])
                     result[table_name] = ''
-                    for val in info[1:]:
+                    values = info[1:]  # remove first elements (table name with schema)
+                    sizes[table_name] = values.pop()  # size in bytes in last element
+                    for val in values:
                         result[table_name] = "{0}\t\t{1}".format(
                             result[table_name], val)
             except Exception as e:
                 logging.error("Connect to db {0} error: {1}".format(
                     info_dbs[0], e))
-        return result
+        for table_name in sorted(result, key=sizes.__getitem__, reverse=True):
+            sorted_result[table_name] = result[table_name]
+        return sorted_result
