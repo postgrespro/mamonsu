@@ -33,7 +33,7 @@ TermColor = color()
 
 # int (bytes) => str (human readable)
 def humansize_bytes(nbytes):
-    fmt = '{0:6} {1}'
+    fmt = '{0:>6} {1}'
     if not isinstance(nbytes, int):
         return 'ERROR'
     if nbytes == 0:

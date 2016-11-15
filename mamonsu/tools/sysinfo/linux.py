@@ -319,7 +319,8 @@ class SysInfoLinux(object):
                 '_RAW', '_TOTAL', '_COMMITED', '_COMMITEDLIMIT',
                 '_FREE', '_SWAPUSED', '_SLAB'
                 '_SWAPTOTAL', '_CACHED', '_DIRTY', '_BUFFERS',
-                '_HUGEPAGES', '_SHMEM', '_PAGETABLES']:
+                '_HUGEPAGES_SIZE', '_HUGEPAGES_FREE',
+                '_SHMEM', '_PAGETABLES']:
             result[key] = NA
 
         if self.is_empty(data):
@@ -328,6 +329,8 @@ class SysInfoLinux(object):
         result['_RAW'] = data
         for info in re.findall(r'^(\S+)\:\s+(\d+)\s+kB$', data, re.M):
             result[info[0]] = int(info[1]) * 1024
+        for info in re.findall(r'^(\S+)\:\s+(\d+)$', data, re.M):
+            result[info[0]] = int(info[1])
         if 'MemTotal' in result:
             result['_TOTAL'] = result['MemTotal']
         if 'CommitLimit' in result:
@@ -340,8 +343,11 @@ class SysInfoLinux(object):
             result['_SWAPTOTAL'] = result['SwapTotal']
         if 'SwapTotal' in result and 'SwapFree' in result:
             result['_SWAPUSED'] = result['SwapTotal'] - result['SwapFree']
-        if 'HugePages_Total' in result:
-            result['_HUGEPAGES'] = result['HugePages_Total']
+        if 'Hugepagesize' in result:
+            if 'HugePages_Total' in result:
+                result['_HUGEPAGES_SIZE'] = result['Hugepagesize'] * result['HugePages_Total']
+            if 'HugePages_Free' in result:
+                result['_HUGEPAGES_FREE'] = result['Hugepagesize'] * result['HugePages_Free']
         if 'Cached' in result:
             result['_CACHED'] = result['Cached']
         if 'Dirty' in result:
