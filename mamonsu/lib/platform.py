@@ -11,4 +11,4 @@ PY3 = (sys.version_info[0] == 3)
 if PY2:
     INTEGER_TYPES = (int, long)
 if PY3:
-    INTEGER_TYPES = int
+    INTEGER_TYPES = int,
