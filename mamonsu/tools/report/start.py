@@ -95,8 +95,7 @@ class Args(DefaultConfig):
         group.add_option(
             '-W', '--password',
             dest='password',
-            default=self.default_user(),
-            help='password (should happen automatically) ')
+            default=self.default_user())
         parser.add_option_group(group)
 
         self.args, _ = parser.parse_args()
