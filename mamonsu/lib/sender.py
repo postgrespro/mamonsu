@@ -3,6 +3,7 @@ import json
 import time
 
 from mamonsu.lib.plugin import Plugin
+import mamonsu.lib.platform as platform
 
 
 class Sender():
@@ -25,15 +26,18 @@ class Sender():
         self._senders.append(sender)
 
     # resend all values to senders
-    def send(self, key, value, delta=None, host=None, clock=None):
+    def send(self, key, value, delta=None, host=None, clock=None, only_positive_speed=False):
 
         if clock is None:
             clock = int(time.time())
 
         hash_key = self._hash(key, host)
         if delta is not None:
-            if isinstance(value, float) or isinstance(value, int):
+            if isinstance(value, float) or isinstance(value, platform.INTEGER_TYPES):
                 if hash_key in self._last_values:
+                    if only_positive_speed and (self._last_values[hash_key][0] > value):
+                            self._last_values[hash_key] = (value, clock)
+                            return
                     last_value, last_time = self._last_values[hash_key]
                     self._last_values[hash_key] = (value, clock)
                     if delta == Plugin.DELTA.speed_per_second:

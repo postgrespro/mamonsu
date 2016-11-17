@@ -1,3 +1,9 @@
+mamonsu (2.2.2-1) stable; urgency=low
+
+  * add cfs compression plugin
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 17 Nov 2016 16:00:00 +0300
+
 mamonsu (2.2.1-1) stable; urgency=low
 
   * improve report tool

@@ -50,13 +50,13 @@ from public.pg_buffercache""",
         }
 
     def connection_string(self, db=None):
-        self._init_conn_(db)
+        self._init_connection(db)
         return self.all_connections[db].conn_str()
 
     def query(self, query, db=None):
         if db is None:
             db = self.db
-        self._init_conn_(db)
+        self._init_connection(db)
         return self.all_connections[db].query(query)
 
     def server_version(self, db=None):
@@ -115,7 +115,7 @@ from public.pg_buffercache""",
         return self._cache['pgpro'][db]
 
     def is_pgpro_ee(self, db=None):
-        if not self.is_pgpro(self, db):
+        if not self.is_pgpro(db):
             return False
         if db in self._cache['pgproee']:
             return self._cache['pgproee'][db]
@@ -149,9 +149,9 @@ from public.pg_buffercache""",
     def run_sql_type(self, typ, db=None):
         return self.query(self.get_sql(typ, db), db)
 
-    def _init_conn_(self, db):
-        conn = self.all_connections.get(db)
-        if conn is None:
-            info = self._connection_info
+    def _init_connection(self, db):
+        if db not in self.all_connections:
+            # create new connection
+            info = self.info
             info['db'] = db
             self.all_connections[db] = Connection(info)

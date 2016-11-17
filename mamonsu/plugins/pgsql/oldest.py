@@ -30,22 +30,20 @@ from pg_catalog.pg_stat_activity;
         zbx.send('pgsql.oldest[query_time]', query)
 
     def graphs(self, template):
-        graph = {
+        result = template.graph({
             'name': 'PostgreSQL oldest query running time',
             'items': [{
                 'key': 'pgsql.oldest[query_time]',
                 'color': '00CC00'
             }]
-        }
-        result = template.graph(graph)
-        graph = {
+        })
+        result += template.graph({
             'name': 'PostgreSQL age of oldest xid',
             'items': [{
                 'key': 'pgsql.oldest[xid_age]',
                 'color': '00CC00'
             }]
-        }
-        result += template.graph(graph)
+        })
         return result
 
     def items(self, template):

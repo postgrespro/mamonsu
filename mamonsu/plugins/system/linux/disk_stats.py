@@ -41,7 +41,7 @@ class DiskStats(Plugin):
                 zbx.send('system.disk.write[{0}]'.format(
                     dev), write, self.DELTA_SPEED)
                 zbx.send('system.disk.utilization[{0}]'.format(
-                    dev), ticks/10, self.DELTA_SPEED)
+                    dev), ticks / 10, self.DELTA_SPEED)
 
             zbx.send('system.disk.all_read[]', all_read, self.DELTA_SPEED)
             zbx.send('system.disk.all_write[]', all_write, self.DELTA_SPEED)

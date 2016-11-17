@@ -10,15 +10,15 @@ from mamonsu.plugins.pgsql.driver.pg8000.core import ProgrammingError
 class ConnectionInfo(object):
 
     def __init__(self, info={}):
-        self._connection_info = info
-        self.host = info.get('host') or os.environ.get('PGHOST')
-        self.port = info.get('port') or int(os.environ.get('PGPORT') or 5432)
-        self.user = info.get('user') or os.environ.get('PGUSER')
-        self.passwd = info.get('passwd') or os.environ.get('PGPASSWORD')
-        self.db = info.get('db') or os.environ.get('PGDATABASE')
-        self.timeout = info.get('timeout') or int(
+        self.info = info
+        self.host = self.info.get('host') or os.environ.get('PGHOST')
+        self.port = self.info.get('port') or int(os.environ.get('PGPORT') or 5432)
+        self.user = self.info.get('user') or os.environ.get('PGUSER')
+        self.passwd = self.info.get('passwd') or os.environ.get('PGPASSWORD')
+        self.db = self.info.get('db') or os.environ.get('PGDATABASE')
+        self.timeout = self.info.get('timeout') or int(
             os.environ.get('PGTIMEOUT') or 1)
-        self.appname = info.get('appname') or os.environ.get('PGAPPNAME')
+        self.appname = self.info.get('appname') or os.environ.get('PGAPPNAME')
         self.log = logging.getLogger('PGSQL-({0})'.format(self.conn_str()))
 
     def conn_str(self):
