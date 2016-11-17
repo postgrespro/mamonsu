@@ -6,7 +6,7 @@ from .pool import Pooler
 
 class Cfs(Plugin):
 
-    Interval = 5 * 60
+    Interval = 60
 
     DEFAULT_CONFIG = {'force_enable': str(False)}
 
@@ -36,9 +36,9 @@ where c.reltablespace in (select oid from pg_catalog.pg_tablespace where spcopti
 
     activity_sql = """
 select
-    cfs_gc_activity_processed_bytes(), -- writed
+    cfs_gc_activity_processed_bytes(), -- written
     cfs_gc_activity_processed_pages() * 8 * 1024, -- scanned
-    cfs_gc_activity_processed_files(), -- writed
+    cfs_gc_activity_processed_files(), -- written
     cfs_gc_activity_scanned_files(); -- scanned
 """
 
@@ -50,27 +50,27 @@ select
             self.disable_and_exit_if_not_pgpro_ee()
 
         relations, compressed_size, non_compressed_size = [], 0, 0
-        for db in Pooler.databases:
+        for db in Pooler.databases():
             for row in Pooler.query(self.compressed_ratio_sql, db):
                 relation_name = '{0}.{1}'.format(db, row[0])
                 relations.append({'{#COMPRESSED_RELATION}': relation_name})
                 compressed_size += row[2]
                 non_compressed_size += row[2] * row[1]
-                zbx.send('pgsql.cfs.relation[{0}]'.format(row[0]), row[1])
+                zbx.send('pgsql.cfs.compress_ratio[{0}]'.format(relation_name), row[1])
         zbx.send('pgsql.cfs.discovery_compressed_relations[]', zbx.json({'data': relations}))
         zbx.send('pgsql.cfs.activity[total_compress_ratio]', non_compressed_size / compressed_size)
         del(relations, compressed_size, non_compressed_size)
 
         info = Pooler.query(self.activity_sql)[0]
-        zbx.send('pgsql.cfs.activity[writed_bytes]', info[0], delta=self.DELTA_SPEED, only_positive_speed=True)
+        zbx.send('pgsql.cfs.activity[written_bytes]', info[0], delta=self.DELTA_SPEED, only_positive_speed=True)
         zbx.send('pgsql.cfs.activity[scanned_bytes]', info[1], delta=self.DELTA_SPEED, only_positive_speed=True)
 
         # calculate current compress ratio
-        if ('writed_bytes' in self.prev) and ('scanned_bytes' in self.prev):
-            if info[0] > self.prev['writed_bytes'] and info[1] > self.prev['scanned_bytes']:
-                val = (self.prev['scanned_bytes'] - info[1]) / ((self.prev['writed_bytes'] - info[0]) * self.Interval)
+        if ('written_bytes' in self.prev) and ('scanned_bytes' in self.prev):
+            if info[0] > self.prev['written_bytes'] and info[1] > self.prev['scanned_bytes']:
+                val = (self.prev['scanned_bytes'] - info[1]) / ((self.prev['written_bytes'] - info[0]) * self.Interval)
                 zbx.send('pgsql.cfs.activity[current_compress_ratio]', val)
-        self.prev['writed_bytes'] = info[0]
+        self.prev['written_bytes'] = info[0]
         self.prev['scanned_bytes'] = info[1]
 
         zbx.send('pgsql.cfs.activity[compressed_files]', info[2], delta=self.DELTA_SPEED, only_positive_speed=True)
@@ -78,11 +78,11 @@ select
 
     def items(self, template):
         return template.item({
-            'name': 'PostgreSQL cfs compression: Writed byte/s',
-            'key': 'pgsql.cfs.activity[writed_bytes]',
+            'name': 'PostgreSQL cfs compression: written byte/s',
+            'key': 'pgsql.cfs.activity[written_bytes]',
             'delay': self.Interval
         }) + template.item({
-            'name': 'PostgreSQL cfs compression: Scanned byte/s',
+            'name': 'PostgreSQL cfs compression: scanned byte/s',
             'key': 'pgsql.cfs.activity[scanned_bytes]',
             'delay': self.Interval
         }) + template.item({
@@ -119,9 +119,16 @@ select
             }]
         })
         result += template.graph({
-            'name': 'PostgreSQL cfs compression: writed bytes',
+            'name': 'PostgreSQL cfs compression: written bytes',
             'items': [{
-                'key': 'pgsql.cfs.activity[writed_bytes]',
+                'key': 'pgsql.cfs.activity[written_bytes]',
+                'color': '00CC00'
+            }]
+        })
+        result += template.graph({
+            'name': 'PostgreSQL cfs compression: total ratio',
+            'items': [{
+                'key': 'pgsql.cfs.activity[total_compress_ratio]',
                 'color': '00CC00'
             }]
         })
@@ -134,17 +141,17 @@ select
             'filter': '{#COMPRESSED_RELATION}:.*'
         }
         items = [
-            {'key': 'pgsql.cfs.relation[{#COMPRESSED_RELATION}]',
-                'name': 'Relation {#COMPRESSED_RELATION}: compression ratio',
+            {'key': 'pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]',
+                'name': 'Relation {#COMPRESSED_RELATION}: compress ratio',
                 'delay': self.Interval}
         ]
         graphs = [
             {
-                'name': 'Relation {#COMPRESSED_RELATION}: compression ratio',
+                'name': 'Relation {#COMPRESSED_RELATION}: compress ratio',
                 'delay': self.Interval,
                 'items': [
                     {'color': '00CC00',
-                        'key': 'pgsql.cfs.relation[{#COMPRESSED_RELATION}]'}]
+                        'key': 'pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]'}]
             },
         ]
         return template.discovery_rule(rule=rule, items=items, graphs=graphs)
