@@ -288,7 +288,7 @@
                     <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
-                    <units/>
+                    <units>b</units>
                     <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
@@ -330,7 +330,7 @@
                     <value_type>0</value_type>
                     <allowed_hosts/>
                     <valuemap/>
-                    <units/>
+                    <units>b</units>
                     <delta>0</delta>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
@@ -358,7 +358,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL cfs compression: compressed files/s</name>
+                    <name>PostgreSQL cfs compression: compressed files</name>
                     <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -400,7 +400,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>PostgreSQL cfs compression: scanned files/s</name>
+                    <name>PostgreSQL cfs compression: scanned files</name>
                     <type>2</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -3801,7 +3801,7 @@
                             <history>7</history>
                             <trends>365</trends>
                             <status>0</status>
-                            <delay>60</delay>
+                            <delay>600</delay>
                             <value_type>0</value_type>
                             <allowed_hosts/>
                             <valuemap/>
