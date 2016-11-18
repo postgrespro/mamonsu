@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/bash -ex
 
 export TESTDIR=$(dirname $0)
 export ZABBIX_USER=Admin
@@ -23,10 +23,10 @@ su postgres -c '/usr/pgsql-9.5/bin/pg_ctl start -w -D /var/lib/pgsql/9.5/data'
 echo "shared_preload_libraries = '\"\$libdir/pg_stat_statements\"'" > /var/lib/pgsql/9.5/data/postgresql.auto.conf
 mamonsu tune
 su postgres -c '/usr/pgsql-9.5/bin/pg_ctl restart -w -D /var/lib/pgsql/9.5/data'
-grep "shared_preload_libraries \= '\"\$libdir/pg_stat_statements\", pg_buffercache'" /var/lib/pgsql/9.5/data/postgresql.auto.conf
+grep "shared_preload_libraries \= '\"\$libdir/pg_stat_statements\", pg_buffercache'" /var/lib/pgsql/9.5/data/postgresql.auto.conf || (cat /var/lib/pgsql/9.5/data/postgresql.auto.conf && exit 1)
 
 # mamonsu report
-(mamonsu report | grep version | grep 'PostgreSQL 9.5') || exit 1
+(mamonsu report | grep version | grep 'PostgreSQL 9.5') || exit 2
 
 # export config
 cat <<EOF > /etc/mamonsu/plugins/def_conf_test.py
@@ -44,14 +44,14 @@ class DefConfTest(Plugin):
         os.system("touch /tmp/extenal_plugin_is_called")
 EOF
 mamonsu export config /tmp/config
-grep external_plugin_config /tmp/config || exit 2
+grep external_plugin_config /tmp/config || exit 3
 sed -i 's|.*max_checkpoint_by_wal_in_hour =.*|max_checkpoint_by_wal_in_hour = 5555555555555|g' /tmp/config
 
 # write zabbix template
 mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME -c /tmp/config
-grep 5555555555555 /tmp/template.xml || exit 3
-grep 'pgsql\.uptime\[\]' /tmp/template.xml || exit 3
-grep 'system\.disk\.all_read' /tmp/template.xml || exit 3
+grep 5555555555555 /tmp/template.xml || exit 4
+grep 'pgsql\.uptime\[\]' /tmp/template.xml || exit 4
+grep 'system\.disk\.all_read' /tmp/template.xml || exit 4
 
 # test export config
 cat <<EOF > /etc/mamonsu/agent.conf
@@ -68,7 +68,7 @@ enabled = False
 config = external_plugin_config2
 EOF
 mamonsu export config /tmp/config -a /etc/mamonsu/plugins -c /etc/mamonsu/agent.conf
-grep external_plugin_config2 /tmp/config || exit 2
+grep external_plugin_config2 /tmp/config || exit 5
 
 # install zabbix
 yum install -y http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm
@@ -148,7 +148,7 @@ mamonsu bootstrap -U postgres mamonsu
 sleep 125
 
 # check external plugin is worked
-file /tmp/extenal_plugin_is_called || exit 4
+file /tmp/extenal_plugin_is_called || exit 6
 
 # check metric from agent
 mamonsu agent -c /etc/mamonsu/agent.conf version
@@ -156,16 +156,16 @@ mamonsu agent metric-get system.disk.all_read[] -c /etc/mamonsu/agent.conf
 mamonsu agent -c /etc/mamonsu/agent.conf metric-list | grep system
 
 # metric log
-grep utilization /tmp/localhost.log || exit 5
-grep 'pgsql\.uptime' /tmp/localhost.log || exit 5
+grep utilization /tmp/localhost.log || exit 7
+grep 'pgsql\.uptime' /tmp/localhost.log || exit 7
 
 # error in zabbix server
-(mamonsu zabbix item error $ZABBIX_CLIENT_HOST | grep ZBX_NOTSUPPORTED) && exit 6
+(mamonsu zabbix item error $ZABBIX_CLIENT_HOST | grep ZBX_NOTSUPPORTED) && exit 8
 
 # other metric in zabbix server
-(mamonsu zabbix item lastvalue $ZABBIX_CLIENT_HOST | grep uptime) || exit 7
+(mamonsu zabbix item lastvalue $ZABBIX_CLIENT_HOST | grep uptime) || exit 9
 
 # all plugin alive, exclude pg_wait_sampling
-(grep -v 'PGWAITSAMPLING' /var/log/mamonsu/agent.log | grep -i 'catch error') && exit 8
+(grep -v 'PGWAITSAMPLING' /var/log/mamonsu/agent.log | grep -i 'catch error') && exit 10
 
 exit 0
