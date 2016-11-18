@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import logging
+import os
+import re
 
 import mamonsu.lib.platform as platform
 from mamonsu.plugins.pgsql.pool import Pooler
@@ -67,10 +69,18 @@ class AutoTunePgsl(object):
         else:
             libraries = libraries.split(',')
             libraries = [ext.strip() for ext in libraries]
-            if needed_libraries not in libraries:
-                for ext in needed_libraries:
-                    if ext not in libraries:
-                        libraries.append(ext)
+            for candidate_ext in needed_libraries:
+                extension_found = False
+                for installed_ext in libraries:
+                    # $dir/ext => ext
+                    installed_ext = os.path.basename(installed_ext)
+                    installed_ext = re.sub('\.so$', '', installed_ext)
+                    installed_ext = re.sub('\.dll$', '', installed_ext)
+                    # if any found
+                    if installed_ext == candidate_ext:
+                        extension_found = True
+                if not extension_found:
+                    libraries.append(candidate_ext)
         libraries = ','.join(libraries)
         self._run_query(
             "alter system set shared_preload_libraries to {0};".format(
