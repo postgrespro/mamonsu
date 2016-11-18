@@ -21,6 +21,7 @@ su postgres -c '/usr/pgsql-9.5/bin/pg_ctl start -w -D /var/lib/pgsql/9.5/data'
 
 # mamonsu tune
 echo "shared_preload_libraries = '\"\$libdir/pg_stat_statements\"'" > /var/lib/pgsql/9.5/data/postgresql.auto.conf
+su postgres -c '/usr/pgsql-9.5/bin/pg_ctl restart -w -D /var/lib/pgsql/9.5/data'
 mamonsu tune
 su postgres -c '/usr/pgsql-9.5/bin/pg_ctl restart -w -D /var/lib/pgsql/9.5/data'
 grep "shared_preload_libraries \= '\"\$libdir/pg_stat_statements\", pg_buffercache'" /var/lib/pgsql/9.5/data/postgresql.auto.conf || (cat /var/lib/pgsql/9.5/data/postgresql.auto.conf && exit 1)
