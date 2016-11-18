@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        2.2.4
+Version:        2.2.5
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Fri Nov 18 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 2.2.5-1
+- memory and cfs plugin fixes
+
 * Thu Nov 17 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 2.2.4-1
 - add cfs compression plugin
 

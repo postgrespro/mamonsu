@@ -81,7 +81,8 @@ class Memory(Plugin):
             result += template.item({
                 'name': '{0}'.format(item[2]),
                 'key': 'system.memory[{0}]'.format(item[0]),
-                'units': 'b'
+                'units': Plugin.UNITS.bytes,
+                'value_type': Plugin.VALUE_TYPE.numeric_unsigned
             })
         return result
 

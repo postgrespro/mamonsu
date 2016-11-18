@@ -43,6 +43,7 @@ if needed and restart.""".format(ext, Pooler.connection_string(db)))
 
     def disable_and_exit_if_not_pgpro_ee(self, db=None):
         if not Pooler.is_pgpro_ee(db):
+            self.disable()
             raise PluginDisableException("""Disable plugin and exit, because \
 PostgresPro Enterprise Edition is not detected [instance: '{0}']
 """.format(Pooler.connection_string(db)))
