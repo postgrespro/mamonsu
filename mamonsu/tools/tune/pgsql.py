@@ -43,7 +43,7 @@ class AutoTunePgsl(object):
 
         if 'pg_stat_statements' in extensions:
             needed_libraries.append('pg_stat_statements')
-        elif 'pg_buffercache' in extensions:
+        if 'pg_buffercache' in extensions:
             needed_libraries.append('pg_buffercache')
         else:
             logging.warning("Please install 'contrib' modules: "
@@ -68,7 +68,7 @@ class AutoTunePgsl(object):
             libraries = needed_libraries
         else:
             libraries = libraries.split(',')
-            libraries = [ext.strip() for ext in libraries]
+            libraries = [ext.strip().strip('"') for ext in libraries]
             for candidate_ext in needed_libraries:
                 extension_found = False
                 for installed_ext in libraries:
@@ -81,7 +81,8 @@ class AutoTunePgsl(object):
                         extension_found = True
                 if not extension_found:
                     libraries.append(candidate_ext)
-        libraries = ','.join(libraries)
+        libraries = ["'{0}'".format(lib) for lib in libraries]
+        libraries = ', '.join(libraries)
         self._run_query(
             "alter system set shared_preload_libraries to {0};".format(
                 libraries))
