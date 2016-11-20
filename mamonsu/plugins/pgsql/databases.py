@@ -36,7 +36,7 @@ class Databases(Plugin):
         del dbs, bloat_count
 
         result = Pooler.run_sql_type('count_autovacuum')
-        zbx.send('pgsql.autovacumm.count[]', int(result[0][0]) - 1)
+        zbx.send('pgsql.autovacumm.count[]', int(result[0][0]))
 
     def items(self, template):
         return template.item({

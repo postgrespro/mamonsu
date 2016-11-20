@@ -20,8 +20,7 @@ class Xlog(Plugin):
             result = Pooler.query("""
                 select pg_catalog.pg_xlog_location_diff
                     (pg_catalog.pg_current_xlog_location(),'0/00000000')""")
-            zbx.send(
-                'pgsql.wal.write[]', float(result[0][0]), self.DELTA_SPEED)
+            zbx.send('pgsql.wal.write[]', float(result[0][0]), self.DELTA_SPEED)
         # count of xlog files
         result = Pooler.run_sql_type('count_xlog_files')
         zbx.send('pgsql.wal.count[]', int(result[0][0]))
