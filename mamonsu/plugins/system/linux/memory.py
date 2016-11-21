@@ -58,7 +58,7 @@ class Memory(Plugin):
                 data = line.split()
                 key, val = data[0], data[1]
                 key = key.split(':')[0]
-                meminfo[key] = float(val) * 1024
+                meminfo[key] = int(val) * 1024
 
         for item in self.Items:
             zbx_key, meminfo_key = item[0], item[1]
