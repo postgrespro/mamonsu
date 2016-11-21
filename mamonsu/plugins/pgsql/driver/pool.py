@@ -40,7 +40,7 @@ from public.pg_buffercache""",
 
     def __init__(self):
         super(Pool, self).__init__()
-        self.all_connections = {}
+        self._connections = {}
         self._cache = {
             'server_version': {'storage': {}},
             'bootstrap': {'storage': {}, 'counter': 0, 'cache': 10},
@@ -49,15 +49,19 @@ from public.pg_buffercache""",
             'pgproee': {'storage': {}}
         }
 
+    def get_with_default_db(self, db=None):
+        if db is None:
+            return self.default_db
+        return db
+
     def connection_string(self, db=None):
-        self._init_connection(db)
-        return self.all_connections[db].conn_str()
+        db = self.get_with_default_db(db)
+        return self._connections[db]._connection_string()
 
     def query(self, query, db=None):
-        if db is None:
-            db = self.db
+        db = self.get_with_default_db(db)
         self._init_connection(db)
-        return self.all_connections[db].query(query)
+        return self._connections[db].query(query)
 
     def server_version(self, db=None):
         if db in self._cache['server_version']['storage']:
@@ -65,8 +69,7 @@ from public.pg_buffercache""",
         if platform.PY2:
             result = self.query('show server_version', db)[0][0]
         elif platform.PY3:
-            result = bytes(
-                self.query('show server_version', db)[0][0], 'utf-8')
+            result = bytes(self.query('show server_version', db)[0][0], 'utf-8')
         self._cache['server_version']['storage'][db] = '{0}'.format(
             result.decode('ascii'))
         return self._cache['server_version']['storage'][db]
@@ -84,7 +87,7 @@ from public.pg_buffercache""",
                 return self._cache['recovery']['storage'][db]
         self._cache['recovery']['counter'] = 0
         self._cache['recovery']['storage'][db] = self.query(
-            "select pg_catalog.pg_is_in_recovery()")[0][0]
+            "select pg_catalog.pg_is_in_recovery()", db)[0][0]
         return self._cache['recovery']['storage'][db]
 
     def is_bootstraped(self, db=None):
@@ -98,10 +101,10 @@ from public.pg_buffercache""",
         result = int(self.query(sql, db)[0][0])
         self._cache['bootstrap']['storage'][db] = (result == 1)
         if self._cache['bootstrap']['storage'][db]:
-            self.all_connections[db].log.info('Found mamonsu bootstrap')
+            self._connections[db].log.info('Found mamonsu bootstrap')
         else:
-            self.all_connections[db].log.info('Can\'t found mamonsu bootstrap')
-            self.all_connections[db].log.info('hint: run `mamonsu bootstrap` if you want to run without superuser rights')
+            self._connections[db].log.info('Can\'t found mamonsu bootstrap')
+            self._connections[db].log.info('hint: run `mamonsu bootstrap` if you want to run without superuser rights')
         return self._cache['bootstrap']['storage'][db]
 
     def is_pgpro(self, db=None):
@@ -150,8 +153,9 @@ from public.pg_buffercache""",
         return self.query(self.get_sql(typ, db), db)
 
     def _init_connection(self, db):
-        if db not in self.all_connections:
+        db = self.get_with_default_db(db)
+        if db not in self._connections:
             # create new connection
-            info = self.info
-            info['db'] = db
-            self.all_connections[db] = Connection(info)
+            connection_info = self.connection_info
+            connection_info['db'] = db
+            self._connections[db] = Connection(connection_info)

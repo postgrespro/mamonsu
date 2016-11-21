@@ -9,21 +9,21 @@ from mamonsu.plugins.pgsql.driver.pg8000.core import ProgrammingError
 
 class ConnectionInfo(object):
 
-    def __init__(self, info={}):
-        self.info = info
-        self.host = self.info.get('host') or os.environ.get('PGHOST')
-        self.port = self.info.get('port') or int(os.environ.get('PGPORT') or 5432)
-        self.user = self.info.get('user') or os.environ.get('PGUSER')
-        self.passwd = self.info.get('passwd') or os.environ.get('PGPASSWORD')
-        self.db = self.info.get('db') or os.environ.get('PGDATABASE')
-        self.timeout = self.info.get('timeout') or int(
+    def __init__(self, connection_info={}):
+        self.connection_info = connection_info
+        self.host = self.connection_info.get('host') or os.environ.get('PGHOST')
+        self.port = self.connection_info.get('port') or int(os.environ.get('PGPORT') or 5432)
+        self.user = self.connection_info.get('user') or os.environ.get('PGUSER')
+        self.passwd = self.connection_info.get('passwd') or os.environ.get('PGPASSWORD')
+        self.default_db = self.connection_info.get('db') or os.environ.get('PGDATABASE')
+        self.timeout = self.connection_info.get('timeout') or int(
             os.environ.get('PGTIMEOUT') or 1)
-        self.appname = self.info.get('appname') or os.environ.get('PGAPPNAME')
-        self.log = logging.getLogger('PGSQL-({0})'.format(self.conn_str()))
+        self.appname = self.connection_info.get('appname') or os.environ.get('PGAPPNAME')
+        self.log = logging.getLogger('PGSQL-({0})'.format(self._connection_string()))
 
-    def conn_str(self):
+    def _connection_string(self):
         return 'host={0} db={1} user={2} port={3}'.format(
-            self.host, self.db, self.user, self.port)
+            self.host, self.default_db, self.user, self.port)
 
 
 class Connection(ConnectionInfo):
@@ -74,7 +74,7 @@ class Connection(ConnectionInfo):
             unix_sock=unix_sock,
             host=host,
             port=self.port,
-            database=self.db,
+            database=self.default_db,
             application_name=self.appname
         )
         self.log.debug('connected')
