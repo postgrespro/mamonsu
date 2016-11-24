@@ -31,13 +31,13 @@ class DiskStats(Plugin):
                 if self.OnlyPhysicalDevices and re.search('\d+$', dev):
                     continue
                 val = [int(x) for x in val.split()]
-                read_op, read_sc, write_ops, write_sc, ticks = val[0], val[2], val[4], val[6], val[9]
+                read_op, read_sc, write_op, write_sc, ticks = val[0], val[2], val[4], val[6], val[9]
                 read_b, write_b = read_sc * 512, write_sc * 512  # https://github.com/sysstat/sysstat/blob/v11.5.2/iostat.c#L940
 
                 zbx.send('system.disk.read[{0}]'.format(
                     dev), read_op, self.DELTA_SPEED)
                 zbx.send('system.disk.write[{0}]'.format(
-                    dev), write_ops, self.DELTA_SPEED)
+                    dev), write_op, self.DELTA_SPEED)
                 zbx.send('system.disk.read_b[{0}]'.format(
                     dev), read_b, self.DELTA_SPEED)
                 zbx.send('system.disk.write_b[{0}]'.format(
@@ -46,7 +46,7 @@ class DiskStats(Plugin):
                     dev), ticks / 10, self.DELTA_SPEED)
 
                 all_read_op += read_op
-                all_write_op += write_ops
+                all_write_op += write_op
                 all_read_b += read_b
                 all_write_b += write_b
                 devices.append({'{#BLOCKDEVICE}': dev})
