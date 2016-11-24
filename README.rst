@@ -288,6 +288,8 @@ Metrics: Linux system
     'Block device {#BLOCKDEVICE}: utilization': system.disk.utilization[{#BLOCKDEVICE}]
     'Block device {#BLOCKDEVICE}: read operations': system.disk.read[{#BLOCKDEVICE}]
     'Block device {#BLOCKDEVICE}: write operations': system.disk.write[{#BLOCKDEVICE}]
+    'Block device {#BLOCKDEVICE}: read byte/s': system.disk.read_b[{#BLOCKDEVICE}]
+    'Block device {#BLOCKDEVICE}: write byte/s': system.disk.write_b[{#BLOCKDEVICE}]
     'Net device {#NETDEVICE}: RX bytes/s': system.net.rx_bytes[{#NETDEVICE}]
     'Net device {#NETDEVICE}: RX errors/s': system.net.rx_errors[{#NETDEVICE}]
     'Net device {#NETDEVICE}: RX drops/s': system.net.rx_drops[{#NETDEVICE}]

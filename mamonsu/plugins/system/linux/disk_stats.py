@@ -19,7 +19,7 @@ class DiskStats(Plugin):
         with open('/proc/diskstats', 'r') as f:
 
             devices = []
-            all_read, all_write = 0, 0
+            all_read_op, all_read_b, all_write_op, all_write_b, = 0, 0, 0, 0
 
             for line in f:
                 if re.search('(ram|loop)', line):
@@ -31,20 +31,30 @@ class DiskStats(Plugin):
                 if self.OnlyPhysicalDevices and re.search('\d+$', dev):
                     continue
                 val = [int(x) for x in val.split()]
-                read, write, ticks = val[0], val[4], val[9]
-                all_read += read
-                all_write += write
-                devices.append({'{#BLOCKDEVICE}': dev})
+                read_op, read_sc, write_ops, write_sc, ticks = val[0], val[2], val[4], val[6], val[9]
+                read_b, write_b = read_sc * 512, write_sc * 512  # https://github.com/sysstat/sysstat/blob/v11.5.2/iostat.c#L940
 
                 zbx.send('system.disk.read[{0}]'.format(
-                    dev), read, self.DELTA_SPEED)
+                    dev), read_op, self.DELTA_SPEED)
                 zbx.send('system.disk.write[{0}]'.format(
-                    dev), write, self.DELTA_SPEED)
+                    dev), write_ops, self.DELTA_SPEED)
+                zbx.send('system.disk.read_b[{0}]'.format(
+                    dev), read_b, self.DELTA_SPEED)
+                zbx.send('system.disk.write_b[{0}]'.format(
+                    dev), write_b, self.DELTA_SPEED)
                 zbx.send('system.disk.utilization[{0}]'.format(
                     dev), ticks / 10, self.DELTA_SPEED)
 
-            zbx.send('system.disk.all_read[]', all_read, self.DELTA_SPEED)
-            zbx.send('system.disk.all_write[]', all_write, self.DELTA_SPEED)
+                all_read_op += read_op
+                all_write_op += write_ops
+                all_read_b += read_b
+                all_write_b += write_b
+                devices.append({'{#BLOCKDEVICE}': dev})
+
+            zbx.send('system.disk.all_read[]', all_read_op, self.DELTA_SPEED)
+            zbx.send('system.disk.all_write[]', all_write_op, self.DELTA_SPEED)
+            zbx.send('system.disk.all_read_b[]', all_read_b, self.DELTA_SPEED)
+            zbx.send('system.disk.all_write_b[]', all_write_b, self.DELTA_SPEED)
             zbx.send('system.disk.discovery[]', zbx.json({'data': devices}))
 
     def items(self, template):
@@ -54,17 +64,29 @@ class DiskStats(Plugin):
         }) + template.item({
             'name': 'Block devices: write requests',
             'key': 'system.disk.all_write[]'
+        }) + template.item({
+            'name': 'Block devices: read byte/s',
+            'key': 'system.disk.all_read_b[]'
+        }) + template.item({
+            'name': 'Block devices: write byte/s',
+            'key': 'system.disk.all_write_b[]'
         })
 
     def graphs(self, template):
-        items = [
-            {'key': 'system.disk.all_read[]', 'color': 'CC0000'},
-            {'key': 'system.disk.all_write[]', 'color': '0000CC'}
-        ]
         graph = {
             'name': 'Block devices: read/write operations',
-            'items': items}
-        return template.graph(graph)
+            'items': [
+                {'key': 'system.disk.all_read[]', 'color': 'CC0000'},
+                {'key': 'system.disk.all_write[]', 'color': '0000CC'}]
+        }
+        result = template.graph(graph)
+        graph = {
+            'name': 'Block devices: read/write bytes',
+            'items': [
+                {'key': 'system.disk.all_read_b[]', 'color': 'CC0000'},
+                {'key': 'system.disk.all_write_b[]', 'color': '0000CC'}]
+        }
+        return result + template.graph(graph)
 
     def discovery_rules(self, template):
 
@@ -84,16 +106,36 @@ class DiskStats(Plugin):
                 'name': 'Block device {#BLOCKDEVICE}: read operations'},
             {
                 'key': 'system.disk.write[{#BLOCKDEVICE}]',
-                'name': 'Block device {#BLOCKDEVICE}: write operations'}]
+                'name': 'Block device {#BLOCKDEVICE}: write operations'},
+            {
+                'key': 'system.disk.read_b[{#BLOCKDEVICE}]',
+                'name': 'Block device {#BLOCKDEVICE}: read byte/s',
+                'units': Plugin.UNITS.bytes},
+            {
+                'key': 'system.disk.write_b[{#BLOCKDEVICE}]',
+                'name': 'Block device {#BLOCKDEVICE}: write byte/s',
+                'units': Plugin.UNITS.bytes}]
 
         graphs = [{
-            'name': 'Block device overview: {#BLOCKDEVICE}',
+            'name': 'Block device overview: {#BLOCKDEVICE} operations',
             'items': [{
                     'color': 'CC0000',
                     'key': 'system.disk.read[{#BLOCKDEVICE}]'},
                 {
                     'color': '0000CC',
                     'key': 'system.disk.write[{#BLOCKDEVICE}]'},
+                {
+                    'yaxisside': 1,
+                    'color': '00CC00',
+                    'key': 'system.disk.utilization[{#BLOCKDEVICE}]'}]},
+                  {
+            'name': 'Block device overview: {#BLOCKDEVICE} byte/s',
+            'items': [{
+                    'color': 'CC0000',
+                    'key': 'system.disk.read_b[{#BLOCKDEVICE}]'},
+                {
+                    'color': '0000CC',
+                    'key': 'system.disk.write_b[{#BLOCKDEVICE}]'},
                 {
                     'yaxisside': 1,
                     'color': '00CC00',
