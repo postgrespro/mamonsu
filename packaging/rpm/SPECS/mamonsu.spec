@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        2.2.7
+Version:        2.2.8
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Nov 28 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 2.2.8-1
+- fix double connection
+
 * Thu Nov 24 2016 Dmitry Vasilyev <d.vasilyev@postgrespro.ru> - 2.2.7-1
 - add new metrics
 

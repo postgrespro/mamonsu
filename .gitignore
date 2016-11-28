@@ -1,6 +1,7 @@
 *.pyc
 *.egg-info
 *.swp
+*.idea
 __pycache__
 .ropeproject
 

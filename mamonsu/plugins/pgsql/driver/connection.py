@@ -9,27 +9,37 @@ from mamonsu.plugins.pgsql.driver.pg8000.core import ProgrammingError
 
 class ConnectionInfo(object):
 
-    def __init__(self, connection_info={}):
-        self.connection_info = connection_info
-        self.host = self.connection_info.get('host') or os.environ.get('PGHOST')
-        self.port = self.connection_info.get('port') or int(os.environ.get('PGPORT') or 5432)
-        self.user = self.connection_info.get('user') or os.environ.get('PGUSER')
-        self.passwd = self.connection_info.get('passwd') or os.environ.get('PGPASSWORD')
-        self.default_db = self.connection_info.get('db') or os.environ.get('PGDATABASE')
-        self.timeout = self.connection_info.get('timeout') or int(
+    def __init__(self, connection_hash={}):
+        self.host = connection_hash.get('host') or os.environ.get('PGHOST')
+        self.port = connection_hash.get('port') or int(os.environ.get('PGPORT') or 5432)
+        self.user = connection_hash.get('user') or os.environ.get('PGUSER')
+        self.passwd = connection_hash.get('passwd') or os.environ.get('PGPASSWORD')
+        self.db = connection_hash.get('db') or os.environ.get('PGDATABASE')
+        self.timeout = connection_hash.get('timeout') or int(
             os.environ.get('PGTIMEOUT') or 1)
-        self.appname = self.connection_info.get('appname') or os.environ.get('PGAPPNAME')
-        self.log = logging.getLogger('PGSQL-({0})'.format(self._connection_string()))
+        self.appname = connection_hash.get('appname') or os.environ.get('PGAPPNAME')
+        self.log = logging.getLogger('PGSQL-({0})'.format(self.to_string()))
 
-    def _connection_string(self):
+    def to_string(self):
         return 'host={0} db={1} user={2} port={3}'.format(
-            self.host, self.default_db, self.user, self.port)
+            self.host, self.db, self.user, self.port)
+
+    def get_hash(self):
+        return {
+            'host': self.host,
+            'port': self.port,
+            'user': self.user,
+            'passwd': self.user,
+            'db': self.db,
+            'timeout': self.timeout,
+            'appname': self.appname
+        }
 
 
 class Connection(ConnectionInfo):
 
     def __init__(self, info={}):
-        super(Connection, self).__init__()
+        super(Connection, self).__init__(info)
         self.lock = threading.Lock()
         self.conn = None
         self.connected = False
@@ -74,7 +84,7 @@ class Connection(ConnectionInfo):
             unix_sock=unix_sock,
             host=host,
             port=self.port,
-            database=self.default_db,
+            database=self.db,
             application_name=self.appname
         )
         self.log.debug('connected')
