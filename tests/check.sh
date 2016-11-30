@@ -40,8 +40,8 @@ class DefConfTest(Plugin):
         'config': 'external_plugin_config',
     }
 
-    def run(self, zbx):
-        self.log.error(self.plugin_config('config'))
+    def run(cls, zbx):
+        cls.log.error(cls.plugin_config('config'))
         os.system("touch /tmp/extenal_plugin_is_called")
 EOF
 mamonsu export config /tmp/config
@@ -96,12 +96,12 @@ cat <<EOF > /usr/share/zabbix/conf/zabbix.conf.php
 <?php
 global \$DB;
 \$DB["TYPE"]      = 'POSTGRESQL';
-\$DB["SERVER"]    = 'localhost';
+\$DB["SERVER"]    = '127.0.0.1';
 \$DB["PORT"]      = '5432';
 \$DB["DATABASE"]  = 'zabbix';
 \$DB["USER"]      = 'zabbix';
 \$DB["SCHEMA"]    = '';
-\$ZBX_SERVER      = 'localhost';
+\$ZBX_SERVER      = '127.0.0.1';
 \$ZBX_SERVER_PORT = '10051';
 \$ZBX_SERVER_NAME = '';
 \$IMAGE_FORMAT_DEFAULT = IMAGE_FORMAT_PNG;
@@ -118,13 +118,22 @@ hostgroup_id=$(mamonsu zabbix hostgroup id 'Linux servers')
 mamonsu zabbix host create $ZABBIX_CLIENT_HOST $hostgroup_id $template_id 127.0.0.1
 
 su postgres -c 'createdb mamonsu'
-su postgres -c 'createuser mamonsu'
+su postgres -c "/usr/pgsql-9.5/bin/psql -Atc \"CREATE USER mamonsu WITH password 'supersecret'\""
+cat <<EOF > /var/lib/pgsql/9.5/data/pg_hba.conf
+local   all             all                                     trust
+host    zabbix          zabbix          127.0.0.1/32            trust
+host    zabbix          zabbix          ::1/128                 trust
+host    all             all             127.0.0.1/32            md5
+EOF
+su postgres -c '/usr/pgsql-9.5/bin/pg_ctl reload -D /var/lib/pgsql/9.5/data'
+
 # start mamonsu and sleep
 cat <<EOF > /etc/mamonsu/agent.conf
 [postgres]
-host = auto
+host = 127.0.0.1
 user = mamonsu
 database = mamonsu
+password = supersecret
 
 [zabbix]
 enabled = True

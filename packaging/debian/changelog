@@ -1,3 +1,9 @@
+mamonsu (2.2.9-1) stable; urgency=low
+
+  * fix password auth.
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Wed, 30 Nov 2016 18:00:00 +0300
+
 mamonsu (2.2.8-1) stable; urgency=low
 
   * fix double connection.

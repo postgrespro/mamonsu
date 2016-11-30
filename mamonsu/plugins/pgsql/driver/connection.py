@@ -29,7 +29,7 @@ class ConnectionInfo(object):
             'host': self.host,
             'port': self.port,
             'user': self.user,
-            'passwd': self.user,
+            'passwd': self.passwd,
             'db': self.db,
             'timeout': self.timeout,
             'appname': self.appname
