@@ -55,7 +55,7 @@ class Supervisor(object):
                 if plugin_errors > 0:
                     self._sender.send(
                         'mamonsu.plugin.errors[]',
-                        'Last error: {0} (total: {1})'.format(last_error, plugin_errors))
+                        'Last: {0}. Total count: {1}.'.format(last_error, plugin_errors))
                 else:
                     self._sender.send('mamonsu.plugin.errors[]', '')
                 plugin_errors, plugin_probes = 0, 0
