@@ -16,7 +16,7 @@ from mamonsu.lib.queue import Queue
 
 class ZbxSender(Plugin):
 
-    Interval = 2
+    Interval = 10
     _sender = True
 
     def __init__(self, config):
