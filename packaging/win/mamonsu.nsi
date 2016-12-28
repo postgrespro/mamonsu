@@ -682,7 +682,6 @@ FunctionEnd
 Function un.CheckExist
  ;добавить проверку директории
  ReadRegStr $ext_log_dir HKLM "${MAMONSU_REG_PATH}\${VERSION}" "LogDir"
- MessageBox MB_OK "$ext_log_dir"
 FunctionEnd
 
 Function un.DeleteService
