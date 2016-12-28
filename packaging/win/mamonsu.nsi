@@ -90,7 +90,7 @@ SpaceTexts none
 ; Finish page
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_FINISHPAGE_SHOWREADME_TEXT "show config"
-!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\mamonsu.conf"
+!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\${CONFIG_FILE}"
 !insertmacro MUI_PAGE_FINISH
 
 ;Uninstall
@@ -120,15 +120,15 @@ Section "${NAME} ${VERSION}" SectionMamonsu
  ${endif}
 
  SetOutPath "$INSTDIR"
- File "..\..\dist\service_win32.exe"
- File "..\..\dist\mamonsu.exe"
- File "..\..\packaging\conf\template_win32.xml"
+ File "..\..\dist\${SERVICE_FILE}"
+ File "..\..\dist\${EXE_FILE}"
+ File "..\..\packaging\conf\${TEMPLATE_FILE}"
  CreateDirectory "$log_dir"
  WriteUninstaller "$INSTDIR\Uninstall.exe"
 
  ;create user
  Call CreateUser
- ;create mamonsu.conf
+ ;create agent.conf
  Call CreateConfig
  ;create service
  Call CreateService
@@ -468,11 +468,11 @@ Function CreateConfig
  ${if} $action == 'downgrade'
  ${OrIf} $action == 'upgrade'
 
-   ${if} ${FileExists} "$ext_inst_dir\mamonsu.conf"
-     ${ConfigRead} "$ext_inst_dir\mamonsu.conf" "file =" $0 ; put log_file_name in $0
+   ${if} ${FileExists} "$ext_inst_dir\${CONFIG_FILE}"
+     ${ConfigRead} "$ext_inst_dir\${CONFIG_FILE}" "file =" $0 ; put log_file_name in $0
      DetailPrint "Copying config file to new install directory ..."
-     CopyFiles "$ext_inst_dir\mamonsu.conf" "$INSTDIR"
-     ${ConfigWrite} "$INSTDIR\mamonsu.conf" "file = " "$log_dir\${LOG_FILE}" $0
+     CopyFiles "$ext_inst_dir\${CONFIG_FILE}" "$INSTDIR"
+     ${ConfigWrite} "$INSTDIR\${CONFIG_FILE}" "file = " "$log_dir\${LOG_FILE}" $0
      StrCpy $5 "exist"
      Goto recreate_config
    ${else} ;do not exist
@@ -480,9 +480,9 @@ Function CreateConfig
    ${endif}
 
  ${elseif} $action == 'reinstall'
-   ${if} ${FileExists} "$ext_inst_dir\mamonsu.conf"
+   ${if} ${FileExists} "$ext_inst_dir\${CONFIG_FILE}"
      #if user decided to choose different log directory while reinstalling
-     ${ConfigWrite} "$ext_inst_dir\mamonsu.conf" "file = " "$log_dir\${LOG_FILE}" $0
+     ${ConfigWrite} "$ext_inst_dir\${CONFIG_FILE}" "file = " "$log_dir\${LOG_FILE}" $0
      Goto cancel
    ${else}
      Goto recreate_config
@@ -511,7 +511,7 @@ Function CreateConfig
 [postgres]$\r$\nuser = $pg_user$\r$\ndatabase = $pg_db$\r$\npassword = $2$\r$\nhost = $pg_host$\r$\nport = $pg_port$\r$\n$\r$\n\
 [log]$\r$\nfile = $log_dir\${LOG_FILE}$\r$\nlevel = INFO$\r$\n'
   FileClose $0
-  Rename $1 "$INSTDIR\mamonsu.conf"
+  Rename $1 "$INSTDIR\${CONFIG_FILE}"
  ${endif}
 
  AccessControl::DisableFileInheritance "$INSTDIR"
@@ -535,11 +535,11 @@ Function CreateConfig
  AccessControl::GrantOnFile "$log_dir" "${USER}" "FullAccess"
  AccessControl::GrantOnFile "$log_dir" "${USER}" "AddFile"
 
- AccessControl::SetFileOwner "$INSTDIR\service_win32.exe" "${USER}"
- AccessControl::GrantOnFile "$INSTDIR\service_win32.exe" "(S-1-3-0)" "FullAccess"
+ AccessControl::SetFileOwner "$INSTDIR\${SERVICE_FILE}" "${USER}"
+ AccessControl::GrantOnFile "$INSTDIR\${SERVICE_FILE}" "(S-1-3-0)" "FullAccess"
 
- AccessControl::SetFileOwner "$INSTDIR\mamonsu.conf" "${USER}"
- AccessControl::GrantOnFile "$INSTDIR\mamonsu.conf" "(S-1-3-0)" "FullAccess"
+ AccessControl::SetFileOwner "$INSTDIR\${CONFIG_FILE}" "${USER}"
+ AccessControl::GrantOnFile "$INSTDIR\${CONFIG_FILE}" "(S-1-3-0)" "FullAccess"
  cancel:
 FunctionEnd
 
@@ -596,7 +596,7 @@ Function CreateService
         ${OrIf} $action == 'downgrade'
          DetailPrint "It`s upgrade/downgrade, service must be updated to reflect new path to binary"
          DetailPrint "Updating service ..."
-         nsExec::ExecToStack /TIMEOUT=10000 '"$INSTDIR\service_win32.exe" update'
+         nsExec::ExecToStack /TIMEOUT=10000 '"$INSTDIR\${SERVICE_FILE}" update'
          Pop $0
          Pop $1
           ${if} $0 == 0
@@ -616,7 +616,7 @@ Function CreateService
     ${endif}
   ${endif} 
  DetailPrint "Creating service ${SERVICE_NAME} ... "
- nsExec::ExecToStack /TIMEOUT=10000 '"$INSTDIR\service_win32.exe" --username "$hostname\${USER}" --password "$user_password" --startup delayed install'
+ nsExec::ExecToStack /TIMEOUT=10000 '"$INSTDIR\${SERVICE_FILE}" --username "$hostname\${USER}" --password "$user_password" --startup delayed install'
  Pop $0
  Pop $1
  ${if} $0 == 0
@@ -660,9 +660,13 @@ Function DeleteDirectory
  ${if} $action == 'downgrade'
  ${orif} $action == 'upgrade'
    DetailPrint "Deleting old install directory ..."
-   Delete "$ext_inst_dir\mamonsu.conf"
-   Delete "$ext_inst_dir\mamonsu.exe"
-   Delete "$ext_inst_dir\service_win32.exe"
+   Delete "$ext_inst_dir\${SERVICE_FILE}"
+   Delete "$ext_inst_dir\${CONFIG_FILE}"
+   Delete "$ext_inst_dir\${EXE_FILE}"
+   ${if} ${FileExists} "$ext_inst_dir\${OLD_EXE_FILE}"
+    Delete "$ext_inst_dir\${OLD_EXE_FILE}"
+   ${endIf}
+   Delete "$ext_inst_dir\${TEMPLATE_FILE}"
    Delete "$ext_inst_dir\Uninstall.exe"
    compare_log_dirs:
    ${if} $ext_log_dir != $log_dir
@@ -677,7 +681,8 @@ FunctionEnd
 ; Uninstall functions
 Function un.CheckExist
  ;добавить проверку директории
- ReadRegStr $ext_log_dir HKLM "${MAMONSU_REG_PATH}" "LogDir"
+ ReadRegStr $ext_log_dir HKLM "${MAMONSU_REG_PATH}\${VERSION}" "LogDir"
+ MessageBox MB_OK "$ext_log_dir"
 FunctionEnd
 
 Function un.DeleteService
@@ -690,9 +695,9 @@ Function un.DeleteService
    DetailPrint "Result: error"
  ${EndIf}
 
- #remove
+ #remove service
  DetailPrint "Removing service mamonsu ..."
- nsExec::ExecToStack '"$INSTDIR\service_win32.exe" remove'
+ nsExec::ExecToStack '"$INSTDIR\${SERVICE_FILE}" remove'
  Pop $0
  Pop $1
  ${if} $0 == 0
@@ -733,9 +738,10 @@ Function un.DeleteReg
 FunctionEnd
 
 Function un.DeleteDirectory
- Delete "$INSTDIR\mamonsu.conf"
- Delete "$INSTDIR\mamonsu.exe"
- Delete "$INSTDIR\service_win32.exe"
+ Delete "$INSTDIR\${CONFIG_FILE}"
+ Delete "$INSTDIR\${EXE_FILE}"
+ Delete "$INSTDIR\${SERVICE_FILE}"
+ Delete "$INSTDIR\${TEMPLATE_FILE}"
  Delete "$INSTDIR\Uninstall.exe"
  Delete "$ext_log_dir\${LOG_FILE}"
  RMDir "$ext_log_dir"
