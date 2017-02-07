@@ -1,6 +1,6 @@
 import mamonsu.lib.platform as platform
 from distutils.version import LooseVersion
-from connection import Connection, ConnectionInfo
+from .connection import Connection, ConnectionInfo
 
 
 class Pool(object):
