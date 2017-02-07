@@ -127,9 +127,11 @@ from public.pg_buffercache""",
             return False
         if db in self._cache['pgproee']:
             return self._cache['pgproee'][db]
-        self._cache['pgproee'][db] = (
-            self.query('select pgpro_edition()')[0][0].lower() == 'enterprise'
-        )
+        try:
+            ver = self.query('select pgpro_edition()')[0][0]
+            self._cache['pgproee'][db] = (ver.lower() == 'enterprise')
+        except:
+            self._cache['pgproee'][db] = False
         return self._cache['pgproee'][db]
 
     def extension_installed(self, ext, db=None):
