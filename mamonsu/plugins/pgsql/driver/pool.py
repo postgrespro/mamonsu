@@ -128,9 +128,11 @@ from public.pg_buffercache""",
         if db in self._cache['pgproee']:
             return self._cache['pgproee'][db]
         try:
-            ver = self.query('select pgpro_edition()')[0][0]
-            self._cache['pgproee'][db] = (ver.lower() == 'enterprise')
+            ed = self.query('select pgpro_edition()')[0][0]
+            self._connections[db].log.info('pgpro_edition is {}'.format(ed))
+            self._cache['pgproee'][db] = (ed.lower() == 'enterprise')
         except:
+            self._connections[db].log.info('pgpro_edition() is not defined')
             self._cache['pgproee'][db] = False
         return self._cache['pgproee'][db]
 
