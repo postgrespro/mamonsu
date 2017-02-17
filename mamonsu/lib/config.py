@@ -74,7 +74,7 @@ class Config(DefaultConfig):
             sys.exit(1)
         else:
             if cfg_file is not None:
-                self.config.read(cfg_file)
+                self.config.readfp(open(cfg_file))
 
         plugins = self.fetch('plugins', 'directory', str)
         if not plugins == 'None':
