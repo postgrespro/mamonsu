@@ -25,6 +25,7 @@ deb: prepare_builddir
 	cp -av build/mamonsu*.deb .
 
 rpm: prepare_builddir $(BUILDDIR)/packaging/rpm/SPECS/$(SPEC)
+	mkdir -p $(BUILDDIR)/packaging/rpm/RPMS $(BUILDDIR)/packaging/rpm/BUILD $(BUILDDIR)/packaging/rpm/SRPMS
 	rpmbuild -ba --define '_topdir $(BUILDDIR)/packaging/rpm'\
 		$(BUILDDIR)/packaging/rpm/SPECS/$(SPEC)
 	cp -av $(BUILDDIR)/packaging/rpm/RPMS/noarch/mamonsu*.rpm .

@@ -1,3 +1,4 @@
+%define _datarootdir %{_prefix}/share
 Name:           mamonsu
 Version:        2.2.9
 Release:        1%{?dist}
@@ -7,14 +8,15 @@ License:        BSD
 Source0:        http://pypi.python.org/packages/source/m/mamonsu/mamonsu-%{version}.tar.gz
 Source1:        mamonsu.init
 Source2:        mamonsu-logrotate.in
-BuildRequires:  python2-devel
+BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 BuildArch:      noarch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       python-setuptools
 
 %description
 Monitoring agent for PostgreSQL.
-
+ 
 %prep
 %setup -q
 
@@ -22,29 +24,31 @@ Monitoring agent for PostgreSQL.
 %{__python} setup.py build
 
 %install
-%{__python} setup.py install --skip-build --root %{buildroot}
+%{__python} setup.py install --prefix %{_prefix} --skip-build --root %{buildroot}
 export PYTHONPATH=%{buildroot}%{python_sitelib}
 
-%{__mkdir} -p %{buildroot}/%{_sysconfdir}/%{name}
-%{__mkdir} -p %{buildroot}/%{_sysconfdir}/init.d
-%{__mkdir} -p %{buildroot}/%{_sysconfdir}/logrotate.d
-%{__mkdir} -p %{buildroot}/%{_datarootdir}/%{name}
+%{__mkdir} -p %{buildroot}%{_sysconfdir}/%{name}
+%{__mkdir} -p %{buildroot}%{_sysconfdir}/init.d
+%{__mkdir} -p %{buildroot}%{_sysconfdir}/logrotate.d
+%{__mkdir} -p %{buildroot}%{_datarootdir}/%{name}
 
-%{__install} -m 0644 -p packaging/conf/example.conf %{buildroot}/%{_sysconfdir}/%{name}/agent.conf
-%{__install} -m 0644 -p packaging/conf/template.xml %{buildroot}/%{_datarootdir}/%{name}/template.xml
-%{__install} -m 0644 -p examples/*.py %{buildroot}/%{_datarootdir}/%{name}/
-%{__install} -m 0755 -p %{SOURCE1} %{buildroot}/%{_sysconfdir}/init.d/%{name}
-%{__install} -m 0644 -p %{SOURCE2} %{buildroot}/%{_sysconfdir}/logrotate.d/%{name}
+%{__install} -m 0644 -p packaging/conf/example.conf %{buildroot}%{_sysconfdir}/%{name}/agent.conf
+%{__install} -m 0644 -p packaging/conf/template.xml %{buildroot}%{_datarootdir}/%{name}/template.xml
+%{__install} -m 0644 -p examples/*.py %{buildroot}%{_datarootdir}/%{name}/
+%{__install} -m 0755 -p %{SOURCE1} %{buildroot}%{_sysconfdir}/init.d/%{name}
+%{__install} -m 0644 -p %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 %files
 %doc README.rst
+%defattr(644,root,root,755)
 %config(noreplace) %{_sysconfdir}/%{name}/agent.conf
 %{python_sitelib}/%{name}/
 %{python_sitelib}/%{name}-%{version}*
 %{_sysconfdir}/%{name}
 %{_datarootdir}/%{name}
-%{_sysconfdir}/init.d/%{name}
 %{_sysconfdir}/logrotate.d/%{name}
+%defattr(755,root,root,755)
+%{_sysconfdir}/init.d/%{name}
 %{_bindir}/%{name}
 
 %clean
