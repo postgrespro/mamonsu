@@ -1,4 +1,14 @@
 TOKEN ?= $(PACKAGECLOUD_TOKEN)
+# Check for SUSE and alt linux which need specific spec file
+ifeq "$(wildcard /etc/SuSE-rel*)" ""
+ifeq "$(wildcard /etc/altlinux-rel*)" ""
+	SPEC=mamonsu.spec
+else
+	SPEC=mamonsu.alt.spec
+endif
+else
+	SPEC=mamonsu.suse.spec
+endif
 
 prepare_builddir: clean
 	mkdir -p build
@@ -14,9 +24,9 @@ deb: prepare_builddir
 	cd $(BUILDDIR) && cp -a $(WORKDIR)/packaging/debian . && dpkg-buildpackage -b
 	cp -av build/mamonsu*.deb .
 
-rpm: prepare_builddir
+rpm: prepare_builddir $(BUILDDIR)/packaging/rpm/SPECS/$(SPEC)
 	rpmbuild -ba --define '_topdir $(BUILDDIR)/packaging/rpm'\
-		$(BUILDDIR)/packaging/rpm/SPECS/mamonsu.spec
+		$(BUILDDIR)/packaging/rpm/SPECS/$(SPEC)
 	cp -av $(BUILDDIR)/packaging/rpm/RPMS/noarch/mamonsu*.rpm .
 
 pkg: build/prepare build/all
