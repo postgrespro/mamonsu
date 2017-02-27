@@ -1,3 +1,6 @@
+%define _datarootdir %{_prefix}/share
+%define python_sitelib %{_prefix}/lib/python2.7/site-packages
+
 Name:           mamonsu
 Version:        2.2.9
 Release:        1%{?dist}
@@ -7,10 +10,10 @@ License:        BSD
 Source0:        http://pypi.python.org/packages/source/m/mamonsu/mamonsu-%{version}.tar.gz
 Source1:        mamonsu.init
 Source2:        mamonsu-logrotate.in
-BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
+BuildRequires:  python-dev
+BuildRequires:  python-module-setuptools
 BuildArch:      noarch
-Requires:       python-setuptools
+Requires:       python-module-setuptools
 
 %description
 Monitoring agent for PostgreSQL.
