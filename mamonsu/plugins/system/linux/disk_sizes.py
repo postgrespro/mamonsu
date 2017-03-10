@@ -27,8 +27,6 @@ class DiskSizes(Plugin):
 
             for line in f:
                 data = line.split()
-                if len(data) != 11:
-                    continue
                 point, fstype = data[4], data[8]
                 if fstype in self.ExcludeFsTypes:
                     continue
