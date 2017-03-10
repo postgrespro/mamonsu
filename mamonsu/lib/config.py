@@ -36,7 +36,7 @@ class Config(DefaultConfig):
         config.set('system', 'enabled', str(True))
 
         config.add_section('sender')
-        config.set('sender', 'queue', str(300))
+        config.set('sender', 'queue', str(2048))
 
         config.add_section('agent')
         config.set('agent', 'enabled', str(True))
