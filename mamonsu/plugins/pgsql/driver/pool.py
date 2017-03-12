@@ -127,9 +127,13 @@ from public.pg_buffercache""",
             return False
         if db in self._cache['pgproee']:
             return self._cache['pgproee'][db]
-        self._cache['pgproee'][db] = (
-            self.query('select pgpro_edition()')[0][0].lower() == 'enterprise'
-        )
+        try:
+            ed = self.query('select pgpro_edition()')[0][0]
+            self._connections[db].log.info('pgpro_edition is {}'.format(ed))
+            self._cache['pgproee'][db] = (ed.lower() == 'enterprise')
+        except:
+            self._connections[db].log.info('pgpro_edition() is not defined')
+            self._cache['pgproee'][db] = False
         return self._cache['pgproee'][db]
 
     def extension_installed(self, ext, db=None):
