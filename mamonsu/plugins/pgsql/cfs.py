@@ -21,6 +21,7 @@ from
     left join pg_catalog.pg_namespace n on n.oid = c.relnamespace
 where c.reltablespace in (select oid from pg_catalog.pg_tablespace where spcoptions::text ~ 'compression')
     and c.relkind IN ('r','v','m','S','f','')
+    and cfs_compression_ratio(c.oid::regclass) <> 'NaN'
 
 union all
 
@@ -32,7 +33,8 @@ from
     pg_catalog.pg_class as c
     left join pg_catalog.pg_namespace n on n.oid = c.relnamespace
 where c.reltablespace in (select oid from pg_catalog.pg_tablespace where spcoptions::text ~ 'compression')
-    and c.relkind = 'i' and n.nspname <> 'pg_toast';
+    and c.relkind = 'i' and n.nspname <> 'pg_toast'
+    and cfs_compression_ratio(c.oid::regclass) <> 'NaN';
 """
 
     activity_sql = """
