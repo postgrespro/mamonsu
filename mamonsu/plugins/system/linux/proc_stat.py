@@ -107,5 +107,5 @@ class ProcStat(Plugin):
             'name': 'Process fork-rate to '
             'frequently on {HOSTNAME}',
             'expression': '{#TEMPLATE:system.processes[forkrate]'
-            '.last()}&gt;' + str(self.ForkRate)
+            '.min(5m)}&gt;' + str(self.ForkRate)
         })
