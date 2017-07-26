@@ -1,5 +1,5 @@
 %define _datarootdir %{_prefix}/share
-%define python_sitelib %{_prefix}/lib/python2.7/site-packages
+%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mamonsu
 Version:        2.2.9
