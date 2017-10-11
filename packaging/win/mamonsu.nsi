@@ -2,6 +2,8 @@
 ; Written by Postgres Professional, Postgrespro.ru
 ; dba@postgrespro.ru
 ;--------------------------------
+!addincludedir Include
+!addplugindir Plugins
 !include mamonsu.def.nsh
 !include Utf8Converter.nsh
 !include MUI2.nsh
