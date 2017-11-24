@@ -171,8 +171,7 @@ mamonsu zabbix item lastclock <host name>
                             'createMissing': True,
                             'updateExisting': True},
                         'applications': {
-                            'createMissing': True,
-                            'updateExisting': True},
+                            'createMissing': True},
                         'discoveryRules': {
                             'createMissing': True,
                             'updateExisting': True},
