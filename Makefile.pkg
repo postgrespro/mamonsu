@@ -37,7 +37,7 @@ build/all: build/pkg_debian build/pkg_ubuntu build/pkg_centos
 build/pkg_debian: build/pkg_debian_7 build/pkg_debian_8
 	@echo Debian: done
 
-build/pkg_ubuntu: build/pkg_ubuntu_14_04 build/pkg_ubuntu_15_10 build/pkg_ubuntu_16_04 build/pkg_ubuntu_16_10
+build/pkg_ubuntu: build/pkg_ubuntu_14_04 build/pkg_ubuntu_16_04
 	@echo Ubuntu: done
 
 build/pkg_centos: build/pkg_centos_6 build/pkg_centos_7
@@ -72,17 +72,9 @@ build/pkg_ubuntu_14_04:
 	$(call build_deb,ubuntu,trusty)
 	touch build/pkg_ubuntu_14_04
 
-build/pkg_ubuntu_15_10:
-	$(call build_deb,ubuntu,wily)
-	touch build/pkg_ubuntu_15_10
-
 build/pkg_ubuntu_16_04:
 	$(call build_deb,ubuntu,xenial)
 	touch build/pkg_ubuntu_16_04
-
-build/pkg_ubuntu_16_10:
-	$(call build_deb,ubuntu,yakkety)
-	touch build/pkg_ubuntu_16_10
 
 build/pkg_centos_6:
 	$(call build_rpm,centos,6)

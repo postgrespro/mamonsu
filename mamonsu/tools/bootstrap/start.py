@@ -9,14 +9,14 @@ from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.pool import Pooler
-from mamonsu.tools.bootstrap.sql import CreateSchemaSQL, QuerySplit
+from mamonsu.tools.bootstrap.sql import CreateSchemaSQL, GrantsOnSchemaSQL, QuerySplit
 
 
 class Args(DefaultConfig):
 
     def __init__(self):
         parser = optparse.OptionParser(
-            usage='%prog bootstrap <DBNAME>',
+            usage='%prog bootstrap -M <MAMONSU USERNAME> <DBNAME>',
             version='%prog bootstrap {0}'.format(mamonsu_version),
             description='Bootstrap DDL for monitoring')
         group = optparse.OptionGroup(
@@ -41,12 +41,26 @@ class Args(DefaultConfig):
             '-U', '--username',
             dest='username',
             default=self.default_user(),
-            help='database user name (default: %default)')
+            help='database superuser name (default: %default)')
         group.add_option(
             '-W', '--password',
             dest='password',
             default=self.default_user())
+        bootstrap_group = optparse.OptionGroup(
+            parser,
+            'Bootstrap options')
+        bootstrap_group.add_option(
+            '-v', '--verbose',
+            action="store_true",
+            dest="verbose",
+            default=False,
+            help='Show bootstrap DDL')
+        bootstrap_group.add_option(
+            '-M', '--mamonsu-username',
+            dest='mamonsu_username',
+            help='database non-priviledged user for mamonsu')
         parser.add_option_group(group)
+        parser.add_option_group(bootstrap_group)
 
         self.args, commands = parser.parse_args()
 
@@ -56,6 +70,10 @@ class Args(DefaultConfig):
             else:
                 parser.print_help()
                 sys.exit(1)
+        if self.args.mamonsu_username is None:
+            sys.stderr.write("ERROR: Database non-priviledged username for mamonsu is not specified\n")
+            parser.print_help()
+            sys.exit(1)
 
         # apply env
         os.environ['PGUSER'] = self.args.username
@@ -77,7 +95,8 @@ class Args(DefaultConfig):
                     "Can't connect with host=auto,"
                     " may be database settings wrong?\n")
                 return False
-        return True
+        else:
+            return True
 
     def _try_run_as_postgres(self):
         if platform.UNIX and os.getegid() == 0:
@@ -126,9 +145,27 @@ def run_deploy():
     if not args.try_configure_connect_to_pg():
         sys.exit(1)
 
+    if not Pooler.is_superuser():
+        sys.stderr.write("ERROR: Bootstrap must be run by PostgreSQL superuser\n")
+        sys.exit(1)
+
     try:
         for sql in CreateSchemaSQL.split(QuerySplit):
+            if args.args.verbose:
+                sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
             Pooler.query(sql)
     except Exception as e:
         sys.stderr.write("Query:\n{0}\nerror: {1}\n".format(sql, e))
         sys.exit(2)
+
+    try:
+        for sql in GrantsOnSchemaSQL.format(
+            mamonsu_version.replace('.', '_'), args.args.mamonsu_username).split(QuerySplit):
+            if args.args.verbose:
+                sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
+            Pooler.query(sql)
+    except Exception as e:
+        sys.stderr.write("Query:\n{0}\nerror: {1}\n".format(sql, e))
+        sys.exit(2)
+
+    sys.stdout.write("Bootstrap successfully completed\n")

@@ -50,6 +50,21 @@ RETURNS BIGINT AS $$
         and pid <> pg_catalog.pg_backend_pid()
 $$ LANGUAGE SQL SECURITY DEFINER;
 
+CREATE or REPLACE FUNCTION public.mamonsu_get_oldest_xid()
+RETURNS BIGINT AS $$
+    SELECT
+        greatest(max(age(backend_xmin)),
+        max(age(backend_xid)))::BIGINT
+    FROM pg_catalog.pg_stat_activity
+$$ LANGUAGE SQL SECURITY DEFINER;
+
+CREATE or REPLACE FUNCTION public.mamonsu_get_oldest_query()
+RETURNS DOUBLE PRECISION AS $$
+    SELECT
+        extract(epoch from max(now() - xact_start))
+    FROM pg_catalog.pg_stat_activity
+$$ LANGUAGE SQL SECURITY DEFINER;
+
 CREATE OR REPLACE FUNCTION public.mamonsu_count_xlog_files()
 RETURNS BIGINT AS $$
 WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_xlog'))
@@ -73,3 +88,23 @@ $$ LANGUAGE SQL SECURITY DEFINER;
 """.format(
     mamonsu_version,
     mamonsu_version.replace('.', '_'), '[0-9A-F]{24}')
+
+GrantsOnSchemaSQL = """
+ALTER TABLE public.mamonsu_config OWNER TO {1};
+
+ALTER TABLE public.mamonsu_timestamp_master_{0} OWNER TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_timestamp_master_update() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_timestamp_get() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_count_autovacuum() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_get_oldest_xid() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_get_oldest_query() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_count_xlog_files() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_buffer_cache() TO {1};
+"""
