@@ -1,3 +1,9 @@
+mamonsu (2.3.1-2) stable; urgency=medium
+
+  * Fix package architecture, remove unneeded dependencies
+
+ -- Victor Wagner <v.wagner@postgrespro.ru>  Thu, 28 Dec 2017 11:02:01 +0300
+
 mamonsu (2.3.1-1) stable; urgency=low
 
   * update trigger fork-rate
