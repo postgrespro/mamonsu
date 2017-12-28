@@ -15,6 +15,7 @@ clean:
 	rm -f build-stamp configure-stamp
 	[ ! -f Makefile ] || $(MAKE) clean
 	python setup.py clean
+	find mamonsu -name "*.pyc" -exec rm {} \;
 
 install: build
 	dh_testdir
@@ -28,6 +29,9 @@ binary-indep: build install
 	dh_testroot -i
 	install -m 0644 packaging/conf/example.conf debian/mamonsu/usr/share/mamonsu
 	dh_installchangelogs -i
+	dh_installinit -i
+	dh_installdebconf -i
+	dh_installlogrotate -i
 	dh_link -i
 	dh_compress -i
 	dh_fixperms -i
