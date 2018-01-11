@@ -7,8 +7,8 @@ XS-Python-Version: all
 Standards-Version: 3.7.3
 
 Package: mamonsu
-Architecture: any
-Depends: ${shlibs:Depends}, ${python:Depends}, python-pkg-resources
+Architecture: all
+Depends: ${python:Depends}, python-pkg-resources
 XB-Python-Version: ${python:Versions}
 Provides: ${python:Provides}
 Description: Monitoring agent for PostgreSQL

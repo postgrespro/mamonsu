@@ -4,6 +4,13 @@ mamonsu (2.3.2-1) stable; urgency=low
 
  -- PostgresPro DBA <dba@postgrespro.ru>  Tue, 12 Dec 2017 11:00:00 +0300
 
+mamonsu (2.3.1-2) stable; urgency=medium
+
+  * Fix package architecture, remove unneeded dependencies
+  * Change source format to 3.0
+
+ -- Victor Wagner <v.wagner@postgrespro.ru>  Thu, 28 Dec 2017 11:02:01 +0300
+
 mamonsu (2.3.1-1) stable; urgency=low
 
   * update trigger fork-rate
