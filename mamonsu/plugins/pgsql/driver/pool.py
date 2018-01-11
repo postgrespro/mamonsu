@@ -44,7 +44,7 @@ from public.pg_buffercache""",
         self._connections = {}
         self._cache = {
             'server_version': {'storage': {}},
-            'bootstrap': {'storage': {}, 'counter': 0, 'cache': 10},
+            'bootstrap': {'storage': {}, 'counter': 0, 'cache': 10, 'version': False},
             'recovery': {'storage': {}, 'counter': 0, 'cache': 10},
             'pgpro': {'storage': {}},
             'pgproee': {'storage': {}}
@@ -72,13 +72,20 @@ from public.pg_buffercache""",
             result.decode('ascii'))
         return self._cache['server_version']['storage'][db]
 
-    def server_version_greater(self, version, db=None):
-        db = self._normalize_db(db)
-        return self.server_version(db) >= LooseVersion(version)
+    def server_version_greater(self, version, db=None, bootstrap=False):
+        if not bootstrap:
+            db = self._normalize_db(db)
+            return self.server_version(db) >= LooseVersion(version)
+        else:
+            return str(self._cache['bootstrap']['version']) >= LooseVersion(version)
 
-    def server_version_less(self, version, db=None):
-        db = self._normalize_db(db)
-        return self.server_version(db) <= LooseVersion(version)
+    def server_version_less(self, version, db=None, bootstrap=False):
+        if not bootstrap:
+            db = self._normalize_db(db)
+            return self.server_version(db) <= LooseVersion(version)
+        else:
+            print(self._cache['bootstrap']['version'])
+            return self._cache['bootstrap']['version'] <= LooseVersion(version)
 
     def in_recovery(self, db=None):
         db = self._normalize_db(db)
@@ -104,11 +111,20 @@ from public.pg_buffercache""",
         self._cache['bootstrap']['storage'][db] = (result == 1)
         if self._cache['bootstrap']['storage'][db]:
             self._connections[db].log.info('Found mamonsu bootstrap')
+            sql = 'select max(version) from public.mamonsu_config'
+            self._cache['bootstrap']['version'] = self.query(sql, db)[0][0]
         else:
-            self._connections[db].log.info('Can\'t found mamonsu bootstrap')
+            self._connections[db].log.info('Mamonsu bootstrap is not found')
             self._connections[db].log.info(
                 'hint: run `mamonsu bootstrap` if you want to run without superuser rights')
         return self._cache['bootstrap']['storage'][db]
+
+    def is_superuser(self, db=None):
+        db = self._normalize_db(db)
+        if self.query("select current_setting('is_superuser')")[0][0] == 'on':
+            return True
+        else:
+            return False
 
     def is_pgpro(self, db=None):
         db = self._normalize_db(db)

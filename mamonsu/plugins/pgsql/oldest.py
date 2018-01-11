@@ -12,10 +12,18 @@ select
 from pg_catalog.pg_stat_activity;
 """
 
+    OldestXidSql_bootstrap = """
+select public.mamonsu_get_oldest_xid();
+"""
+
     OldestQuerySql = """
 select
     extract(epoch from max(now() - xact_start))
 from pg_catalog.pg_stat_activity;
+"""
+
+    OldestQuerySql_bootstrap = """
+select public.mamonsu_get_oldest_query();
 """
 
     DEFAULT_CONFIG = {
@@ -24,9 +32,14 @@ from pg_catalog.pg_stat_activity;
     }
 
     def run(self, zbx):
-        xid = Pooler.query(self.OldestXidSql)[0][0]
+        if Pooler.is_bootstraped() and Pooler.server_version_greater('2.3.2', bootstrap=True):
+            xid = Pooler.query(self.OldestXidSql_bootstrap)[0][0]
+            query = Pooler.query(self.OldestQuerySql_bootstrap)[0][0]
+        else:
+            xid = Pooler.query(self.OldestXidSql)[0][0]
+            query = Pooler.query(self.OldestQuerySql)[0][0]
+
         zbx.send('pgsql.oldest[xid_age]', xid)
-        query = Pooler.query(self.OldestQuerySql)[0][0]
         zbx.send('pgsql.oldest[query_time]', query)
 
     def graphs(self, template):
