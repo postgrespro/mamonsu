@@ -1,6 +1,6 @@
 %define _datarootdir %{_prefix}/share
 Name:           mamonsu
-Version:        2.3.1
+Version:        2.3.2
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -74,6 +74,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Tue Dec 12 2017 Grigory Smolkin <g.smolkin@postgrespro.ru> - 2.3.2-1
+- bootstrap fixes
+
 * Fri Aug 18 2017 Grigory Smolkin <g.smolkin@postgrespro.ru> - 2.3.1-1
 - update trigger fork-rate
 
