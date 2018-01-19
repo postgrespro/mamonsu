@@ -21,6 +21,10 @@ class Pool(object):
             "select count(*) from pg_catalog.pg_ls_dir('pg_xlog')",
             'select public.mamonsu_count_xlog_files()'
         ),
+        'count_wal_files': (
+            "select count(*) from pg_catalog.pg_ls_dir('pg_wal')",
+            'select public.mamonsu_count_wal_files()'
+        ),
         'count_autovacuum': (
             """select count(*) from pg_catalog.pg_stat_activity where
 query like '%%autovacuum%%' and state <> 'idle'
@@ -77,7 +81,8 @@ from public.pg_buffercache""",
             db = self._normalize_db(db)
             return self.server_version(db) >= LooseVersion(version)
         else:
-            return str(self._cache['bootstrap']['version']) >= LooseVersion(version)
+            return str(
+                self._cache['bootstrap']['version']) >= LooseVersion(version)
 
     def server_version_less(self, version, db=None, bootstrap=False):
         if not bootstrap:

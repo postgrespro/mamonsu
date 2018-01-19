@@ -146,11 +146,18 @@ def run_deploy():
         sys.exit(1)
 
     if not Pooler.is_superuser():
-        sys.stderr.write("ERROR: Bootstrap must be run by PostgreSQL superuser\n")
+        sys.stderr.write(
+            "ERROR: Bootstrap must be run by PostgreSQL superuser\n")
         sys.exit(1)
 
     try:
-        for sql in CreateSchemaSQL.split(QuerySplit):
+        for sql in CreateSchemaSQL.format(
+                mamonsu_version,
+                mamonsu_version.replace('.', '_'),
+                '[0-9A-F]{24}',
+                'wal' if Pooler.server_version_greater('10.0') else 'xlog',
+                'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location'
+                ).split(QuerySplit):
             if args.args.verbose:
                 sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
             Pooler.query(sql)
@@ -160,7 +167,10 @@ def run_deploy():
 
     try:
         for sql in GrantsOnSchemaSQL.format(
-            mamonsu_version.replace('.', '_'), args.args.mamonsu_username).split(QuerySplit):
+                mamonsu_version.replace('.', '_'),
+                args.args.mamonsu_username,
+                'wal' if Pooler.server_version_greater('10.0') else 'xlog'
+                ).split(QuerySplit):
             if args.args.verbose:
                 sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
             Pooler.query(sql)

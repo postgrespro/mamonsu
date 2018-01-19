@@ -9,7 +9,7 @@ Options:
     -a, --add-plugins  <directory>
     -c, --config       <file>
     -p, --pid          <pid-file>
-    -d                 run in foreground
+    -d                 daemonize
 
 Export example config with default variables:
 Command: export

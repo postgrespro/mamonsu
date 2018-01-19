@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        2.3.2
+Version:        2.3.3
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Tue Dec 12 2017 Grigory Smolkin <g.smolkin@postgrespro.ru> - 2.3.2-1
+- PostgreSQL 10 support
+
 * Tue Dec 12 2017 Grigory Smolkin <g.smolkin@postgrespro.ru> - 2.3.2-1
 - bootstrap fixes
 
