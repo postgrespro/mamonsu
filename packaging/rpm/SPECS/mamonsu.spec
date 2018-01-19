@@ -70,7 +70,7 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
-* Tue Dec 12 2017 Grigory Smolkin <g.smolkin@postgrespro.ru> - 2.3.2-1
+* Fri Jan 19 2018 Grigory Smolkin <g.smolkin@postgrespro.ru> - 2.3.3-1
 - PostgreSQL 10 support
 
 * Tue Dec 12 2017 Grigory Smolkin <g.smolkin@postgrespro.ru> - 2.3.2-1
