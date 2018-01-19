@@ -17,12 +17,23 @@ class Xlog(Plugin):
         else:
             Pooler.run_sql_type('replication_lag_master_query')
             # xlog location
-            result = Pooler.query("""
-                select pg_catalog.pg_xlog_location_diff
-                    (pg_catalog.pg_current_xlog_location(),'0/00000000')""")
-            zbx.send('pgsql.wal.write[]', float(result[0][0]), self.DELTA_SPEED)
+            if Pooler.server_version_greater('10.0'):
+                result = Pooler.query("""
+                    select pg_catalog.pg_wal_lsn_diff
+                    (pg_catalog.pg_current_wal_lsn(), '0/00000000')""")
+            else:
+                result = Pooler.query("""
+                    select pg_catalog.pg_xlog_location_diff
+                    (pg_catalog.pg_current_xlog_location(), '0/00000000')""")
+            zbx.send(
+                'pgsql.wal.write[]',
+                float(result[0][0]),
+                self.DELTA_SPEED)
         # count of xlog files
-        result = Pooler.run_sql_type('count_xlog_files')
+        if Pooler.server_version_greater('10.0'):
+            result = Pooler.run_sql_type('count_wal_files')
+        else:
+            result = Pooler.run_sql_type('count_xlog_files')
         zbx.send('pgsql.wal.count[]', int(result[0][0]))
 
     def items(self, template):
