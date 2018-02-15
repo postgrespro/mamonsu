@@ -308,8 +308,10 @@ order by b.size desc
 
     def _collect_biggest(self):
         result, sizes, sorted_result = {}, {}, OrderedDict({})
-        for info_dbs in Pooler.query('select datname \
-                from pg_catalog.pg_database where datistemplate = false'):
+        for info_dbs in Pooler.query(
+                'select datname '
+                'from pg_catalog.pg_database where datistemplate = false'
+                ):
             try:
                 for info in Pooler.query(self.BigTableInfo[0], info_dbs[0]):
                     table_name = '{0}.{1}'.format(info_dbs[0], info[0])

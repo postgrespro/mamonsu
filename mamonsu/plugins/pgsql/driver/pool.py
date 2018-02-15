@@ -5,7 +5,7 @@ from .connection import Connection, ConnectionInfo
 
 class Pool(object):
 
-    ExcludeDBs = ['template0', 'template1', 'postgres']
+    ExcludeDBs = ['template0', 'template1']
 
     SQL = {
         # query type: ( 'if_not_installed', 'if_installed' )
@@ -76,21 +76,21 @@ from public.pg_buffercache""",
             result.decode('ascii'))
         return self._cache['server_version']['storage'][db]
 
-    def server_version_greater(self, version, db=None, bootstrap=False):
-        if not bootstrap:
-            db = self._normalize_db(db)
-            return self.server_version(db) >= LooseVersion(version)
-        else:
-            return str(
-                self._cache['bootstrap']['version']) >= LooseVersion(version)
+    def server_version_greater(self, version, db=None):
+        db = self._normalize_db(db)
+        return self.server_version(db) >= LooseVersion(version)
 
-    def server_version_less(self, version, db=None, bootstrap=False):
-        if not bootstrap:
-            db = self._normalize_db(db)
-            return self.server_version(db) <= LooseVersion(version)
-        else:
-            print(self._cache['bootstrap']['version'])
-            return self._cache['bootstrap']['version'] <= LooseVersion(version)
+    def server_version_less(self, version, db=None):
+        db = self._normalize_db(db)
+        return self.server_version(db) <= LooseVersion(version)
+
+    def bootstrap_version_greater(self, version):
+        return str(
+            self._cache['bootstrap']['version']) >= LooseVersion(version)
+
+    def bootstrap_version_less(self, version):
+        return str(
+            self._cache['bootstrap']['version']) <= LooseVersion(version)
 
     def in_recovery(self, db=None):
         db = self._normalize_db(db)
@@ -159,13 +159,15 @@ from public.pg_buffercache""",
 
     def extension_installed(self, ext, db=None):
         db = self._normalize_db(db)
-        result = self.query('select count(*) from pg_catalog.pg_extension\
-            where extname = \'{0}\''.format(ext), db)
+        result = self.query(
+            'select count(*) from pg_catalog.pg_extension '
+            'where extname = \'{0}\''.format(ext), db)
         return (int(result[0][0])) == 1
 
     def databases(self):
-        result, databases = self.query('select datname from \
-            pg_catalog.pg_database'), []
+        result, databases = self.query(
+            'select datname from '
+            'pg_catalog.pg_database'), []
         for row in result:
             if row[0] not in self.ExcludeDBs:
                 databases.append(row[0])
