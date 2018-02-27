@@ -20,7 +20,7 @@ from
     pg_catalog.pg_class as c
     left join pg_catalog.pg_namespace n on n.oid = c.relnamespace
 where c.reltablespace in (select oid from pg_catalog.pg_tablespace where spcoptions::text ~ 'compression')
-    and c.relkind IN ('r','v','m','S','f','')
+    and c.relkind IN ('r','v','m','S','f','p','')
     and cfs_compression_ratio(c.oid::regclass) <> 'NaN'
 
 union all
@@ -33,7 +33,7 @@ from
     pg_catalog.pg_class as c
     left join pg_catalog.pg_namespace n on n.oid = c.relnamespace
 where c.reltablespace in (select oid from pg_catalog.pg_tablespace where spcoptions::text ~ 'compression')
-    and c.relkind = 'i' and n.nspname <> 'pg_toast'
+    and c.relkind = 'i'
     and cfs_compression_ratio(c.oid::regclass) <> 'NaN';
 """
 
@@ -52,6 +52,7 @@ select
         if self.plugin_config('force_enable') == 'False':
             self.disable_and_exit_if_not_pgpro_ee()
 
+        # tick every 100 seconds
         if self.ratioCounter == self.ratioInterval:
             relations, compressed_size, non_compressed_size = [], 0, 0
             for db in Pooler.databases():
@@ -62,7 +63,15 @@ select
                     non_compressed_size += row[2] * row[1]
                     zbx.send('pgsql.cfs.compress_ratio[{0}]'.format(relation_name), row[1])
             zbx.send('pgsql.cfs.discovery_compressed_relations[]', zbx.json({'data': relations}))
-            zbx.send('pgsql.cfs.activity[total_compress_ratio]', non_compressed_size / compressed_size)
+            if compressed_size > 0:
+                zbx.send(
+                    'pgsql.cfs.activity[total_compress_ratio]',
+                    non_compressed_size / compressed_size)
+            else:
+                zbx.send(
+                    'pgsql.cfs.activity[total_compress_ratio]',
+                    0.0)
+
             del(relations, compressed_size, non_compressed_size)
             self.ratioCounter = 0
         self.ratioCounter += 1

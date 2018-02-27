@@ -32,7 +32,7 @@ select public.mamonsu_get_oldest_query();
     }
 
     def run(self, zbx):
-        if Pooler.is_bootstraped() and Pooler.server_version_greater('2.3.2', bootstrap=True):
+        if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.2'):
             xid = Pooler.query(self.OldestXidSql_bootstrap)[0][0]
             query = Pooler.query(self.OldestQuerySql_bootstrap)[0][0]
         else:

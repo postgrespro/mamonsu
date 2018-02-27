@@ -50,6 +50,13 @@ RETURNS BIGINT AS $$
         and pid <> pg_catalog.pg_backend_pid()
 $$ LANGUAGE SQL SECURITY DEFINER;
 
+CREATE OR REPLACE FUNCTION public.mamonsu_get_connections_states()
+RETURNS TABLE(state text) AS $$
+    SELECT
+        state
+    FROM pg_catalog.pg_stat_activity
+$$ LANGUAGE SQL SECURITY DEFINER;
+
 CREATE or REPLACE FUNCTION public.mamonsu_get_oldest_xid()
 RETURNS BIGINT AS $$
     SELECT

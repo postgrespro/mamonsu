@@ -90,6 +90,9 @@ class Args(DefaultConfig):
                         "Can't connect as user postgres,"
                         " may be database settings wrong?\n")
                     return False
+                else:
+                    return True
+
             else:
                 sys.stderr.write(
                     "Can't connect with host=auto,"
