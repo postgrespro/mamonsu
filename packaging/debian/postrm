@@ -6,10 +6,10 @@ case "$1" in
     failed-upgrade|abort-install|abort-upgrade|disappear|upgrade)
     ;;
     remove)
-        [ ! -x /etc/init.d/mamonsu ] && /etc/init.d/mamonsu stop || true
+        [ -x /etc/init.d/mamonsu ] && /etc/init.d/mamonsu stop || true
     ;;
     purge)
-        [ ! -x /etc/init.d/mamonsu ] && /etc/init.d/mamonsu stop || true
+        [ -x /etc/init.d/mamonsu ] && /etc/init.d/mamonsu stop || true
         rm -fr /var/log/mamonsu
         rm -fr /var/run/mamonsu
         rm -fr /var/lib/mamonsu
