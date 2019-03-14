@@ -66,7 +66,7 @@ def start():
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
-            elif commands[1] == 'template-zabbix-zgent':
+            elif commands[1] == 'template-zabbix-agent':
                 pass
             else:
                 print_total_help()
