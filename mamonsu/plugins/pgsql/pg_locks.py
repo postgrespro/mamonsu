@@ -5,40 +5,18 @@ from .pool import Pooler
 
 
 class PgLocks(Plugin):
-
+    #query = """select lower(mode), count(mode) FROM pg_catalog.pg_locks group by 1 """
+    query = """select count(mode) FROM pg_catalog.pg_locks"""
     Items = [
         # key, desc, color
         ('accessshare',
             'Read only queries',
-            '0000CC'),
-        ('rowshare',
-            'SELECT FOR SHARE and SELECT FOR UPDATE',
-            '00CC00'),
-        ('rowexclusive',
-            'Write queries',
-            'CC0000'),
-        ('shareupdateexclusive',
-            'VACUUM, ANALYZE, CREATE INDEX CONCURRENTLY',
-            'CC00CC'),
-        ('share',
-            'CREATE INDEX',
-            '777777'),
-        ('sharerowexclusive',
-            'Locks from application',
-            'CCCCCC'),
-        ('exclusive',
-            'Locks from application or some operation on system catalogs',
-            'CCCC00'),
-        ('accessexclusive',
-            'ALTER TABLE, DROP TABLE, TRUNCATE, REINDEX, CLUSTER, '
-            'VACUUM FULL, LOCK TABLE',
-            '00CCCC')
-    ]
+            '0000CC') ]
+
+
 
     def run(self, zbx):
-        result = Pooler.query("""
-            select lower(mode), count(mode) FROM pg_catalog.pg_locks group by 1
-            """)
+        result = Pooler.query(self.query)
         for item in self.Items:
             found = False
             for row in result:
@@ -66,3 +44,13 @@ class PgLocks(Plugin):
                 'color': item[2]
             })
         return template.graph({'name': name, 'items': items})
+
+    def keys_and_queries(self, template_zabbix):
+        result = ''
+        for item in self.Items:
+            result +=\
+            template_zabbix.key_and_query({'UserParameter=pgsql.pg_locks[{0}],/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c "{1}"'.format(item[0],
+                                                                                                        self.query)})
+            result += '\n'
+        return result
+

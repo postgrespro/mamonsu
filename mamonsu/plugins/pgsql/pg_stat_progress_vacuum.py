@@ -7,6 +7,8 @@ class PgStatProgressVacuum(Plugin):
 
     DEFAULT_CONFIG = {'max_index_vacuum_count': str(0)}
 
+    query = """select count(c.relname) from pg_stat_progress_vacuum v inner join pg_class c on v.relid = c.oid"""
+
     Items = [
         # key, desc, color
         ('index_vacuum_count',
@@ -19,10 +21,7 @@ class PgStatProgressVacuum(Plugin):
    #  '00CC00')
 
     def run(self, zbx):
-        result = Pooler.query("""
-               select count(c.relname) from pg_stat_progress_vacuum v inner join pg_class c on v.relid = c.oid 
-               where v.index_vacuum_count>1
-               """)
+        result = Pooler.query(self.query)
         for item in self.Items:
            # found = False
             for row in result:
@@ -53,10 +52,18 @@ class PgStatProgressVacuum(Plugin):
             })
         return template.graph({'name': name, 'items': items})
 
-
     def triggers(self, template):
         return template.trigger({
             'name': 'PostgreSQL count tables where index_vacuum_count is more than 1 on {HOSTNAME}',
             'expression': '{#TEMPLATE:pgsql.pg_stat_progress_vacuum[index_vacuum_count]'
                           '.last()}&gt;' + self.plugin_config('max_index_vacuum_count')
         })
+
+    def keys_and_queries(self, template_zabbix):
+        result = ''
+        for item in self.Items:
+            result +=\
+                template_zabbix.key_and_query({'UserParameter=pgsql.pg_stat_progress_vacuum[{0}],/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c "{1}"'.format(item[0],
+                                                                                                        self.query)})
+            result += '\n'
+        return result
