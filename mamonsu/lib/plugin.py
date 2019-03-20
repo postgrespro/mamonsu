@@ -8,7 +8,7 @@ import json
 
 from threading import Thread
 
-from mamonsu.lib.const import Template
+from mamonsu.lib.const import Template, Template_Zabbix
 
 
 class PluginDisableException(Exception):
@@ -127,6 +127,9 @@ class Plugin(object):
     def discovery_rules(self, template):
         return None
 
+    def keys_and_queries(self, template_zabbix):
+        return None
+
     def _log_exception(self, e, trace):
         self.last_error_text = 'catch error: {0}'.format(e)
         self.log.error(self.last_error_text)
@@ -138,6 +141,7 @@ class Plugin(object):
             last_start = time.time()
             try:
                 self.run(self.sender)
+               # self.get_keys_and_queries()
             except PluginDisableException as e:
                 text = 'disable plugin: {0}.'.format(e)
                 self.log.info(text)

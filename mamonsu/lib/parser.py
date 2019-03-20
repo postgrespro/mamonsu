@@ -183,8 +183,8 @@ def parse_args():
     # template
     parser.add_option(
         '-t', '--template-name', dest='template',
-        default='PostgresPro-{0}'.format(sys.platform.title()))
+        default='PostgresPro-{0}{1}'.format(sys.platform.title(), 'agent'))
     parser.add_option(
         '--application', dest='application',
-        default='App-PostgresPro-{0}'.format(sys.platform.title()))
+        default='App-PostgresPro-{0}{1}'.format(sys.platform.title(), 'agent'))
     return parser.parse_args()

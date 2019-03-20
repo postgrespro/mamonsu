@@ -36,7 +36,8 @@ class ZbxTemplate(object):
     <graphs>{graphs}</graphs>
 </zabbix_export>"""
 
-# https://www.zabbix.com/documentation/2.0/manual/appendix/api/item/definitions
+#
+
     item_defaults = [
         ('name', None), ('type', 2), ('snmp_community', None),
         ('multiplier', 0), ('inventory_link', 0),
@@ -48,6 +49,23 @@ class ZbxTemplate(object):
         ('snmpv3_contextname', None), ('snmpv3_securityname', None),
         ('snmpv3_securitylevel', 0), ('snmpv3_authprotocol', 0),
         ('snmpv3_authpassphrase', None), ('snmpv3_privprotocol', 0),
+        ('snmpv3_privpassphrase', None), ('formula', 1),
+        ('delay_flex', None), ('params', None),
+        ('ipmi_sensor', None), ('data_type', 0), ('authtype', 0),
+        ('username', None), ('password', None), ('publickey', None),
+        ('privatekey', None), ('port', None), ('description', None)
+    ]
+
+    item_defaults_zabbix_agent = [
+        ('name', None), ('type', 0), ('snmp_community', None),
+        ('multiplier', 0), ('inventory_link', 0),
+        ('key', None), ('snmp_oid', None), ('history', 7),
+        ('trends', 365), ('status', 0), ('delay', 60),
+        ('value_type', Template.VALUE_TYPE.numeric_float),
+        ('allowed_hosts', None), ('valuemap', None),
+        ('units', Template.UNITS.none), ('delta', Template.DELTA.as_is),
+        ('snmpv3_securityname', None), ('snmpv3_securitylevel', 0),
+        ('snmpv3_authpassphrase', None),
         ('snmpv3_privpassphrase', None), ('formula', 1),
         ('delay_flex', None), ('params', None),
         ('ipmi_sensor', None), ('data_type', 0), ('authtype', 0),
@@ -96,9 +114,10 @@ class ZbxTemplate(object):
         ('description', None), ('key', None)
     ]
 
-    def __init__(self, name, app):
+    def __init__(self, name, app, template_type):
         self.Application = app
         self.Template = name
+        self.Template_Type = template_type
 
     def xml(self, plugins=[]):
         # sort plugins!
@@ -118,17 +137,24 @@ class ZbxTemplate(object):
     def _get_all(self, items='items', plugins=[]):
         result = ''
         for plugin in plugins:
-            row = getattr(plugin, items)(self)
+            row = getattr(plugin, items)(self)  # get Items of this particular plugin
             if row is None:
                 continue
             result += row
         return result
 
     def item(self, args={}, xml_key='item'):
-        return '<{2}>{0}{1}</{2}>'.format(
-            self._format_args(self.item_defaults, args),
-            self._application(),
-            xml_key)
+
+        if self.Template_Type == 'agent':
+            return '<{2}>{0}{1}</{2}>\n'.format(
+                self._format_args(self.item_defaults_zabbix_agent, args),
+                self._application(),
+                xml_key)
+        else:
+            return '<{2}>{0}{1}</{2}>'.format(
+                self._format_args(self.item_defaults, args),
+                self._application(),
+                xml_key)
 
     def trigger(self, args={}, xml_key='trigger', defaults=None):
         if defaults is None:
@@ -139,7 +165,7 @@ class ZbxTemplate(object):
             raise LookupError(
                 'Miss expression in trigger: {0}.'.format(args))
         args['expression'] = expression.replace('#TEMPLATE', self.Template)
-        return '<{1}>{0}</{1}>'.format(
+        return '<{1}>{0}</{1}>\n'.format(
             self._format_args(defaults, args),
             xml_key)
 
@@ -158,12 +184,12 @@ class ZbxTemplate(object):
                     'Missed key in graph item: {0}.'.format(item))
             if 'sortorder' not in item:
                 item['sortorder'] = idx
-            row = '<graph_item>{0}<item><host>{1}'
-            row += '</host><key>{2}</key></item></graph_item>'
+            row = '<graph_item>\n{0}<item>\n<host>{1}\n'
+            row += '</host><key>{2}</key></item></graph_item>\n'
             graph_items += row.format(
                 self._format_args(self.graph_items_defaults, item),
                 self.Template, key)
-        result = '<{2}>{0}<graph_items>{1}</graph_items></{2}>'
+        result = '<{2}>{0}<graph_items>{1}</graph_items></{2}\n>'
         return result.format(
             self._format_args(self.graph_values_defaults, args),
             graph_items, xml_key)
@@ -173,29 +199,29 @@ class ZbxTemplate(object):
         result_items = '<item_prototypes>'
         for item in items:
             result_items += self.item(item, xml_key='item_prototype')
-        result_items += '</item_prototypes>'
+        result_items += '</item_prototypes>\n'
 
         result_triggers = '<trigger_prototypes>'
         for trigger in triggers:
             result_triggers += self.trigger(
                 trigger, xml_key='trigger_prototype',
                 defaults=self.trigger_discovery_defaults)
-        result_triggers += '</trigger_prototypes>'
+        result_triggers += '</trigger_prototypes>\n'
 
         result_graphs = '<graph_prototypes>'
         for graph in graphs:
             result_graphs += self.graph(
                 graph, xml_key='graph_prototype')
-        result_graphs += '</graph_prototypes>'
+        result_graphs += '</graph_prototypes>\n'
 
-        result = '<discovery_rule>{0}{1}{2}{3}</discovery_rule>'
+        result = '<discovery_rule>{0}{1}{2}{3}</discovery_rule>\n'
         return result.format(
             self._format_args(self.discovery_defaults, rule),
             result_items, result_triggers, result_graphs)
 
     def _application(self):
-        result = '<applications><application><name>{0}'
-        result += '</name></application></applications>'
+        result = '<applications>\n<application>\n<name>{0}\n'
+        result += '</name>\n</application>\n</applications>\n'
         return result.format(self.Application)
 
     def _format_args(self, defaults, override):
@@ -207,8 +233,8 @@ class ZbxTemplate(object):
             except KeyError:
                 val = pair[1]
             if val is None:
-                row = '<{0}/>'.format(key)
+                row = '<{0}/>\n'.format(key)
             else:
-                row = '<{0}>{1}</{0}>'.format(key, val)
+                row = '<{0}>{1}</{0}>\n'.format(key, val)
             result += row
         return result

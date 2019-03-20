@@ -12,7 +12,7 @@ from mamonsu.lib.config import Config
 from mamonsu.lib.supervisor import Supervisor
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
-
+from mamonsu.lib.get_keys import GetKeys
 
 def start():
 
@@ -49,6 +49,16 @@ def start():
             from mamonsu.tools.agent.start import run_agent
             sys.argv.remove('agent')
             return run_agent()
+        elif tool == 'keys':
+            args, commands = parse_args()
+            cfg = Config(args.config_file, args.plugins_dirs)
+            plugins = []
+            for klass in Plugin.only_child_subclasses():
+                plugins.append(klass(cfg))
+            template = GetKeys()
+            with codecs.open(commands[1], 'w', 'utf-8') as f:
+                f.write(template.txt(plugins))
+                sys.exit(0)
         elif tool == 'export':
             args, commands = parse_args()
             cfg = Config(args.config_file, args.plugins_dirs)
@@ -62,12 +72,21 @@ def start():
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     plugins.append(klass(cfg))
-                template = ZbxTemplate(args.template, args.application)
+                template = ZbxTemplate(args.template, args.application, 'mamonsu')
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
-            elif commands[1] == 'template-zabbix-agent':
-                pass
+            elif commands[1] == 'zabbix-template':
+                plugins = []
+                for klass in Plugin.only_child_subclasses():
+                    if klass.__name__ == 'PgLocks' or klass.__name__ == 'PgStatProgressVacuum':
+                        # generate template for
+                        # agent only for two plugins for now
+                        plugins.append(klass(cfg))
+                template = ZbxTemplate(args.template, args.application, 'agent')
+                with codecs.open(commands[2], 'w', 'utf-8') as f:
+                    f.write(template.xml(plugins))
+                    sys.exit(0)
             else:
                 print_total_help()
 
