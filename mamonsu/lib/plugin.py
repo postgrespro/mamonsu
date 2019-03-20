@@ -8,7 +8,7 @@ import json
 
 from threading import Thread
 
-from mamonsu.lib.const import Template, Template_Zabbix
+from mamonsu.lib.const import Template
 
 
 class PluginDisableException(Exception):
