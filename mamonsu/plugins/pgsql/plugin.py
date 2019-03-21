@@ -47,3 +47,11 @@ if needed and restart.""".format(ext, Pooler.connection_string(db)))
             raise PluginDisableException("""Disable plugin and exit, because \
 PostgresPro Enterprise Edition is not detected [instance: '{0}']
 """.format(Pooler.connection_string(db)))
+
+    def disable_and_exit_if_archive_mode_is_not_on (self,db=None):
+        param = Pooler.get_sys_param('archive_mode',db = db)
+        if param != 'on':
+            self.disable()
+            raise PluginDisableException("""Disable plugin and exit, because '{0}' \
+parameter is not 'ON'. Enable it "{1}" in PostgreSQL instance, \
+if needed and restart.""".format('archive_mode', 'alter system set archive_mode = on;'))

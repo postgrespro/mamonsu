@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from xml.dom import minidom
 from mamonsu.lib.const import Template
 
 
@@ -132,7 +132,11 @@ class ZbxTemplate(object):
         template_data['graphs'] = self._get_all('graphs', plugins)
         template_data['discovery_rules'] = self._get_all(
             'discovery_rules', plugins)
-        return self.mainTemplate.format(**template_data)
+
+        _xml = minidom.parseString(self.mainTemplate.format(**template_data))
+        output_xml = ''.join([line.strip() for line in _xml.toxml().splitlines()])
+        rettyxml =  minidom.parseString(output_xml).toprettyxml(indent = "    ", newl = "\n")
+        return rettyxml
 
     def _get_all(self, items='items', plugins=[]):
         result = ''
@@ -146,7 +150,7 @@ class ZbxTemplate(object):
     def item(self, args={}, xml_key='item'):
 
         if self.Template_Type == 'agent':
-            return '<{2}>{0}{1}</{2}>\n'.format(
+            return '<{2}>{0}{1}</{2}>'.format(
                 self._format_args(self.item_defaults_zabbix_agent, args),
                 self._application(),
                 xml_key)
@@ -165,7 +169,7 @@ class ZbxTemplate(object):
             raise LookupError(
                 'Miss expression in trigger: {0}.'.format(args))
         args['expression'] = expression.replace('#TEMPLATE', self.Template)
-        return '<{1}>{0}</{1}>\n'.format(
+        return '<{1}>{0}</{1}>'.format(
             self._format_args(defaults, args),
             xml_key)
 
@@ -184,12 +188,12 @@ class ZbxTemplate(object):
                     'Missed key in graph item: {0}.'.format(item))
             if 'sortorder' not in item:
                 item['sortorder'] = idx
-            row = '<graph_item>\n{0}<item>\n<host>{1}\n'
-            row += '</host><key>{2}</key></item></graph_item>\n'
+            row = '<graph_item>{0}<item><host>{1}'
+            row += '</host><key>{2}</key></item></graph_item>'
             graph_items += row.format(
                 self._format_args(self.graph_items_defaults, item),
                 self.Template, key)
-        result = '<{2}>{0}<graph_items>{1}</graph_items></{2}\n>'
+        result = '<{2}>{0}<graph_items>{1}</graph_items></{2}>'
         return result.format(
             self._format_args(self.graph_values_defaults, args),
             graph_items, xml_key)
@@ -199,29 +203,29 @@ class ZbxTemplate(object):
         result_items = '<item_prototypes>'
         for item in items:
             result_items += self.item(item, xml_key='item_prototype')
-        result_items += '</item_prototypes>\n'
+        result_items += '</item_prototypes>'
 
         result_triggers = '<trigger_prototypes>'
         for trigger in triggers:
             result_triggers += self.trigger(
                 trigger, xml_key='trigger_prototype',
                 defaults=self.trigger_discovery_defaults)
-        result_triggers += '</trigger_prototypes>\n'
+        result_triggers += '</trigger_prototypes>'
 
         result_graphs = '<graph_prototypes>'
         for graph in graphs:
             result_graphs += self.graph(
                 graph, xml_key='graph_prototype')
-        result_graphs += '</graph_prototypes>\n'
+        result_graphs += '</graph_prototypes>'
 
-        result = '<discovery_rule>{0}{1}{2}{3}</discovery_rule>\n'
+        result = '<discovery_rule>{0}{1}{2}{3}</discovery_rule>'
         return result.format(
             self._format_args(self.discovery_defaults, rule),
             result_items, result_triggers, result_graphs)
 
     def _application(self):
-        result = '<applications>\n<application>\n<name>{0}\n'
-        result += '</name>\n</application>\n</applications>\n'
+        result = '<applications><application><name>{0}'
+        result += '</name></application></applications>'
         return result.format(self.Application)
 
     def _format_args(self, defaults, override):
@@ -233,8 +237,8 @@ class ZbxTemplate(object):
             except KeyError:
                 val = pair[1]
             if val is None:
-                row = '<{0}/>\n'.format(key)
+                row = '<{0}/>'.format(key)
             else:
-                row = '<{0}>{1}</{0}>\n'.format(key, val)
+                row = '<{0}>{1}</{0}>'.format(key, val)
             result += row
         return result

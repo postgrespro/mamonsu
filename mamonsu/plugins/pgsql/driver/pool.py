@@ -209,3 +209,12 @@ from public.pg_buffercache""",
         if db not in self._connections:
             # create new connection
             self._connections[db] = Connection(self._build_connection_hash(db))
+
+    def get_sys_param (self, param, db=None):
+        if param == '':
+            #todo
+            pass
+        db = self._normalize_db(db)
+        result = self.query(
+            'select setting from pg_catalog.pg_settings where name = \'{0}\''.format(param), db)[0][0]
+        return result
