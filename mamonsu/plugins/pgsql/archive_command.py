@@ -19,13 +19,21 @@ class ArchiveCommand (Plugin):
 
     def run(self, zbx):
         self.disable_and_exit_if_archive_mode_is_not_on ()
-        result1 = Pooler.query("""
-SELECT count(name) AS count_files ,
-       coalesce(sum((pg_stat_file('./pg_xlog/' ||  rtrim(ready.name,'.ready'))).size),0) AS size_files
-  FROM (SELECT name FROM pg_ls_dir('./pg_xlog/archive_status') name WHERE right( name,6)= '.ready'  ) ready;
-            """)
+        if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
+            result1 = Pooler.query("""select * from mamonsu_archive_command_files()""")
+            result2 = Pooler.query("""SELECT * from mamonsu_archive_stat()""")
+        else:
+            if Pooler.server_version_greater('10.0'):
+                xlog = 'wal'
+            else:
+                xlog = 'xlog'
+            result1 = Pooler.query("""
+            SELECT count(name) AS count_files ,
+                   coalesce(sum((pg_stat_file('./pg_{0}/' ||  rtrim(ready.name,'.ready'))).size),0) AS size_files
+              FROM (SELECT name FROM pg_ls_dir('./pg_{0}/archive_status') name WHERE right( name,6)= '.ready'  ) ready;
+                        """.format(xlog))
+            result2 = Pooler.query("""SELECT archived_count, failed_count from pg_stat_archiver;""")
 
-        result2 = Pooler.query("""SELECT archived_count, failed_count from pg_stat_archiver;""")
         current_archived_count = result2[0][0]
         current_failed_count = result2[0][1]
 

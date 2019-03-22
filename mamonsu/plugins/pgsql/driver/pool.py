@@ -215,6 +215,9 @@ from public.pg_buffercache""",
             #todo
             pass
         db = self._normalize_db(db)
-        result = self.query(
-            'select setting from pg_catalog.pg_settings where name = \'{0}\''.format(param), db)[0][0]
+        if self.is_bootstraped() and self.bootstrap_version_greater('2.3.4'):
+            result = self.query("""select * from mamonsu_get_sys_param(\'{0}\')""".format(param))[0][0]
+        else:
+            result = self.query(
+                'select setting from pg_catalog.pg_settings where name = \'{0}\''.format(param), db)[0][0]
         return result

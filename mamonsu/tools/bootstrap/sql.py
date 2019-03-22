@@ -92,6 +92,23 @@ SELECT
    SUM(CASE isdirty WHEN true THEN 1 ELSE 0 END) * 8 * 1024
 FROM public.pg_buffercache
 $$ LANGUAGE SQL SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION public.mamonsu_archive_command_files()
+RETURNS TABLE(COUNT_FILES BIGINT, SIZE_FILES NUMERIC) AS $$
+SELECT count(name) AS COUNT_FILES ,
+       coalesce(sum((pg_stat_file('./pg_{3}/' ||  rtrim(ready.name,'.ready'))).size),0) AS SIZE_FILES
+  FROM (SELECT name FROM pg_ls_dir('./pg_{3}/archive_status') name WHERE right( name,6)= '.ready'  ) ready
+$$ LANGUAGE SQL SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION public.mamonsu_archive_stat()
+RETURNS TABLE(ARCHIVED_COUNT BIGINT, FAILED_COUNT BIGINT) AS $$
+SELECT archived_count, failed_count from pg_stat_archiver
+$$ LANGUAGE SQL SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION public.mamonsu_get_sys_param(param text)
+RETURNS TABLE(SETTING TEXT) AS $$
+select setting from pg_catalog.pg_settings where name = param
+$$ LANGUAGE SQL SECURITY DEFINER;
 """
 
 GrantsOnSchemaSQL = """
@@ -112,4 +129,8 @@ GRANT EXECUTE ON FUNCTION public.mamonsu_get_oldest_query() TO {1};
 GRANT EXECUTE ON FUNCTION public.mamonsu_count_{2}_files() TO {1};
 
 GRANT EXECUTE ON FUNCTION public.mamonsu_buffer_cache() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_archive_command_files() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_archive_stat() TO {1};
 """
