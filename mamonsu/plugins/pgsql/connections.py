@@ -13,6 +13,10 @@ class Connections(Plugin):
         ('idle in transaction', 'idle_in_transaction',
             'number of idle in transaction connections', 'CC00CC')
     ]
+   # query = """select count(mode) FROM pg_catalog.pg_locks"""
+    query_agent = "select count(*) from pg_catalog.pg_stat_activity where state = '{0}' "
+    query_agent_custom = "select count(*) from pg_catalog.pg_stat_activity"
+    key = 'pgsql.connections'
 
     def run(self, zbx):
 
@@ -90,3 +94,18 @@ class Connections(Plugin):
         })
         graph = {'name': 'PostgreSQL connections', 'items': items}
         return template.graph(graph)
+
+    def keys_and_queries(self, template_zabbix):
+        result = ''
+        for item in self.Items:
+            result +=\
+            template_zabbix.key_and_query({
+                'UserParameter={0}.{1},/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c "{2}"'.format(
+                    self.key, item[1], self.query_agent.format(item[1]))})
+            result += '\n'
+        result += \
+            template_zabbix.key_and_query({
+                'UserParameter={0}.{1},/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c "{2}"'.format(
+                      self.key, 'total', self.query_agent_custom)})
+        result += '\n'
+        return result
