@@ -145,6 +145,17 @@ Export zabbix template with additional plugins included in config file:
 Command: export
 Examples:
     {prog} export template <file>
+
+Export zabbix-agent template with additional plugins included in config file:
+Command: export
+Examples:
+    {prog} export zabbix-template <file>
+    
+Generate keys for zabbix-agent :
+Command: keys
+Examples:
+    {prog} keys <file> 
+      
 Options:
     --config <file>
     -t <template name>
@@ -165,7 +176,7 @@ Options:
             self.largs.append(err.opt_str)
 
 
-def parse_args():
+def parse_args(name):
     parser = MissOptsParser(
         usage=usage_msg,
         version='%prog {0}'.format(__version__))
@@ -183,8 +194,8 @@ def parse_args():
     # template
     parser.add_option(
         '-t', '--template-name', dest='template',
-        default='PostgresPro-{0}{1}'.format(sys.platform.title(), 'agent'))
+        default='PostgresPro-{0} {1}'.format(sys.platform.title(), name))
     parser.add_option(
         '--application', dest='application',
-        default='App-PostgresPro-{0}{1}'.format(sys.platform.title(), 'agent'))
+        default='App-PostgresPro-{0} {1}'.format(sys.platform.title(), name))
     return parser.parse_args()

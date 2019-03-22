@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from xml.dom import minidom
 from mamonsu.lib.const import Template
+from mamonsu.lib.plugin import Plugin
+import re
 
 
 class ZbxTemplate(object):
@@ -56,23 +58,6 @@ class ZbxTemplate(object):
         ('privatekey', None), ('port', None), ('description', None)
     ]
 
-    item_defaults_zabbix_agent = [
-        ('name', None), ('type', 0), ('snmp_community', None),
-        ('multiplier', 0), ('inventory_link', 0),
-        ('key', None), ('snmp_oid', None), ('history', 7),
-        ('trends', 365), ('status', 0), ('delay', 60),
-        ('value_type', Template.VALUE_TYPE.numeric_float),
-        ('allowed_hosts', None), ('valuemap', None),
-        ('units', Template.UNITS.none), ('delta', Template.DELTA.as_is),
-        ('snmpv3_securityname', None), ('snmpv3_securitylevel', 0),
-        ('snmpv3_authpassphrase', None),
-        ('snmpv3_privpassphrase', None), ('formula', 1),
-        ('delay_flex', None), ('params', None),
-        ('ipmi_sensor', None), ('data_type', 0), ('authtype', 0),
-        ('username', None), ('password', None), ('publickey', None),
-        ('privatekey', None), ('port', None), ('description', None)
-    ]
-
     trigger_defaults = [
         ('expression', None), ('name', None), ('url', None),
         ('status', 0), ('priority', 3), ('description', None),
@@ -119,6 +104,13 @@ class ZbxTemplate(object):
         self.Template = name
         self.Template_Type = template_type
 
+    def turn_agent_type(self, xml):
+        xml = re.sub(r"\]", "", xml)
+        xml = re.sub(r"\[", ".", xml)
+        xml = re.sub(r"<type>2", "<type>0", xml)
+        #print(xml)
+        return xml
+
     def xml(self, plugins=[]):
         # sort plugins!
         plugins.sort(key=lambda x: x.__class__.__name__)
@@ -135,8 +127,10 @@ class ZbxTemplate(object):
 
         _xml = minidom.parseString(self.mainTemplate.format(**template_data))
         output_xml = ''.join([line.strip() for line in _xml.toxml().splitlines()])
-        rettyxml =  minidom.parseString(output_xml).toprettyxml(indent = "    ", newl = "\n")
-        return rettyxml
+        prettyxml = minidom.parseString(output_xml).toprettyxml(indent = "    ", newl = "\n")
+        if Plugin.Type == 'agent':
+            prettyxml = ZbxTemplate.turn_agent_type(self, prettyxml)
+        return prettyxml
 
     def _get_all(self, items='items', plugins=[]):
         result = ''
@@ -148,17 +142,9 @@ class ZbxTemplate(object):
         return result
 
     def item(self, args={}, xml_key='item'):
-
-        if self.Template_Type == 'agent':
-            return '<{2}>{0}{1}</{2}>'.format(
-                self._format_args(self.item_defaults_zabbix_agent, args),
-                self._application(),
-                xml_key)
-        else:
-            return '<{2}>{0}{1}</{2}>'.format(
-                self._format_args(self.item_defaults, args),
-                self._application(),
-                xml_key)
+        return '<{2}>{0}{1}</{2}>'.format(
+         self._format_args(self.item_defaults, args),
+         self._application(),xml_key)
 
     def trigger(self, args={}, xml_key='trigger', defaults=None):
         if defaults is None:

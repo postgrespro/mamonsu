@@ -16,6 +16,9 @@ class PluginDisableException(Exception):
 
 
 class Plugin(object):
+    # can be 'mamonsu' or 'agent'
+    # type depends on run command
+    Type = 'mamonsu'
 
     # plugin interval run
     Interval = 60
@@ -141,7 +144,6 @@ class Plugin(object):
             last_start = time.time()
             try:
                 self.run(self.sender)
-               # self.get_keys_and_queries()
             except PluginDisableException as e:
                 text = 'disable plugin: {0}.'.format(e)
                 self.log.info(text)

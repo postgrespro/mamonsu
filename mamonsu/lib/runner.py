@@ -5,6 +5,7 @@ import signal
 import sys
 import codecs
 import os
+import string
 
 import mamonsu.lib.platform as platform
 from mamonsu.lib.parser import parse_args, print_total_help
@@ -14,7 +15,9 @@ from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
 
+
 def start():
+    default_name = "default_template_name"
 
     def quit_handler(_signo=None, _stack_frame=None):
         logging.info("Bye bye!")
@@ -50,7 +53,7 @@ def start():
             sys.argv.remove('agent')
             return run_agent()
         elif tool == 'keys':
-            args, commands = parse_args()
+            args, commands = parse_args(default_name)
             cfg = Config(args.config_file, args.plugins_dirs)
             plugins = []
             for klass in Plugin.only_child_subclasses():
@@ -60,7 +63,8 @@ def start():
                 f.write(template.txt(plugins))
                 sys.exit(0)
         elif tool == 'export':
-            args, commands = parse_args()
+            name = string.strip(commands[2], '.xml')
+            args, commands = parse_args(name)
             cfg = Config(args.config_file, args.plugins_dirs)
             if not len(commands) == 3:
                 print_total_help()
@@ -77,9 +81,10 @@ def start():
                     f.write(template.xml(plugins))
                     sys.exit(0)
             elif commands[1] == 'zabbix-template':
+                Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ == 'PgLocks' or klass.__name__ == 'PgStatProgressVacuum':
+                    if klass.__name__ == 'PgLocks' or klass.__name__ == 'PgStatProgressVacuum' or  klass.__name__ == 'Connections':
                         # generate template for
                         # agent only for two plugins for now
                         plugins.append(klass(cfg))
@@ -90,7 +95,7 @@ def start():
             else:
                 print_total_help()
 
-    args, commands = parse_args()
+    args, commands = parse_args(default_name)
     if len(commands) > 0:
         print_total_help()
     cfg = Config(args.config_file, args.plugins_dirs)

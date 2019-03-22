@@ -6,6 +6,8 @@ class GetKeys(object):
 
     mainTemplate = "{keys_and_queries}"
 
+    # mainTemplate = "UserParameter={keys_and_queries}" # fix main template for zabbix-agent
+
     def txt(self, plugins=[]):
         # sort plugins!
         plugins.sort(key=lambda x: x.__class__.__name__)
@@ -25,11 +27,12 @@ class GetKeys(object):
         return result
 
     def key_and_query(self, args={}, xml_key='item'):
-            quiry = '{0}'.format(args)
-            result = re.sub("set\(\[", "", quiry)
-            result = re.sub("]\)", "", result)
-            result = result[1:-1]
-            return result
+        quiry = '{0}'.format(args)
+        result = re.sub('set\(\[', '', quiry)
+        result = re.sub(r"[\\]", "", result)
+        result = re.sub(r"\]\)", "", result)
+        result = result[1:-1]
+        return result
 
 
     def _format_args(self, defaults, override):   #fix for zabbix agent
