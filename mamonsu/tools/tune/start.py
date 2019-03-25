@@ -87,6 +87,7 @@ class Args(DefaultConfig):
         os.environ['PGPASSWORD'] = self.args.password
         os.environ['PGHOST'] = self.args.hostname
         os.environ['PGDATABASE'] = self.args.dbname
+        os.environ['PGPORT'] = str(self.args.port)
         os.environ['PGAPPNAME'] = 'mamonsu autotune'
 
     def try_configure_connect_to_pg(self):
