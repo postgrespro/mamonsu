@@ -7,7 +7,7 @@ class PgStatProgressVacuum(Plugin):
 
     DEFAULT_CONFIG = {'max_index_vacuum_count': str(0)}
 
-    query = """select count(v.relname) from pg_stat_progress_vacuum v inner join pg_class c on v.relid = c.oid"""
+    query = """select count(c.relname) from pg_stat_progress_vacuum v inner join pg_class c on v.relid = c.oid"""
     query_agent = """select count({0}) from pg_stat_progress_vacuum v inner join pg_class c on v.relid = c.oid"""
     key = 'pgsql.pg_stat_progress_vacuum'
     Items = [

@@ -69,11 +69,12 @@ class PgLocks(Plugin):
         return template.graph({'name': name, 'items': items})
 
     def keys_and_queries(self, template_zabbix):
-        result = ''
+        result = []
         for item in self.Items:
-            result +=\
-            template_zabbix.key_and_query({'UserParameter={0}.{1},/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c "{2}"'.format(self.key, item[0],
-                                                                                                        self.query_agent.format('{0}lock'.format(item[0])))})
-            result += '\n'
-        return result
+           # result +=\
+           # template_zabbix.key_and_query(['{0}.{1},/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c "{2}"'.format(self.key, item[0],
+           #                                                                                             self.query_agent.format('{0}lock'.format(item[0])))])
+           # result += '\n'
+           result.append(['{0}.{1},"{2}"'.format(self.key, item[0], self.query_agent.format('{0}lock'.format(item[0])))])
+        return template_zabbix.key_and_query(result)
 

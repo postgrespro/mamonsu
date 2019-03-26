@@ -76,7 +76,7 @@ def start():
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     plugins.append(klass(cfg))
-                template = ZbxTemplate(args.template, args.application, 'mamonsu')
+                template = ZbxTemplate(args.template, args.application)
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
@@ -84,11 +84,12 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ == 'PgLocks' or klass.__name__ == 'PgStatProgressVacuum' or  klass.__name__ == 'Connections':
+                    print(klass.__name__)
+                    if klass.__name__ == 'PgLocks' or klass.__name__ == 'PgStatProgressVacuum' or  klass.__name__ == 'Connections' or klass.__name__ == 'Memory' or klass.__name__ == 'OpenFiles':
                         # generate template for
                         # agent only for two plugins for now
                         plugins.append(klass(cfg))
-                template = ZbxTemplate(args.template, args.application, 'agent')
+                template = ZbxTemplate(args.template, args.application)
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)

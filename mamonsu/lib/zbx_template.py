@@ -99,10 +99,9 @@ class ZbxTemplate(object):
         ('description', None), ('key', None)
     ]
 
-    def __init__(self, name, app, template_type):
+    def __init__(self, name, app):
         self.Application = app
         self.Template = name
-        self.Template_Type = template_type
 
     def turn_agent_type(self, xml):
         xml = re.sub(r"\]", "", xml)
