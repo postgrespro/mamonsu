@@ -3,6 +3,18 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 class Memory(Plugin):
 
+    query_agent = "cat /proc/meminfo | awk '/^{0}\:/ "
+    query_agent_apps = "MemTotal=$(sudo cat /proc/meminfo | awk '/MemTotal\:/ { print $2 }'); unused=$(sudo" \
+                       " cat /proc/meminfo | awk '/MemFree\:/ { print $2*1024 }'); buffers=$(sudo cat /proc/meminfo " \
+                       "| awk '/Buffers\:/ { print $2*1024 }');cached=$(sudo cat /proc/meminfo | awk '/^Cached\:/" \
+                       " { print $2*1024 }');slab=$(sudo cat /proc/meminfo | awk '/Slab\:/ { print $2*1024 }');page_" \
+                       "tables=$(sudo cat /proc/meminfo | awk '/PageTables\:/ { print $2*1024 }');" \
+                       "swap_cache=$(sudo cat /proc/meminfo | awk '/SwapCached\:/ { print $2*1024 }');" \
+                       "echo $(($MemTotal-($unused+$buffers+$cached+$slab+$page_tables+$swap_cache)))"
+    query_agent_swap = "SwapTotal=$(sudo cat /proc/meminfo | awk '/SwapTotal\:/ { print $2*1024}');" \
+                       "SwapFree=$(sudo cat /proc/meminfo | awk '/SwapFree\:/ { print $2*1024}');echo $(($SwapTotal-$SwapFree)) "
+    key = "system.memory"
+
     # colors
     # 1. physical memory
     # 2. virtual memory
@@ -80,7 +92,7 @@ class Memory(Plugin):
         for item in self.Items:
             result += template.item({
                 'name': '{0}'.format(item[2]),
-                'key': 'system.memory[{0}]'.format(item[0]),
+                'key': '{0}[{1}]'.format(self.key, item[0]),
                 'units': Plugin.UNITS.bytes,
                 'value_type': Plugin.VALUE_TYPE.numeric_unsigned
             })
@@ -90,10 +102,24 @@ class Memory(Plugin):
         items = []
         for item in self.Items:
             items.append({
-                'key': 'system.memory[{0}]'.format(item[0]),
+                'key': '{0}[{1}]'.format(self.key, item[0]),
                 'color': item[3]
             })
         graph = {
             'name': 'Memory overview', 'height': 400,
             'type': 1, 'items': items}
         return template.graph(graph)
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        for item in self.Items:
+            if item[1] is None and item[0] == 'apps':
+                result.append(['{0}.{1},{2}'.format(self.key, item[0],
+                                                      self.query_agent_apps)])
+            elif item[1] is None and item[0] == 'swap':
+                result.append(['{0}.{1},{2}'.format(self.key, item[0],
+                                                      self.query_agent_swap)])
+            else:
+                result.append(['{0}.{1},{2}{3}'.format(self.key, item[0],
+                                                  self.query_agent.format(item[1]), "{ print $2*1024 }'")])
+        return template_zabbix.key_and_query(result)
