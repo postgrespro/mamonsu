@@ -4,15 +4,11 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 class Memory(Plugin):
 
     query_agent = "cat /proc/meminfo | awk '/^{0}\:/ "
-    query_agent_apps = "MemTotal=$(sudo cat /proc/meminfo | awk '/MemTotal\:/ { print $2 }'); unused=$(sudo" \
-                       " cat /proc/meminfo | awk '/MemFree\:/ { print $2*1024 }'); buffers=$(sudo cat /proc/meminfo " \
-                       "| awk '/Buffers\:/ { print $2*1024 }');cached=$(sudo cat /proc/meminfo | awk '/^Cached\:/" \
-                       " { print $2*1024 }');slab=$(sudo cat /proc/meminfo | awk '/Slab\:/ { print $2*1024 }');page_" \
-                       "tables=$(sudo cat /proc/meminfo | awk '/PageTables\:/ { print $2*1024 }');" \
-                       "swap_cache=$(sudo cat /proc/meminfo | awk '/SwapCached\:/ { print $2*1024 }');" \
-                       "echo $(($MemTotal-($unused+$buffers+$cached+$slab+$page_tables+$swap_cache)))"
-    query_agent_swap = "SwapTotal=$(sudo cat /proc/meminfo | awk '/SwapTotal\:/ { print $2*1024}');" \
-                       "SwapFree=$(sudo cat /proc/meminfo | awk '/SwapFree\:/ { print $2*1024}');echo $(($SwapTotal-$SwapFree)) "
+    query_agent_apps = "MemTotal=$(sudo cat /proc/meminfo | awk '/MemTotal\:/ { print $2 }'); " \
+                       "SUM=$(sudo cat /proc/meminfo | awk '/(MemFree|Buffers|(Swap)?Cached|Slab|PageTables)\:/ " \
+                       "{ SUM += $2 } END {print SUM}'); echo $(($MemTotal-$SUM))"
+    query_agent_swap = "expr `grep -Ei 'Swap(Total|Free)' /proc/meminfo | awk '{print $2}' | paste -s -d '-' " \
+                       "| sed -E 's/-/ - /g'` "
     key = "system.memory"
 
     # colors
@@ -92,7 +88,7 @@ class Memory(Plugin):
         for item in self.Items:
             result += template.item({
                 'name': '{0}'.format(item[2]),
-                'key': '{0}[{1}]'.format(self.key, item[0]),
+                'key': '{0}[{1}]'.format(item[0], self.key),
                 'units': Plugin.UNITS.bytes,
                 'value_type': Plugin.VALUE_TYPE.numeric_unsigned
             })
@@ -102,7 +98,7 @@ class Memory(Plugin):
         items = []
         for item in self.Items:
             items.append({
-                'key': '{0}[{1}]'.format(self.key, item[0]),
+                'key': '{0}[{1}]'.format(item[0], self.key),
                 'color': item[3]
             })
         graph = {
