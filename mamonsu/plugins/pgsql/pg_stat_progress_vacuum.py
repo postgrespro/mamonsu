@@ -2,7 +2,6 @@ from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
 
 
-
 class PgStatProgressVacuum(Plugin):
 
     DEFAULT_CONFIG = {'max_index_vacuum_count': str(0)}
@@ -56,10 +55,7 @@ class PgStatProgressVacuum(Plugin):
         })
 
     def keys_and_queries(self, template_zabbix):
-        result = ''
+        result = []
         for item in self.Items:
-            result +=\
-                template_zabbix.key_and_query({'UserParameter={0}.{1},/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c "{2}"'.format(self.key, item[0],
-                                                                                                        self.query_agent.format(item[0]))})
-            result += '\n'
-        return result
+            result.append(['{0}.{1},"{2}"'.format(self.key, item[0], self.query_agent.format(item[0]))])
+        return template_zabbix.key_and_query(result)

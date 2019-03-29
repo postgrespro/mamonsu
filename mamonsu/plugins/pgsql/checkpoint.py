@@ -8,6 +8,10 @@ class Checkpoint(Plugin):
 
     Interval = 60 * 5
 
+    query = "select {0} from pg_catalog.pg_stat_bgwriter "  # for mamonsu and agent
+    #query_agent = """select count(*) FROM pg_catalog.pg_locks where lower(mode)='{0}' """  # for zabbix
+    key = 'pgsql'
+
     DEFAULT_CONFIG = {'max_checkpoint_by_wal_in_hour': str(12)}
 
     Items = [
@@ -38,7 +42,7 @@ class Checkpoint(Plugin):
     def run(self, zbx):
         params = [x[0] for x in self.Items]
         result = Pooler.query(
-            'select {0} from pg_catalog.pg_stat_bgwriter'.format(
+            self.query.format(
                 ', '.join(params)))
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(
@@ -77,3 +81,11 @@ class Checkpoint(Plugin):
             '.last()}&gt;' + self.plugin_config(
                 'max_checkpoint_by_wal_in_hour')
         })
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        for item in self.Items:
+            result.append(
+                ['{0}.{1},"{2}"'.format(self.key, item[1], self.query.format(item[0]))])
+        return template_zabbix.key_and_query(result)
+

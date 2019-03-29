@@ -96,16 +96,10 @@ class Connections(Plugin):
         return template.graph(graph)
 
     def keys_and_queries(self, template_zabbix):
-        result = ''
+        result = []
         for item in self.Items:
-            result +=\
-            template_zabbix.key_and_query({
-                'UserParameter={0}.{1},/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c "{2}"'.format(
-                    self.key, item[1], self.query_agent.format(item[1]))})
-            result += '\n'
-        result += \
-            template_zabbix.key_and_query({
-                'UserParameter={0}.{1},/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c "{2}"'.format(
-                      self.key, 'total', self.query_agent_custom)})
-        result += '\n'
-        return result
+            result.append(['{0}.{1},"{2}"'.format(self.key, item[1], self.query_agent.format(item[1]))])
+        result.append(['{0}.{1},"{2}"'.format(self.key, 'total', self.query_agent_custom)])
+        return template_zabbix.key_and_query(result)
+
+

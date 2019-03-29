@@ -5,6 +5,8 @@ from .pool import Pooler
 
 
 class Instance(Plugin):
+    query_agent = "select sum({0}) as {0} from pg_catalog.pg_stat_database"
+    key = 'pgsql'
 
     Items = [
         # key, zbx_key, description,
@@ -97,3 +99,10 @@ class Instance(Plugin):
             result += template.graph(graph)
 
         return result
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        for item in self.Items:
+            result.append(['{0}.{1},"{2}"'.format(self.key, item[1], self.query_agent.format(format(item[0])))])
+        return template_zabbix.key_and_query(result)
+
