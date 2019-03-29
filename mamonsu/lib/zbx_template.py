@@ -104,10 +104,10 @@ class ZbxTemplate(object):
         self.Template = name
 
     def turn_agent_type(self, xml):
+        xml = re.sub(r"\[\]", "", xml)  # for [] case
         xml = re.sub(r"\]", "", xml)
-        xml = re.sub(r"\[", ".", xml)
+        xml = re.sub(r"\[", ".", xml)  # for zabbix-agent type of key representation
         xml = re.sub(r"<type>2", "<type>0", xml)
-        #print(xml)
         return xml
 
     def xml(self, plugins=[]):

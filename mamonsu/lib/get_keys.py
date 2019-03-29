@@ -29,12 +29,14 @@ class GetKeys(object):
         result = ""
         for one in args:
             one = re.sub(r"[\\]", "", str(one))  # convert list into string and replace '\' with empty symbol
-           # one = re.sub(r"\,\"", ",/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c \"", one)
+            # one = re.sub(r"\,\"", ",/opt/pgpro/std-10/bin/psql -qAt -p 5433 -U postgres -d postgres -c \"", one)
             # add parameters for psql to string
-            result += 'UserParameter={0}\n'.format(one[2:-2])  # lose brackets
+            one = re.sub(r"\[\]", "", one)  # for [] case
+            one = re.sub(r"\]", "",  one)
+            one = re.sub(r"\[", ".",  one)  # for zabbix-agent type of key representation
+            result += 'UserParameter={0}\n'.format(one[2:-1])  # lose brackets
        # result = re.sub('set\(\[', '', quiry)
        # result = re.sub(r"[\\]", "", result)
-       # result = re.sub(r"\]\)", "", result)
-       # result = result[1:-1]
+       # result = re.sub(r"\]\)", "", result
         return result
 
