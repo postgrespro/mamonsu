@@ -19,7 +19,7 @@ select public.mamonsu_get_oldest_xid();
     OldestQuerySql = """
 select
     extract(epoch from max(now() - xact_start))
-from pg_catalog.pg_stat_activity;
+from pg_catalog.pg_stat_activity where pid not in (select pid from pg_stat_replication);
 """
 
     OldestQuerySql_bootstrap = """
