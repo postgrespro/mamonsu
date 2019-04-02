@@ -70,7 +70,11 @@ RETURNS DOUBLE PRECISION AS $$
     SELECT
         extract(epoch from max(now() - xact_start))
     FROM pg_catalog.pg_stat_activity
-    WHERE pid not in (select pid from pg_stat_replication)
+    WHERE 
+        pid not in (select pid from pg_stat_replication)
+        AND pid <> pg_backend_pid() 
+        AND query not ilike '%VACUUM%' 
+        HAVING extract(epoch from max(now() - xact_start))>0
 $$ LANGUAGE SQL SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION public.mamonsu_count_{3}_files()
