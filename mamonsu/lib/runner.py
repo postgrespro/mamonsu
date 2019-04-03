@@ -52,22 +52,24 @@ def start():
             from mamonsu.tools.agent.start import run_agent
             sys.argv.remove('agent')
             return run_agent()
-        elif tool == 'keys':
-            args, commands = parse_args(default_name)
-            cfg = Config(args.config_file, args.plugins_dirs)
-            plugins = []
-            for klass in Plugin.only_child_subclasses():
-                plugins.append(klass(cfg))
-            template = GetKeys()
-            with codecs.open(commands[1], 'w', 'utf-8') as f:
-                f.write(template.txt(plugins))
-                sys.exit(0)
         elif tool == 'export':
             name = string.strip(commands[2], '.xml')
             args, commands = parse_args(name)
             cfg = Config(args.config_file, args.plugins_dirs)
-            if not len(commands) == 3:
+            if not len(commands) > 3:
                 print_total_help()
+            elif commands[1] == 'zabbix-parameters':  # zabbix agent keys generation
+                plugins = []
+                for klass in Plugin.only_child_subclasses():
+                    #print(klass.__name__)
+                    plugins.append(klass(cfg))
+                if commands[5] == 'pg' or commands[5] == 'sys' or commands[5] == 'all':
+                    template = GetKeys()
+                    with codecs.open(commands[3], 'w', 'utf-8') as f:
+                        f.write(template.txt(commands[5], plugins))  # pass command type
+                        sys.exit(0)
+                else:
+                    print_total_help()
             elif commands[1] == 'config':
                 with open(commands[2], 'w') as fd:
                     cfg.config.write(fd)
