@@ -3,7 +3,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 class OpenFiles(Plugin):
     query_agent = "cat  /proc/sys/fs/file-nr | awk '{ print $1 }'"
-
+    AgentPluginType = 'sys'
     key = "system.open_files" #fix me for zabbix agent template and key configuration
 
     def run(self, zbx):

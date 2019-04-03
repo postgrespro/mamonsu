@@ -5,7 +5,7 @@ from .pool import Pooler
 
 
 class Checkpoint(Plugin):
-
+    AgentPluginType = 'pg'
     Interval = 60 * 5
 
     query = "select {0} from pg_catalog.pg_stat_bgwriter "  # for mamonsu and agent

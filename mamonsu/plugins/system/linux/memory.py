@@ -2,7 +2,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class Memory(Plugin):
-
+    AgentPluginType = 'sys'
     query_agent = "cat /proc/meminfo | awk '/^{0}\:/ "
     query_agent_apps = "MemTotal=$(sudo cat /proc/meminfo | awk '/MemTotal\:/ { print $2 }'); " \
                        "SUM=$(sudo cat /proc/meminfo | awk '/(MemFree|Buffers|(Swap)?Cached|Slab|PageTables)\:/ " \

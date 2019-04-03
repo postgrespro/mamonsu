@@ -7,7 +7,7 @@ from .pool import Pooler
 class Oldest(Plugin):
     key_xid = 'pgsql.oldest[xid_age]'
     key_time = 'pgsql.oldest[query_time]'
-
+    AgentPluginType = 'pg'
     OldestXidSql = "select greatest(max(age(backend_xmin)), max(age(backend_xid))) from pg_catalog.pg_stat_activity;"
 
     OldestXidSql_bootstrap = "select public.mamonsu_get_oldest_xid();"

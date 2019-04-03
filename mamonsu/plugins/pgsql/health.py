@@ -6,7 +6,7 @@ import time
 
 
 class PgHealth(Plugin):
-
+    AgentPluginType = 'pg'
     DEFAULT_CONFIG = {'uptime': str(60 * 10), 'cache': str(80)}
     query_health = "select 1 as health"
     query_uptime = "select " \

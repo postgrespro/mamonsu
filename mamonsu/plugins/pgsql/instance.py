@@ -7,7 +7,7 @@ from .pool import Pooler
 class Instance(Plugin):
     query_agent = "select sum({0}) as {0} from pg_catalog.pg_stat_database"
     key = 'pgsql'
-
+    AgentPluginType = 'pg'
     Items = [
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta

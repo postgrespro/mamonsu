@@ -3,6 +3,7 @@ from .pool import Pooler
 
 
 class ArchiveCommand (Plugin):
+    AgentPluginType = 'pg'
     DEFAULT_CONFIG = {'max_count_files': str(2)}
     Interval = 60
     key = 'pgsql.archive_command'

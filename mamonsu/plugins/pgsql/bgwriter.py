@@ -5,7 +5,7 @@ from .pool import Pooler
 
 
 class BgWriter(Plugin):
-
+    AgentPluginType = 'pg'
     Items = [
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta

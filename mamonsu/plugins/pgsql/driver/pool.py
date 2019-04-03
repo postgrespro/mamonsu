@@ -26,10 +26,9 @@ class Pool(object):
             'select public.mamonsu_count_wal_files()'
         ),
         'count_autovacuum': (
-            """select count(*) from pg_catalog.pg_stat_activity where
-query like '%%autovacuum%%' and state <> 'idle'
-and pid <> pg_catalog.pg_backend_pid()
-        """,
+            "select count(*) from pg_catalog.pg_stat_activity where "
+            "query like '%%autovacuum%%' and state <> 'idle "
+            "and pid <> pg_catalog.pg_backend_pid() ",
             'select public.mamonsu_count_autovacuum()'
         ),
         'buffer_cache': (

@@ -7,6 +7,7 @@ from .pool import Pooler
 class PgLocks(Plugin):
     query = """select lower(mode), count(mode) FROM pg_catalog.pg_locks group by 1 """    # for mamonsu
     query_agent = """select count(*) FROM pg_catalog.pg_locks where lower(mode)='{0}' """   # for zabbix
+    AgentPluginType = 'pg'
     key = 'pgsql.pg_locks'
     Items = [
         # key, desc, color

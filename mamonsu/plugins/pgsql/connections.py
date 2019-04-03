@@ -5,7 +5,7 @@ from .pool import Pooler
 
 
 class Connections(Plugin):
-
+    AgentPluginType = 'pg'
     # (state, key, name, graph)
     Items = [
         ('active', 'active', 'number of active connections', '00BB00'),
