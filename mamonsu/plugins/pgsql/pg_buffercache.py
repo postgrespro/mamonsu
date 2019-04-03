@@ -5,7 +5,11 @@ from .pool import Pooler
 
 
 class PgBufferCache(Plugin):
-
+    AgentPluginType = 'pg'
+    query_agent_size = """select sum(1) * 8 * 1024 as size from public.pg_buffercache """  # for zabbix
+    query_agent_twice_used = """select sum(case when usagecount > 1 then 1 else 0 end) * 8 * 1024 as twice_used from public.pg_buffercache """  # for zabbix
+    query_agent_dirty = """select sum(case isdirty when true then 1 else 0 end) * 8 * 1024 as dirty from public.pg_buffercache"""  # for zabbix
+    query = [query_agent_size, query_agent_twice_used, query_agent_dirty]
     Items = [
         # key, name, color
         ('size', 'PostgreSQL: shared buffer size', '0000CC'),
@@ -39,3 +43,12 @@ class PgBufferCache(Plugin):
         return template.graph({
             'name': 'PostgreSQL: shared buffer',
             'items': items})
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        for i, item in enumerate(self.Items):
+            print(i, item)
+            result.append(
+                ['pgsql.buffers.{0},"{1}"'.format(item[0], self.query[i].format(item[0]))])
+        return template_zabbix.key_and_query(result)
+
