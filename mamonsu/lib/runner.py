@@ -52,13 +52,12 @@ def start():
             from mamonsu.tools.agent.start import run_agent
             sys.argv.remove('agent')
             return run_agent()
-        elif tool == 'export':
+        elif tool == 'export' and len(commands) > 2:
             name = string.strip(commands[2], '.xml')
             args, commands = parse_args(name)
             cfg = Config(args.config_file, args.plugins_dirs)
             print(commands)
-
-            if commands[1] == 'zabbix-parameters' and (len(commands) == 2 or len(commands) == 3 or len(commands) == 4):
+            if commands[1] == 'zabbix-parameters' and (len(commands) == 2 or len(commands) == 4 or len(commands) == 6):
                 # zabbix agent keys generation
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
@@ -87,7 +86,7 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    print(klass.__name__)
+                    #print(klass.__name__)
                     if klass.__name__ == 'PgLocks' or klass.__name__ == 'PgStatProgressVacuum' or  \
                             klass.__name__ == 'Connections' or klass.__name__ == 'Memory' \
                             or klass.__name__ == 'OpenFiles':
