@@ -56,9 +56,10 @@ def start():
             name = string.strip(commands[2], '.xml')
             args, commands = parse_args(name)
             cfg = Config(args.config_file, args.plugins_dirs)
-            if not len(commands) > 3:
-                print_total_help()
-            elif commands[1] == 'zabbix-parameters':  # zabbix agent keys generation
+            print(commands)
+
+            if commands[1] == 'zabbix-parameters' and (len(commands) == 2 or len(commands) == 3 or len(commands) == 4):
+                # zabbix agent keys generation
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     #print(klass.__name__)
@@ -70,11 +71,11 @@ def start():
                         sys.exit(0)
                 else:
                     print_total_help()
-            elif commands[1] == 'config':
+            elif commands[1] == 'config' and len(commands) == 2:
                 with open(commands[2], 'w') as fd:
                     cfg.config.write(fd)
                     sys.exit(0)
-            elif commands[1] == 'template':
+            elif commands[1] == 'template' and len(commands) == 3:
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     plugins.append(klass(cfg))
@@ -82,12 +83,14 @@ def start():
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
-            elif commands[1] == 'zabbix-template':
+            elif commands[1] == 'zabbix-template' and len(commands) == 3:
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     print(klass.__name__)
-                    if klass.__name__ == 'PgLocks' or klass.__name__ == 'PgStatProgressVacuum' or  klass.__name__ == 'Connections' or klass.__name__ == 'Memory' or klass.__name__ == 'OpenFiles':
+                    if klass.__name__ == 'PgLocks' or klass.__name__ == 'PgStatProgressVacuum' or  \
+                            klass.__name__ == 'Connections' or klass.__name__ == 'Memory' \
+                            or klass.__name__ == 'OpenFiles':
                         # generate template for
                         # agent only for two plugins for now
                         plugins.append(klass(cfg))
