@@ -98,8 +98,8 @@ class Connections(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for item in self.Items:
-            result.append(['{0}.{1},"{2}"'.format(self.key, item[1], self.query_agent.format(item[1]))])
-        result.append(['{0}.{1},"{2}"'.format(self.key, 'total', self.query_agent_custom)])
+            result.append('{0}.{1},"{2}"'.format(self.key, item[1], self.query_agent.format(item[1])))
+        result.append('{0}.{1},"{2}"'.format(self.key, 'total', self.query_agent_custom))
         return template_zabbix.key_and_query(result)
 
 

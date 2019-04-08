@@ -73,6 +73,6 @@ class Oldest(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append(['{0},"{1}"'.format(self.key_time, self.OldestQuerySql)])
-        result.append(['{0},"{1}"'.format(self.key_xid,  self.OldestXidSql )])
+        result.append('{0},"{1}"'.format(self.key_time, self.OldestQuerySql))
+        result.append('{0},"{1}"'.format(self.key_xid,  self.OldestXidSql))
         return template_zabbix.key_and_query(result)

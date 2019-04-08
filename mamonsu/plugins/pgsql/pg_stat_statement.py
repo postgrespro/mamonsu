@@ -5,7 +5,8 @@ from .pool import Pooler
 
 
 class PgStatStatement(Plugin):
-
+    query = "select {0} from public.pg_stat_statements"
+    AgentPluginType = 'pg'
     # zbx_key, sql, desc, unit, delta, (Graph, color, side)
     Items = [
 
@@ -42,8 +43,7 @@ class PgStatStatement(Plugin):
         if not self.extension_installed('pg_stat_statements'):
             return
         params = [x[1] for x in self.Items]
-        result = Pooler.query('\
-            select {0} from public.pg_stat_statements'.format(
+        result = Pooler.query(self.query.format(
             ', '.join(params)))
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(
@@ -79,3 +79,10 @@ class PgStatStatement(Plugin):
                 graph['type'] = graph_item[1]
             result += template.graph(graph)
         return result
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        for item in self.Items:
+            result.append('pgsql.{0},"{1}"'.format(item[0], self.query.format(item[1])))
+        return template_zabbix.key_and_query(result)
+

@@ -73,8 +73,8 @@ class PgHealth(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append(['{0},"{1}"'.format(self.key_ping, self.query_health)])
-        result.append(['{0},"{1}"'.format(self.key_uptime, self.query_uptime)])
-        result.append(['{0},"{1}"'.format(self.key_cache, self.query_cache)])
+        result.append('{0},"{1}"'.format(self.key_ping, self.query_health))
+        result.append('{0},"{1}"'.format(self.key_uptime, self.query_uptime))
+        result.append('{0},"{1}"'.format(self.key_cache, self.query_cache))
         return template_zabbix.key_and_query(result)
 

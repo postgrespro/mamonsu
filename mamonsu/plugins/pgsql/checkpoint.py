@@ -86,6 +86,6 @@ class Checkpoint(Plugin):
         result = []
         for item in self.Items:
             result.append(
-                ['{0}.{1},"{2}"'.format(self.key, item[1], self.query.format(item[0]))])
+                '{0}.{1},"{2}"'.format(self.key, item[1], self.query.format(item[0])))
         return template_zabbix.key_and_query(result)
 

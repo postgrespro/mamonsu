@@ -6,6 +6,7 @@ from .pool import Pooler
 
 class BgWriter(Plugin):
     AgentPluginType = 'pg'
+    query = "select {0} from pg_catalog.pg_stat_bgwriter"
     Items = [
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta
@@ -43,8 +44,7 @@ class BgWriter(Plugin):
 
     def run(self, zbx):
         params = [x[0] for x in self.Items]
-        result = Pooler.query(
-            'select {0} from pg_catalog.pg_stat_bgwriter'.format(
+        result = Pooler.query(self.query.format(
                 ', '.join(params)))
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(
@@ -71,3 +71,9 @@ class BgWriter(Plugin):
                 'yaxisside': item[3][2]
             })
         return template.graph({'name': name, 'items': items})
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        for item in self.Items:
+            result.append('pgsql.{0},"{1}"'.format(item[1], self.query.format(item[0])))
+        return template_zabbix.key_and_query(result)
