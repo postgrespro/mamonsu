@@ -13,7 +13,7 @@ class PgHealth(Plugin):
 
         start_time = time.time()
         Pooler.query('select 1 as health')
-        zbx.send('pgsql.ping[]', (time.time() - start_time) * 100)
+        zbx.send('pgsql.ping[]', (time.time() - start_time) * 1000)
 
         result = Pooler.query("select \
             date_part('epoch', now() - pg_postmaster_start_time())")
