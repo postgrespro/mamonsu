@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from mamonsu import __version__
-from optparse import OptionParser, BadOptionError
+from optparse import OptionParser, BadOptionError, OptionGroup
 import mamonsu.lib.platform as platform
 
 usage_msg = """
@@ -195,7 +195,22 @@ def parse_args(name):
     parser.add_option(
         '-t', '--template-name', dest='template',
         default='PostgresPro-{0} {1}'.format(sys.platform.title(), name))
+    # zabbix-template
+    parser.add_option(
+       '-z', '--agent-template-name', dest='zabbix_template',
+        default='AgentPostgresPro-{0} {1}'.format(sys.platform.title(), name))
+
+    parser.add_option(
+        '--filename',
+        default='pg.conf')
+
+    parser.add_option(
+        '--plugin-type',
+       default='all')
+
     parser.add_option(
         '--application', dest='application',
         default='App-PostgresPro-{0} {1}'.format(sys.platform.title(), name))
     return parser.parse_args()
+
+

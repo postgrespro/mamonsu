@@ -15,6 +15,9 @@ from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
 
+def is_any_equal(iterator):
+   length = len(iterator)
+   return len(set(iterator)) < length
 
 def start():
     default_name = "default_template_name"
@@ -55,46 +58,53 @@ def start():
         elif tool == 'export' and len(commands) > 2:
             name = string.strip(commands[2], '.xml')
             args, commands = parse_args(name)
+            print("this is args", args)
+            print("this is commands", commands)
             cfg = Config(args.config_file, args.plugins_dirs)
-            print(commands)
-            if commands[1] == 'zabbix-parameters' and (len(commands) == 2 or len(commands) == 4 or len(commands) == 6):
+
+            if commands[1] == 'zabbix-parameters':
                 # zabbix agent keys generation
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    #print(klass.__name__)
                     plugins.append(klass(cfg))
-                if commands[5] == 'pg' or commands[5] == 'sys' or commands[5] == 'all':
+                types = args.plugin_type.split(',')
+
+                if len(types) > 1:
+                    if is_any_equal(types):
+                        print_total_help()
+                if len(types) > 1:
+                    args.plugin_type = 'all'
+                if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
                     template = GetKeys()
-                    with codecs.open(commands[3], 'w', 'utf-8') as f:
-                        f.write(template.txt(commands[5], plugins))  # pass command type
+                    with codecs.open(args.filename, 'w', 'utf-8') as f:
+                        f.write(template.txt(args.plugin_type, plugins))  # pass command type
                         sys.exit(0)
-                else:
-                    print_total_help()
-            elif commands[1] == 'config' and len(commands) == 2:
+
+            elif commands[1] == 'config':
                 with open(commands[2], 'w') as fd:
                     cfg.config.write(fd)
                     sys.exit(0)
-            elif commands[1] == 'template' and len(commands) == 3:
+            elif commands[1] == 'template':
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template, args.application)
-                with codecs.open(commands[2], 'w', 'utf-8') as f:
+                with codecs.open(args.template, 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
-            elif commands[1] == 'zabbix-template' and len(commands) == 3:
+            elif commands[1] == 'zabbix_template':
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    #print(klass.__name__)
+                    # print(klass.__name__)
                     if klass.__name__ == 'PgLocks' or klass.__name__ == 'PgStatProgressVacuum' or  \
                             klass.__name__ == 'Connections' or klass.__name__ == 'Memory' \
                             or klass.__name__ == 'OpenFiles':
                         # generate template for
                         # agent only for two plugins for now
                         plugins.append(klass(cfg))
-                template = ZbxTemplate(args.template, args.application)
-                with codecs.open(commands[2], 'w', 'utf-8') as f:
+                template = ZbxTemplate(args.zabbix_template, args.application)
+                with codecs.open(args.zabbix_template, 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
             else:
