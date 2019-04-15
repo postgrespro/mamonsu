@@ -48,6 +48,6 @@ class PgBufferCache(Plugin):
         result = []
         for i, item in enumerate(self.Items):
             result.append(
-                ['pgsql.buffers.{0},"{1}"'.format(item[0], self.query[i].format(item[0]))])
+                'pgsql.buffers[{0}],"{1}"'.format(item[0], self.query[i].format(item[0])))
         return template_zabbix.key_and_query(result)
 

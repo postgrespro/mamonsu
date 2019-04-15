@@ -32,11 +32,10 @@ class Pool(object):
             'select public.mamonsu_count_autovacuum()'
         ),
         'buffer_cache': (
-            """select
-sum(1) * 8 * 1024 as size,
-sum(case when usagecount > 1 then 1 else 0 end) * 8 * 1024 as twice_used,
-sum(case isdirty when true then 1 else 0 end) * 8 * 1024 as dirty
-from public.pg_buffercache""",
+            "select sum(1) * 8 * 1024 as size, "
+            " sum(case when usagecount > 1 then 1 else 0 end) * 8 * 1024 as twice_used, "
+            " sum(case isdirty when true then 1 else 0 end) * 8 * 1024 as dirty "
+            " from public.pg_buffercache",
             'select size, twice_used, dirty from public.mamonsu_buffer_cache()'
         ),
     }

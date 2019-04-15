@@ -6,12 +6,19 @@ class ArchiveCommand (Plugin):
     AgentPluginType = 'pg'
     DEFAULT_CONFIG = {'max_count_files': str(2)}
     Interval = 60
+    query_agent_count_files = "SELECT count(name) AS count_files FROM (SELECT name FROM " \
+                              "pg_ls_dir('./pg_{0}/archive_status') name WHERE right( name,6)= '.ready'  ) ready;"
+    query_agent_size_files = "SELECT coalesce(sum((pg_stat_file('./pg_{0}/' ||  rtrim(ready.name,'.ready'))).size),0) " \
+                             "AS size_files FROM (SELECT name FROM pg_ls_dir('./pg_{0}/archive_status') name " \
+                             "WHERE right( name,6)= '.ready'  ) ready;"
+    query_agent_archived_count = "SELECT archived_count from pg_stat_archiver;"
+    query_agent_failed_count = "SELECT failed_count from pg_stat_archiver;"
     key = 'pgsql.archive_command'
     name = 'PostgreSQL archive command'
     Items = [
         # key, desc, color, side, graph
-        ('count_files_to_archeve','count files in archive_status need to archive','FF0000',0, 0),
-        ('size_files_to_archeve' ,'size of files need to archive','00FF00',1, 0),
+        ('count_files_to_archive', 'count files in archive_status need to archive', 'FF0000', 0, 0),
+        ('size_files_to_archive', 'size of files need to archive', '00FF00', 1, 0),
         ('archived_files', 'count archived files', '00F000', 0, 1),
         ('failed_trying_to_archive', 'count attempts to archive files', 'FF0000', 1, 1),
     ]
@@ -85,3 +92,16 @@ class ArchiveCommand (Plugin):
             'expression': '{#TEMPLATE:' + self.key  + '[{0}]'.format(self.Items[0][0]) +
                           '.last()}&gt;' + self.plugin_config('max_count_files')
         })
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        #if Pooler.server_version_greater('10.0'):
+        #    xlog = 'wal'
+        #else:
+        xlog = 'wal'
+        result.append('{0}[{1}],"{2}"'.format(self.key, self.Items[0][0], self.query_agent_count_files.format(xlog)))
+        result.append('{0}[{1}],"{2}"'.format(self.key, self.Items[1][0], self.query_agent_size_files.format(xlog)))
+        # FIXME add diff btw current and old
+        result.append('{0}[{1}],"{2}"'.format(self.key, self.Items[2][0], self.query_agent_archived_count))
+        result.append('{0}[{1}],"{2}"'.format(self.key, self.Items[3][0], self.query_agent_failed_count))
+        return template_zabbix.key_and_query(result)
