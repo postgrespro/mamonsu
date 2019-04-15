@@ -4,8 +4,8 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 class Memory(Plugin):
     AgentPluginType = 'sys'
     query_agent = "cat /proc/meminfo | awk '/^{0}\:/ "
-    query_agent_apps = "MemTotal=$(sudo cat /proc/meminfo | awk '/MemTotal\:/ { print $2 }'); " \
-                       "SUM=$(sudo cat /proc/meminfo | awk '/(MemFree|Buffers|(Swap)?Cached|Slab|PageTables)\:/ " \
+    query_agent_apps = "MemTotal=$(cat /proc/meminfo | awk '/MemTotal\:/ { print $2 }'); " \
+                       "SUM=$(cat /proc/meminfo | awk '/(MemFree|Buffers|(Swap)?Cached|Slab|PageTables)\:/ " \
                        "{ SUM += $2 } END {print SUM}'); echo $(($MemTotal-$SUM))"
     query_agent_swap = "expr `grep -Ei 'Swap(Total|Free)' /proc/meminfo | awk '{print $2}' | paste -s -d '-' " \
                        "| sed -E 's/-/ - /g'` "
@@ -88,7 +88,7 @@ class Memory(Plugin):
         for item in self.Items:
             result += template.item({
                 'name': '{0}'.format(item[2]),
-                'key': '{0}[{1}]'.format(item[0], self.key),
+                'key': '{0}[{1}]'.format( self.key, item[0]),
                 'units': Plugin.UNITS.bytes,
                 'value_type': Plugin.VALUE_TYPE.numeric_unsigned
             })
@@ -98,7 +98,7 @@ class Memory(Plugin):
         items = []
         for item in self.Items:
             items.append({
-                'key': '{0}[{1}]'.format(item[0], self.key),
+                'key': '{0}[{1}]'.format(self.key, item[0] ),
                 'color': item[3]
             })
         graph = {
@@ -110,12 +110,12 @@ class Memory(Plugin):
         result = []
         for item in self.Items:
             if item[1] is None and item[0] == 'apps':
-                result.append(['{0}.{1},{2}'.format(self.key, item[0],
-                                                      self.query_agent_apps)])
+                result.append('{0}[{1}],{2}'.format(self.key, item[0],
+                                                      self.query_agent_apps))
             elif item[1] is None and item[0] == 'swap':
-                result.append(['{0}.{1},{2}'.format(self.key, item[0],
-                                                      self.query_agent_swap)])
+                result.append('{0}[{1}],{2}'.format(self.key, item[0],
+                                                      self.query_agent_swap))
             else:
-                result.append(['{0}.{1},{2}{3}'.format(self.key, item[0],
-                                                  self.query_agent.format(item[1]), "{ print $2*1024 }'")])
+                result.append('{0}[{1}],{2}{3}'.format(self.key, item[0],
+                                                  self.query_agent.format(item[1]), "{ print $2*1024 }'"))
         return template_zabbix.key_and_query(result)

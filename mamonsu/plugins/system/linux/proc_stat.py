@@ -5,6 +5,13 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 class ProcStat(Plugin):
 
+    AgentPluginType = 'sys'
+    query_agent = "cat /proc/stat"
+    query_agent_procs = ["cat /proc/stat | awk '/procs_running/ { print $2 }'",
+                         "cat /proc/stat | awk '/procs_blocked/ { print $2 }'",
+                         "cat /proc/stat | awk '/processes/ { print $2 }'"]
+    query_agent_cpu = "expr `grep -w 'cpu' /proc/stat | awk '{print $"
+
     # alert fork-rate
     ForkRate = 500
     # /proc/stat all cpu line
@@ -32,6 +39,9 @@ class ProcStat(Plugin):
         (3, 'cpu[system]',
             'by the kernel in system activities',
             Plugin.DELTA.speed_per_second, 'CC0000', 0),
+        (4, 'cpu[idle]',
+            'Idle CPU time',
+            Plugin.DELTA.speed_per_second, '00CC00', 0),
         (5, 'cpu[iowait]',
             'waiting for I/O operations',
             Plugin.DELTA.speed_per_second, 'CCCC00', 0),
@@ -41,9 +51,6 @@ class ProcStat(Plugin):
         (7, 'cpu[softirq]',
             'handling batched interrupts',
             Plugin.DELTA.speed_per_second, '000077', 0),
-        (4, 'cpu[idle]',
-            'Idle CPU time',
-            Plugin.DELTA.speed_per_second, '00CC00', 0),
     ]
 
     def run(self, zbx):
@@ -109,3 +116,12 @@ class ProcStat(Plugin):
             'expression': '{#TEMPLATE:system.processes[forkrate]'
             '.min(5m)}&gt;' + str(self.ForkRate)
         })
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        for i, item in enumerate(self.ProcessItems):
+            result.append('system.{0},{1}'.format(item[1], self.query_agent_procs[i]))
+        for item in self.CpuItems:
+            result.append('system.{0},{1}'.format(item[1], self.query_agent_cpu + str(item[0]+1) + "}'`"))
+        return template_zabbix.key_and_query(result)
+

@@ -2,7 +2,9 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class Net(Plugin):
-
+    query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/net.sh -j $1"
+    query_agent = "expr `grep -Ei '$1' /proc/diskstats | awk '{print "
+    AgentPluginType = 'sys'
     # position in line, key, desc, units
     Items = [
         (0, 'system.net.rx_bytes', 'RX bytes/s', Plugin.UNITS.bytes),
@@ -51,3 +53,10 @@ class Net(Plugin):
                     'key': 'system.net.tx_bytes[{#NETDEVICE}]'}]
         }]
         return template.discovery_rule(rule=rule, items=items, graphs=graphs)
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        result.append('system.net.discovery[*],{0}'.format(self.query_agent_discovery))
+        for item in self.Items:
+            result.append('{0}[*], {1}'.format(item[1], self.query_agent + str(item[0] + 2) + "}'`"))
+        return template_zabbix.key_and_query(result)

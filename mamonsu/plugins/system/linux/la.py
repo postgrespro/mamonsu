@@ -2,6 +2,8 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class La(Plugin):
+    AgentPluginType = 'sys'
+    query_agent = "cat /proc/loadavg | awk '{ print $1 }'"
 
     def run(self, zbx):
         la_1 = open('/proc/loadavg', 'r').read().split(' ')[0]
@@ -17,3 +19,8 @@ class La(Plugin):
         items = [{'key': 'system.la[1]'}]
         graph = {'name': 'System load average', 'items': items}
         return template.graph(graph)
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        result.append('system.la,{0}'.format(self.query_agent))
+        return template_zabbix.key_and_query(result)

@@ -4,7 +4,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 class OpenFiles(Plugin):
     query_agent = "cat  /proc/sys/fs/file-nr | awk '{ print $1 }'"
     AgentPluginType = 'sys'
-    key = "system.open_files" #fix me for zabbix agent template and key configuration
+    key = "system.open_files[]"
 
     def run(self, zbx):
         open_files = open('/proc/sys/fs/file-nr', 'r').read().split("\t")[0]
@@ -24,5 +24,5 @@ class OpenFiles(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append(['{0},{1}'.format(self.key, self.query_agent)])
+        result.append('{0},{1}'.format(self.key, self.query_agent))
         return template_zabbix.key_and_query(result)
