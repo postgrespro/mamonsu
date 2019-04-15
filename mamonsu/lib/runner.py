@@ -15,9 +15,7 @@ from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
 
-def is_any_equal(iterator):
-   length = len(iterator)
-   return len(set(iterator)) < length
+
 
 def start():
     default_name = "default_template_name"
@@ -56,22 +54,21 @@ def start():
             sys.argv.remove('agent')
             return run_agent()
         elif tool == 'export' and len(commands) > 2:
-            name = string.strip(commands[2], '.xml')
-            args, commands = parse_args(name)
-            print("this is args", args)
-            print("this is commands", commands)
+            args, commands = parse_args()
+            # print("this is args", args)
+            # print("this is commands", commands)
             cfg = Config(args.config_file, args.plugins_dirs)
-
             if commands[1] == 'zabbix-parameters':
                 # zabbix agent keys generation
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     plugins.append(klass(cfg))
                 types = args.plugin_type.split(',')
-
+                # check if any plugin types is equal
                 if len(types) > 1:
                     if is_any_equal(types):
                         print_total_help()
+                # if number of plugin types is more than 1 => plugin type should be 'all'
                 if len(types) > 1:
                     args.plugin_type = 'all'
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
@@ -79,7 +76,8 @@ def start():
                     with codecs.open(args.filename, 'w', 'utf-8') as f:
                         f.write(template.txt(args.plugin_type, plugins))  # pass command type
                         sys.exit(0)
-
+                else:
+                    print_total_help()
             elif commands[1] == 'config':
                 with open(commands[2], 'w') as fd:
                     cfg.config.write(fd)
@@ -88,7 +86,7 @@ def start():
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     plugins.append(klass(cfg))
-                template = ZbxTemplate(args.template, args.application)
+                template = ZbxTemplate(args.template, args.application + args.template.strip(".xml"))
                 with codecs.open(args.template, 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
@@ -96,20 +94,15 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    # print(klass.__name__)
-                    if klass.__name__ == 'PgLocks' or klass.__name__ == 'PgStatProgressVacuum' or  \
-                            klass.__name__ == 'Connections' or klass.__name__ == 'Memory' \
-                            or klass.__name__ == 'OpenFiles':
-                        # generate template for
-                        # agent only for two plugins for now
+                        # generate template for agent
                         plugins.append(klass(cfg))
-                template = ZbxTemplate(args.zabbix_template, args.application)
+                template = ZbxTemplate(args.zabbix_template.strip(".xml"),
+                                       args.application + args.zabbix_template.strip(".xml"))
                 with codecs.open(args.zabbix_template, 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
             else:
                 print_total_help()
-
     args, commands = parse_args(default_name)
     if len(commands) > 0:
         print_total_help()
@@ -141,3 +134,8 @@ def start():
         supervisor.start()
     except KeyboardInterrupt:
         quit_handler()
+
+
+def is_any_equal(iterator):
+    length = len(iterator)
+    return len(set(iterator)) < length

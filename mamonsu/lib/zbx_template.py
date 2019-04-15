@@ -105,8 +105,6 @@ class ZbxTemplate(object):
 
     def turn_agent_type(self, xml):
         xml = re.sub(r"\[\]", "", xml)  # for [] case
-        xml = re.sub(r"\]", "", xml)
-        xml = re.sub(r"\[", ".", xml)  # for zabbix-agent type of key representation
         xml = re.sub(r"<type>2", "<type>0", xml)
         return xml
 
@@ -178,6 +176,10 @@ class ZbxTemplate(object):
             graph_items += row.format(
                 self._format_args(self.graph_items_defaults, item),
                 self.Template, key)
+            if Plugin.Type == 'agent' and re.search(r"\[{\w*", graph_items) is None\
+                    and re.search(r"\[\]", graph_items) is None:
+                graph_items = re.sub(r"\]", "", graph_items)
+                graph_items = re.sub(r"\[", ".", graph_items)  # for zabbix-agent type of key representation
         result = '<{2}>{0}<graph_items>{1}</graph_items></{2}>'
         return result.format(
             self._format_args(self.graph_values_defaults, args),
@@ -224,6 +226,11 @@ class ZbxTemplate(object):
             if val is None:
                 row = '<{0}/>'.format(key)
             else:
+                if Plugin.Type == 'agent':
+                    if re.search(r"\[\*", str(val)) is None and re.search(r"\[{\w*", str(val)) is None and\
+                            re.search(r"\[\]", str(val)) is None:
+                        val = re.sub(r"\]", "", str(val))
+                        val = re.sub(r"\[", ".", val)  # for zabbix-agent type of key representation
                 row = '<{0}>{1}</{0}>'.format(key, val)
             result += row
         return result

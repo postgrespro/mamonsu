@@ -19,6 +19,15 @@ Options:
     --add-plugins <directory>
 
 
+Export zabbix keys for zabbix-agent in config file:
+Command: export zabbix-parameters
+Examples:
+export zabbix-parameters --filename=pg.conf --plugin-type=all
+Options:
+    --filename
+    --plugin-type
+    
+    
 Export zabbix template with additional plugins included in config file:
 Command: export
 Examples:
@@ -176,7 +185,7 @@ Options:
             self.largs.append(err.opt_str)
 
 
-def parse_args(name):
+def parse_args():
     parser = MissOptsParser(
         usage=usage_msg,
         version='%prog {0}'.format(__version__))
@@ -194,23 +203,19 @@ def parse_args(name):
     # template
     parser.add_option(
         '-t', '--template-name', dest='template',
-        default='PostgresPro-{0} {1}'.format(sys.platform.title(), name))
+        default='PostgresPro-{0}'.format(sys.platform.title()))
     # zabbix-template
     parser.add_option(
        '-z', '--agent-template-name', dest='zabbix_template',
-        default='AgentPostgresPro-{0} {1}'.format(sys.platform.title(), name))
-
-    parser.add_option(
-        '--filename',
-        default='pg.conf')
-
-    parser.add_option(
-        '--plugin-type',
-       default='all')
+        default='AgentPostgresPro-{0}'.format(sys.platform.title()))
+    # zabbix - template filename
+    parser.add_option('--filename',  default='pg.conf')
+    # zabbix - template type of parameters
+    parser.add_option('--plugin-type', default='all')
 
     parser.add_option(
         '--application', dest='application',
-        default='App-PostgresPro-{0} {1}'.format(sys.platform.title(), name))
+        default='App-PostgresPro-{0}'.format(sys.platform.title()))
     return parser.parse_args()
 
 

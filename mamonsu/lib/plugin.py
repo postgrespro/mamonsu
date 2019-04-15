@@ -20,7 +20,7 @@ class Plugin(object):
     # type depends on run command
     Type = 'mamonsu'
 
-    # --plugin-type for zabbix-agent can be all,postgres,sys
+    # --plugin-type for zabbix-agent can be: all,postgres,sys
     AgentPluginType = 'all'
 
     # plugin interval run
