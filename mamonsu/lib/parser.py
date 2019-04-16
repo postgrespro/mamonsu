@@ -27,6 +27,16 @@ Options:
     --filename
     --plugin-type
     
+Export zabbix agent template with additional plugins included in config file:
+Command: export
+Examples:
+    {prog} export zabbix_template <file>
+Options:
+    --add-plugins <directory>
+    --template-name <template name>
+    --application <application name in template>
+
+    
     
 Export zabbix template with additional plugins included in config file:
 Command: export
@@ -212,7 +222,9 @@ def parse_args():
     parser.add_option('--filename',  default='pg.conf')
     # zabbix - template type of parameters
     parser.add_option('--plugin-type', default='all')
-
+    # PG version
+    parser.add_option(
+        '-v', '--pg_version', dest='pg_version', default='10.0')
     parser.add_option(
         '--application', dest='application',
         default='App-PostgresPro-{0}'.format(sys.platform.title()))

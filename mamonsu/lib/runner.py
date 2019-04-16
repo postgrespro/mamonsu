@@ -55,6 +55,7 @@ def start():
             return run_agent()
         elif tool == 'export' and len(commands) > 2:
             args, commands = parse_args()
+            Plugin.VersionPG = float(args.pg_version)
             # print("this is args", args)
             # print("this is commands", commands)
             cfg = Config(args.config_file, args.plugins_dirs)
@@ -103,7 +104,7 @@ def start():
                     sys.exit(0)
             else:
                 print_total_help()
-    args, commands = parse_args(default_name)
+    args, commands = parse_args()
     if len(commands) > 0:
         print_total_help()
     cfg = Config(args.config_file, args.plugins_dirs)

@@ -23,6 +23,9 @@ class Plugin(object):
     # --plugin-type for zabbix-agent can be: all,postgres,sys
     AgentPluginType = 'all'
 
+    # PG version
+    VersionPG = 10.0
+
     # plugin interval run
     Interval = 60
 
