@@ -6,6 +6,17 @@ class DiskStats(Plugin):
 
     # todo yaxis right 100%
     # bold line
+    AgentPluginType = 'sys'
+    query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/disk_stats.sh -j $1"
+    agent_query_read_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $4}'`"
+    agent_query_read_sc = "expr `grep -w '$1' /proc/diskstats | awk '{print $6 * 512}'`"
+    agent_query_write_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $8}'`"
+    agent_query_write_sc = "expr `grep -w '$1' /proc/diskstats | awk '{print $10 * 512}'`"
+    agent_query_ticks = "expr `grep -w '$1' /proc/diskstats | awk '{print $13}'`"
+    agent_query_read_op_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_read_op.sh"   #    get sum for all read_op
+    agent_query_read_sc_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_read_b.sh"
+    agent_query_write_op_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_write_op.sh"
+    agent_query_write_sc_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_write_b.sh"
 
     # Track only physical devices without logical partitions
     OnlyPhysicalDevices = True
@@ -28,7 +39,7 @@ class DiskStats(Plugin):
                 if m is None:
                     continue
                 dev, val = m.group(1), m.group(2)
-                if self.OnlyPhysicalDevices and re.search('\d+$', dev):
+                if self.OnlyPhysicalDevices and re.search('\d+$', dev): # get drive name without digits at the end
                     continue
                 val = [int(x) for x in val.split()]
                 read_op, read_sc, write_op, write_sc, ticks = val[0], val[2], val[4], val[6], val[9]
@@ -143,3 +154,17 @@ class DiskStats(Plugin):
         }]
 
         return template.discovery_rule(rule=rule, items=items, graphs=graphs)
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        result.append('system.disk.discovery[*],{0}'.format(self.query_agent_discovery))
+        result.append('system.disk.read[*],{0}'.format(self.agent_query_read_op))
+        result.append('system.disk.write[*],{0}'.format(self.agent_query_write_op))
+        result.append('system.disk.read_b[*],{0}'.format(self.agent_query_read_sc))
+        result.append('system.disk.write_b[*],{0}'.format(self.agent_query_write_sc))
+        result.append('system.disk.all_read[],{0}'.format(self.agent_query_read_op_all))
+        result.append('system.disk.all_write[],{0}'.format(self.agent_query_write_op_all))
+        result.append('system.disk.all_read_b[],{0}'.format(self.agent_query_read_sc_all))
+        result.append('system.disk.all_write_b[],{0}'.format(self.agent_query_write_sc_all))
+        return template_zabbix.key_and_query(result)
+

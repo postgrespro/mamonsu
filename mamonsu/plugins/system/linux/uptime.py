@@ -34,5 +34,5 @@ class SystemUptime(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('system.uptime[],{0}'.format(self.query_agent))
+        #result.append('system.uptime[],{0}'.format(self.query_agent))
         return template_zabbix.key_and_query(result)

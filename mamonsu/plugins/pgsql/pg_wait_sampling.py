@@ -5,6 +5,7 @@ from .pool import Pooler
 
 
 class PgWaitSampling(Plugin):
+    AgentPluginType = 'pg'
 
     AllLockItems = [
         # (sql_key, zbx_key, name, color)
@@ -146,3 +147,9 @@ order by count desc"""
             result += template.graph({
                 'name': graph_name, 'type': 1, 'items': items})
         return result
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        #result.append('pgsql.{0},"{1}"'.format())
+        # FIXME sum for every count
+        return template_zabbix.key_and_query(result)

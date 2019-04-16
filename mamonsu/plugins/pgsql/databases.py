@@ -12,9 +12,9 @@ class Databases(Plugin):
                 (n_dead_tup/(n_live_tup+n_dead_tup)::float8) > {0}
                 and (n_live_tup+n_dead_tup) > {1}"""
     tmp_query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/zapgix.sh -s $1 -j $2"
-    tmp_query_agent_size = "-f /home/Projects/dvilova/mamonsu/agent_sql/db_size.sql -v p1=$1"
-    tmp_query_agent_age = "-f /home/Projects/dvilova/mamonsu/agent_sql/db_age.sql -v p1=$1 "
-    tmp_query_agent_bloating_tables = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_bloating_tables.sql "
+    tmp_query_agent_size = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_size.sql -v p1=$1"
+    tmp_query_agent_age = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_age.sql -v p1=$1 "
+    tmp_query_agent_bloating_tables = "-d $1 -f /home/dvilova/Projects/mamonsu/agent_sql/db_bloating_tables.sql "
     query_agent_size = "select pg_database_size(datname::text) " \
                   "from pg_catalog.pg_database where datistemplate = false and datname = {0}"
     query_agent_age = "select age(datfrozenxid)" \
@@ -23,7 +23,7 @@ class Databases(Plugin):
     key_db_size = "pgsql.database.size[*]"
     key_db_age = "pgsql.database.max_age[*]"
     key_db_bloating_tables = "pgsql.database.bloating_tables[*]"
-    key_autovacumm = "pgsql.autovacumm.count[]"
+    key_autovacumm = "pgsql.autovacumm.count"
 
     DEFAULT_CONFIG = {'min_rows': str(50), 'bloat_scale': str(0.2)}
 
@@ -112,14 +112,11 @@ class Databases(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         result.append('{0},"{1}"'.format(self.key_autovacumm, Pooler.SQL['count_autovacuum'][0]))
-        result.append('{0}.[*], {1}'.format(self.key_db_discovery,  self.tmp_query_agent_discovery))
-        result.append('{0}.[*], {1}'.format(self.key_db_size, self.tmp_query_agent_size))
-        result.append('{0}.[*], {1}'.format(self.key_db_age,  self.tmp_query_agent_age))
-        result.append('{0}.[*], {1}'.format(self.key_db_bloating_tables, self.tmp_query_agent_bloating_tables))
-        # FIXME for bloating tables
-        #result.append(['{0}.bloating_tables[{1}],"{2}"'.format(self.key_db, db_name, self.query.format(
-        #                     self.plugin_config('bloat_scale'),
-        #                     self.plugin_config('min_rows'))))])
+        result.append('{0},{1}'.format(self.key_db_discovery,  self.tmp_query_agent_discovery))
+        result.append('{0},{1}'.format(self.key_db_size, self.tmp_query_agent_size))
+        result.append('{0},{1}'.format(self.key_db_age,  self.tmp_query_agent_age))
+        #result.append('{0}.[*], {1}'.format(self.key_db_bloating_tables, self.tmp_query_agent_bloating_tables))
+        result.append('{0},{1}'.format(self.key_db_bloating_tables, self.tmp_query_agent_bloating_tables))
         return template_zabbix.key_and_query(result)
 
 

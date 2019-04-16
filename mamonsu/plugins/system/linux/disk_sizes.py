@@ -3,6 +3,13 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class DiskSizes(Plugin):
+    AgentPluginType = 'sys'
+
+    tmp_query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/disk_sizes.sh -j $1"
+    tmp_query_agent_used = "df $1 | awk 'NR == 2 {print $3}'"
+    tmp_query_agent_free = "df $1 | awk 'NR == 2 {print $4}'"
+    tmp_query_agent_percent_free = "df $1 | awk 'NR == 2 {print 100 - $5}'"
+    #tmp_query_agent_percent_inode_free = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_bloating_tables.sql "FIXME for percent_inode_free
 
     DEFAULT_CONFIG = {
         'vfs_percent_free': str(10),
@@ -109,3 +116,12 @@ class DiskSizes(Plugin):
 
         return template.discovery_rule(
             rule=rule, items=items, graphs=graphs, triggers=triggers)
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        result.append('system.vfs.discovery[*],{0}'.format(self.tmp_query_agent_discovery))
+        result.append('system.vfs.used[*],{0}'.format(self.tmp_query_agent_used))
+        result.append('system.vfs.free[*],{0}'.format(self.tmp_query_agent_free))
+        result.append('system.vfs.percent_free[*],{0}'.format(self.tmp_query_agent_percent_free))
+        return template_zabbix.key_and_query(result)
+

@@ -11,6 +11,7 @@ class ArchiveCommand (Plugin):
     query_agent_size_files = "SELECT coalesce(sum((pg_stat_file('./pg_{0}/' ||  rtrim(ready.name,'.ready'))).size),0) " \
                              "AS size_files FROM (SELECT name FROM pg_ls_dir('./pg_{0}/archive_status') name " \
                              "WHERE right( name,6)= '.ready'  ) ready;"
+
     query_agent_archived_count = "SELECT archived_count from pg_stat_archiver;"
     query_agent_failed_count = "SELECT failed_count from pg_stat_archiver;"
     key = 'pgsql.archive_command'
@@ -95,10 +96,10 @@ class ArchiveCommand (Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        #if Pooler.server_version_greater('10.0'):
-        #    xlog = 'wal'
-        #else:
-        xlog = 'wal'
+        if self.VersionPG < 10.0:
+            xlog = 'xlog'
+        else:
+            xlog = 'wal'
         result.append('{0}[{1}],"{2}"'.format(self.key, self.Items[0][0], self.query_agent_count_files.format(xlog)))
         result.append('{0}[{1}],"{2}"'.format(self.key, self.Items[1][0], self.query_agent_size_files.format(xlog)))
         # FIXME add diff btw current and old

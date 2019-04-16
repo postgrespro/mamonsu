@@ -9,6 +9,8 @@ class Xlog(Plugin):
     DEFAULT_CONFIG = {'lag_more_then_in_sec': str(60 * 5)}
     query_wal_lsn_diff = " select pg_catalog.pg_wal_lsn_diff " \
                          "(pg_catalog.pg_current_wal_lsn(), '0/00000000')"
+    query_xlog_lsn_diff = "select pg_catalog.pg_xlog_location_diff " \
+                         "(pg_catalog.pg_current_xlog_location(), '0/00000000')"
     key_wall = 'pgsql.wal.write[]'
     key_count_wall = "pgsql.wal.count[]"
     AgentPluginType = 'pg'
@@ -26,9 +28,7 @@ class Xlog(Plugin):
             if Pooler.server_version_greater('10.0'):
                 result = Pooler.query(self.query_wal_lsn_diff)
             else:
-                result = Pooler.query("""
-                    select pg_catalog.pg_xlog_location_diff
-                    (pg_catalog.pg_current_xlog_location(), '0/00000000')""")
+                result = Pooler.query(self.query_xlog_lsn_diff)
             zbx.send(self.key_wall, float(result[0][0]), self.DELTA_SPEED)
         # count of xlog files
         if Pooler.server_version_greater('10.0'):
@@ -78,7 +78,11 @@ class Xlog(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('{0},"{1}"'.format(self.key_count_wall, Pooler.SQL['count_wal_files'][0]))
-        result.append('{0},"{1}"'.format(self.key_wall, self.query_wal_lsn_diff))
+        if self.VersionPG < 10.0:
+            result.append('{0},"{1}"'.format(self.key_count_wall, Pooler.SQL['count_xlog_files'][0]))
+            result.append('{0},"{1}"'.format(self.key_wall, self.query_xlog_lsn_diff))
+        else:
+            result.append('{0},"{1}"'.format(self.key_count_wall, Pooler.SQL['count_wal_files'][0]))
+            result.append('{0},"{1}"'.format(self.key_wall, self.query_wal_lsn_diff))
         # FIXME for diff types of PG
         return template_zabbix.key_and_query(result)
