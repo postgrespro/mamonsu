@@ -11,10 +11,14 @@ class Databases(Plugin):
     query = """select count(*) from pg_catalog.pg_stat_all_tables where
                 (n_dead_tup/(n_live_tup+n_dead_tup)::float8) > {0}
                 and (n_live_tup+n_dead_tup) > {1}"""
-    tmp_query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/zapgix.sh -s $1 -j $2"
+    tmp_query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/zapgix.sh -s $3 -j $4"
     tmp_query_agent_size = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_size.sql -v p1=$1"
     tmp_query_agent_age = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_age.sql -v p1=$1 "
     tmp_query_agent_bloating_tables = "-d $1 -f /home/dvilova/Projects/mamonsu/agent_sql/db_bloating_tables.sql "
+    # tmp_query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/zapgix.sh -s $1 -j $2"
+    # tmp_query_agent_size = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_size.sql -v p1=$1"
+    # tmp_query_agent_age = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_age.sql -v p1=$1 "
+    # tmp_query_agent_bloating_tables = "-d $1 -f /home/dvilova/Projects/mamonsu/agent_sql/db_bloating_tables.sql "
     query_agent_size = "select pg_database_size(datname::text) " \
                   "from pg_catalog.pg_database where datistemplate = false and datname = {0}"
     query_agent_age = "select age(datfrozenxid)" \
@@ -61,11 +65,18 @@ class Databases(Plugin):
         })
 
     def discovery_rules(self, template):
-        rule = {
-            'name': 'Database discovery',
-            'key': 'pgsql.database.discovery[]',
-            'filter': '{#DATABASE}:.*'
-        }
+        if self.Type == "mamonsu":
+            rule = {
+                'name': 'Database discovery',
+                'key': 'pgsql.database.discovery[]',
+                'filter': '{#DATABASE}:.*'
+            }
+        else:
+            rule = {
+                'name': 'Database discovery',
+                'key': 'pgsql.database.discovery[db_list,DATABASE]',
+                'filter': '{#DATABASE}:.*'
+            }
         items = [
             {'key': 'pgsql.database.size[{#DATABASE}]',
                 'name': 'Database {#DATABASE}: size',
@@ -108,14 +119,12 @@ class Databases(Plugin):
         ]
         return template.discovery_rule(rule=rule, items=items, graphs=graphs)
 
-
     def keys_and_queries(self, template_zabbix):
         result = []
         result.append('{0},"{1}"'.format(self.key_autovacumm, Pooler.SQL['count_autovacuum'][0]))
         result.append('{0},{1}'.format(self.key_db_discovery,  self.tmp_query_agent_discovery))
         result.append('{0},{1}'.format(self.key_db_size, self.tmp_query_agent_size))
         result.append('{0},{1}'.format(self.key_db_age,  self.tmp_query_agent_age))
-        #result.append('{0}.[*], {1}'.format(self.key_db_bloating_tables, self.tmp_query_agent_bloating_tables))
         result.append('{0},{1}'.format(self.key_db_bloating_tables, self.tmp_query_agent_bloating_tables))
         return template_zabbix.key_and_query(result)
 

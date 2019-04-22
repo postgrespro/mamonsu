@@ -70,13 +70,23 @@ class Instance(Plugin):
 
     def items(self, template):
         result = ''
-        for item in self.Items:
-            result += template.item({
-                'key': 'pgsql.{0}'.format(item[1]),
-                'name': 'PostgreSQL {0}'.format(item[2]),
-                'value_type': self.VALUE_TYPE.numeric_float,
-                'units': item[4]
-            })
+        if self.Type == "mamonsu":
+            for item in self.Items:
+                result += template.item({
+                    'key': 'pgsql.{0}'.format(item[1]),
+                    'name': 'PostgreSQL {0}'.format(item[2]),
+                    'value_type': self.VALUE_TYPE.numeric_float,
+                    'units': item[4]
+                })
+        else:
+            for item in self.Items:
+                result += template.item({
+                    'key': 'pgsql.{0}'.format(item[1]),
+                    'name': 'PostgreSQL {0}'.format(item[2]),
+                    'value_type': self.VALUE_TYPE.numeric_float,
+                    'units': item[4],
+                    'delta': item[5]
+                })
         return result
 
     def graphs(self, template):

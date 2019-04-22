@@ -62,12 +62,29 @@ class ArchiveCommand (Plugin):
 
     def items(self, template):
         result = ''
-        for item in self.Items:
-            result += template.item({
-                'key': self.key + '[{0}]'.format(item[0]),
-                'name': self.name + '[{0}]:'.format(item[1]),
-                'value_type': self.VALUE_TYPE.numeric_unsigned
-            })
+        if self.Type == "mamonsu":
+            for item in self.Items:
+                result += template.item({
+                   'key': self.key + '[{0}]'.format(item[0]),
+                   'name': self.name + '[{0}]:'.format(item[1]),
+                   'value_type': self.VALUE_TYPE.numeric_unsigned
+              })
+        else:
+            for idx, item in enumerate(self.Items):
+                if idx > 1: # TODO check if delta is right for this item
+                    result += template.item({
+                    'key': self.key + '[{0}]'.format(item[0]),
+                    'name': self.name + '[{0}]:'.format(item[1]),
+                    'value_type': self.VALUE_TYPE.numeric_unsigned,
+                    'delta': self.DELTA.simple_change
+                    })
+                else:
+                    result += template.item({
+                        'key': self.key + '[{0}]'.format(item[0]),
+                        'name': self.name + '[{0}]:'.format(item[1]),
+                        'value_type': self.VALUE_TYPE.numeric_unsigned,
+                    })
+
         return result
 
     def graphs(self, template):
@@ -102,7 +119,6 @@ class ArchiveCommand (Plugin):
             xlog = 'wal'
         result.append('{0}[{1}],"{2}"'.format(self.key, self.Items[0][0], self.query_agent_count_files.format(xlog)))
         result.append('{0}[{1}],"{2}"'.format(self.key, self.Items[1][0], self.query_agent_size_files.format(xlog)))
-        # FIXME add diff btw current and old
         result.append('{0}[{1}],"{2}"'.format(self.key, self.Items[2][0], self.query_agent_archived_count))
         result.append('{0}[{1}],"{2}"'.format(self.key, self.Items[3][0], self.query_agent_failed_count))
         return template_zabbix.key_and_query(result)

@@ -52,12 +52,21 @@ class PgStatStatement(Plugin):
 
     def items(self, template):
         result = ''
-        for item in self.Items:
-            result += template.item({
-                'key': 'pgsql.{0}'.format(item[0]),
-                'name': 'PostgreSQL statements: {0}'.format(item[2]),
-                'value_type': self.VALUE_TYPE.numeric_float,
-                'units': item[3]})
+        if self.Type == "mamonsu":
+            for item in self.Items:
+                result += template.item({
+                    'key': 'pgsql.{0}'.format(item[0]),
+                    'name': 'PostgreSQL statements: {0}'.format(item[2]),
+                    'value_type': self.VALUE_TYPE.numeric_float,
+                    'units': item[3]})
+        else:
+            for item in self.Items:
+                result += template.item({
+                    'key': 'pgsql.{0}'.format(item[0]),
+                    'name': 'PostgreSQL statements: {0}'.format(item[2]),
+                    'value_type': self.VALUE_TYPE.numeric_float,
+                    'units': item[3],
+                    'delta': item[4]})
         return result
 
     def graphs(self, template):

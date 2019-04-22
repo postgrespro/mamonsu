@@ -54,12 +54,21 @@ class BgWriter(Plugin):
 
     def items(self, template):
         result = ''
-        for item in self.Items:
-            result += template.item({
-                'key': 'pgsql.{0}'.format(item[1]),
-                'name': 'PostgreSQL {0}'.format(item[2]),
-                'value_type': self.VALUE_TYPE.numeric_unsigned
-            })
+        if self.Type == "mamonsu":
+            for item in self.Items:
+                result += template.item({
+                    'key': 'pgsql.{0}'.format(item[1]),
+                    'name': 'PostgreSQL {0}'.format(item[2]),
+                    'value_type': self.VALUE_TYPE.numeric_unsigned
+                })
+        else:
+            for item in self.Items:
+                result += template.item({
+                    'key': 'pgsql.{0}'.format(item[1]),
+                    'name': 'PostgreSQL {0}'.format(item[2]),
+                    'value_type': self.VALUE_TYPE.numeric_unsigned,
+                    'delta':  self.DELTA.simple_change
+                })
         return result
 
     def graphs(self, template):

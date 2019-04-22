@@ -12,8 +12,8 @@ class PgHealth(Plugin):
     query_uptime = "select " \
             "date_part('epoch', now() - pg_postmaster_start_time())"
     query_cache = "select " \
-                      "round(sum(blks_hit)*100/sum(blks_hit+blks_read), 2) " \
-                      "from pg_catalog.pg_stat_database"
+                  "round(sum(blks_hit)*100/sum(blks_hit+blks_read), 2)" \
+                  "from pg_catalog.pg_stat_database"
     key_ping = "pgsql.ping[]"
     key_uptime = "pgsql.uptime[]"
     key_cache = "pgsql.cache[hit]"
@@ -22,7 +22,7 @@ class PgHealth(Plugin):
 
         start_time = time.time()
         Pooler.query(self.query_health)
-        zbx.send(self.key_ping, (time.time() - start_time) * 100)
+        zbx.send(self.key_ping, (time.time() - start_time) * 100) # FIXME for agent type
 
         result = Pooler.query(self.query_uptime)
         zbx.send(self.key_uptime, int(result[0][0]))
@@ -31,21 +31,38 @@ class PgHealth(Plugin):
         zbx.send(self.key_cache, int(result[0][0]))
 
     def items(self, template):
-        result = template.item({
-            'name': 'PostgreSQL: ping',
-            'key': 'pgsql.ping[]',
-            'value_type': Plugin.VALUE_TYPE.numeric_float,
-            'units': Plugin.UNITS.ms
-        }) + template.item({
+        result = ''
+        if self.Type == "mamonsu":
+            result += template.item({
+                'name': 'PostgreSQL: ping',
+                'key': 'pgsql.ping[]',
+                'value_type': Plugin.VALUE_TYPE.numeric_float,
+                'units': Plugin.UNITS.ms
+            }) + template.item({
+                'name': 'PostgreSQL: cache hit ratio',
+                'key': 'pgsql.cache[hit]',
+                'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
+                'units': Plugin.UNITS.percent
+            })
+        else:
+            result += template.item({
+                'name': 'PostgreSQL: ping',
+                'key': 'pgsql.ping[]',
+                'value_type': Plugin.VALUE_TYPE.numeric_float,
+                'units': Plugin.UNITS.ms,
+                'delay': 60
+            }) + template.item({
+                'name': 'PostgreSQL: cache hit ratio',
+                'key': 'pgsql.cache[hit]',
+                'value_type': Plugin.VALUE_TYPE.numeric_float,
+                'units': Plugin.UNITS.percent
+            })
+
+        result += template.item({
             'name': 'PostgreSQL: service uptime',
             'key': 'pgsql.uptime[]',
             'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
             'units': Plugin.UNITS.uptime
-        }) + template.item({
-            'name': 'PostgreSQL: cache hit ratio',
-            'key': 'pgsql.cache[hit]',
-            'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
-            'units': Plugin.UNITS.percent
         })
         return result
 

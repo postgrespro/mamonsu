@@ -38,17 +38,28 @@ class Xlog(Plugin):
         zbx.send(self.key_count_wall, int(result[0][0]))
 
     def items(self, template):
-        return template.item({
-            'name': 'PostgreSQL: streaming replication lag',
-            'key': 'pgsql.replication_lag[sec]'
-        }) + template.item({
-            'name': 'PostgreSQL: wal write speed',
-            'key': self.key_wall,
-            'units': Plugin.UNITS.bytes
-        }) + template.item({
-            'name': 'PostgreSQL: count of xlog files',
-            'key': self.key_count_wall
-        })
+        result=''
+        if self.Type == "mamonsu":
+            result += template.item({
+                'name': 'PostgreSQL: wal write speed',
+                'key': self.key_wall,
+                'units': Plugin.UNITS.bytes
+            })
+        else:
+            result += template.item({
+                'name': 'PostgreSQL: wal write speed',
+                'key': self.key_wall,
+                'units': Plugin.UNITS.bytes,
+                'delta': Plugin.DELTA_SPEED
+            })
+        result += template.item({
+                'name': 'PostgreSQL: streaming replication lag',
+                'key': 'pgsql.replication_lag[sec]'
+            }) + template.item({
+                'name': 'PostgreSQL: count of xlog files',
+                'key': self.key_count_wall
+            })
+        return result
 
     def graphs(self, template):
         result = template.graph({
@@ -84,5 +95,5 @@ class Xlog(Plugin):
         else:
             result.append('{0},"{1}"'.format(self.key_count_wall, Pooler.SQL['count_wal_files'][0]))
             result.append('{0},"{1}"'.format(self.key_wall, self.query_wal_lsn_diff))
-        # FIXME for diff types of PG
+        # FIXME for lag
         return template_zabbix.key_and_query(result)

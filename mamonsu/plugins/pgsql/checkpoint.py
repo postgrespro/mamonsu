@@ -9,7 +9,7 @@ class Checkpoint(Plugin):
     Interval = 60 * 5
 
     query = "select {0} from pg_catalog.pg_stat_bgwriter "  # for mamonsu and agent
-    #query_agent = """select count(*) FROM pg_catalog.pg_locks where lower(mode)='{0}' """  # for zabbix
+    query_interval = "select {0}*3600 from pg_catalog.pg_stat_bgwriter "  # for mamonsu and agent checkpoints in hour
     key = 'pgsql'
 
     DEFAULT_CONFIG = {'max_checkpoint_by_wal_in_hour': str(12)}
@@ -52,14 +52,25 @@ class Checkpoint(Plugin):
 
     def items(self, template):
         result = ''
-        for item in self.Items:
-            result += template.item({
-                'key': 'pgsql.{0}'.format(item[1]),
-                'name': 'PostgreSQL {0}'.format(item[2]),
-                'value_type': Plugin.VALUE_TYPE.numeric_float,
-                'units': item[4],
-                'delay': self.Interval
-            })
+        if self.Type == "mamonsu":
+            for item in self.Items:
+                result += template.item({
+                    'key': 'pgsql.{0}'.format(item[1]),
+                    'name': 'PostgreSQL {0}'.format(item[2]),
+                    'value_type': Plugin.VALUE_TYPE.numeric_float,
+                    'units': item[4],
+                    'delay': self.Interval
+                })
+        else:
+            for item in self.Items:
+                result += template.item({
+                    'key': 'pgsql.{0}'.format(item[1]),
+                    'name': 'PostgreSQL {0}'.format(item[2]),
+                    'value_type': Plugin.VALUE_TYPE.numeric_float,
+                    'units': item[4],
+                    'delay': self.Interval,
+                    'delta': self.DELTA.speed_per_second
+                })
         return result
 
     def graphs(self, template):
@@ -84,8 +95,12 @@ class Checkpoint(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        for item in self.Items:
-            result.append(
-                '{0}.{1},"{2}"'.format(self.key, item[1], self.query.format(item[0])))
+        for num, item in enumerate(self.Items):
+            if num < 1:
+                result.append(
+                    '{0}.{1},"{2}"'.format(self.key, item[1], self.query.format(item[0])))
+            else:
+                result.append(
+                    '{0}.{1},"{2}"'.format(self.key, item[1], self.query_interval.format(item[0])))
         return template_zabbix.key_and_query(result)
 

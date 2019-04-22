@@ -13,9 +13,9 @@ class Connections(Plugin):
         ('idle in transaction', 'idle_in_transaction',
             'number of idle in transaction connections', 'CC00CC')
     ]
-   # query = """select count(mode) FROM pg_catalog.pg_locks"""
     query_agent = "select count(*) from pg_catalog.pg_stat_activity where state = '{0}' "
-    query_agent_custom = "select count(*) from pg_catalog.pg_stat_activity"
+    query_agent_total = "select count(*) from pg_catalog.pg_stat_activity"
+    query_agent_waiting = "select count(*) from pg_catalog.pg_stat_activity where wait_event is not NULL"
     key = 'pgsql.connections'
 
     def run(self, zbx):
@@ -99,7 +99,8 @@ class Connections(Plugin):
         result = []
         for item in self.Items:
             result.append('{0}[{1}],"{2}"'.format(self.key, item[1], self.query_agent.format(item[1])))
-        result.append('{0}[{1}],"{2}"'.format(self.key, 'total', self.query_agent_custom))
+        result.append('{0}[{1}],"{2}"'.format(self.key, 'total', self.query_agent_total))
+        result.append('{0}[{1}],"{2}"'.format(self.key, 'waiting', self.query_agent_waiting))
         return template_zabbix.key_and_query(result)
 
 
