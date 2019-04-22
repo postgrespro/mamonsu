@@ -16,9 +16,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
 
 
-
 def start():
-    default_name = "default_template_name"
 
     def quit_handler(_signo=None, _stack_frame=None):
         logging.info("Bye bye!")
@@ -56,11 +54,12 @@ def start():
         elif tool == 'export' and len(commands) > 2:
             args, commands = parse_args()
             Plugin.VersionPG = float(args.pg_version)
-            # print("this is args", args)
-            # print("this is commands", commands)
+            #print("this is args", args)
+            #print("this is commands", commands)
             cfg = Config(args.config_file, args.plugins_dirs)
-            if commands[1] == 'zabbix-parameters':
+            if commands[1] == 'zabbix_parameters':
                 # zabbix agent keys generation
+                Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     plugins.append(klass(cfg))

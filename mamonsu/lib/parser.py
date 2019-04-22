@@ -20,24 +20,24 @@ Options:
 
 
 Export zabbix keys for zabbix-agent in config file:
-Command: export zabbix-parameters
+Command: export zabbix_parameters
 Examples:
-export zabbix-parameters --filename=pg.conf --plugin-type=all
+export zabbix_parameters --filename=pg.conf --plugin-type=all
 Options:
     --filename
     --plugin-type
-    
+
 Export zabbix agent template with additional plugins included in config file:
 Command: export
 Examples:
     {prog} export zabbix_template <file>
 Options:
     --add-plugins <directory>
-    --template-name <template name>
+    --agent-template-name <template name>
     --application <application name in template>
 
-    
-    
+
+
 Export zabbix template with additional plugins included in config file:
 Command: export
 Examples:
@@ -99,7 +99,6 @@ Examples:
     {prog} zabbix item lastvalue <host name>
     {prog} zabbix item lastclock <host name>
 """
-
 
 if platform.LINUX:
     usage_msg += """
@@ -169,12 +168,12 @@ Export zabbix-agent template with additional plugins included in config file:
 Command: export
 Examples:
     {prog} export zabbix-template <file>
-    
+
 Generate keys for zabbix-agent :
 Command: keys
 Examples:
     {prog} keys <file> 
-      
+
 Options:
     --config <file>
     -t <template name>
@@ -216,10 +215,10 @@ def parse_args():
         default='PostgresPro-{0}'.format(sys.platform.title()))
     # zabbix-template
     parser.add_option(
-       '-z', '--agent-template-name', dest='zabbix_template',
+        '-n', '--agent-template-name', dest='zabbix_template',
         default='AgentPostgresPro-{0}'.format(sys.platform.title()))
     # zabbix - template filename
-    parser.add_option('--filename',  default='pg.conf')
+    parser.add_option('--filename', default='pg.conf')
     # zabbix - template type of parameters
     parser.add_option('--plugin-type', default='all')
     # PG version
