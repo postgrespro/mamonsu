@@ -24,5 +24,5 @@ class OpenFiles(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('{0},{1}'.format(self.key, self.query_agent))
+        result.append('{0},{1}'.format("system.open_files", self.query_agent))
         return template_zabbix.key_and_query(result)

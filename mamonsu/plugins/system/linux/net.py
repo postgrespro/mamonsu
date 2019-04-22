@@ -3,7 +3,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 class Net(Plugin):
     query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/net.sh -j $1"
-    query_agent = "expr `grep -Ei '$1' /proc/diskstats | awk '{print "
+    query_agent = "expr `grep -Ei '$1' /proc/net/dev | awk '{print $$"
     AgentPluginType = 'sys'
     # position in line, key, desc, units
     Items = [
@@ -38,11 +38,18 @@ class Net(Plugin):
                 'key': item[1]+'[{#NETDEVICE}]',
                 'name': 'Network device {#NETDEVICE}: ' + item[2],
                 'units': item[3]})
-        rule = {
-            'name': 'Net iface discovery',
-            'key': 'system.net.discovery[]',
-            'filter': '{#NETDEVICE}:.*'
-        }
+        if self.Type == "mamonsu":
+            rule = {
+                'name': 'Net iface discovery',
+                'key': 'system.net.discovery[]',
+                'filter': '{#NETDEVICE}:.*'
+            }
+        else:
+            rule = {
+                'name': 'Net iface discovery',
+                'key': 'system.net.discovery[NETDEVICE]',
+                'filter': '{#NETDEVICE}:.*'
+            }
         graphs = [{
             'name': 'Network device: {#NETDEVICE}',
             'items': [{

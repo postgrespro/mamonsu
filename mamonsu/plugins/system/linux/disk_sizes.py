@@ -6,9 +6,9 @@ class DiskSizes(Plugin):
     AgentPluginType = 'sys'
 
     tmp_query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/disk_sizes.sh -j $1"
-    tmp_query_agent_used = "df $1 | awk 'NR == 2 {print $3}'"
-    tmp_query_agent_free = "df $1 | awk 'NR == 2 {print $4}'"
-    tmp_query_agent_percent_free = "df $1 | awk 'NR == 2 {print 100 - $5}'"
+    tmp_query_agent_used = "df $1 | awk 'NR == 2 {print $$3}'"
+    tmp_query_agent_free = "df $1 | awk 'NR == 2 {print $$4}'"
+    tmp_query_agent_percent_free = "df $1 | awk 'NR == 2 {print 100 - $$5}'"
     #tmp_query_agent_percent_inode_free = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_bloating_tables.sql "FIXME for percent_inode_free
 
     DEFAULT_CONFIG = {
@@ -63,11 +63,19 @@ class DiskSizes(Plugin):
 
     def discovery_rules(self, template):
 
-        rule = {
-            'name': 'VFS discovery',
-            'key': 'system.vfs.discovery[]',
-            'filter': '{#MOUNTPOINT}:.*'
-        }
+        if self.Type == "mamonsu":
+            rule = {
+                'name': 'VFS discovery',
+                'key': 'system.vfs.discovery[]',
+                'filter': '{#MOUNTPOINT}:.*'
+            }
+        else:
+            rule = {
+                'name': 'VFS discovery',
+                'key': 'system.vfs.discovery[MOUNTPOINT]',
+                'filter': '{#MOUNTPOINT}:.*'
+            }
+
 
         items = [
             {

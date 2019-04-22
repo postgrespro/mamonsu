@@ -8,11 +8,11 @@ class DiskStats(Plugin):
     # bold line
     AgentPluginType = 'sys'
     query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/disk_stats.sh -j $1"
-    agent_query_read_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $4}'`"
-    agent_query_read_sc = "expr `grep -w '$1' /proc/diskstats | awk '{print $6 * 512}'`"
-    agent_query_write_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $8}'`"
-    agent_query_write_sc = "expr `grep -w '$1' /proc/diskstats | awk '{print $10 * 512}'`"
-    agent_query_ticks = "expr `grep -w '$1' /proc/diskstats | awk '{print $13}'`"
+    agent_query_read_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $$4}'`"
+    agent_query_read_sc = "expr `grep -w '$1' /proc/diskstats | awk '{print $$6 * 512}'`"
+    agent_query_write_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $$8}'`"
+    agent_query_write_sc = "expr `grep -w '$1' /proc/diskstats | awk '{print $$10 * 512}'`"
+    agent_query_ticks = "expr `grep -w '$1' /proc/diskstats | awk '{print $$13}'`"
     agent_query_read_op_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_read_op.sh"   #    get sum for all read_op
     agent_query_read_sc_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_read_b.sh"
     agent_query_write_op_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_write_op.sh"
@@ -100,12 +100,18 @@ class DiskStats(Plugin):
         return result + template.graph(graph)
 
     def discovery_rules(self, template):
-
-        rule = {
-            'name': 'Block device discovery',
-            'key': 'system.disk.discovery[]',
-            'filter': '{#BLOCKDEVICE}:.*'
-        }
+        if Plugin.Type == 'mamonsu':
+            rule = {
+                'name': 'Block device discovery',
+                'key': 'system.disk.discovery[BLOCKDEVICE]',
+                'filter': '{#BLOCKDEVICE}:.*'
+            }
+        else:
+            rule = {
+                'name': 'Block device discovery',
+                'key': 'system.disk.discovery[]',
+                'filter': '{#BLOCKDEVICE}:.*'
+            }
 
         items = [
             {

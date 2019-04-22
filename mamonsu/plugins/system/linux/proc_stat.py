@@ -120,8 +120,14 @@ class ProcStat(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for i, item in enumerate(self.ProcessItems):
-            result.append('system.{0},{1}'.format(item[1], self.query_agent_procs[i]))
+            key = 'system.{0},{1}'.format(item[1], self.query_agent_procs[i])
+            key = re.sub(r"\]", "",  key)
+            key = re.sub(r"\[", ".",  key)  # for zabbix-agent type of key representation
+            result.append(key)
         for item in self.CpuItems:
-            result.append('system.{0},{1}'.format(item[1], self.query_agent_cpu + str(item[0]+1) + "}'`"))
+            key = 'system.{0},{1}'.format(item[1], self.query_agent_cpu + str(item[0]+1) + "}'`")
+            key = re.sub(r"\]", "", key)
+            key = re.sub(r"\[", ".", key)  # for zabbix-agent type of key representation
+            result.append(key)
         return template_zabbix.key_and_query(result)
 
