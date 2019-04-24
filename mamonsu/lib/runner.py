@@ -62,7 +62,8 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    plugins.append(klass(cfg))
+                    if klass.__name__ == "Databases" or klass.__name__ == "Xlog" or klass.__name__ == "PgLocks":
+                        plugins.append(klass(cfg))
                 types = args.plugin_type.split(',')
                 # check if any plugin types is equal
                 if len(types) > 1:
@@ -94,8 +95,10 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                        # generate template for agent
-                        plugins.append(klass(cfg))
+                        # generate template for agent for 3 classes that have been refactored
+                        print(klass.__name__)
+                        if klass.__name__=="Databases" or klass.__name__=="Xlog" or klass.__name__=="PgLocks":
+                            plugins.append(klass(cfg))
                 template = ZbxTemplate(args.zabbix_template.strip(".xml"),
                                        args.application + args.zabbix_template.strip(".xml"))
                 with codecs.open(args.zabbix_template, 'w', 'utf-8') as f:
@@ -134,6 +137,8 @@ def start():
         supervisor.start()
     except KeyboardInterrupt:
         quit_handler()
+
+#  check if any equal elements in array
 
 
 def is_any_equal(iterator):

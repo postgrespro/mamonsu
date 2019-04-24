@@ -10,7 +10,6 @@ from threading import Thread
 
 from mamonsu.lib.const import Template
 
-
 class PluginDisableException(Exception):
     pass
 
@@ -25,6 +24,9 @@ class Plugin(object):
 
     # PG version
     VersionPG = 10.0
+
+    # Macros for run as agent type or as mamonsu
+    Macros = {"mamonsu": "", "agent": "{$PG_CONNINFO},{$PG_PATH}"}
 
     # plugin interval run
     Interval = 60
@@ -165,3 +167,10 @@ class Plugin(object):
                 self.log.error(
                     'Timeout: {0}s'.format(int(time.time() - last_start)))
                 return
+
+    def right_type(self, key, var="", var_discovery=""):
+        if self.Type == "mamonsu":
+            new_key = key.format('[{0}{1}]'.format(var, var_discovery[:-1]))
+        else:
+            new_key = key.format('{0}[{1}]'.format(var, var_discovery + self.Macros[self.Type]))
+        return new_key

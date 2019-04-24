@@ -123,18 +123,17 @@ class ZbxTemplate(object):
         template_data['items'] = self._get_all('items', plugins)
         if Plugin.Type == 'agent':
             template_data['macros'] = self._macro()
+        else:
+            template_data['macros'] = ""
         template_data['triggers'] = self._get_all('triggers', plugins)
         template_data['graphs'] = self._get_all('graphs', plugins)
         template_data['discovery_rules'] = self._get_all('discovery_rules', plugins)
         _xml = minidom.parseString(self.mainTemplate.format(**template_data))
         output_xml = ''.join([line.strip() for line in _xml.toxml().splitlines()])
-        # for dicrovery rule temporary solution FIXME
-        output_xml = re.sub(r",{\$PG_CONNINFO},{\$PG_PATH}\]<\/key><item_prototypes>", "]</key><item_prototypes>",
-                            output_xml)
-        prettyxml = minidom.parseString(output_xml).toprettyxml(indent = "    ", newl = "\n")
+        pretty_xml = minidom.parseString(output_xml).toprettyxml(indent = "    ", newl = "\n")
         if Plugin.Type == 'agent':
-            prettyxml = ZbxTemplate.turn_agent_type(self, prettyxml)
-        return prettyxml
+            pretty_xml = ZbxTemplate.turn_agent_type(self, pretty_xml)
+        return pretty_xml
 
     def _get_all(self, items='items', plugins=[]):
         result = ''
@@ -142,23 +141,12 @@ class ZbxTemplate(object):
             row = getattr(plugin, items)(self)  # get Items of this particular plugin
             if row is None:
                 continue
-
-            row = re.sub(r"\[\]", "", row)  # for [] case
-            if plugin.AgentPluginType == "pg":
-                # for triggers FIXME
-                row = re.sub(r".last()", "[{$PG_CONNINFO},{$PG_PATH}].last", row)
-                row = re.sub(r".min\(", "[{$PG_CONNINFO},{$PG_PATH}].min(", row)
-                row = re.sub(r".nodata\(", "[{$PG_CONNINFO},{$PG_PATH}].nodata(", row)
-                # for all keys in items dcrovery rules and graphs
-                row = re.sub(r"</key>", "[{$PG_CONNINFO},{$PG_PATH}]</key>", row)  # for [ case
-                row = re.sub(r"\]\[", ",", row)  # for [{ case
-
             result += row
         return result
 
     def _macro(self, xml_key='macro'):
         result = ''
-        value = {'value': '-qAt -p 5433 -U postgres -d postgres', 'macro': "{$PG_CONNINFO}"}
+        value = {'value': '-qAt -p 5433 -U postgres ', 'macro': "{$PG_CONNINFO}"}
         result += '<{1}>{0}</{1}>'.format(self._format_args(self.macro_defaults, value), xml_key)
         value = {'value': '/opt/pgpro/std-10/bin/psql', 'macro':"{$PG_PATH}"}
         result += '<{1}>{0}</{1}>'.format(self._format_args(self.macro_defaults, value), xml_key)
@@ -167,7 +155,7 @@ class ZbxTemplate(object):
     def item(self, args={}, xml_key='item'):
         return '<{2}>{0}{1}</{2}>'.format(
          self._format_args(self.item_defaults, args),
-         self._application(),xml_key)
+         self._application(), xml_key)
 
     def trigger(self, args={}, xml_key='trigger', defaults=None):
         if defaults is None:
@@ -202,11 +190,6 @@ class ZbxTemplate(object):
             graph_items += row.format(
                 self._format_args(self.graph_items_defaults, item),
                 self.Template, key)
-            # turn key into zabbix-type
-            if Plugin.Type == 'agent' and re.search(r"\[{\w*", graph_items) is None\
-                    and re.search(r"\[\]", graph_items) is None:
-                graph_items = re.sub(r"\]", "", graph_items)
-                graph_items = re.sub(r"\[", ".", graph_items)  # for zabbix-agent type of key representation
         result = '<{2}>{0}<graph_items>{1}</graph_items></{2}>'
         return result.format(
             self._format_args(self.graph_values_defaults, args),
@@ -252,12 +235,7 @@ class ZbxTemplate(object):
                 val = pair[1]
             if val is None:
                 row = '<{0}/>'.format(key)
-            else:# turn key into zabbix-type
-                if Plugin.Type == 'agent':
-                    if re.search(r"\[\*", str(val)) is None and re.search(r"\[{\w*", str(val)) is None and\
-                            re.search(r"\[\]", str(val)) is None and re.search(r"discovery\[", str(val)) is None:
-                        val = re.sub(r"\]", "", str(val))
-                        val = re.sub(r"\[", ".", val)  # for zabbix-agent type of key representation
-                    row = '<{0}>{1}</{0}>'.format(key, val)
+            else:
+                row = '<{0}>{1}</{0}>'.format(key, val)
             result += row
         return result
