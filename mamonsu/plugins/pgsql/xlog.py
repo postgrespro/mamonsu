@@ -11,8 +11,8 @@ class Xlog(Plugin):
                          "(pg_catalog.pg_current_wal_lsn(), '0/00000000')"
     query_xlog_lsn_diff = "select pg_catalog.pg_xlog_location_diff " \
                          "(pg_catalog.pg_current_xlog_location(), '0/00000000')"
-    key_wall = 'pgsql.wal.write[]'
-    key_count_wall = "pgsql.wal.count[]"
+    key_wall = 'pgsql.wal.write{0}'
+    key_count_wall = "pgsql.wal.count{0}"
     AgentPluginType = 'pg'
 
     def run(self, zbx):
@@ -29,35 +29,31 @@ class Xlog(Plugin):
                 result = Pooler.query(self.query_wal_lsn_diff)
             else:
                 result = Pooler.query(self.query_xlog_lsn_diff)
-            zbx.send(self.key_wall, float(result[0][0]), self.DELTA_SPEED)
+            zbx.send(self.key_wall.format("[]"), float(result[0][0]), self.DELTA_SPEED)
         # count of xlog files
         if Pooler.server_version_greater('10.0'):
             result = Pooler.run_sql_type('count_wal_files')
         else:
             result = Pooler.run_sql_type('count_xlog_files')
-        zbx.send(self.key_count_wall, int(result[0][0]))
+        zbx.send(self.key_count_wall.format("[]"), int(result[0][0]))
 
     def items(self, template):
-        result=''
+        result = ''
         if self.Type == "mamonsu":
-            result += template.item({
-                'name': 'PostgreSQL: wal write speed',
-                'key': self.key_wall,
-                'units': Plugin.UNITS.bytes
-            })
+            delta = Plugin.DELTA.as_is
         else:
-            result += template.item({
-                'name': 'PostgreSQL: wal write speed',
-                'key': self.key_wall,
-                'units': Plugin.UNITS.bytes,
-                'delta': Plugin.DELTA_SPEED
-            })
+            delta = Plugin.DELTA_SPEED
         result += template.item({
+                'name': 'PostgreSQL: wal write speed',
+                'key': self.right_type(self.key_wall),
+                'units': Plugin.UNITS.bytes,
+                'delta': delta
+            }) + template.item({
                 'name': 'PostgreSQL: streaming replication lag',
                 'key': 'pgsql.replication_lag[sec]'
             }) + template.item({
                 'name': 'PostgreSQL: count of xlog files',
-                'key': self.key_count_wall
+                'key': self.right_type(self.key_count_wall),
             })
         return result
 
@@ -66,7 +62,7 @@ class Xlog(Plugin):
             'name': 'PostgreSQL write-ahead log generation speed',
             'items': [
                 {'color': 'CC0000',
-                    'key': self.key_wall}]})
+                    'key': self.right_type(self.key_wall)}]})
         result += template.graph({
             'name': 'PostgreSQL replication lag in second',
             'items': [
@@ -76,7 +72,7 @@ class Xlog(Plugin):
             'name': 'PostgreSQL count of xlog files',
             'items': [
                 {'color': 'CC0000',
-                    'key': self.key_count_wall}]})
+                    'key': self.right_type(self.key_count_wall)}]})
         return result
 
     def triggers(self, template):
@@ -90,10 +86,10 @@ class Xlog(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         if self.VersionPG < 10.0:
-            result.append('{0},"{1}"'.format(self.key_count_wall, Pooler.SQL['count_xlog_files'][0]))
-            result.append('{0},"{1}"'.format(self.key_wall, self.query_xlog_lsn_diff))
+            result.append('{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_xlog_files'][0]))
+            result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_xlog_lsn_diff))
         else:
-            result.append('{0},"{1}"'.format(self.key_count_wall, Pooler.SQL['count_wal_files'][0]))
-            result.append('{0},"{1}"'.format(self.key_wall, self.query_wal_lsn_diff))
+            result.append('{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_wal_files'][0]))
+            result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_wal_lsn_diff))
         # FIXME for lag
         return template_zabbix.key_and_query(result)

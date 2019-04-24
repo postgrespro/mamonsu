@@ -11,11 +11,12 @@ class Databases(Plugin):
     query = """select count(*) from pg_catalog.pg_stat_all_tables where
                 (n_dead_tup/(n_live_tup+n_dead_tup)::float8) > {0}
                 and (n_live_tup+n_dead_tup) > {1}"""
-    tmp_query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/zapgix.sh -s $3 -j $4"
+    tmp_query_agent_discovery = "SELECT json_build_object ('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
+                                " FROM pg_database d WHERE NOT datistemplate AND datallowconn AND datname!='postgres';"
     tmp_query_agent_size = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_size.sql -v p1=$1"
     tmp_query_agent_age = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_age.sql -v p1=$1 "
     tmp_query_agent_bloating_tables = "-d $1 -f /home/dvilova/Projects/mamonsu/agent_sql/db_bloating_tables.sql "
-    # tmp_query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/zapgix.sh -s $1 -j $2"
+    # tmp_query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/zapgix.sh -s $3 -j $4"
     # tmp_query_agent_size = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_size.sql -v p1=$1"
     # tmp_query_agent_age = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_age.sql -v p1=$1 "
     # tmp_query_agent_bloating_tables = "-d $1 -f /home/dvilova/Projects/mamonsu/agent_sql/db_bloating_tables.sql "
@@ -23,11 +24,11 @@ class Databases(Plugin):
                   "from pg_catalog.pg_database where datistemplate = false and datname = {0}"
     query_agent_age = "select age(datfrozenxid)" \
                   "from pg_catalog.pg_database where datistemplate = false and datname = {0}"
-    key_db_discovery = "pgsql.database.discovery[*]"
-    key_db_size = "pgsql.database.size[*]"
-    key_db_age = "pgsql.database.max_age[*]"
-    key_db_bloating_tables = "pgsql.database.bloating_tables[*]"
-    key_autovacumm = "pgsql.autovacumm.count"
+    key_db_discovery = "pgsql.database.discovery{0}"
+    key_db_size = "pgsql.database.size{0}"
+    key_db_age = "pgsql.database.max_age{0}"
+    key_db_bloating_tables = "pgsql.database.bloating_tables{0}"
+    key_autovacumm = "pgsql.autovacumm.count{0}"
 
     DEFAULT_CONFIG = {'min_rows': str(50), 'bloat_scale': str(0.2)}
 
@@ -60,33 +61,26 @@ class Databases(Plugin):
     def items(self, template):
         return template.item({
             'name': 'PostgreSQL: count of autovacuum workers',
-            'key': 'pgsql.autovacumm.count[]',
+            'key': self.right_type(self.key_autovacumm),
             'delay': self.Interval
         })
 
     def discovery_rules(self, template):
-        if self.Type == "mamonsu":
-            rule = {
-                'name': 'Database discovery',
-                'key': 'pgsql.database.discovery[]',
-                'filter': '{#DATABASE}:.*'
-            }
-        else:
-            rule = {
-                'name': 'Database discovery',
-                'key': 'pgsql.database.discovery[db_list,DATABASE]',
-                'filter': '{#DATABASE}:.*'
+        rule = {
+            'name': 'Database discovery',
+            'key': self.key_db_discovery.format('[{0}]'.format(self.Macros[self.Type])),
+            'filter': '{#DATABASE}:.*'
             }
         items = [
-            {'key': 'pgsql.database.size[{#DATABASE}]',
+            {'key': self.right_type(self.key_db_size, var_discovery="{#DATABASE},"),
                 'name': 'Database {#DATABASE}: size',
                 'units': Plugin.UNITS.bytes,
                 'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
                 'delay': self.Interval},
-            {'key': 'pgsql.database.max_age[{#DATABASE}]',
+            {'key': self.right_type(self.key_db_age, var_discovery="{#DATABASE},"),
                 'name': 'Max age (datfrozenxid) in: {#DATABASE}',
                 'delay': self.Interval},
-            {'key': 'pgsql.database.bloating_tables[{#DATABASE}]',
+            {'key': self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},"),
                 'name': 'Count of bloating tables in database: {#DATABASE}',
                 'delay': self.Interval}
         ]
@@ -96,24 +90,24 @@ class Databases(Plugin):
                 'type': 1,
                 'items': [
                     {'color': '00CC00',
-                        'key': 'pgsql.database.size[{#DATABASE}]'}]
+                        'key': self.right_type(self.key_db_size, var_discovery="{#DATABASE},")}]
             },
             {
                 'name': 'Database bloating overview: {#DATABASE}',
                 'items': [
                     {'color': 'CC0000',
-                        'key': 'pgsql.database.bloating_tables[{#DATABASE}]'},
+                        'key': self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},")},
                     {'color': '00CC00',
-                        'key': 'pgsql.autovacumm.count[]',
+                        'key': self.right_type(self.key_autovacumm),
                         'yaxisside': 1}]
             },
             {
                 'name': 'Database max age overview: {#DATABASE}',
                 'items': [
                     {'color': 'CC0000',
-                        'key': 'pgsql.database.max_age[{#DATABASE}]'},
+                        'key': self.right_type(self.key_db_age, var_discovery="{#DATABASE},")},
                     {'color': '00CC00',
-                        'key': 'pgsql.autovacumm.count[]',
+                        'key': self.right_type(self.key_autovacumm),
                         'yaxisside': 1}]
             }
         ]
@@ -121,11 +115,11 @@ class Databases(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('{0},"{1}"'.format(self.key_autovacumm, Pooler.SQL['count_autovacuum'][0]))
-        result.append('{0},{1}'.format(self.key_db_discovery,  self.tmp_query_agent_discovery))
-        result.append('{0},{1}'.format(self.key_db_size, self.tmp_query_agent_size))
-        result.append('{0},{1}'.format(self.key_db_age,  self.tmp_query_agent_age))
-        result.append('{0},{1}'.format(self.key_db_bloating_tables, self.tmp_query_agent_bloating_tables))
+        result.append('{0},$2 $1 -c "{1}"'.format(self.key_autovacumm.format("[*]"), Pooler.SQL['count_autovacuum'][0]))
+        result.append('{0},$2 $1 -c "{1}"'.format(self.key_db_discovery.format("[*]"),  self.tmp_query_agent_discovery))
+        result.append('{0},$3 $2 {1}'.format(self.key_db_size.format("[*]"), self.tmp_query_agent_size))
+        result.append('{0},$3 $2 {1}'.format(self.key_db_age.format("[*]"),  self.tmp_query_agent_age))
+        result.append('{0},$3 $2 {1}'.format(self.key_db_bloating_tables.format("[*]"), self.tmp_query_agent_bloating_tables))
         return template_zabbix.key_and_query(result)
 
 
