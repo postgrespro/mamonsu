@@ -5,8 +5,8 @@ from .pool import Pooler
 
 
 class PgLocks(Plugin):
-    query = """select lower(mode), count(mode) FROM pg_catalog.pg_locks group by 1 """    # for mamonsu
-    query_agent = """select count(*) FROM pg_catalog.pg_locks where lower(mode)='{0}' """   # for zabbix
+    query = """select lower(mode), count(mode) FROM pg_catalog.pg_locks group by 1 """  # for mamonsu
+    query_agent = """select count(*) FROM pg_catalog.pg_locks where lower(mode)='{0}' """  # for zabbix
     AgentPluginType = 'pg'
     key = 'pgsql.pg_locks{0}'
     Items = [
@@ -71,6 +71,12 @@ class PgLocks(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for item in self.Items:
-           result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[0]),
-                                                        self.query_agent.format('{0}lock'.format(item[0]))))
+            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[0]),
+                                                         self.query_agent.format('{0}lock'.format(item[0]))))
         return template_zabbix.key_and_query(result)
+
+    def sql(self):
+        result = {}  # key is name of file, var is query
+        for item in self.Items:
+            result[self.key.format("." + item[0])] = self.query_agent.format('{0}lock'.format(item[0]))
+        return result
