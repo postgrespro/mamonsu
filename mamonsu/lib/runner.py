@@ -5,7 +5,6 @@ import signal
 import sys
 import codecs
 import os
-import string
 
 import mamonsu.lib.platform as platform
 from mamonsu.lib.parser import parse_args, print_total_help
@@ -15,9 +14,10 @@ from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
 
+PATH = "/home/dvilova/Projects/mamonsu/"
+
 
 def start():
-
     def quit_handler(_signo=None, _stack_frame=None):
         logging.info("Bye bye!")
         sys.exit(0)
@@ -54,8 +54,8 @@ def start():
         elif tool == 'export' and len(commands) > 2:
             args, commands = parse_args()
             Plugin.VersionPG = float(args.pg_version)
-            #print("this is args", args)
-            #print("this is commands", commands)
+            # print("this is args", args)
+            # print("this is commands", commands)
             cfg = Config(args.config_file, args.plugins_dirs)
             if commands[1] == 'zabbix_parameters':
                 # zabbix agent keys generation
@@ -95,17 +95,31 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                        # generate template for agent for 3 classes that have been refactored
-                        print(klass.__name__)
-                        if klass.__name__=="Databases" or klass.__name__=="Xlog" or klass.__name__=="PgLocks":
-                            plugins.append(klass(cfg))
+                    # generate template for agent for 3 classes that have been refactored
+                    print(klass.__name__)
+                    if klass.__name__ == "Databases" or klass.__name__ == "Xlog" or klass.__name__ == "PgLocks":
+                        plugins.append(klass(cfg))
                 template = ZbxTemplate(args.zabbix_template.strip(".xml"),
                                        args.application + args.zabbix_template.strip(".xml"))
                 with codecs.open(args.zabbix_template, 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
-            else:
-                print_total_help()
+            elif commands[1] == 'sql':
+                Plugin.Type = 'agent'  # change plugin type for template generator
+                file_path = os.path.join(PATH, args.sql)
+                if not os.path.exists(file_path):
+                    os.makedirs(file_path)
+                    print("directory created")
+                for klass in Plugin.only_child_subclasses():
+                    # generate template for agent for 3 classes that have been refactored
+                    if klass.__name__ == "Databases" or klass.__name__ == "Xlog" or klass.__name__ == "PgLocks":
+                        for i, j in klass(cfg).sql().items():
+                            with codecs.open("{0}/{1}.{2}.sql".format(file_path, klass.__name__, i),
+                                             'w', 'utf-8') as f:
+                                f.write(j)
+                sys.exit(0)
+        else:
+            print_total_help()
     args, commands = parse_args()
     if len(commands) > 0:
         print_total_help()
@@ -138,9 +152,8 @@ def start():
     except KeyboardInterrupt:
         quit_handler()
 
+
 #  check if any equal elements in array
-
-
 def is_any_equal(iterator):
     length = len(iterator)
     return len(set(iterator)) < length

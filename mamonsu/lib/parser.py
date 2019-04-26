@@ -26,6 +26,15 @@ export zabbix_parameters --filename=pg.conf --plugin-type=all
 Options:
     --filename
     --plugin-type
+    
+Export all plugins sql queries in folder:
+Command: export sql  
+Examples:
+export zabbix_parameters -s agent-sql
+Options:
+    -s
+    
+
 
 Export zabbix agent template with additional plugins included in config file:
 Command: export
@@ -224,6 +233,9 @@ def parse_args():
     # PG version
     parser.add_option(
         '-v', '--pg_version', dest='pg_version', default='10.0')
+    # export sql to files
+    parser.add_option(
+        '-s', dest='sql', default='agent_sql')
     parser.add_option(
         '--application', dest='application',
         default='App-PostgresPro-{0}'.format(sys.platform.title()))
