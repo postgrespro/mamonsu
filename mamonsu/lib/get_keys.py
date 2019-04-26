@@ -14,7 +14,7 @@ class GetKeys(object):
         template_data = self._get_all('keys_and_queries', plugins)   # get data from all plugins
         return template_data
 
-    def _get_all(self, keys_and_queries='keys_and_queries', plugins=[]):
+    def _get_all(self, keys_and_queries, plugins=[]):
         result = ''
         for plugin in plugins:
             if plugin.AgentPluginType == self.plg_type or self.plg_type == 'all':
@@ -28,5 +28,6 @@ class GetKeys(object):
     def key_and_query(self, args=[]):
         result = ""
         for one in args:
-            result += 'UserParameter={0}\n'.format(one)  # lose brackets
+            result += 'UserParameter={0}\n'.format(one)
         return result
+
