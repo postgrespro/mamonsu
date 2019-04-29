@@ -172,5 +172,8 @@ class Plugin(object):
         if self.Type == "mamonsu":
             new_key = key.format('[{0}{1}]'.format(var, var_discovery[:-1]))
         else:
-            new_key = key.format('{0}[{1}]'.format(var, var_discovery + self.Macros[self.Type]))
+            if var == "":
+                new_key = key.format('{0}[{1}]'.format(var, var_discovery + self.Macros[self.Type]))
+            else:
+                new_key = key.format('.{0}[{1}]'.format(var, var_discovery + self.Macros[self.Type]))
         return new_key
