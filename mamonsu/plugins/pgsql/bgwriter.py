@@ -6,6 +6,7 @@ from .pool import Pooler
 
 class BgWriter(Plugin):
     AgentPluginType = 'pg'
+    key = "pgsql.bgwriter{0}"
     query = "select {0} from pg_catalog.pg_stat_bgwriter"
     Items = [
         # key, zbx_key, description,
@@ -55,27 +56,23 @@ class BgWriter(Plugin):
     def items(self, template):
         result = ''
         if self.Type == "mamonsu":
-            for item in self.Items:
-                result += template.item({
-                    'key': 'pgsql.{0}'.format(item[1]),
-                    'name': 'PostgreSQL {0}'.format(item[2]),
-                    'value_type': self.VALUE_TYPE.numeric_unsigned
-                })
+            delta = Plugin.DELTA.as_is
         else:
-            for item in self.Items:
-                result += template.item({
-                    'key': 'pgsql.{0}'.format(item[1]),
-                    'name': 'PostgreSQL {0}'.format(item[2]),
-                    'value_type': self.VALUE_TYPE.numeric_unsigned,
-                    'delta':  self.DELTA.simple_change
-                })
+            delta = Plugin.DELTA.simple_change
+        for item in self.Items:
+            result += template.item({
+                'key': self.right_type(self.key, item[0]),
+                'name': 'PostgreSQL {0}'.format(item[2]),
+                'value_type': self.VALUE_TYPE.numeric_unsigned,
+                'delta': delta
+            })
         return result
 
     def graphs(self, template):
         name, items = 'PostgreSQL bgwriter', []
         for item in self.Items:
             items.append({
-                'key': 'pgsql.{0}'.format(item[1]),
+                'key':  self.right_type(self.key, item[0]),
                 'color': item[3][1],
                 'yaxisside': item[3][2]
             })
@@ -84,5 +81,12 @@ class BgWriter(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for item in self.Items:
-            result.append('pgsql.{0},"{1}"'.format(item[1], self.query.format(item[0])))
+            # delete from key '[' and ']' in Item for zabbix agent
+            result.append('{0}[*],$2 $1 -c "{1}"'. format(self.key.format("." + item[0]), self.query.format(item[0])))
         return template_zabbix.key_and_query(result)
+
+    def sql(self):
+        result = {}  # key is name of file, var is query
+        for item in self.Items:
+            result[self.key.format("." + item[0])] = self.query.format(item[0])
+        return result

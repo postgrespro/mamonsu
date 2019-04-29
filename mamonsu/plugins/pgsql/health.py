@@ -14,9 +14,9 @@ class PgHealth(Plugin):
     query_cache = "select " \
                   "round(sum(blks_hit)*100/sum(blks_hit+blks_read), 2)" \
                   "from pg_catalog.pg_stat_database"
-    key_ping = "pgsql.ping[]"
-    key_uptime = "pgsql.uptime[]"
-    key_cache = "pgsql.cache[hit]"
+    key_ping = "pgsql.ping{0}"
+    key_uptime = "pgsql.uptime{0}"
+    key_cache = "pgsql.cache{0}"
 
     def run(self, zbx):
 
@@ -33,34 +33,25 @@ class PgHealth(Plugin):
     def items(self, template):
         result = ''
         if self.Type == "mamonsu":
-            result += template.item({
-                'name': 'PostgreSQL: ping',
-                'key': 'pgsql.ping[]',
-                'value_type': Plugin.VALUE_TYPE.numeric_float,
-                'units': Plugin.UNITS.ms
-            }) + template.item({
-                'name': 'PostgreSQL: cache hit ratio',
-                'key': 'pgsql.cache[hit]',
-                'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
-                'units': Plugin.UNITS.percent
-            })
+            delay = 60 #TODO check delay
+            value_type = Plugin.VALUE_TYPE.numeric_unsigned
         else:
-            result += template.item({
-                'name': 'PostgreSQL: ping',
-                'key': 'pgsql.ping[]',
-                'value_type': Plugin.VALUE_TYPE.numeric_float,
-                'units': Plugin.UNITS.ms,
-                'delay': 60
-            }) + template.item({
-                'name': 'PostgreSQL: cache hit ratio',
-                'key': 'pgsql.cache[hit]',
-                'value_type': Plugin.VALUE_TYPE.numeric_float,
-                'units': Plugin.UNITS.percent
-            })
-
+            delay = 5
+            value_type = Plugin.VALUE_TYPE.numeric_float
         result += template.item({
+            'name': 'PostgreSQL: ping',
+            'key': self.right_type(self.key_ping),
+            'value_type': Plugin.VALUE_TYPE.numeric_float,
+            'units': Plugin.UNITS.ms,
+            'delay': delay
+        }) + template.item({
+            'name': 'PostgreSQL: cache hit ratio',
+            'key':  self.right_type(self.key_cache, "hit"),
+            'value_type': value_type,
+            'units': Plugin.UNITS.percent
+        }) + template.item({
             'name': 'PostgreSQL: service uptime',
-            'key': 'pgsql.uptime[]',
+            'key': self.right_type(self.key_uptime),
             'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
             'units': Plugin.UNITS.uptime
         })
@@ -68,8 +59,8 @@ class PgHealth(Plugin):
 
     def graphs(self, template):
         items = [
-            {'key': 'pgsql.cache[hit]'},
-            {'key': 'pgsql.uptime[]', 'color': 'DF0101', 'yaxisside': 1}
+            {'key': self.right_type(self.key_cache, "hit")},
+            {'key': self.right_type(self.key_uptime), 'color': 'DF0101', 'yaxisside': 1}
         ]
         graph = {'name': 'PostgreSQL uptime', 'items': items}
         return template.graph(graph)
@@ -78,20 +69,28 @@ class PgHealth(Plugin):
         result = template.trigger({
             'name': 'PostgreSQL service was restarted on '
             '{HOSTNAME} (uptime={ITEM.LASTVALUE})',
-            'expression': '{#TEMPLATE:pgsql.uptime[].last'
-            '()}&lt;' + str(self.plugin_config('uptime'))
+            'expression': '{#TEMPLATE:' + self.right_type(self.key_uptime) + '.last()}&lt;' +
+                          str(self.plugin_config('uptime'))
         }) + template.trigger({
             'name': 'PostgreSQL cache hit ratio too low on '
             '{HOSTNAME} ({ITEM.LASTVALUE})',
-            'expression': '{#TEMPLATE:pgsql.cache[hit].last'
-            '()}&lt;' + str(self.plugin_config('cache'))
+            'expression': '{#TEMPLATE:' + self.right_type(self.key_cache, "hit") + '.last()}&lt;' +
+                          str(self.plugin_config('cache'))
         })
         return result
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('{0},"{1}"'.format(self.key_ping, self.query_health))
-        result.append('{0},"{1}"'.format(self.key_uptime, self.query_uptime))
-        result.append('{0},"{1}"'.format(self.key_cache, self.query_cache))
+        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key_ping.format(''), self.query_health))
+        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key_uptime.format(''), self.query_uptime))
+        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key_cache.format('.hit'), self.query_cache))
         return template_zabbix.key_and_query(result)
+
+    def sql(self):
+        result = {}  # key is name of file, var is query
+        result[self.key_ping.format("")] = self.query_health
+        result[self.key_uptime.format("")] = self.query_uptime
+        result[self.key_cache.format(".hit")] = self.query_cache
+        return result
+
 

@@ -2,11 +2,16 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
-
+import re
 
 class Instance(Plugin):
     query_agent = "select sum({0}) as {0} from pg_catalog.pg_stat_database"
-    key = 'pgsql'
+    key = 'pgsql.'
+    key_transactions = 'pgsql.transactions{0}'
+    key_blocks = 'pgsql.events{0}'
+    key_events = 'pgsql.events{0}'
+    key_temp = 'pgsql.temp{0}'
+    key_tuples = 'pgsql.tuples{0}'
     AgentPluginType = 'pg'
     Items = [
         # key, zbx_key, description,
@@ -19,6 +24,7 @@ class Instance(Plugin):
             ('PostgreSQL instance: rate', '00CC00', 0),
             Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ('blks_read', 'blocks[read]', 'blocks: read',
+
             ('PostgreSQL instance: rate', 'CC0000', 0),
             Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
 
@@ -70,23 +76,20 @@ class Instance(Plugin):
 
     def items(self, template):
         result = ''
-        if self.Type == "mamonsu":
-            for item in self.Items:
-                result += template.item({
-                    'key': 'pgsql.{0}'.format(item[1]),
-                    'name': 'PostgreSQL {0}'.format(item[2]),
-                    'value_type': self.VALUE_TYPE.numeric_float,
-                    'units': item[4]
-                })
-        else:
-            for item in self.Items:
-                result += template.item({
-                    'key': 'pgsql.{0}'.format(item[1]),
+        for num, item in enumerate(self.Items):
+            if self.Type == "mamonsu":
+                delta = Plugin.DELTA.as_is
+            else:
+                delta = item[5]
+            # split each item to get values for keys of both agent type and mamonsu type
+            keys = item[1].split('[')
+            result += template.item({
+                    'key': self.right_type(self.key + keys[0] + '{0}', keys[1][:-1]),
                     'name': 'PostgreSQL {0}'.format(item[2]),
                     'value_type': self.VALUE_TYPE.numeric_float,
                     'units': item[4],
-                    'delta': item[5]
-                })
+                    'delta': delta
+            })
         return result
 
     def graphs(self, template):
@@ -98,10 +101,12 @@ class Instance(Plugin):
         result = ''
         for name in graphs_name:
             items = []
-            for item in self.Items:
+            for num, item in enumerate(self.Items):
                 if item[3][0] == name:
+                    # split each item to get values for keys of both agent type and mamonsu type
+                    keys = item[1].split('[')
                     items.append({
-                        'key': 'pgsql.{0}'.format(item[1]),
+                        'key': self.right_type(self.key + keys[0] + '{0}', keys[1][:-1]),
                         'color': item[3][1],
                         'yaxisside': item[3][2]
                     })
@@ -113,6 +118,17 @@ class Instance(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for item in self.Items:
-            result.append('{0}.{1},"{2}"'.format(self.key, item[1], self.query_agent.format(format(item[0]))))
+            # split each item to get values for keys of both agent type and mamonsu type
+            keys = item[1].split('[')
+            result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
+                                                         self.query_agent.format(format(item[0]))))
         return template_zabbix.key_and_query(result)
+
+    def sql(self):
+        result = {}  # key is name of file, var is query
+        for item in self.Items:
+            # split each item to get values for keys of both agent type and mamonsu type
+            keys = item[1].split('[')
+            result['{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1])] = self.query_agent.format(item[0])
+        return result
 

@@ -16,7 +16,7 @@ class Connections(Plugin):
     query_agent = "select count(*) from pg_catalog.pg_stat_activity where state = '{0}' "
     query_agent_total = "select count(*) from pg_catalog.pg_stat_activity"
     query_agent_waiting = "select count(*) from pg_catalog.pg_stat_activity where wait_event is not NULL"
-    key = 'pgsql.connections'
+    key = 'pgsql.connections{0}'
 
     def run(self, zbx):
 
@@ -64,16 +64,16 @@ class Connections(Plugin):
     def items(self, template):
         result = template.item({
             'name': 'PostgreSQL: number of total connections',
-            'key': 'pgsql.connections[total]'
+            'key': self.right_type(self.key, "total")
         })
         result += template.item({
             'name': 'PostgreSQL: number of waiting connections',
-            'key': 'pgsql.connections[waiting]'
+            'key': self.right_type(self.key, "waiting")
         })
         for item in self.Items:
             result += template.item({
                 'name': 'PostgreSQL: {0}'.format(item[2]),
-                'key': 'pgsql.connections[{0}]'.format(item[1])
+                'key': self.right_type(self.key, item[1])
             })
         return result
 
@@ -81,15 +81,15 @@ class Connections(Plugin):
         items = []
         for item in self.Items:
             items.append({
-                'key': 'pgsql.connections[{0}]'.format(item[1]),
+                'key': self.right_type(self.key, item[1]),
                 'color': item[3]
             })
         items.append({
-            'key': 'pgsql.connections[total]',
+            'key': self.right_type(self.key, "total"),
             'color': 'EEEEEE'
         })
         items.append({
-            'key': 'pgsql.connections[waiting]',
+            'key': self.right_type(self.key, "waiting"),
             'color': 'BB0000'
         })
         graph = {'name': 'PostgreSQL connections', 'items': items}
@@ -98,9 +98,18 @@ class Connections(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for item in self.Items:
-            result.append('{0}[{1}],"{2}"'.format(self.key, item[1], self.query_agent.format(item[1])))
-        result.append('{0}[{1}],"{2}"'.format(self.key, 'total', self.query_agent_total))
-        result.append('{0}[{1}],"{2}"'.format(self.key, 'waiting', self.query_agent_waiting))
+            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[1]), self.query_agent.format(item[1])))
+        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.total'), self.query_agent_total))
+        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting))
         return template_zabbix.key_and_query(result)
+
+    def sql(self):
+        result = {}  # key is name of file, var is query
+        for item in self.Items:
+            result[self.key.format("." + item[1])] = self.query_agent.format(item[1])
+        result[self.key.format('.total')] = self.query_agent_total
+        result[self.key.format('.waiting')] = self.query_agent_waiting
+        return result
+
 
 

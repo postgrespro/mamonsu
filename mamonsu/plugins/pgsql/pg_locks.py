@@ -45,7 +45,7 @@ class PgLocks(Plugin):
             for row in result:
                 if row[0] == '{0}lock'.format(item[0]):
                     found = True
-                    zbx.send(self.key.format(item[0]), row[1])
+                    zbx.send('pgsql.pg_locks[{0}]'.format(item[0]), row[1])
             if not found:
                 zbx.send('pgsql.pg_locks[{0}]'.format(item[0]), 0)
 
