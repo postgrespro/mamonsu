@@ -4,7 +4,6 @@ from mamonsu.lib.const import Template
 from mamonsu.lib.plugin import Plugin
 import re
 
-
 class ZbxTemplate(object):
 
     mainTemplate = u"""<?xml version="1.0" encoding="UTF-8"?>
