@@ -2,7 +2,7 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
-import re
+
 
 class Instance(Plugin):
     query_agent = "select sum({0}) as {0} from pg_catalog.pg_stat_database"

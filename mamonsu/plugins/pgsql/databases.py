@@ -3,28 +3,33 @@
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
 
-# change PATH to your sql files. default path zabbix directory
-PATH_SQL = "/home/dvilova/Projects/mamonsu/agent_sql/"
-
 
 class Databases(Plugin):
     Interval = 60 * 5
     AgentPluginType = 'pg'
+    # queries to form sql files
     query_bloating_tables = "select count(*) from pg_catalog.pg_stat_all_tables where " \
                             "(n_dead_tup/(n_live_tup+n_dead_tup)::float8) > {0} and " \
                             "(n_live_tup+n_dead_tup) > {1}"
-    tmp_query_agent_discovery = "SELECT json_build_object ('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
-                                " FROM pg_database d WHERE NOT datistemplate AND datallowconn AND datname!='postgres'"
     query_size = "select pg_database_size(datname::text) from pg_catalog.pg_database where" \
-                       " datistemplate = false and datname = :'p1'"
+                 " datistemplate = false and datname = :'p1'"
     query_age = "select age(datfrozenxid) from pg_catalog.pg_database where datistemplate = false " \
-                      "and datname = :'p1'"
-    tmp_query_agent_size = "-f {0}db_size.sql -v p1=$1".format(PATH_SQL)
-    tmp_query_agent_age = "-f {0}db_age.sql -v p1=$1 ".format(PATH_SQL)
-    tmp_query_agent_bloating_tables = "-d $1 -f {0}db_bloating_tables.sql ".format(PATH_SQL)
+                "and datname = :'p1'"
+    # queries for zabbix agent
+    query_agent_discovery = "SELECT json_build_object ('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
+                            " FROM pg_database d WHERE NOT datistemplate AND datallowconn AND datname!='postgres'"
+
+    #query_agent_size = " -v p1=$1<<<\"select pg_database_size(datname::text) from pg_catalog.pg_database where " \
+      #                 "datistemplate = false and datname = :'p1';\""
+
+    #query_agent_age = " -v p1=$1<<<\"select age(datfrozenxid) from pg_catalog.pg_database where" \
+   #                   " datistemplate = false " \
+                     # "and datname = :'p1'\""
+    # dictionary to keep all queries in one container
     SQL = {"pgsql.database.discovery{0}": "SELECT json_build_object "
                                           "('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
-                                          " FROM pg_database d WHERE NOT datistemplate AND datallowconn AND datname!='postgres';",
+                                          " FROM pg_database d WHERE NOT datistemplate AND datallowconn "
+                                          "AND datname!='postgres';",
            "pgsql.database.size{0}": "select pg_database_size(datname::text) from pg_catalog.pg_database where" \
                                      " datistemplate = false and datname = :'p1'",
            "pgsql.database.max_age{0}": "select age(datfrozenxid) from pg_catalog.pg_database "
@@ -126,15 +131,18 @@ class Databases(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         result.append('{0},$2 $1 -c "{1}"'.format(self.key_autovacumm.format("[*]"), Pooler.SQL['count_autovacuum'][0]))
-        result.append('{0},$2 $1 -c "{1}"'.format(self.key_db_discovery.format("[*]"), self.tmp_query_agent_discovery))
-        result.append('{0},$3 $2 {1}'.format(self.key_db_size.format("[*]"), self.tmp_query_agent_size))
-        result.append('{0},$3 $2 {1}'.format(self.key_db_age.format("[*]"), self.tmp_query_agent_age))
+        result.append('{0},$2 $1 -c "{1}"'.format(self.key_db_discovery.format("[*]"), self.query_agent_discovery))
+        result.append('{0},echo "{1}" | $3 $2 -v p1=$1'.format(self.key_db_size.format("[*]"), self.query_size))
+        result.append('{0},echo "{1}" | $3 $2 -v p1=$1'.format(self.key_db_age.format("[*]"), self.query_age))
         result.append(
-            '{0},$3 $2 {1}'.format(self.key_db_bloating_tables.format("[*]"), self.tmp_query_agent_bloating_tables))
+            '{0},$3 $2 -d $1 -c "{1}"'.format(self.key_db_bloating_tables.format("[*]"),
+                                              self.query_bloating_tables.format(self.plugin_config('bloat_scale'),
+                                                                                self.plugin_config('min_rows'))))
         return template_zabbix.key_and_query(result)
 
     def sql(self):
-        result = {}  # key is name of file, var is query
+        # key is name of file, var is query
+        result = {}
         result[self.key_autovacumm.format("")] = Pooler.SQL['count_autovacuum'][0]
         result[self.key_db_size.format("")] = self.query_size
         result[self.key_db_age.format("")] = self.query_age

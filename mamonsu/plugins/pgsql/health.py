@@ -52,7 +52,7 @@ class PgHealth(Plugin):
         }) + template.item({
             'name': 'PostgreSQL: service uptime',
             'key': self.right_type(self.key_uptime),
-            'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
+            'value_type': value_type,
             'units': Plugin.UNITS.uptime
         })
         return result

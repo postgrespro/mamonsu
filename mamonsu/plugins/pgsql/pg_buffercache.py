@@ -6,6 +6,7 @@ from .pool import Pooler
 
 class PgBufferCache(Plugin):
     AgentPluginType = 'pg'
+    key = 'pgsql.buffers{0}'
     query_agent_size = "select sum(1) * 8 * 1024 as size from public.pg_buffercache "  # for zabbix
     query_agent_twice_used = "select sum(case when usagecount > 1 then 1 else 0 end) * 8 * 1024 as twice_used " \
                              "from public.pg_buffercache " # for zabbix
@@ -30,7 +31,7 @@ class PgBufferCache(Plugin):
         result = ''
         for item in self.Items:
             result += template.item({
-                'key': 'pgsql.buffers[{0}]'.format(item[0]),
+                'key': self.right_type(self.key, item[0]), #'pgsql.buffers[{0}]'.format(item[0]),
                 'name': item[1],
                 'units': Plugin.UNITS.bytes
             })
@@ -40,7 +41,7 @@ class PgBufferCache(Plugin):
         items = []
         for item in self.Items:
             items.append({
-                'key': 'pgsql.buffers[{0}]'.format(item[0]),
+                'key': self.right_type(self.key, item[0]),
                 'color': item[2]})
         return template.graph({
             'name': 'PostgreSQL: shared buffer',
@@ -49,7 +50,12 @@ class PgBufferCache(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for i, item in enumerate(self.Items):
-            result.append(
-                'pgsql.buffers[{0}],"{1}"'.format(item[0], self.query[i].format(item[0])))
+                result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.'+item[0]), self.query[i].format(item[0])))
         return template_zabbix.key_and_query(result)
+
+    def sql(self):
+        result = {}  # key is name of file, var is query
+        for i, item in enumerate(self.Items):
+            result[self.key.format('.' + item[0])] = self.query[i].format(item[0])
+        return result
 
