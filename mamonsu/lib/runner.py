@@ -25,7 +25,9 @@ def start():
     signal.signal(signal.SIGTERM, quit_handler)
     if platform.LINUX:
         signal.signal(signal.SIGQUIT, quit_handler)
-
+    # temporal list to keep names of all refactored classes
+    refactored_classes = [ "Oldest","PgBufferCache" ,"ArchiveCommand","BgWriter", "Checkpoint","Connections",
+                            "Databases","PgHealth","Instance" ,"PgLocks" ,"Xlog"]
     commands = sys.argv[1:]
     if len(commands) > 0:
         tool = commands[0]
@@ -62,7 +64,7 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ == "Databases" or klass.__name__ == "Xlog" or klass.__name__ == "PgLocks":
+                    if klass.__name__ in refactored_classes:
                         plugins.append(klass(cfg))
                 types = args.plugin_type.split(',')
                 # check if any plugin types is equal
@@ -86,7 +88,9 @@ def start():
             elif commands[1] == 'template':
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    plugins.append(klass(cfg))
+                    # temporary generate template for agent for classes that have been refactored
+                    if klass.__name__ in refactored_classes:
+                        plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template, args.application + args.template.strip(".xml"))
                 with codecs.open(args.template, 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
@@ -95,9 +99,8 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    # generate template for agent for 3 classes that have been refactored
-                    print(klass.__name__)
-                    if klass.__name__ == "Databases" or klass.__name__ == "Xlog" or klass.__name__ == "PgLocks":
+                    # temporary generate template for classes that have been refactored
+                    if klass.__name__ in refactored_classes:
                         plugins.append(klass(cfg))
                 template = ZbxTemplate(args.zabbix_template.strip(".xml"),
                                        args.application + args.zabbix_template.strip(".xml"))
@@ -111,8 +114,8 @@ def start():
                     os.makedirs(file_path)
                     print("directory created")
                 for klass in Plugin.only_child_subclasses():
-                    # generate template for agent for 3 classes that have been refactored
-                    if klass.__name__ == "Databases" or klass.__name__ == "Xlog" or klass.__name__ == "PgLocks":
+                    # temporary generate template for agent for classes that have been refactored
+                    if klass.__name__ in refactored_classes:
                         for i, j in klass(cfg).sql().items():
                             with codecs.open("{0}/{1}.{2}.sql".format(file_path, klass.__name__, i),
                                              'w', 'utf-8') as f:
