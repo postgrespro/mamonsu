@@ -26,8 +26,9 @@ def start():
     if platform.LINUX:
         signal.signal(signal.SIGQUIT, quit_handler)
     # temporal list to keep names of all refactored classes
-    refactored_classes = [ "Oldest","PgBufferCache" ,"ArchiveCommand","BgWriter", "Checkpoint","Connections",
-                            "Databases","PgHealth","Instance" ,"PgLocks" ,"Xlog"]
+    refactored_classes = ["Oldest", "PgBufferCache", "ArchiveCommand", "BgWriter", "Checkpoint", "Connections",
+                            "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
+                           "PgStatProgressVacuum", "PgStatStatement"]
     commands = sys.argv[1:]
     if len(commands) > 0:
         tool = commands[0]

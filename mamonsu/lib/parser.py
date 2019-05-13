@@ -22,22 +22,22 @@ Options:
 Export zabbix keys for zabbix-agent in config file:
 Command: export zabbix_parameters
 Examples:
-export zabbix_parameters --filename=pg.conf --plugin-type=all
+    {prog} export zabbix_parameters --filename=pg.conf --plugin-type=all
 Options:
     --filename
     --plugin-type
     
-Export all plugins sql queries in folder:
+    
+Export all sql queries from plugins in folder:
 Command: export sql  
 Examples:
-export zabbix_parameters -s agent-sql
+    {prog} export sql -s <directory>
 Options:
-    -s
+    -s <directory>
     
-
-
+    
 Export zabbix agent template with additional plugins included in config file:
-Command: export
+Command: export zabbix_template 
 Examples:
     {prog} export zabbix_template <file>
 Options:
@@ -46,9 +46,8 @@ Options:
     --application <application name in template>
 
 
-
 Export zabbix template with additional plugins included in config file:
-Command: export
+Command: export template 
 Examples:
     {prog} export template <file>
 Options:
@@ -176,17 +175,19 @@ Examples:
 Export zabbix-agent template with additional plugins included in config file:
 Command: export
 Examples:
-    {prog} export zabbix-template <file>
+    {prog} export zabbix_template  <file>
 
-Generate keys for zabbix-agent :
-Command: keys
+
+Export zabbix keys for zabbix-agent in config file:
+Command: export zabbix_parameters
 Examples:
-    {prog} keys <file> 
+    {prog} export zabbix_parameters  <file> 
 
 Options:
-    --config <file>
-    -t <template name>
-    -a <application name in template>
+    --add-plugins <directory>
+    --agent-template-name <template name>
+    --application <application name in template>
+
 """)
         sys.exit(2)
 
