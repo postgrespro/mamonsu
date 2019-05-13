@@ -8,7 +8,7 @@ class PgStatProgressVacuum(Plugin):
     AgentPluginType = 'pg'
     query = """select count(c.relname) from pg_stat_progress_vacuum v inner join pg_class c on v.relid = c.oid"""
     query_agent = """select count({0}) from pg_stat_progress_vacuum v inner join pg_class c on v.relid = c.oid"""
-    key = 'pgsql.pg_stat_progress_vacuum'
+    key = 'pgsql.pg_stat_progress_vacuum{0}'
     Items = [
         # key, desc, color
         ('index_vacuum_count',
@@ -23,7 +23,7 @@ class PgStatProgressVacuum(Plugin):
             for row in result:
                 #if row[0] == '{0}'.format(item[0]): #
                     #found = True
-                    zbx.send('{0}[{1}]'.format(self.key, item[0]), row[0])
+                    zbx.send('{0}[{1}]'.format('pgsql.pg_stat_progress_vacuum', item[0]), row[0])
                 ## if row[i] is the same as data from select send it with data (from result)
             #if not found:
               #  zbx.send('pgsql.pg_stat_progress_vacuum[{0}]'.format(item[0]), 99) # if where is no data
@@ -32,7 +32,7 @@ class PgStatProgressVacuum(Plugin):
         result = ''
         for item in self.Items:
             result += template.item({
-                'key': '{0}[{1}]'.format(self.key, item[0]),
+                'key': self.right_type(self.key, item[0]),
                 'name': 'PostgreSQL vacuum: {0}'.format(item[1]),
                 'value_type': self.VALUE_TYPE.numeric_unsigned
             })
@@ -42,7 +42,7 @@ class PgStatProgressVacuum(Plugin):
         name, items = 'PostgreSQL VACUUM', []
         for item in self.Items:
             items.append({
-                'key': '{0}[{1}]'.format(self.key, item[0]),
+                'key': self.right_type(self.key, item[0]),
                 'color': item[2]
             })
         return template.graph({'name': name, 'items': items})
@@ -50,12 +50,19 @@ class PgStatProgressVacuum(Plugin):
     def triggers(self, template):
         return template.trigger({
             'name': 'PostgreSQL count tables where index_vacuum_count is more than 1 on {HOSTNAME}',
-            'expression': '{#TEMPLATE:pgsql.pg_stat_progress_vacuum[index_vacuum_count]'
+            'expression': '{#TEMPLATE:' + self.right_type(self.key, self.Items[0][0]) +
                           '.last()}&gt;' + self.plugin_config('max_index_vacuum_count')
         })
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        for item in self.Items:
-            result.append('{0}[{1}],"{2}"'.format(self.key, item[0], self.query_agent.format(item[0])))
+        for i, item in enumerate(self.Items):
+                result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.'+item[0]), self.query_agent.format(item[0])))
         return template_zabbix.key_and_query(result)
+
+    def sql(self):
+        result = {}  # key is name of file, var is query
+        for i, item in enumerate(self.Items):
+            result[self.key.format('.' + item[0])] = self.query_agent.format(item[0])
+        return result
+

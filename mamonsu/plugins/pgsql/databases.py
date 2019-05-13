@@ -15,16 +15,11 @@ class Databases(Plugin):
                  " datistemplate = false and datname = :'p1'"
     query_age = "select age(datfrozenxid) from pg_catalog.pg_database where datistemplate = false " \
                 "and datname = :'p1'"
+
     # queries for zabbix agent
     query_agent_discovery = "SELECT json_build_object ('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
                             " FROM pg_database d WHERE NOT datistemplate AND datallowconn AND datname!='postgres'"
 
-    #query_agent_size = " -v p1=$1<<<\"select pg_database_size(datname::text) from pg_catalog.pg_database where " \
-      #                 "datistemplate = false and datname = :'p1';\""
-
-    #query_agent_age = " -v p1=$1<<<\"select age(datfrozenxid) from pg_catalog.pg_database where" \
-   #                   " datistemplate = false " \
-                     # "and datname = :'p1'\""
     # dictionary to keep all queries in one container
     SQL = {"pgsql.database.discovery{0}": "SELECT json_build_object "
                                           "('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
