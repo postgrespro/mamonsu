@@ -8,8 +8,8 @@ class Checkpoint(Plugin):
     AgentPluginType = 'pg'
     Interval = 60 * 5
 
-    query = "select {0} from pg_catalog.pg_stat_bgwriter "  # for mamonsu and agent
-    query_interval = "select {0}*3600 from pg_catalog.pg_stat_bgwriter "  # for mamonsu and agent checkpoints in hour
+    query = "select {0} from pg_catalog.pg_stat_bgwriter; "  # for mamonsu and agent
+    query_interval = "select {0}*3600 from pg_catalog.pg_stat_bgwriter; "  # for mamonsu and agent checkpoints in hour
     key = 'pgsql.checkpoint{0}'
 
     DEFAULT_CONFIG = {'max_checkpoint_by_wal_in_hour': str(12)}

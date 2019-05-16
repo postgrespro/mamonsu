@@ -7,7 +7,7 @@ from .pool import Pooler
 class BgWriter(Plugin):
     AgentPluginType = 'pg'
     key = "pgsql.bgwriter{0}"
-    query = "select {0} from pg_catalog.pg_stat_bgwriter"
+    query = "select {0} from pg_catalog.pg_stat_bgwriter;"
     Items = [
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta

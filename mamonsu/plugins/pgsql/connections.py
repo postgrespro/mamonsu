@@ -13,9 +13,9 @@ class Connections(Plugin):
         ('idle in transaction', 'idle_in_transaction',
             'number of idle in transaction connections', 'CC00CC')
     ]
-    query_agent = "select count(*) from pg_catalog.pg_stat_activity where state = '{0}' "
-    query_agent_total = "select count(*) from pg_catalog.pg_stat_activity"
-    query_agent_waiting = "select count(*) from pg_catalog.pg_stat_activity where wait_event is not NULL"
+    query_agent = "select count(*) from pg_catalog.pg_stat_activity where state = '{0}';"
+    query_agent_total = "select count(*) from pg_catalog.pg_stat_activity;"
+    query_agent_waiting = "select count(*) from pg_catalog.pg_stat_activity where wait_event is not NULL;"
     key = 'pgsql.connections{0}'
 
     def run(self, zbx):

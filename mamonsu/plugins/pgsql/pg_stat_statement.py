@@ -5,8 +5,9 @@ from .pool import Pooler
 
 
 class PgStatStatement(Plugin):
-    query = "select {0} from public.pg_stat_statements"
+    query = "select {0} from public.pg_stat_statements;"
     AgentPluginType = 'pg'
+    key="pgsql."
     # zbx_key, sql, desc, unit, delta, (Graph, color, side)
     Items = [
 
@@ -34,8 +35,7 @@ class PgStatStatement(Plugin):
             ('PostgreSQL statements: spend time', '0000CC', 0)),
         ('stat[other_time]',
             'sum(total_time-blk_read_time-blk_write_time)/float4(100)',
-            'other (mostly cpu) time',
-            Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+            'other (mostly cpu) time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
             ('PostgreSQL statements: spend time', 'BBBB00', 0))
     ]
 
@@ -53,20 +53,18 @@ class PgStatStatement(Plugin):
     def items(self, template):
         result = ''
         if self.Type == "mamonsu":
-            for item in self.Items:
-                result += template.item({
-                    'key': 'pgsql.{0}'.format(item[0]),
-                    'name': 'PostgreSQL statements: {0}'.format(item[2]),
-                    'value_type': self.VALUE_TYPE.numeric_float,
-                    'units': item[3]})
+            delta = Plugin.DELTA.as_is
         else:
-            for item in self.Items:
-                result += template.item({
-                    'key': 'pgsql.{0}'.format(item[0]),
-                    'name': 'PostgreSQL statements: {0}'.format(item[2]),
-                    'value_type': self.VALUE_TYPE.numeric_float,
-                    'units': item[3],
-                    'delta': item[4]})
+            delta = Plugin.DELTA.speed_per_second
+        for item in self.Items:
+            # split each item to get values for keys of both agent type and mamonsu type
+            keys = item[0].split('[')
+            result += template.item({
+                'key': self.right_type(self.key + keys[0] + '{0}', keys[1][:-1]),
+                'name': 'PostgreSQL statements: {0}'.format(item[2]),
+                'value_type': self.VALUE_TYPE.numeric_float,
+                'units': item[3],
+                'delta': delta})
         return result
 
     def graphs(self, template):
@@ -78,8 +76,9 @@ class PgStatStatement(Plugin):
             items = []
             for item in self.Items:
                 if item[5][0] == graph_item[0]:
+                    keys = item[0].split('[')
                     items.append({
-                        'key': 'pgsql.{0}'.format(item[0]),
+                        'key': self.right_type(self.key + keys[0] + '{0}', keys[1][:-1]),
                         'color': item[5][1],
                         'yaxisside': item[5][2]})
             # create graph
@@ -91,7 +90,20 @@ class PgStatStatement(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        for item in self.Items:
-            result.append('pgsql.{0},"{1}"'.format(item[0], self.query.format(item[1])))
+        for i, item in enumerate(self.Items):
+                keys = item[0].split('[')
+                result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
+                                                             self.query.format(item[1])))
         return template_zabbix.key_and_query(result)
+
+    def sql(self):
+        result = {}  # key is name of file, var is query
+        for item in self.Items:
+            # split each item to get values for keys of both agent type and mamonsu type
+            keys = item[0].split('[')
+            result['{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1])] = self.query.format(item[1])
+        return result
+
+
+
 
