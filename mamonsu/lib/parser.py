@@ -26,7 +26,7 @@ Examples:
 Options:
     --filename
     --plugin-type
-    
+Default filename = pg.conf, plugin_type = all
     
 Export all sql queries from plugins in folder:
 Command: export sql  
@@ -34,17 +34,26 @@ Examples:
     {prog} export sql -s <directory>
 Options:
     -s <directory>
-    
+Default directory name = agent_sql
     
 Export zabbix agent template with additional plugins included in config file:
 Command: export zabbix_template 
 Examples:
     {prog} export zabbix_template <file>
 Options:
-    --add-plugins <directory>
+    -n <template name>
     --agent-template-name <template name>
-    --application <application name in template>
+Default template name = AgentPostgresPro-<platform name>
 
+
+Export PG version for zabbix-agent: 
+Command: export pg_version 
+Examples:
+    {prog} export pg_version -v <version>
+Options:
+    --pg_version <version>
+    -v <version>
+Default version = 10.0
 
 Export zabbix template with additional plugins included in config file:
 Command: export template 
@@ -54,6 +63,7 @@ Options:
     --add-plugins <directory>
     --template-name <template name>
     --application <application name in template>
+Default template name = PostgresPro-<platform name>
 
 
 Bootstrap DDL for monitoring:

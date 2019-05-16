@@ -29,6 +29,7 @@ def start():
     refactored_classes = ["Oldest", "PgBufferCache", "ArchiveCommand", "BgWriter", "Checkpoint", "Connections",
                             "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
                            "PgStatProgressVacuum", "PgStatStatement"]
+
     commands = sys.argv[1:]
     if len(commands) > 0:
         tool = commands[0]
@@ -57,8 +58,9 @@ def start():
         elif tool == 'export' and len(commands) > 2:
             args, commands = parse_args()
             Plugin.VersionPG = float(args.pg_version)
-            # print("this is args", args)
-            # print("this is commands", commands)
+            print("this is args", args)
+            print("this is commands", commands)
+            print("PG VERSION", Plugin.VersionPG )
             cfg = Config(args.config_file, args.plugins_dirs)
             if commands[1] == 'zabbix_parameters':
                 # zabbix agent keys generation
