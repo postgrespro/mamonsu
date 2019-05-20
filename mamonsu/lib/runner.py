@@ -58,17 +58,36 @@ def start():
         elif tool == 'export' and len(commands) > 2:
             args, commands = parse_args()
             Plugin.VersionPG = float(args.pg_version)
-            print("this is args", args)
-            print("this is commands", commands)
-            print("PG VERSION", Plugin.VersionPG )
+            #print("this is args", args)
+            #print("this is commands", commands)
+            #print("PG VERSION", Plugin.VersionPG )
             cfg = Config(args.config_file, args.plugins_dirs)
-            if commands[1] == 'zabbix_parameters':
+            if not len(commands) == 3:
+                print_total_help()
+            if commands[1] == 'zabbix-parameters':
                 # zabbix agent keys generation
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     if klass.__name__ in refactored_classes:
                         plugins.append(klass(cfg))
+                #  export sql queries in separate directory
+                file_path = os.path.join(PATH, args.directory_name)
+                if not os.path.exists(file_path):
+                    os.makedirs(file_path)
+                    print("directory for sql queries  created")
+                for klass in Plugin.only_child_subclasses():
+                    # temporary generate template for agent for classes that have been refactored
+                    if klass.__name__ in refactored_classes:
+                        for i, j in klass(cfg).sql().items():
+                            with codecs.open("{0}/{1}.{2}.sql".format(file_path, klass.__name__, i),
+                                             'w', 'utf-8') as f:
+                                f.write(j)
+                directory_name_list = args.directory_name.split('/')
+                if len(directory_name_list) > 1:
+                    conf_path = '/'.join(directory_name_list[:-1]) + '/' + commands[2]
+                else:
+                    conf_path = commands[2]
                 types = args.plugin_type.split(',')
                 # check if any plugin types is equal
                 if len(types) > 1:
@@ -79,11 +98,11 @@ def start():
                     args.plugin_type = 'all'
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
                     template = GetKeys()
-                    with codecs.open(args.filename, 'w', 'utf-8') as f:
+                    with codecs.open(conf_path, 'w', 'utf-8') as f:
                         f.write(template.txt(args.plugin_type, plugins))  # pass command type
-                        sys.exit(0)
                 else:
                     print_total_help()
+                sys.exit(0)
             elif commands[1] == 'config':
                 with open(commands[2], 'w') as fd:
                     cfg.config.write(fd)
@@ -94,36 +113,22 @@ def start():
                     # temporary generate template for agent for classes that have been refactored
                     if klass.__name__ in refactored_classes:
                         plugins.append(klass(cfg))
-                template = ZbxTemplate(args.template, args.application + args.template.strip(".xml"))
-                with codecs.open(args.template, 'w', 'utf-8') as f:
+                template = ZbxTemplate(args.template, args.application + args.template)
+                with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
-            elif commands[1] == 'zabbix_template':
+            elif commands[1] == 'zabbix-template':
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     # temporary generate template for classes that have been refactored
                     if klass.__name__ in refactored_classes:
                         plugins.append(klass(cfg))
-                template = ZbxTemplate(args.zabbix_template.strip(".xml"),
-                                       args.application + args.zabbix_template.strip(".xml"))
-                with codecs.open(args.zabbix_template, 'w', 'utf-8') as f:
+                template = ZbxTemplate(args.template,
+                                       args.application + args.template)
+                with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
-            elif commands[1] == 'sql':
-                Plugin.Type = 'agent'  # change plugin type for template generator
-                file_path = os.path.join(PATH, args.sql)
-                if not os.path.exists(file_path):
-                    os.makedirs(file_path)
-                    print("directory created")
-                for klass in Plugin.only_child_subclasses():
-                    # temporary generate template for agent for classes that have been refactored
-                    if klass.__name__ in refactored_classes:
-                        for i, j in klass(cfg).sql().items():
-                            with codecs.open("{0}/{1}.{2}.sql".format(file_path, klass.__name__, i),
-                                             'w', 'utf-8') as f:
-                                f.write(j)
-                sys.exit(0)
         else:
             print_total_help()
     args, commands = parse_args()
