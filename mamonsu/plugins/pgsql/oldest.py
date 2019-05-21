@@ -28,8 +28,8 @@ class Oldest(Plugin):
             xid = Pooler.query(self.OldestXidSql)[0][0]
             query = Pooler.query(self.OldestQuerySql)[0][0]
 
-        zbx.send(self.key_xid, xid)
-        zbx.send(self.key_time, query)
+        zbx.send('pgsql.oldest[xid_age]', xid)
+        zbx.send('pgsql.oldest[query_time]', query)
 
     def graphs(self, template):
         result = template.graph({

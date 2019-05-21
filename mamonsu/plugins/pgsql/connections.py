@@ -11,7 +11,7 @@ class Connections(Plugin):
         ('active', 'active', 'number of active connections', '00BB00'),
         ('idle', 'idle', 'number of idle connections', '0000BB'),
         ('idle in transaction', 'idle_in_transaction',
-            'number of idle in transaction connections', 'CC00CC')
+         'number of idle in transaction connections', 'CC00CC')
     ]
     query_agent = "select count(*) from pg_catalog.pg_stat_activity where state = '{0}';"
     query_agent_total = "select count(*) from pg_catalog.pg_stat_activity;"
@@ -53,13 +53,24 @@ class Connections(Plugin):
             if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
                 result = Pooler.query(
                     'select count(*) '
-                    'from mamonsu.mamonsu_get_connections_states() '
+                    'from mamonsu.mamonsu_get_connections_states() '  # todo:  can be old version of getting waiting conn
                     'where waiting')
             else:
                 result = Pooler.query(
                     'select count(*) '
                     'from pg_catalog.pg_stat_activity where waiting')
             zbx.send('pgsql.connections[waiting]', int(result[0][0]))
+        # else:
+        #     if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
+        #         result = Pooler.query(
+        #             'select count(*) '
+        #             'from mamonsu.mamonsu_get_connections_states() '
+        #             'where wait_event is not NULL;')
+        #     else:
+        #         result = Pooler.query(
+        #             'select count(*) '
+        #             'from pg_catalog.pg_stat_activity where wait_event is not NULL;')
+        #     zbx.send('pgsql.connections[waiting]', int(result[0][0]))
 
     def items(self, template):
         result = template.item({
@@ -98,7 +109,8 @@ class Connections(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for item in self.Items:
-            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[1]), self.query_agent.format(item[1])))
+            result.append(
+                '{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[1]), self.query_agent.format(item[1])))
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.total'), self.query_agent_total))
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting))
         return template_zabbix.key_and_query(result)
@@ -110,6 +122,3 @@ class Connections(Plugin):
         result[self.key.format('.total')] = self.query_agent_total
         result[self.key.format('.waiting')] = self.query_agent_waiting
         return result
-
-
-
