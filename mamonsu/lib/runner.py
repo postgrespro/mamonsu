@@ -55,7 +55,7 @@ def start():
             from mamonsu.tools.agent.start import run_agent
             sys.argv.remove('agent')
             return run_agent()
-        elif tool == 'export' and len(commands) > 2:
+        elif tool == 'export':
             args, commands = parse_args()
             Plugin.VersionPG = float(args.pg_version)
             #print("this is args", args)
@@ -111,8 +111,8 @@ def start():
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     # temporary generate template for agent for classes that have been refactored
-                    if klass.__name__ in refactored_classes:
-                        plugins.append(klass(cfg))
+                    #if klass.__name__ in refactored_classes:
+                    plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template, args.application + args.template)
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
@@ -129,8 +129,8 @@ def start():
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
-        else:
-            print_total_help()
+            else:
+                print_total_help()
     args, commands = parse_args()
     if len(commands) > 0:
         print_total_help()
