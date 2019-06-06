@@ -9,8 +9,7 @@ class PgHealth(Plugin):
     AgentPluginType = 'pg'
     DEFAULT_CONFIG = {'uptime': str(60 * 10), 'cache': str(80)}
     query_health = "select 1 as health;"
-    query_uptime = "select " \
-            "date_part('epoch', now() - pg_postmaster_start_time());"
+    query_uptime = "select date_part('epoch', now() - pg_postmaster_start_time());"
     query_cache = "select " \
                   "round(sum(blks_hit)*100/sum(blks_hit+blks_read), 2)" \
                   "from pg_catalog.pg_stat_database;"
@@ -22,13 +21,13 @@ class PgHealth(Plugin):
 
         start_time = time.time()
         Pooler.query(self.query_health)
-        zbx.send(self.key_ping, (time.time() - start_time) * 100) # FIXME for agent type
+        zbx.send(self.key_ping.format('[]'), (time.time() - start_time) * 100)  # FIXME for agent type
 
         result = Pooler.query(self.query_uptime)
-        zbx.send(self.key_uptime, int(result[0][0]))
+        zbx.send(self.key_uptime.format('[]'), int(result[0][0]))
 
         result = Pooler.query(self.query_cache)
-        zbx.send(self.key_cache, int(result[0][0]))
+        zbx.send(self.key_cache.format('[hit]'), int(result[0][0]))
 
     def items(self, template):
         result = ''

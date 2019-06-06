@@ -90,7 +90,7 @@ class Checkpoint(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for num, item in enumerate(self.Items):
-            if num < 2:
+            if num > 1:
                 result.append(
                     '{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[1]), self.query.format(item[0])))
             else:

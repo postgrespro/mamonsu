@@ -1,4 +1,5 @@
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
+from distutils.version import LooseVersion
 from .pool import Pooler
 
 
@@ -29,8 +30,8 @@ class ArchiveCommand(Plugin):
     def run(self, zbx):
         self.disable_and_exit_if_archive_mode_is_not_on()
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
-            result1 = Pooler.query("""select * from mamonsu_archive_command_files()""")
-            result2 = Pooler.query("""SELECT * from mamonsu_archive_stat()""")
+            result2 = Pooler.query("""SELECT * from public.mamonsu_archive_stat()""")
+            result1 = Pooler.query("""select * from public.mamonsu_archive_command_files()""")
         else:
             if Pooler.server_version_greater('10.0'):
                 xlog = 'wal'
@@ -66,7 +67,7 @@ class ArchiveCommand(Plugin):
             if self.Type == "mamonsu" or idx < 2:
                 delta = Plugin.DELTA.as_is
             else:
-                delta = Plugin.DELTA.speed_per_second
+                delta = Plugin.DELTA.simple_change
                 # TODO check if delta is right for this item
             result += template.item({
                         'key': self.right_type(self.key, item[0]),
@@ -102,7 +103,7 @@ class ArchiveCommand(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if self.VersionPG < 10.0:
+        if self.VersionPG['number'] < LooseVersion('10.0'):
             xlog = 'xlog'
         else:
             xlog = 'wal'
@@ -118,7 +119,7 @@ class ArchiveCommand(Plugin):
 
     def sql(self):
         result = {}  # key is name of file, var is query
-        if self.VersionPG < 10.0:
+        if self.VersionPG['number'] < LooseVersion('10.0'):
             xlog = 'xlog'
         else:
             xlog = 'wal'

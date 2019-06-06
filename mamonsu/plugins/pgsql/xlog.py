@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
+from distutils.version import LooseVersion
 from .pool import Pooler
 
 
@@ -85,7 +86,7 @@ class Xlog(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if self.VersionPG < 10.0:
+        if self.VersionPG['number'] < LooseVersion('10.0'):
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_xlog_files'][0]))
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_xlog_lsn_diff))
         else:
@@ -96,7 +97,7 @@ class Xlog(Plugin):
 
     def sql(self):
         result = {}  # key is name of file, var is query
-        if self.VersionPG < 10.0:
+        if self.VersionPG['number'] < LooseVersion('10.0'):
             result[self.key_count_wall.format("")] = Pooler.SQL['count_xlog_files'][0]
             result[self.key_wall.format("")] = self.query_xlog_lsn_diff
         else:

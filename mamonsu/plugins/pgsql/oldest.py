@@ -72,14 +72,14 @@ class Oldest(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.xid_age'), self.OldestQuerySql))
-        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.query_time'), self.OldestXidSql))
+        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.xid_age'), self.OldestXidSql))
+        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.query_time'), self.OldestQuerySql))
         return template_zabbix.key_and_query(result)
 
     def sql(self):
         result = {}  # key is name of file, var is query
-        result[self.key.format(".xid_age")] = self.OldestQuerySql
-        result[self.key.format(".query_time")] = self.OldestXidSql
+        result[self.key.format(".xid_age")] = self.OldestXidSql
+        result[self.key.format(".query_time")] = self.OldestQuerySql
         return result
 
 

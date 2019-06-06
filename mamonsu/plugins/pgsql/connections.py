@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
+from distutils.version import LooseVersion
 from .pool import Pooler
 
 
@@ -14,8 +15,10 @@ class Connections(Plugin):
          'number of idle in transaction connections', 'CC00CC')
     ]
     query_agent = "select count(*) from pg_catalog.pg_stat_activity where state = '{0}';"
-    query_agent_total = "select count(*) from pg_catalog.pg_stat_activity;"
-    query_agent_waiting = "select count(*) from pg_catalog.pg_stat_activity where wait_event is not NULL;"
+    query_agent_total = "select count(*) from pg_catalog.pg_stat_activity where state is not null ;"
+    query_agent_waiting_new_v = "select count(*) from pg_catalog.pg_stat_activity where state is not null and " \
+                                " wait_event_type is not null"
+    query_agent_waiting_old_v = "select count(*) from pg_catalog.pg_stat_activity where waiting and state is not null "
     key = 'pgsql.connections{0}'
 
     def run(self, zbx):
@@ -23,11 +26,12 @@ class Connections(Plugin):
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
             result = Pooler.query(
                 'select state, count(*) '
-                'from mamonsu_get_connections_states() group by state')
+                'from mamonsu_get_connections_states() where state is not null group by state')
         else:
             result = Pooler.query(
                 'select state, count(*) '
-                'from pg_catalog.pg_stat_activity group by state')
+                'from pg_catalog.pg_stat_activity where state is not null group by state')
+
         for item in self.Items:
             state, key, val = item[0], item[1], 0
             for row in result:
@@ -38,39 +42,23 @@ class Connections(Plugin):
                     break
             zbx.send('pgsql.connections[{0}]'.format(key), float(val))
 
+        total = (sum([int(count) for state, count in result if state is not None]))
+        zbx.send('pgsql.connections[total]', total)
+
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
             result = Pooler.query(
                 'select count(*) '
-                'from mamonsu_get_connections_states()')
+                'from mamonsu_get_connections_states() '
+                'where waiting and state is not null')
         else:
-            result = Pooler.query(
-                'select count(*) '
-                'from pg_catalog.pg_stat_activity')
-
-        zbx.send('pgsql.connections[total]', int(result[0][0]))
-
-        if Pooler.server_version_less('9.5.0'):
-            if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
+            if Pooler.server_version_less('9.5.0'):
                 result = Pooler.query(
                     'select count(*) '
-                    'from mamonsu.mamonsu_get_connections_states() '  # todo:  can be old version of getting waiting conn
-                    'where waiting')
+                    'from pg_catalog.pg_stat_activity where waiting and state is not null')
             else:
-                result = Pooler.query(
-                    'select count(*) '
-                    'from pg_catalog.pg_stat_activity where waiting')
-            zbx.send('pgsql.connections[waiting]', int(result[0][0]))
-        # else:
-        #     if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
-        #         result = Pooler.query(
-        #             'select count(*) '
-        #             'from mamonsu.mamonsu_get_connections_states() '
-        #             'where wait_event is not NULL;')
-        #     else:
-        #         result = Pooler.query(
-        #             'select count(*) '
-        #             'from pg_catalog.pg_stat_activity where wait_event is not NULL;')
-        #     zbx.send('pgsql.connections[waiting]', int(result[0][0]))
+                result = Pooler.query('select count(*) from pg_catalog.pg_stat_activity where state is not null and '
+                                      'wait_event_type is not null')
+        zbx.send('pgsql.connections[waiting]', int(result[0][0]))
 
     def items(self, template):
         result = template.item({
@@ -112,7 +100,10 @@ class Connections(Plugin):
             result.append(
                 '{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[1]), self.query_agent.format(item[1])))
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.total'), self.query_agent_total))
-        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting))
+        if self.VersionPG['number'] < LooseVersion('9.6'):
+            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting_old_v))
+        else:
+            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting_new_v))
         return template_zabbix.key_and_query(result)
 
     def sql(self):
@@ -120,5 +111,8 @@ class Connections(Plugin):
         for item in self.Items:
             result[self.key.format("." + item[1])] = self.query_agent.format(item[1])
         result[self.key.format('.total')] = self.query_agent_total
-        result[self.key.format('.waiting')] = self.query_agent_waiting
+        if self.VersionPG['number'] < LooseVersion('9.6'):
+            result[self.key.format('.waiting')] = self.query_agent_waiting_old_v
+        else:
+            result[self.key.format('.waiting')] = self.query_agent_waiting_new_v
         return result
