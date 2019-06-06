@@ -13,6 +13,7 @@ from mamonsu.lib.supervisor import Supervisor
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
+from distutils.version import LooseVersion
 
 PATH = "/home/dvilova/Projects/mamonsu/"
 
@@ -27,9 +28,9 @@ def start():
         signal.signal(signal.SIGQUIT, quit_handler)
     # temporal list to keep names of all refactored classes
     refactored_classes = ["Oldest", "PgBufferCache", "ArchiveCommand", "BgWriter", "Checkpoint", "Connections",
-                            "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
-                           "PgStatProgressVacuum", "PgStatStatement"]
-
+                           "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
+                          "PgStatProgressVacuum", "PgStatStatement", "PgWaitSampling", "La", "OpenFiles",
+                          "SystemUptime", "ProcStat"]
     commands = sys.argv[1:]
     if len(commands) > 0:
         tool = commands[0]
@@ -57,10 +58,27 @@ def start():
             return run_agent()
         elif tool == 'export':
             args, commands = parse_args()
-            Plugin.VersionPG = float(args.pg_version)
+            try:
+                float(args.pg_version)
+                Plugin.VersionPG['number'] = LooseVersion(args.pg_version)
+            except ValueError:
+                version_args = args.pg_version.split('_')
+                if len(version_args) != 2:
+                    print_total_help()
+                else:
+                    try:
+                        float(version_args[1])
+                        Plugin.VersionPG['number'] = LooseVersion(version_args[1])
+                    except ValueError:
+                        print_total_help()
+                    if version_args[0] == "PGEE" or version_args[0] == "PGPRO":
+                        Plugin.VersionPG['type'] = version_args[0]
+                    else:
+                        print_total_help()
+            #print(Plugin.VersionPG['type'])
+            #print(Plugin.VersionPG['number'])
             #print("this is args", args)
             #print("this is commands", commands)
-            #print("PG VERSION", Plugin.VersionPG )
             cfg = Config(args.config_file, args.plugins_dirs)
             if not len(commands) == 3:
                 print_total_help()
@@ -70,7 +88,11 @@ def start():
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     if klass.__name__ in refactored_classes:
-                        plugins.append(klass(cfg))
+                        if klass.__name__ == "PgWaitSampling":   # check if plugin is for EE
+                            if Plugin.VersionPG['type'] == 'PGEE':
+                                plugins.append(klass(cfg))
+                        else:
+                            plugins.append(klass(cfg))
                 #  export sql queries in separate directory
                 file_path = os.path.join(PATH, args.directory_name)
                 if not os.path.exists(file_path):
@@ -111,9 +133,13 @@ def start():
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     # temporary generate template for agent for classes that have been refactored
-                    #if klass.__name__ in refactored_classes:
-                    plugins.append(klass(cfg))
-                template = ZbxTemplate(args.template, args.application + args.template)
+                    if klass.__name__ in refactored_classes:
+                        if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
+                            if Plugin.VersionPG['type'] == 'PGEE':
+                                plugins.append(klass(cfg))
+                        else:
+                            plugins.append(klass(cfg))
+                template = ZbxTemplate(args.template, args.application)
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
@@ -121,11 +147,14 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    # temporary generate template for classes that have been refactored
                     if klass.__name__ in refactored_classes:
-                        plugins.append(klass(cfg))
+                        if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
+                            if Plugin.VersionPG['type'] == 'PGEE':
+                                plugins.append(klass(cfg))
+                        else:
+                            plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template,
-                                       args.application + args.template)
+                                       args.application)
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)

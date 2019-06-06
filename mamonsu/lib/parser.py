@@ -26,9 +26,10 @@ Examples:
 Options:
     --plugin-type <plugin_type> (pg,sys,all)
     --directory-name <directory> (for sql sql queries. if states with path conf file will be saved along this path,too)
-    --pg_version <pg_version>
+    --pg-version <pg_version>
 Default plugin_type = all, pg_version = 10.0, directory-name = zabbix_postgrespro
-    
+Note: pg-version can be PGPRO or PGEE 
+Example: PGPRO_10.0 or PGEE_11.1
     
 Export zabbix agent template with additional plugins included in config file:
 Command: export zabbix-template 
@@ -37,6 +38,7 @@ Examples:
 Options:
     --template-name <template name>
     --application  <application name in template>
+    --pg-version <pg_version>
 Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>
 
 
@@ -228,7 +230,7 @@ def parse_args():
     parser.add_option('--plugin-type', dest='plugin_type',
                       default='all')
     # PG version
-    parser.add_option('-v', '--pg_version', dest='pg_version',
+    parser.add_option('-v', '--pg-version', dest='pg_version',
                       default='10.0')
     # export sql to files
     parser.add_option('--directory-name', dest='directory_name',

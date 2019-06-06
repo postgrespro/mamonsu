@@ -4,8 +4,8 @@ from mamonsu.lib.const import Template
 from mamonsu.lib.plugin import Plugin
 import re
 
-class ZbxTemplate(object):
 
+class ZbxTemplate(object):
     mainTemplate = u"""<?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
 <version>2.0</version>
@@ -37,7 +37,7 @@ class ZbxTemplate(object):
     <graphs>{graphs}</graphs>
 </zabbix_export>"""
 
-#
+    #
 
     macro_defaults = [
         ('macro', None), ('value', None)
@@ -107,8 +107,7 @@ class ZbxTemplate(object):
         self.Template = name
 
     def turn_agent_type(self, xml):
-       # xml = re.sub(r"\[\]", "", xml)  # for [] case
-       # turn item into zabbix agent type
+        # turn item into zabbix agent type
         xml = re.sub(r"<type>2", "<type>0", xml)
         return xml
 
@@ -119,17 +118,17 @@ class ZbxTemplate(object):
         template_data = {}
         template_data['template'] = self.Template
         template_data['application'] = self.Application
-        template_data['items'] = self._get_all('items', plugins)
         if Plugin.Type == 'agent':
             template_data['macros'] = self._macro()
         else:
             template_data['macros'] = ""
         template_data['triggers'] = self._get_all('triggers', plugins)
+        template_data['items'] = self._get_all('items', plugins)
         template_data['graphs'] = self._get_all('graphs', plugins)
         template_data['discovery_rules'] = self._get_all('discovery_rules', plugins)
         _xml = minidom.parseString(self.mainTemplate.format(**template_data))
         output_xml = ''.join([line.strip() for line in _xml.toxml().splitlines()])
-        pretty_xml = minidom.parseString(output_xml).toprettyxml(indent = "    ", newl = "\n")
+        pretty_xml = minidom.parseString(output_xml).toprettyxml(indent="    ", newl="\n")
         if Plugin.Type == 'agent':
             pretty_xml = ZbxTemplate.turn_agent_type(self, pretty_xml)
         return pretty_xml
@@ -147,14 +146,14 @@ class ZbxTemplate(object):
         result = ''
         value = {'value': '-qAt -p 5433 -U postgres ', 'macro': "{$PG_CONNINFO}"}
         result += '<{1}>{0}</{1}>'.format(self._format_args(self.macro_defaults, value), xml_key)
-        value = {'value': '/opt/pgpro/std-10/bin/psql', 'macro':"{$PG_PATH}"}
+        value = {'value': '/opt/pgpro/std-10/bin/psql', 'macro': "{$PG_PATH}"}
         result += '<{1}>{0}</{1}>'.format(self._format_args(self.macro_defaults, value), xml_key)
         return result
 
     def item(self, args={}, xml_key='item'):
         return '<{2}>{0}{1}</{2}>'.format(
-         self._format_args(self.item_defaults, args),
-         self._application(), xml_key)
+            self._format_args(self.item_defaults, args),
+            self._application(), xml_key)
 
     def trigger(self, args={}, xml_key='trigger', defaults=None):
         if defaults is None:
