@@ -1,2 +1,2 @@
-export zabbix-parameters ./regression/test4.in.out --pg_version=9.6
+export zabbix-parameters ./regression/test4.in.out --pg-version=9.6
 
