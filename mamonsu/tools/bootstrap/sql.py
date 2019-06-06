@@ -51,9 +51,10 @@ RETURNS BIGINT AS $$
 $$ LANGUAGE SQL SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION public.mamonsu_get_connections_states()
-RETURNS TABLE(state text) AS $$
+RETURNS TABLE(state text, waiting boolean) AS $$
     SELECT
-        state
+        state,
+        {5}
     FROM pg_catalog.pg_stat_activity
 $$ LANGUAGE SQL SECURITY DEFINER;
 
@@ -109,6 +110,7 @@ CREATE OR REPLACE FUNCTION public.mamonsu_get_sys_param(param text)
 RETURNS TABLE(SETTING TEXT) AS $$
 select setting from pg_catalog.pg_settings where name = param
 $$ LANGUAGE SQL SECURITY DEFINER;
+
 """
 
 GrantsOnSchemaSQL = """
@@ -133,4 +135,9 @@ GRANT EXECUTE ON FUNCTION public.mamonsu_buffer_cache() TO {1};
 GRANT EXECUTE ON FUNCTION public.mamonsu_archive_command_files() TO {1};
 
 GRANT EXECUTE ON FUNCTION public.mamonsu_archive_stat() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_get_sys_param(param text) TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_get_connections_states() TO {1};
+
 """

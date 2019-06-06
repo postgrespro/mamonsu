@@ -159,7 +159,9 @@ def run_deploy():
                 mamonsu_version.replace('.', '_'),
                 '[0-9A-F]{24}',
                 'wal' if Pooler.server_version_greater('10.0') else 'xlog',
-                'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location'
+                'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
+                'waiting' if Pooler.server_version_less('9.6.0') else 'case when wait_event_type is null then false '
+                                                                      ' else true end  as waiting'
                 ).split(QuerySplit):
             if args.args.verbose:
                 sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
