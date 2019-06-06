@@ -23,7 +23,7 @@ class Plugin(object):
     AgentPluginType = 'all'
 
     # PG version
-    VersionPG = 10.0
+    VersionPG = {'type': 'PG_V', 'number': '10.0'}
 
     # Macros for run as agent type or as mamonsu
     Macros = {"mamonsu": "", "agent": "{$PG_CONNINFO},{$PG_PATH}"}
@@ -172,8 +172,20 @@ class Plugin(object):
         if self.Type == "mamonsu":
             new_key = key.format('[{0}{1}]'.format(var, var_discovery[:-1]))
         else:
-            if var == "":
-                new_key = key.format('{0}[{1}]'.format(var, var_discovery + self.Macros[self.Type]))
+            if self.AgentPluginType == 'sys':
+                if var_discovery != "":
+                    if var == "":
+                        new_key = key.format('{0}[{1}]'.format(var, var_discovery))
+                    else:
+                        new_key = key.format('.{0}[{1}]'.format(var, var_discovery))
+                else:
+                    if var != "":
+                        new_key = key.format('.{0}'.format(var))
+                    else:
+                        new_key = key.format('')
             else:
-                new_key = key.format('.{0}[{1}]'.format(var, var_discovery + self.Macros[self.Type]))
+                if var == "":
+                    new_key = key.format('{0}[{1}]'.format(var, var_discovery + self.Macros[self.Type]))
+                else:
+                    new_key = key.format('.{0}[{1}]'.format(var, var_discovery + self.Macros[self.Type]))
         return new_key
