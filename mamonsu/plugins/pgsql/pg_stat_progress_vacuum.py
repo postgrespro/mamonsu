@@ -43,5 +43,5 @@ class PgStatProgressVacuum(Plugin):
 
     def sql(self):
         result = {}  # key is name of file, var is query
-        result[self.right_type(self.key)] = self.query
+        result[self.key.format('')] = self.query
         return result
