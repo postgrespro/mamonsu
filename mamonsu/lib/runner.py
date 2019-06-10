@@ -58,23 +58,35 @@ def start():
             return run_agent()
         elif tool == 'export':
             args, commands = parse_args()
-            try:
-                float(args.pg_version)
-                Plugin.VersionPG['number'] = LooseVersion(args.pg_version)
-            except ValueError:
-                version_args = args.pg_version.split('_')
-                if len(version_args) != 2:
+            # get PG version
+            version_args = args.pg_version.split('_')
+            if len(version_args) == 1:
+                if "9.0" < LooseVersion(version_args[0]) < "12.0":
+                    version_number = version_args[0].split('.')
+                    if len(version_number) > 3:
+                        print_total_help()
+                    else:
+                        for num in version_number:
+                            if not num.isdigit():
+                                print_total_help()
+                        Plugin.VersionPG['number'] = version_args[0]
+                else:
+                    print_total_help()
+            elif len(version_args) == 2 and (version_args[0] == "PGEE" or version_args[0] == "PGPRO"):
+                version_number = version_args[1].split('.')
+                if len(version_number) > 3:
                     print_total_help()
                 else:
-                    try:
-                        float(version_args[1])
-                        Plugin.VersionPG['number'] = LooseVersion(version_args[1])
-                    except ValueError:
-                        print_total_help()
-                    if version_args[0] == "PGEE" or version_args[0] == "PGPRO":
+                    for num in version_number[1:]:
+                        if not num.isdigit():
+                            print_total_help()
+                    if "9.0" < LooseVersion(version_args[1]) < "12.0":
+                        Plugin.VersionPG['number'] = version_args[1]
                         Plugin.VersionPG['type'] = version_args[0]
                     else:
                         print_total_help()
+            else:
+                print_total_help()
             #print(Plugin.VersionPG['type'])
             #print(Plugin.VersionPG['number'])
             #print("this is args", args)
