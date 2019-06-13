@@ -6,7 +6,7 @@ services:
 before_install:
 - docker pull centos:6
 - docker pull centos:7
-- docker pull debian:7
+- docker pull debian:9
 
 script:
 - make test
