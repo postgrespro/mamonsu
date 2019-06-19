@@ -30,7 +30,7 @@ def start():
     refactored_classes = ["Oldest", "PgBufferCache", "ArchiveCommand", "BgWriter", "Checkpoint", "Connections",
                            "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
                           "PgStatProgressVacuum", "PgStatStatement", "PgWaitSampling", "La", "OpenFiles",
-                          "SystemUptime", "ProcStat"]
+                          "SystemUptime", "ProcStat", "Net", "Memory", "DiskStats", "DiskSizes"]
     commands = sys.argv[1:]
     if len(commands) > 0:
         tool = commands[0]
@@ -61,7 +61,8 @@ def start():
             # get PG version
             version_args = args.pg_version.split('_')
             if len(version_args) == 1:
-                if "9.0" < LooseVersion(version_args[0]) < "12.0":
+                if version_args[0] == "11" or LooseVersion(version_args[0]) == "10" or \
+                        LooseVersion(version_args[0]) == "9.6" or LooseVersion(version_args[0]) == "9.5":
                     version_number = version_args[0].split('.')
                     if len(version_number) > 3:
                         print_total_help()
@@ -80,17 +81,16 @@ def start():
                     for num in version_number[1:]:
                         if not num.isdigit():
                             print_total_help()
-                    if "9.0" < LooseVersion(version_args[1]) < "12.0":
+                    if version_args[1] == "11" or LooseVersion(version_args[1]) == "10" or\
+                            LooseVersion(version_args[1]) == "9.6" or LooseVersion(version_args[1]) == "9.5":
                         Plugin.VersionPG['number'] = version_args[1]
                         Plugin.VersionPG['type'] = version_args[0]
                     else:
                         print_total_help()
-            else:
-                print_total_help()
-            #print(Plugin.VersionPG['type'])
-            #print(Plugin.VersionPG['number'])
-            #print("this is args", args)
-            #print("this is commands", commands)
+           # print(Plugin.VersionPG['type'])
+           # print(Plugin.VersionPG['number'])
+           # print("this is args", args)
+           # print("this is commands", commands)
             cfg = Config(args.config_file, args.plugins_dirs)
             if not len(commands) == 3:
                 print_total_help()

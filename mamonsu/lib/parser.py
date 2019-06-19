@@ -23,13 +23,17 @@ Export zabbix keys for zabbix-agent in config file:
 Command: export zabbix-parameters
 Examples:
     {prog} export zabbix-parameters  <file>
+NOTE: <file> can be stated with a path, along which it will be exported
+EXAMPLE: /etc/zabbix/zabbix_agent.d/conf_file_name.conf
 Options:
     --plugin-type <plugin_type> (pg,sys,all)
     --directory-name <directory> (for sql sql queries. if states with path conf file will be saved along this path,too)
     --pg-version <pg_version>
-Default plugin_type = all, pg_version = 10.0, directory-name = zabbix_postgrespro
-Note: pg-version can be PGPRO or PGEE 
-Example: PGPRO_10.0 or PGEE_11.1
+Default plugin_type = all, pg-version = 10, directory-name = zabbix_postgrespro
+Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version
+numbers are 10, 11, 9.6, 9.5
+Example: PGPRO_10 or PGEE_11 or PGPRO_9.6 
+
     
 Export zabbix agent template with additional plugins included in config file:
 Command: export zabbix-template 
@@ -39,7 +43,10 @@ Options:
     --template-name <template name>
     --application  <application name in template>
     --pg-version <pg_version>
-Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>
+Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>, pg-version = 10,
+Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version 
+numbers are 10,11, 9.6, 9.5
+Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 
 
 Export zabbix template with additional plugins included in config file:
@@ -50,7 +57,10 @@ Options:
     --add-plugins <directory>
     --template-name <template name>
     --application <application name in template>
-Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>
+Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>, pg-version = 10,
+Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version
+ numbers are 10,11, 9.6, 9.5
+Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 
 
 Bootstrap DDL for monitoring:
@@ -231,7 +241,7 @@ def parse_args():
                       default='all')
     # PG version
     parser.add_option('-v', '--pg-version', dest='pg_version',
-                      default='10.0')
+                      default='10')
     # export sql to files
     parser.add_option('--directory-name', dest='directory_name',
                       default='zabbix_postgrespro')
