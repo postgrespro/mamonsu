@@ -28,7 +28,7 @@ def start():
         signal.signal(signal.SIGQUIT, quit_handler)
     # temporal list to keep names of all refactored classes
     refactored_classes = ["Oldest", "PgBufferCache", "ArchiveCommand", "BgWriter", "Checkpoint", "Connections",
-                           "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
+                          "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
                           "PgStatProgressVacuum", "PgStatStatement", "PgWaitSampling", "La", "OpenFiles",
                           "SystemUptime", "ProcStat", "Net", "Memory", "DiskStats", "DiskSizes"]
     commands = sys.argv[1:]
@@ -81,16 +81,16 @@ def start():
                     for num in version_number[1:]:
                         if not num.isdigit():
                             print_total_help()
-                    if version_args[1] == "11" or LooseVersion(version_args[1]) == "10" or\
+                    if version_args[1] == "11" or LooseVersion(version_args[1]) == "10" or \
                             LooseVersion(version_args[1]) == "9.6" or LooseVersion(version_args[1]) == "9.5":
                         Plugin.VersionPG['number'] = version_args[1]
                         Plugin.VersionPG['type'] = version_args[0]
                     else:
                         print_total_help()
-           # print(Plugin.VersionPG['type'])
-           # print(Plugin.VersionPG['number'])
-           # print("this is args", args)
-           # print("this is commands", commands)
+            # print(Plugin.VersionPG['type'])
+            # print(Plugin.VersionPG['number'])
+            # print("this is args", args)
+            # print("this is commands", commands)
             cfg = Config(args.config_file, args.plugins_dirs)
             if not len(commands) == 3:
                 print_total_help()
@@ -100,9 +100,12 @@ def start():
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
                     if klass.__name__ in refactored_classes:
-                        if klass.__name__ == "PgWaitSampling":   # check if plugin is for EE
+                        if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
                             if Plugin.VersionPG['type'] == 'PGEE':
                                 plugins.append(klass(cfg))
+                        elif klass.__name__ == "PgStatProgressVacuum" \
+                                and Plugin.VersionPG['number'] >= LooseVersion('9.6'):
+                            plugins.append(klass(cfg))
                         else:
                             plugins.append(klass(cfg))
                 #  export sql queries in separate directory
@@ -149,6 +152,9 @@ def start():
                         if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
                             if Plugin.VersionPG['type'] == 'PGEE':
                                 plugins.append(klass(cfg))
+                        elif klass.__name__ == "PgStatProgressVacuum" \
+                                and Plugin.VersionPG['number'] >= LooseVersion('9.6'):
+                            plugins.append(klass(cfg))
                         else:
                             plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template, args.application)
@@ -163,6 +169,9 @@ def start():
                         if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
                             if Plugin.VersionPG['type'] == 'PGEE':
                                 plugins.append(klass(cfg))
+                        elif klass.__name__ == "PgStatProgressVacuum" \
+                                and Plugin.VersionPG['number'] >= LooseVersion('9.6'):
+                            plugins.append(klass(cfg))
                         else:
                             plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template,

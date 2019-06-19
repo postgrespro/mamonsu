@@ -1,5 +1,6 @@
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
+from distutils.version import LooseVersion
 
 
 class PgStatProgressVacuum(Plugin):
@@ -9,8 +10,9 @@ class PgStatProgressVacuum(Plugin):
     key = 'pgsql.pg_stat_progress_vacuum{0}'
 
     def run(self, zbx):
-        result = Pooler.query(self.query)
-        zbx.send(self.right_type(self.key), result[0][0])
+        if Pooler.server_version_greater('9.6'):
+            result = Pooler.query(self.query)
+            zbx.send(self.right_type(self.key), result[0][0])
 
     def items(self, template):
         result = ''
@@ -38,7 +40,8 @@ class PgStatProgressVacuum(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('{0},$2 $1 -c "{1}"'.format(self.key.format('[*]'), self.query))
+        if self.VersionPG['number'] >= LooseVersion('9.6'):
+            result.append('{0},$2 $1 -c "{1}"'.format(self.key.format('[*]'), self.query))
         return template_zabbix.key_and_query(result)
 
     def sql(self):
