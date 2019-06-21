@@ -139,6 +139,23 @@ Bootstrap DDL for monitoring (if you want to monitoring without superuser rights
     $ createuser mamonsu
     $ mamonsu bootstrap -U postgres -d mamonsu
 
+But bootstrap itself should be done with superuser rights so if you want to monitor database on another machine with network access only, you'll have to temporarily make manonsu user superuser:
+
+.. code-block:: sql
+
+    CREATE USER mamonsu WITH password 'your_password';
+    CREATE DATABASE mamonsu OWNER mamonsu;
+    ALTER USER mamonsu WITH SUPERUSER;
+
+.. code-block:: bash
+
+    $ mamonsu bootstrap -M mamonsu -U mamonsu -Wyour_password -d mamonsu --host=postgresql_host
+
+.. code-block:: sql
+
+    ALTER USER mamonsu WITH NOSUPERUSER;
+    
+
 ==================
 Write your plugin
 ==================
