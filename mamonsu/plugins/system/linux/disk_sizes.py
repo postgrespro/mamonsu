@@ -1,15 +1,18 @@
 import os
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
+PATH = "/etc/zabbix/scripts/agentd/zapgix"
+
 
 class DiskSizes(Plugin):
     AgentPluginType = 'sys'
 
-    tmp_query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/disk_sizes.sh -j $1"
-    tmp_query_agent_used = "df $1 | awk 'NR == 2 {print $$3}'"
-    tmp_query_agent_free = "df $1 | awk 'NR == 2 {print $$4}'"
-    tmp_query_agent_percent_free = "df $1 | awk 'NR == 2 {print 100 - $$5}'"
-    #tmp_query_agent_percent_inode_free = "-f /home/dvilova/Projects/mamonsu/agent_sql/db_bloating_tables.sql "FIXME for percent_inode_free
+    query_agent_discovery = PATH + "/disk_sizes.sh -j MOUNTPOINT"
+    query_agent_used = "df $1 | awk 'NR == 2 {print $$3 * 1024}'"
+    query_agent_free = "df $1 | awk 'NR == 2 {print $$4 * 1024}'"
+    query_agent_percent_free = "df $1 | awk 'NR == 2 {print 100 - $$5}'"
+    # tmp_query_agent_percent_inode_free = " "FIXME for inode
+    key = 'system.vfs'
 
     DEFAULT_CONFIG = {
         'vfs_percent_free': str(10),
@@ -62,21 +65,15 @@ class DiskSizes(Plugin):
             zbx.send('system.vfs.discovery[]', zbx.json({'data': points}))
 
     def discovery_rules(self, template):
-
-        if self.Type == "mamonsu":
-            rule = {
-                'name': 'VFS discovery',
-                'key': 'system.vfs.discovery[]',
-                'filter': '{#MOUNTPOINT}:.*'
-            }
+        if Plugin.Type == 'mamonsu':
+            key_discovery = 'system.vfs.discovery[]'
         else:
-            rule = {
-                'name': 'VFS discovery',
-                'key': 'system.vfs.discovery[MOUNTPOINT]',
-                'filter': '{#MOUNTPOINT}:.*'
-            }
-
-
+            key_discovery = 'system.vfs.discovery'
+        rule = {
+            'name': 'VFS discovery',
+            'key': key_discovery,
+            'filter': '{#MOUNTPOINT}:.*'
+        }
         items = [
             {
                 'key': 'system.vfs.used[{#MOUNTPOINT}]',
@@ -101,8 +98,8 @@ class DiskSizes(Plugin):
             'name': 'Mount point overview: {#MOUNTPOINT}',
             'type': self.GRAPH_TYPE.stacked,
             'items': [{
-                    'color': 'CC0000',
-                    'key': 'system.vfs.used[{#MOUNTPOINT}]'},
+                'color': 'CC0000',
+                'key': 'system.vfs.used[{#MOUNTPOINT}]'},
                 {
                     'color': '0000CC',
                     'key': 'system.vfs.free[{#MOUNTPOINT}]'}]
@@ -110,26 +107,25 @@ class DiskSizes(Plugin):
 
         triggers = [{
             'name': 'Free disk space less then 10% on mountpoint '
-            '{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
+                    '{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:system.vfs.'
-            'percent_free[{#MOUNTPOINT}].last'
-            '()}&lt;' + self.plugin_config('vfs_percent_free')},
+                          'percent_free[{#MOUNTPOINT}].last'
+                          '()}&lt;' + self.plugin_config('vfs_percent_free')},
             {
-            'name': 'Free inode space less then 10% on mountpoint '
-            '{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
-            'expression': '{#TEMPLATE:system.vfs.'
-            'percent_inode_free[{#MOUNTPOINT}].last'
-            '()}&lt;' + self.plugin_config('vfs_inode_percent_free')
-        }]
+                'name': 'Free inode space less then 10% on mountpoint '
+                        '{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
+                'expression': '{#TEMPLATE:system.vfs.'
+                              'percent_inode_free[{#MOUNTPOINT}].last'
+                              '()}&lt;' + self.plugin_config('vfs_inode_percent_free')
+            }]
 
         return template.discovery_rule(
             rule=rule, items=items, graphs=graphs, triggers=triggers)
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('system.vfs.discovery[*],{0}'.format(self.tmp_query_agent_discovery))
-        result.append('system.vfs.used[*],{0}'.format(self.tmp_query_agent_used))
-        result.append('system.vfs.free[*],{0}'.format(self.tmp_query_agent_free))
-        result.append('system.vfs.percent_free[*],{0}'.format(self.tmp_query_agent_percent_free))
+        result.append('system.vfs.discovery,{0}'.format(self.query_agent_discovery))
+        result.append('system.vfs.used[*],{0}'.format(self.query_agent_used))
+        result.append('system.vfs.free[*],{0}'.format(self.query_agent_free))
+        result.append('system.vfs.percent_free[*],{0}'.format(self.query_agent_percent_free))
         return template_zabbix.key_and_query(result)
-

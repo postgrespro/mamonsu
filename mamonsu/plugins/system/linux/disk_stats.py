@@ -1,27 +1,31 @@
 import re
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
+PATH = "/etc/zabbix/scripts/agentd/zapgix"
+
 
 class DiskStats(Plugin):
-
     # todo yaxis right 100%
     # bold line
     AgentPluginType = 'sys'
-    query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/disk_stats.sh -j $1"
+    query_agent_discovery = PATH + "/disk_stats.sh -j BLOCKDEVICE"
     agent_query_read_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $$4}'`"
     agent_query_read_sc = "expr `grep -w '$1' /proc/diskstats | awk '{print $$6 * 512}'`"
     agent_query_write_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $$8}'`"
     agent_query_write_sc = "expr `grep -w '$1' /proc/diskstats | awk '{print $$10 * 512}'`"
-    agent_query_ticks = "expr `grep -w '$1' /proc/diskstats | awk '{print $$13}'`"
-    agent_query_read_op_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_read_op.sh"   #    get sum for all read_op
-    agent_query_read_sc_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_read_b.sh"
-    agent_query_write_op_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_write_op.sh"
-    agent_query_write_sc_all = "/etc/zabbix/scripts/agentd/zapgix/disk_stats_write_b.sh"
+    agent_query_ticks = "expr `grep -w '$1' /proc/diskstats | awk '{print $$13 / 10}'`"
+    agent_query_read_op_all = PATH + "/disk_stats_read_op.sh"  # get sum for all read_op
+    agent_query_read_sc_all = PATH + "/disk_stats_read_b.sh"
+    agent_query_write_op_all = PATH + "/disk_stats_write_op.sh"
+    agent_query_write_sc_all = PATH + "/disk_stats_write_b.sh"
+
+    key = 'system.disk'
 
     # Track only physical devices without logical partitions
     OnlyPhysicalDevices = True
 
     re_stat = re.compile('^(?:\s+\d+){2}\s+([\w\d]+) (.*)$')
+
     # rd_ios rd_merges rd_sectors rd_ticks
     # wr_ios wr_merges wr_sectors wr_ticks
     # ios_in_prog tot_ticks rq_ticks
@@ -39,7 +43,7 @@ class DiskStats(Plugin):
                 if m is None:
                     continue
                 dev, val = m.group(1), m.group(2)
-                if self.OnlyPhysicalDevices and re.search('\d+$', dev): # get drive name without digits at the end
+                if self.OnlyPhysicalDevices and re.search('\d+$', dev):  # get drive name without digits at the end
                     continue
                 val = [int(x) for x in val.split()]
                 read_op, read_sc, write_op, write_sc, ticks = val[0], val[2], val[4], val[6], val[9]
@@ -68,76 +72,87 @@ class DiskStats(Plugin):
             zbx.send('system.disk.all_write_b[]', all_write_b, self.DELTA_SPEED)
             zbx.send('system.disk.discovery[]', zbx.json({'data': devices}))
 
-    def items(self, template):
+    def items(self, template):  # TODO delta speed for zabbix agent
+        if Plugin.Type == "mamonsu":
+            delta = Plugin.DELTA.as_is
+        else:
+            delta = Plugin.DELTA_SPEED
         return template.item({
             'name': 'Block devices: read requests',
-            'key': 'system.disk.all_read[]'
+            'key': self.right_type(self.key + '.all_read{0}'),
+            'delta': delta
         }) + template.item({
             'name': 'Block devices: write requests',
-            'key': 'system.disk.all_write[]'
+            'key': self.right_type(self.key + '.all_write{0}'),
+            'delta': delta
         }) + template.item({
             'name': 'Block devices: read byte/s',
-            'key': 'system.disk.all_read_b[]'
+            'key': self.right_type(self.key + '.all_read_b{0}'),
+            'delta': delta
         }) + template.item({
             'name': 'Block devices: write byte/s',
-            'key': 'system.disk.all_write_b[]'
+            'key': self.right_type(self.key + '.all_write_b{0}'),
+            'delta': delta
         })
 
     def graphs(self, template):
         graph = {
             'name': 'Block devices: read/write operations',
             'items': [
-                {'key': 'system.disk.all_read[]', 'color': 'CC0000'},
-                {'key': 'system.disk.all_write[]', 'color': '0000CC'}]
+                {'key': self.right_type(self.key + '.all_read{0}'), 'color': 'CC0000'},
+                {'key': self.right_type(self.key + '.all_write{0}'), 'color': '0000CC'}]
         }
         result = template.graph(graph)
         graph = {
             'name': 'Block devices: read/write bytes',
             'items': [
-                {'key': 'system.disk.all_read_b[]', 'color': 'CC0000'},
-                {'key': 'system.disk.all_write_b[]', 'color': '0000CC'}]
+                {'key': self.right_type(self.key + '.all_read_b{0}'), 'color': 'CC0000'},
+                {'key': self.right_type(self.key + '.all_write_b{0}'), 'color': '0000CC'}]
         }
         return result + template.graph(graph)
 
     def discovery_rules(self, template):
         if Plugin.Type == 'mamonsu':
-            rule = {
-                'name': 'Block device discovery',
-                'key': 'system.disk.discovery[BLOCKDEVICE]',
-                'filter': '{#BLOCKDEVICE}:.*'
-            }
+            key_discovery = 'system.disk.discovery[]'
+            delta = Plugin.DELTA.as_is
         else:
-            rule = {
-                'name': 'Block device discovery',
-                'key': 'system.disk.discovery[]',
-                'filter': '{#BLOCKDEVICE}:.*'
-            }
-
+            key_discovery = 'system.disk.discovery'
+            delta = Plugin.DELTA_SPEED
+        rule = {
+            'name': 'Block device discovery',
+            'key': key_discovery,
+            'filter': '{#BLOCKDEVICE}:.*'
+        }
         items = [
             {
                 'key': 'system.disk.utilization[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: utilization',
-                'units': Plugin.UNITS.percent},
+                'units': Plugin.UNITS.percent,
+                'delta': delta},
             {
                 'key': 'system.disk.read[{#BLOCKDEVICE}]',
-                'name': 'Block device {#BLOCKDEVICE}: read operations'},
+                'name': 'Block device {#BLOCKDEVICE}: read operations',
+                'delta': delta},
             {
                 'key': 'system.disk.write[{#BLOCKDEVICE}]',
-                'name': 'Block device {#BLOCKDEVICE}: write operations'},
+                'name': 'Block device {#BLOCKDEVICE}: write operations',
+                'delta': delta},
             {
                 'key': 'system.disk.read_b[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: read byte/s',
-                'units': Plugin.UNITS.bytes},
+                'units': Plugin.UNITS.bytes,
+                'delta': delta},
             {
                 'key': 'system.disk.write_b[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: write byte/s',
-                'units': Plugin.UNITS.bytes}]
+                'units': Plugin.UNITS.bytes,
+                'delta': delta}]
 
         graphs = [{
             'name': 'Block device overview: {#BLOCKDEVICE} operations',
             'items': [{
-                    'color': 'CC0000',
-                    'key': 'system.disk.read[{#BLOCKDEVICE}]'},
+                'color': 'CC0000',
+                'key': 'system.disk.read[{#BLOCKDEVICE}]'},
                 {
                     'color': '0000CC',
                     'key': 'system.disk.write[{#BLOCKDEVICE}]'},
@@ -145,32 +160,32 @@ class DiskStats(Plugin):
                     'yaxisside': 1,
                     'color': '00CC00',
                     'key': 'system.disk.utilization[{#BLOCKDEVICE}]'}]},
-                  {
-            'name': 'Block device overview: {#BLOCKDEVICE} byte/s',
-            'items': [{
+            {
+                'name': 'Block device overview: {#BLOCKDEVICE} byte/s',
+                'items': [{
                     'color': 'CC0000',
                     'key': 'system.disk.read_b[{#BLOCKDEVICE}]'},
-                {
-                    'color': '0000CC',
-                    'key': 'system.disk.write_b[{#BLOCKDEVICE}]'},
-                {
-                    'yaxisside': 1,
-                    'color': '00CC00',
-                    'key': 'system.disk.utilization[{#BLOCKDEVICE}]'}]
-        }]
+                    {
+                        'color': '0000CC',
+                        'key': 'system.disk.write_b[{#BLOCKDEVICE}]'},
+                    {
+                        'yaxisside': 1,
+                        'color': '00CC00',
+                        'key': 'system.disk.utilization[{#BLOCKDEVICE}]'}]
+            }]
 
         return template.discovery_rule(rule=rule, items=items, graphs=graphs)
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('system.disk.discovery[*],{0}'.format(self.query_agent_discovery))
+        result.append('system.disk.discovery,{0}'.format(self.query_agent_discovery))
+        result.append('system.disk.utilization[*],{0}'.format(self.agent_query_ticks))
         result.append('system.disk.read[*],{0}'.format(self.agent_query_read_op))
         result.append('system.disk.write[*],{0}'.format(self.agent_query_write_op))
         result.append('system.disk.read_b[*],{0}'.format(self.agent_query_read_sc))
         result.append('system.disk.write_b[*],{0}'.format(self.agent_query_write_sc))
-        result.append('system.disk.all_read[],{0}'.format(self.agent_query_read_op_all))
-        result.append('system.disk.all_write[],{0}'.format(self.agent_query_write_op_all))
-        result.append('system.disk.all_read_b[],{0}'.format(self.agent_query_read_sc_all))
-        result.append('system.disk.all_write_b[],{0}'.format(self.agent_query_write_sc_all))
+        result.append('system.disk.all_read,{0}'.format(self.agent_query_read_op_all))
+        result.append('system.disk.all_write,{0}'.format(self.agent_query_write_op_all))
+        result.append('system.disk.all_read_b,{0}'.format(self.agent_query_read_sc_all))
+        result.append('system.disk.all_write_b,{0}'.format(self.agent_query_write_sc_all))
         return template_zabbix.key_and_query(result)
-

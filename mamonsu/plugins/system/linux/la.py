@@ -25,9 +25,3 @@ class La(Plugin):
         result = []
         result.append('system.la.1,{0}'.format(self.query_agent))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        result['system.la'] = self.query_agent
-        return result
-

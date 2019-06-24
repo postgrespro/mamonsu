@@ -26,9 +26,3 @@ class OpenFiles(Plugin):
         result = []
         result.append('{0},{1}'.format("system.open_files", self.query_agent))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        result['system.open_files'] = self.query_agent
-        return result
-

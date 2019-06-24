@@ -75,19 +75,28 @@ class ProcStat(Plugin):
 
     def items(self, template):
         result = ''
-        for item in self.ProcessItems:
+        delta = Plugin.DELTA.as_is
+        for i, item in enumerate(self.ProcessItems):
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[1].split('[')
+            if i == 2 and Plugin.Type == 'agent':
+                delta = Plugin.DELTA.speed_per_second
             result += template.item({
                 'name': 'Processes: {0}'.format(item[2]),
-                'key': self.right_type(self.key + keys[0] + '{0}', keys[1][:-1])
+                'key': self.right_type(self.key + keys[0] + '{0}', keys[1][:-1]),
+                'delta': delta
             })
+        if Plugin.Type == 'mamonsu':
+            delta = Plugin.DELTA.as_is
+        else:
+            delta = Plugin.DELTA.speed_per_second
         for item in self.CpuItems:
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[1].split('[')
             result += template.item({
                 'name': 'CPU time spent {0}'.format(item[2]),
-                'key': self.right_type(self.key + keys[0] + '{0}', keys[1][:-1])
+                'key': self.right_type(self.key + keys[0] + '{0}', keys[1][:-1]),
+                'delta': delta
             })
         return result
 
@@ -139,8 +148,3 @@ class ProcStat(Plugin):
                 '{0},{1}'.format('{0}{1}.{2}'.format(self.key.format(""), keys[0], keys[1][:-1]),
                                                self.query_agent_cpu + str(i + 2) + "}'`"))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        result['system.proc_stat'] = self.query_agent
-        return result

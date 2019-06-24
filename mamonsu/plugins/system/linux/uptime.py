@@ -37,8 +37,3 @@ class SystemUptime(Plugin):
         result = []
         result.append('system.up_time,{0}'.format(self.query_agent))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        result['system.up_time'] = self.query_agent
-        return result

@@ -1,8 +1,10 @@
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
+PATH = "/etc/zabbix/scripts/agentd/zapgix"
+
 
 class Net(Plugin):
-    query_agent_discovery = "/etc/zabbix/scripts/agentd/zapgix/net.sh -j $1"
+    query_agent_discovery = PATH + "/net.sh -j NETDEVICE"
     query_agent = "expr `grep -Ei '$1' /proc/net/dev | awk '{print $$"
     AgentPluginType = 'sys'
     # position in line, key, desc, units
@@ -33,28 +35,30 @@ class Net(Plugin):
 
     def discovery_rules(self, template):
         items = []
+        if self.Type == "mamonsu":
+            delta = Plugin.DELTA.as_is
+            key_discovery = 'system.net.discovery[]'
+        else:
+            delta = Plugin.DELTA_SPEED
+            key_discovery = 'system.net.discovery'
         for item in self.Items:
             items.append({
-                'key': item[1]+'[{#NETDEVICE}]',
+                'key': item[1] + '[{#NETDEVICE}]',
                 'name': 'Network device {#NETDEVICE}: ' + item[2],
-                'units': item[3]})
-        if self.Type == "mamonsu":
-            rule = {
-                'name': 'Net iface discovery',
-                'key': 'system.net.discovery[]',
-                'filter': '{#NETDEVICE}:.*'
-            }
-        else:
-            rule = {
-                'name': 'Net iface discovery',
-                'key': 'system.net.discovery[NETDEVICE]',
-                'filter': '{#NETDEVICE}:.*'
-            }
+                'units': item[3],
+                'delta': delta
+            })
+
+        rule = {
+            'name': 'Net iface discovery',
+            'key': key_discovery,
+            'filter': '{#NETDEVICE}:.*'
+        }
         graphs = [{
             'name': 'Network device: {#NETDEVICE}',
             'items': [{
-                    'color': 'CC0000',
-                    'key': 'system.net.rx_bytes[{#NETDEVICE}]'},
+                'color': 'CC0000',
+                'key': 'system.net.rx_bytes[{#NETDEVICE}]'},
                 {
                     'color': '0000CC',
                     'key': 'system.net.tx_bytes[{#NETDEVICE}]'}]
@@ -63,7 +67,7 @@ class Net(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('system.net.discovery[*],{0}'.format(self.query_agent_discovery))
+        result.append('system.net.discovery,{0}'.format(self.query_agent_discovery))
         for item in self.Items:
             result.append('{0}[*], {1}'.format(item[1], self.query_agent + str(item[0] + 2) + "}'`"))
         return template_zabbix.key_and_query(result)
