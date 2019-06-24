@@ -26,20 +26,6 @@ UserParameter=pgsql.database.discovery[*],$2 $1 -c "SELECT json_build_object ('d
 UserParameter=pgsql.database.size[*],echo "select pg_database_size(datname::text) from pg_catalog.pg_database where datistemplate = false and datname = :'p1';" | $3 $2 -v p1="$1"
 UserParameter=pgsql.database.max_age[*],echo "select age(datfrozenxid) from pg_catalog.pg_database where datistemplate = false and datname = :'p1';" | $3 $2 -v p1="$1"
 UserParameter=pgsql.database.bloating_tables[*],$3 $2 -d "$1" -c "select count(*) from pg_catalog.pg_stat_all_tables where (n_dead_tup/(n_live_tup+n_dead_tup)::float8) > 0.2 and (n_live_tup+n_dead_tup) > 50;"
-UserParameter=system.vfs.discovery,/etc/zabbix/scripts/agentd/zapgix/disk_sizes.sh -j MOUNTPOINT
-UserParameter=system.vfs.used[*],df $1 | awk 'NR == 2 {print $$3 * 1024}'
-UserParameter=system.vfs.free[*],df $1 | awk 'NR == 2 {print $$4 * 1024}'
-UserParameter=system.vfs.percent_free[*],df $1 | awk 'NR == 2 {print 100 - $$5}'
-UserParameter=system.disk.discovery,/etc/zabbix/scripts/agentd/zapgix/disk_stats.sh -j BLOCKDEVICE
-UserParameter=system.disk.utilization[*],expr `grep -w '$1' /proc/diskstats | awk '{print $$13 / 10}'`
-UserParameter=system.disk.read[*],expr `grep -w '$1' /proc/diskstats | awk '{print $$4}'`
-UserParameter=system.disk.write[*],expr `grep -w '$1' /proc/diskstats | awk '{print $$8}'`
-UserParameter=system.disk.read_b[*],expr `grep -w '$1' /proc/diskstats | awk '{print $$6 * 512}'`
-UserParameter=system.disk.write_b[*],expr `grep -w '$1' /proc/diskstats | awk '{print $$10 * 512}'`
-UserParameter=system.disk.all_read,/etc/zabbix/scripts/agentd/zapgix/disk_stats_read_op.sh
-UserParameter=system.disk.all_write,/etc/zabbix/scripts/agentd/zapgix/disk_stats_write_op.sh
-UserParameter=system.disk.all_read_b,/etc/zabbix/scripts/agentd/zapgix/disk_stats_read_b.sh
-UserParameter=system.disk.all_write_b,/etc/zabbix/scripts/agentd/zapgix/disk_stats_write_b.sh
 UserParameter=pgsql.transactions.total[*],$2 $1 -c "select sum(xact_commit) as xact_commit from pg_catalog.pg_stat_database;"
 UserParameter=pgsql.blocks.hit[*],$2 $1 -c "select sum(blks_hit) as blks_hit from pg_catalog.pg_stat_database;"
 UserParameter=pgsql.blocks.read[*],$2 $1 -c "select sum(blks_read) as blks_read from pg_catalog.pg_stat_database;"
@@ -53,30 +39,8 @@ UserParameter=pgsql.tuples.fetched[*],$2 $1 -c "select sum(tup_fetched) as tup_f
 UserParameter=pgsql.tuples.inserted[*],$2 $1 -c "select sum(tup_inserted) as tup_inserted from pg_catalog.pg_stat_database;"
 UserParameter=pgsql.tuples.returned[*],$2 $1 -c "select sum(tup_returned) as tup_returned from pg_catalog.pg_stat_database;"
 UserParameter=pgsql.tuples.updated[*],$2 $1 -c "select sum(tup_updated) as tup_updated from pg_catalog.pg_stat_database;"
-UserParameter=system.la.1,cat /proc/loadavg | awk '{ print $1 }'
-UserParameter=system.memory.apps,MemTotal=$(cat /proc/meminfo | awk '/MemTotal\:/ { print $2 }'); SUM=$(cat /proc/meminfo | awk '/(MemFree|Buffers|(Swap)?Cached|Slab|PageTables)\:/ { SUM += $2 } END {print SUM}'); echo $((($MemTotal-$SUM)*1024))
-UserParameter=system.memory.buffers,cat /proc/meminfo | awk '/^Buffers\:/ { print $2*1024 }'
-UserParameter=system.memory.swap,expr `grep -Ei 'Swap(Total|Free)' /proc/meminfo | awk '{print $2 * 1024}' | paste -s -d '-' | sed -E 's/-/ - /g'` 
-UserParameter=system.memory.cached,cat /proc/meminfo | awk '/^Cached\:/ { print $2*1024 }'
-UserParameter=system.memory.unused,cat /proc/meminfo | awk '/^MemFree\:/ { print $2*1024 }'
-UserParameter=system.memory.slab,cat /proc/meminfo | awk '/^Slab\:/ { print $2*1024 }'
-UserParameter=system.memory.swap_cache,cat /proc/meminfo | awk '/^SwapCached\:/ { print $2*1024 }'
-UserParameter=system.memory.page_tables,cat /proc/meminfo | awk '/^PageTables\:/ { print $2*1024 }'
-UserParameter=system.memory.vmalloc_used,cat /proc/meminfo | awk '/^VmallocUsed\:/ { print $2*1024 }'
-UserParameter=system.memory.committed,cat /proc/meminfo | awk '/^Committed_AS\:/ { print $2*1024 }'
-UserParameter=system.memory.mapped,cat /proc/meminfo | awk '/^Mapped\:/ { print $2*1024 }'
-UserParameter=system.memory.active,cat /proc/meminfo | awk '/^Active\:/ { print $2*1024 }'
-UserParameter=system.memory.inactive,cat /proc/meminfo | awk '/^Inactive\:/ { print $2*1024 }'
-UserParameter=system.net.discovery,/etc/zabbix/scripts/agentd/zapgix/net.sh -j NETDEVICE
-UserParameter=system.net.rx_bytes[*], expr `grep -Ei '$1' /proc/net/dev | awk '{print $$2}'`
-UserParameter=system.net.rx_errs[*], expr `grep -Ei '$1' /proc/net/dev | awk '{print $$4}'`
-UserParameter=system.net.rx_drop[*], expr `grep -Ei '$1' /proc/net/dev | awk '{print $$5}'`
-UserParameter=system.net.tx_bytes[*], expr `grep -Ei '$1' /proc/net/dev | awk '{print $$10}'`
-UserParameter=system.net.tx_errs[*], expr `grep -Ei '$1' /proc/net/dev | awk '{print $$12}'`
-UserParameter=system.net.tx_drop[*], expr `grep -Ei '$1' /proc/net/dev | awk '{print $$13}'`
 UserParameter=pgsql.oldest.xid_age[*],$2 $1 -c "select greatest(max(age(backend_xmin)), max(age(backend_xid))) from pg_catalog.pg_stat_activity;"
 UserParameter=pgsql.oldest.query_time[*],$2 $1 -c "select case when extract(epoch from max(now() - xact_start)) is not null then extract(epoch from max(now() - xact_start)) else 0 end from pg_catalog.pg_stat_activity where pid not in (select pid from pg_stat_replication) AND pid <> pg_backend_pid() AND query not ilike '%%VACUUM%%'; "
-UserParameter=system.open_files,cat  /proc/sys/fs/file-nr | awk '{ print $1 }'
 UserParameter=pgsql.buffers.size[*],$2 $1 -c "select sum(1) * 8 * 1024 as size from public.pg_buffercache;"
 UserParameter=pgsql.buffers.twice_used[*],$2 $1 -c "select sum(case when usagecount > 1 then 1 else 0 end) * 8 * 1024 as twice_used from public.pg_buffercache;"
 UserParameter=pgsql.buffers.dirty[*],$2 $1 -c "select sum(case isdirty when true then 1 else 0 end) * 8 * 1024 as dirty from public.pg_buffercache;"
@@ -98,16 +62,7 @@ UserParameter=pgsql.stat.dirty_bytes[*],$2 $1 -c "select sum(shared_blks_dirtied
 UserParameter=pgsql.stat.read_time[*],$2 $1 -c "select sum(blk_read_time)/float4(100) from public.pg_stat_statements;"
 UserParameter=pgsql.stat.write_time[*],$2 $1 -c "select sum(blk_write_time)/float4(100) from public.pg_stat_statements;"
 UserParameter=pgsql.stat.other_time[*],$2 $1 -c "select sum(total_time-blk_read_time-blk_write_time)/float4(100) from public.pg_stat_statements;"
-UserParameter=system.processes.running,cat /proc/stat | awk '/procs_running/ { print $2 }'
-UserParameter=system.processes.blocked,cat /proc/stat | awk '/procs_blocked/ { print $2 }'
-UserParameter=system.processes.forkrate,cat /proc/stat | awk '/processes/ { print $2 }'
-UserParameter=system.cpu.user,expr `grep -w 'cpu' /proc/stat | awk '{print $2}'`
-UserParameter=system.cpu.nice,expr `grep -w 'cpu' /proc/stat | awk '{print $3}'`
-UserParameter=system.cpu.system,expr `grep -w 'cpu' /proc/stat | awk '{print $4}'`
-UserParameter=system.cpu.idle,expr `grep -w 'cpu' /proc/stat | awk '{print $5}'`
-UserParameter=system.cpu.iowait,expr `grep -w 'cpu' /proc/stat | awk '{print $6}'`
-UserParameter=system.cpu.irq,expr `grep -w 'cpu' /proc/stat | awk '{print $7}'`
-UserParameter=system.cpu.softirq,expr `grep -w 'cpu' /proc/stat | awk '{print $8}'`
-UserParameter=system.up_time,cat /proc/uptime | awk '{ print int($1) }'
+UserParameter=pgsql.all_lock.discovery[*],$2 $1 -c "SELECT json_build_object ('data',json_agg(json_build_object('{#ALL_LOCK}', t.event_type)))  from (SELECT DISTINCT (CASE WHEN event_type = 'LWLockNamed' THEN 'lwlock' WHEN event_type = 'LWLockTranche' THEN 'lwlock'  WHEN event_type = 'Lock' THEN 'hwlock' ELSE 'buffer' END) AS event_type FROM pg_wait_sampling_profile where event_type is not null) AS t;"
+UserParameter=pgsql.all_lock[*],echo "select sum(count) as count from pg_wait_sampling_profile  where CASE  WHEN 'lwlock' = :'p1' THEN event_type = 'LWLockNamed' or event_type = 'LWLockTranche'   WHEN 'hwlock' = :'p1' THEN  event_type = 'Lock' WHEN 'buffer' = :'p1' THEN event_type != 'LWLockNamed' and event_type != 'LWLockTranche' and event_type != 'Lock' END;" | $3 $2 -v p1="$1"
 UserParameter=pgsql.wal.count[*],$2 $1 -c "select count(*) from pg_catalog.pg_ls_dir('pg_wal')"
 UserParameter=pgsql.wal.write[*],$2 $1 -c " select pg_catalog.pg_wal_lsn_diff (pg_catalog.pg_current_wal_lsn(), '0/00000000');"

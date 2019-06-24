@@ -1,1 +1,1 @@
-export template ./regression/test9.in.out
+export template ./regression/test9.in.out --template-name=check_mamonsu

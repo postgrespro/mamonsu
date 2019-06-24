@@ -1,0 +1,1 @@
+export zabbix-parameters ./regression/test10.in.out --plugin-type=pg --pg-version=PGEE_11
