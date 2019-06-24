@@ -15,8 +15,6 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
 from distutils.version import LooseVersion
 
-PATH = "/home/dvilova/Projects/mamonsu/"
-
 
 def start():
     def quit_handler(_signo=None, _stack_frame=None):
@@ -60,33 +58,7 @@ def start():
             args, commands = parse_args()
             # get PG version
             version_args = args.pg_version.split('_')
-            if len(version_args) == 1:
-                if version_args[0] == "11" or LooseVersion(version_args[0]) == "10" or \
-                        LooseVersion(version_args[0]) == "9.6" or LooseVersion(version_args[0]) == "9.5":
-                    version_number = version_args[0].split('.')
-                    if len(version_number) > 3:
-                        print_total_help()
-                    else:
-                        for num in version_number:
-                            if not num.isdigit():
-                                print_total_help()
-                        Plugin.VersionPG['number'] = version_args[0]
-                else:
-                    print_total_help()
-            elif len(version_args) == 2 and (version_args[0] == "PGEE" or version_args[0] == "PGPRO"):
-                version_number = version_args[1].split('.')
-                if len(version_number) > 3:
-                    print_total_help()
-                else:
-                    for num in version_number[1:]:
-                        if not num.isdigit():
-                            print_total_help()
-                    if version_args[1] == "11" or LooseVersion(version_args[1]) == "10" or \
-                            LooseVersion(version_args[1]) == "9.6" or LooseVersion(version_args[1]) == "9.5":
-                        Plugin.VersionPG['number'] = version_args[1]
-                        Plugin.VersionPG['type'] = version_args[0]
-                    else:
-                        print_total_help()
+            define_pg_version(version_args)
             # print(Plugin.VersionPG['type'])
             # print(Plugin.VersionPG['number'])
             # print("this is args", args)
@@ -108,23 +80,6 @@ def start():
                             plugins.append(klass(cfg))
                         else:
                             plugins.append(klass(cfg))
-                #  export sql queries in separate directory
-                file_path = os.path.join(PATH, args.directory_name)
-                if not os.path.exists(file_path):
-                    os.makedirs(file_path)
-                    print("directory for sql queries  created")
-                for klass in Plugin.only_child_subclasses():
-                    # temporary generate template for agent for classes that have been refactored
-                    if klass.__name__ in refactored_classes:
-                        for i, j in klass(cfg).sql().items():
-                            with codecs.open("{0}/{1}.{2}.sql".format(file_path, klass.__name__, i),
-                                             'w', 'utf-8') as f:
-                                f.write(j)
-                directory_name_list = args.directory_name.split('/')
-                if len(directory_name_list) > 1:
-                    conf_path = '/'.join(directory_name_list[:-1]) + '/' + commands[2]
-                else:
-                    conf_path = commands[2]
                 types = args.plugin_type.split(',')
                 # check if any plugin types is equal
                 if len(types) > 1:
@@ -135,7 +90,7 @@ def start():
                     args.plugin_type = 'all'
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
                     template = GetKeys()
-                    with codecs.open(conf_path, 'w', 'utf-8') as f:
+                    with codecs.open(commands[2], 'w', 'utf-8') as f:
                         f.write(template.txt(args.plugin_type, plugins))  # pass command type
                 else:
                     print_total_help()
@@ -218,3 +173,34 @@ def start():
 def is_any_equal(iterator):
     length = len(iterator)
     return len(set(iterator)) < length
+
+
+#  extract pg version from input
+def define_pg_version(version_args):
+    if len(version_args) == 1:
+        if version_args[0] == "11" or LooseVersion(version_args[0]) == "10" or \
+                LooseVersion(version_args[0]) == "9.6" or LooseVersion(version_args[0]) == "9.5":
+            version_number = version_args[0].split('.')
+            if len(version_number) > 3:
+                print_total_help()
+            else:
+                for num in version_number:
+                    if not num.isdigit():
+                        print_total_help()
+                Plugin.VersionPG['number'] = version_args[0]
+        else:
+            print_total_help()
+    elif len(version_args) == 2 and (version_args[0] == "PGEE" or version_args[0] == "PGPRO"):
+        version_number = version_args[1].split('.')
+        if len(version_number) > 3:
+            print_total_help()
+        else:
+            for num in version_number[1:]:
+                if not num.isdigit():
+                    print_total_help()
+            if version_args[1] == "11" or LooseVersion(version_args[1]) == "10" or \
+                    LooseVersion(version_args[1]) == "9.6" or LooseVersion(version_args[1]) == "9.5":
+                Plugin.VersionPG['number'] = version_args[1]
+                Plugin.VersionPG['type'] = version_args[0]
+            else:
+                print_total_help()
