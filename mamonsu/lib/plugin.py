@@ -10,6 +10,7 @@ from threading import Thread
 
 from mamonsu.lib.const import Template
 
+
 class PluginDisableException(Exception):
     pass
 
@@ -148,7 +149,7 @@ class Plugin(object):
         self.log.debug(trace)
 
     def _loop(self):
-        while(True):
+        while (True):
             last_start = time.time()
             try:
                 self.run(self.sender)

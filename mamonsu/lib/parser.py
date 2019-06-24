@@ -27,9 +27,8 @@ NOTE: <file> can be stated with a path, along which it will be exported
 EXAMPLE: /etc/zabbix/zabbix_agent.d/conf_file_name.conf
 Options:
     --plugin-type <plugin_type> (pg,sys,all)
-    --directory-name <directory> (for sql sql queries. if states with path conf file will be saved along this path,too)
     --pg-version <pg_version>
-Default plugin_type = all, pg-version = 10, directory-name = zabbix_postgrespro
+Default plugin_type = all, pg-version = 10
 Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version
 numbers are 10, 11, 9.6, 9.5
 Example: PGPRO_10 or PGEE_11 or PGPRO_9.6 
@@ -45,7 +44,7 @@ Options:
     --pg-version <pg_version>
 Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>, pg-version = 10,
 Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version 
-numbers are 10,11, 9.6, 9.5
+numbers are 10, 11, 9.6, 9.5
 Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 
 
@@ -242,9 +241,6 @@ def parse_args():
     # PG version
     parser.add_option('-v', '--pg-version', dest='pg_version',
                       default='10')
-    # export sql to files
-    parser.add_option('--directory-name', dest='directory_name',
-                      default='zabbix_postgrespro')
     parser.add_option(
         '--application', dest='application',
         default='App-PostgresPro-{0}'.format(sys.platform.title()))

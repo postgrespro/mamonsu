@@ -36,8 +36,8 @@ class Sender():
             if isinstance(value, float) or isinstance(value, platform.INTEGER_TYPES):
                 if hash_key in self._last_values:
                     if only_positive_speed and (self._last_values[hash_key][0] > value):
-                            self._last_values[hash_key] = (value, clock)
-                            return
+                        self._last_values[hash_key] = (value, clock)
+                        return
                     last_value, last_time = self._last_values[hash_key]
                     self._last_values[hash_key] = (value, clock)
                     if delta == Plugin.DELTA.speed_per_second:
