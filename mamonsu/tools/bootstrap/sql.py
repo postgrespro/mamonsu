@@ -69,8 +69,14 @@ $$ LANGUAGE SQL SECURITY DEFINER;
 CREATE or REPLACE FUNCTION public.mamonsu_get_oldest_query()
 RETURNS DOUBLE PRECISION AS $$
     SELECT
-        extract(epoch from max(now() - xact_start))
-    FROM pg_catalog.pg_stat_activity
+        CASE 
+        WHEN extract(epoch from max(now() - xact_start)) IS NOT NULL THEN extract(epoch FROM max(now() - xact_start)) 
+        ELSE 0 END 
+        FROM 
+            pg_catalog.pg_stat_activity 
+        WHERE pid NOT IN (SELECT pid FROM pg_stat_replication) 
+            AND pid <> pg_backend_pid() 
+            AND query NOT ilike '%%VACUUM%%'   
 $$ LANGUAGE SQL SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION public.mamonsu_count_{3}_files()
@@ -110,7 +116,6 @@ CREATE OR REPLACE FUNCTION public.mamonsu_get_sys_param(param text)
 RETURNS TABLE(SETTING TEXT) AS $$
 select setting from pg_catalog.pg_settings where name = param
 $$ LANGUAGE SQL SECURITY DEFINER;
-
 """
 
 GrantsOnSchemaSQL = """
@@ -139,5 +144,4 @@ GRANT EXECUTE ON FUNCTION public.mamonsu_archive_stat() TO {1};
 GRANT EXECUTE ON FUNCTION public.mamonsu_get_sys_param(param text) TO {1};
 
 GRANT EXECUTE ON FUNCTION public.mamonsu_get_connections_states() TO {1};
-
 """

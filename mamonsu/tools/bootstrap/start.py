@@ -63,7 +63,7 @@ class Args(DefaultConfig):
         parser.add_option_group(bootstrap_group)
 
         self.args, commands = parser.parse_args()
-
+        print(self.args)
         if len(commands) > 0:
             if len(commands) == 1:
                 self.args.dbname = commands[0]
@@ -169,7 +169,6 @@ def run_deploy():
     except Exception as e:
         sys.stderr.write("Query:\n{0}\nerror: {1}\n".format(sql, e))
         sys.exit(2)
-
     try:
         for sql in GrantsOnSchemaSQL.format(
                 mamonsu_version.replace('.', '_'),
