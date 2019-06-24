@@ -134,13 +134,3 @@ class Databases(Plugin):
                                               self.query_bloating_tables.format(self.plugin_config('bloat_scale'),
                                                                                 self.plugin_config('min_rows'))))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        # key is name of file, var is query
-        result = {}
-        result[self.key_autovacumm.format("")] = Pooler.SQL['count_autovacuum'][0]
-        result[self.key_db_size.format("")] = self.query_size
-        result[self.key_db_age.format("")] = self.query_age
-        result[self.key_db_bloating_tables.format("")] = self.query_bloating_tables.format \
-            (self.plugin_config('bloat_scale'), self.plugin_config('min_rows'))
-        return result

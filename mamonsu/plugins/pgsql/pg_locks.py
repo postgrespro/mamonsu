@@ -74,9 +74,3 @@ class PgLocks(Plugin):
             result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[0]),
                                                          self.query_agent.format('{0}lock'.format(item[0]))))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        for item in self.Items:
-            result[self.key.format("." + item[0])] = self.query_agent.format('{0}lock'.format(item[0]))
-        return result

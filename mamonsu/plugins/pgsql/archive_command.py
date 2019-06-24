@@ -103,7 +103,7 @@ class ArchiveCommand(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if self.VersionPG['number'] < LooseVersion('10.0'):
+        if self.VersionPG['number'] < LooseVersion('10'):
             xlog = 'xlog'
         else:
             xlog = 'wal'
@@ -116,16 +116,3 @@ class ArchiveCommand(Plugin):
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[3][0]),
                                                      self.query_agent_failed_count))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        if self.VersionPG['number'] < LooseVersion('10.0'):
-            xlog = 'xlog'
-        else:
-            xlog = 'wal'
-        result[self.key.format("." + self.Items[0][0])] = self.query_agent_count_files.format(xlog)
-        result[self.key.format("." + self.Items[1][0])] = self.query_agent_size_files.format(xlog)
-        result[self.key.format("." + self.Items[2][0])] = self.query_agent_archived_count
-        result[self.key.format("." + self.Items[3][0])] = self.query_agent_failed_count
-        return result
-

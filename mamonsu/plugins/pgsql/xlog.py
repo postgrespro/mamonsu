@@ -86,7 +86,7 @@ class Xlog(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if self.VersionPG['number'] < LooseVersion('10.0'):
+        if self.VersionPG['number'] < LooseVersion('10'):
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_xlog_files'][0]))
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_xlog_lsn_diff))
         else:
@@ -94,14 +94,4 @@ class Xlog(Plugin):
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_wal_lsn_diff))
         # FIXME for lag
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        if self.VersionPG['number'] < LooseVersion('10.0'):
-            result[self.key_count_wall.format("")] = Pooler.SQL['count_xlog_files'][0]
-            result[self.key_wall.format("")] = self.query_xlog_lsn_diff
-        else:
-            result[self.key_count_wall.format("")] = Pooler.SQL['count_wal_files'][0]
-            result[self.key_wall.format("")] = self.query_wal_lsn_diff
-        return result
 

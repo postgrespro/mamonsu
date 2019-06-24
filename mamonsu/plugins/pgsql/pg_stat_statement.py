@@ -96,14 +96,5 @@ class PgStatStatement(Plugin):
                                                              self.query.format(item[1])))
         return template_zabbix.key_and_query(result)
 
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        for item in self.Items:
-            # split each item to get values for keys of both agent type and mamonsu type
-            keys = item[0].split('[')
-            result['{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1])] = self.query.format(item[1])
-        return result
-
-
 
 

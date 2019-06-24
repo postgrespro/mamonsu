@@ -242,9 +242,3 @@ order by count desc;"""
         result.append(
             '{0},echo "{1}" | $3 $2 -v p1="$1"'.format(self.key_all_lock.format("[*]"), self.query_agent_all_lock))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        # key is name of file, var is query
-        result = {}
-        result[self.key_all_lock.format("")] = self.AllLockQuery
-        return result

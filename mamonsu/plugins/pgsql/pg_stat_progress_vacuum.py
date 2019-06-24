@@ -43,8 +43,3 @@ class PgStatProgressVacuum(Plugin):
         if self.VersionPG['number'] >= LooseVersion('9.6'):
             result.append('{0},$2 $1 -c "{1}"'.format(self.key.format('[*]'), self.query))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        result[self.key.format('')] = self.query
-        return result

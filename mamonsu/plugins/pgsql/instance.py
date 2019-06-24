@@ -2,6 +2,7 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
+import random
 
 
 class Instance(Plugin):
@@ -66,7 +67,10 @@ class Instance(Plugin):
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(
                 self.Items[idx][1]), int(val)
-            zbx.send(key, val, self.Items[idx][5])
+            if key == 'pgsql.transactions[total]':
+                zbx.send(key, val, self.Items[idx][5], only_positive_speed=True)
+            else:
+                zbx.send(key, val, self.Items[idx][5])
         del params, result
 
     def items(self, template):
@@ -118,12 +122,3 @@ class Instance(Plugin):
             result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
                                                          self.query_agent.format(format(item[0]))))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        for item in self.Items:
-            # split each item to get values for keys of both agent type and mamonsu type
-            keys = item[1].split('[')
-            result['{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1])] = self.query_agent.format(item[0])
-        return result
-

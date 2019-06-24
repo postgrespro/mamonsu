@@ -97,13 +97,3 @@ class Checkpoint(Plugin):
                 result.append(
                     '{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[1]), self.query_interval.format(item[0])))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        for num, item in enumerate(self.Items):
-            if num < 2:
-                result[self.key.format("." + item[1])] = self.query.format(item[0])
-            else:
-                result[self.key.format("." + item[1])] = self.query_interval.format(item[0])
-        return result
-

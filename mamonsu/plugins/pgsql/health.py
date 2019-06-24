@@ -84,12 +84,3 @@ class PgHealth(Plugin):
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key_uptime.format(''), self.query_uptime))
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key_cache.format('.hit'), self.query_cache))
         return template_zabbix.key_and_query(result)
-
-    def sql(self):
-        result = {}  # key is name of file, var is query
-        result[self.key_ping.format("")] = self.query_health
-        result[self.key_uptime.format("")] = self.query_uptime
-        result[self.key_cache.format(".hit")] = self.query_cache
-        return result
-
-
