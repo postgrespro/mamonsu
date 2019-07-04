@@ -69,6 +69,7 @@ CREATE or REPLACE FUNCTION public.mamonsu_get_oldest_query()
 RETURNS DOUBLE PRECISION AS $$
     SELECT 
         CASE WHEN extract(epoch from max(now() - xact_start)) IS NOT null 
+              AND extract(epoch from max(now() - xact_start))>0
             THEN extract(epoch from max(now() - xact_start)) 
             ELSE 0 
         END 
@@ -76,8 +77,7 @@ RETURNS DOUBLE PRECISION AS $$
     WHERE 
         pid NOT IN(select pid from pg_stat_replication) AND 
         pid <> pg_backend_pid() AND 
-        query NOT ilike '%%VACUUM%%' 
-    HAVING extract(epoch from max(now() - xact_start))>0
+        query NOT ilike '%%VACUUM%%'
 $$ LANGUAGE SQL SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION public.mamonsu_count_{3}_files()
