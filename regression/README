@@ -3,7 +3,7 @@ how to use regression tests:
 2. make sure you have expected output file in /regression/<test_name>.in.out.exp
 NOTE: for template generation tests make sure you have template name and application name EXACTLY as in line of <test_name>.in (or you'll get diff file showing difference only in template name and application name btw two templates)
 3. go to /mamonsu and run 
-	./test.py ./mamonsu.py regression
+	./test.py
 4. you will find output files for each test in /regression/<test_name>.out
 5. you will find diff (if where is any difference) in /regression/.diff
 
