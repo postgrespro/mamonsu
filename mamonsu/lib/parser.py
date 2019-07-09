@@ -57,21 +57,20 @@ Options:
     --template-name <template name>
     --application <application name in template>
 Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>, pg-version = 10,
-Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version
- numbers are 10,11, 9.6, 9.5
-Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 
 
 Bootstrap DDL for monitoring:
 Command: bootstrap
 Examples:
-    {prog} bootstrap <DBNAME>
+    {prog} bootstrap -M <mamonsu_username>
+HINT:  -M <mamonsu_username> is used to assign ownership of bootstap quiries
 Options:
-    --port <PGPORT>
+    -p, --port <PGPORT>
     -W <PGPASSWORD>
     -d, --dbname <DBNAME>
     -U, --username <USERNAME>
-
+    --host <PGHOST>
+   
 
 Information about working mamonsu:
 Command: agent
@@ -214,6 +213,11 @@ Options:
             OptionParser._process_short_opts(self, rargs, values)
         except BadOptionError as err:
             self.largs.append(err.opt_str)
+
+    def _add_help_option(self):
+        self.add_option("--help",
+                        action="help",
+                        help=("show this help message and exit"))
 
 
 def parse_args():
