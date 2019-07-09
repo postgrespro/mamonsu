@@ -5,6 +5,7 @@ import optparse
 import sys
 
 import mamonsu.lib.platform as platform
+from mamonsu.lib.parser import MissOptsParser
 from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.lib.default_config import DefaultConfig
@@ -15,7 +16,7 @@ from mamonsu.tools.bootstrap.sql import CreateSchemaSQL, GrantsOnSchemaSQL, Quer
 class Args(DefaultConfig):
 
     def __init__(self):
-        parser = optparse.OptionParser(
+        parser = MissOptsParser(
             usage='%prog bootstrap -M <MAMONSU USERNAME> <DBNAME>',
             version='%prog bootstrap {0}'.format(mamonsu_version),
             description='Bootstrap DDL for monitoring')
@@ -28,12 +29,12 @@ class Args(DefaultConfig):
             default=self.default_db(),
             help='database name to connect to (default: %default)')
         group.add_option(
-            '--host',
+            '-h', '--host',
             dest='hostname',
             default=self.default_host(),
             help='database server host or socket path (default: %default)')
         group.add_option(
-            '--port',
+            '-p', '--port',
             dest='port',
             default=self.default_port(),
             help='database server port (default: %default)')
@@ -64,6 +65,7 @@ class Args(DefaultConfig):
 
         self.args, commands = parser.parse_args()
         print(self.args)
+        print(commands)
         if len(commands) > 0:
             if len(commands) == 1:
                 self.args.dbname = commands[0]
@@ -117,10 +119,10 @@ class Args(DefaultConfig):
 
         def test_db(self, host_pre):
             if is_conn_to_db(
-                host=host_pre,
-                db=self.args.dbname,
-                port=self.args.port,
-                user=self.args.username,
+                    host=host_pre,
+                    db=self.args.dbname,
+                    port=self.args.port,
+                    user=self.args.username,
                     paswd=self.args.password):
                 self.args.hostname = host_pre
                 os.environ['PGHOST'] = self.args.hostname
@@ -143,7 +145,6 @@ class Args(DefaultConfig):
 
 
 def run_deploy():
-
     args = Args()
     if not args.try_configure_connect_to_pg():
         sys.exit(1)
@@ -162,7 +163,7 @@ def run_deploy():
                 'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
                 'waiting' if Pooler.server_version_less('9.6.0') else 'case when wait_event_type is null then false '
                                                                       ' else true end  as waiting'
-                ).split(QuerySplit):
+        ).split(QuerySplit):
             if args.args.verbose:
                 sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
             Pooler.query(sql)
@@ -174,7 +175,7 @@ def run_deploy():
                 mamonsu_version.replace('.', '_'),
                 args.args.mamonsu_username,
                 'wal' if Pooler.server_version_greater('10.0') else 'xlog'
-                ).split(QuerySplit):
+        ).split(QuerySplit):
             if args.args.verbose:
                 sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
             Pooler.query(sql)
