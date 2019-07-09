@@ -39,6 +39,9 @@ class Supervisor(object):
         for plugin in self.Plugins:
             if plugin.is_enabled() and not plugin.is_alive():
                 plugin.start()
+            else:
+                plugin.log.info('plugin {0} was disabled due to the statement in '
+                          'the config file '. format(plugin.__class__.__name__.lower()))
 
     def _loop(self):
         plugin_errors, plugin_probes, last_error = 0, 0, ''
