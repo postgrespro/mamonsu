@@ -17,9 +17,17 @@ select public.mamonsu_get_oldest_xid();
 """
 
     OldestQuerySql = """
-select
-    extract(epoch from max(now() - xact_start))
-from pg_catalog.pg_stat_activity;
+SELECT 
+  CASE WHEN extract(epoch from max(now() - xact_start)) IS NOT null 
+        AND extract(epoch from max(now() - xact_start))>0
+    THEN extract(epoch from max(now() - xact_start)) 
+    ELSE 0 
+  END 
+FROM pg_catalog.pg_stat_activity 
+WHERE 
+  pid NOT IN(select pid from pg_stat_replication) AND 
+  pid <> pg_backend_pid() AND 
+  query NOT ilike '%%VACUUM%%';
 """
 
     OldestQuerySql_bootstrap = """
