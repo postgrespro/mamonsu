@@ -72,7 +72,7 @@ class Databases(Plugin):
         return template.item({
             'name': 'PostgreSQL: count of autovacuum workers',
             'key': self.right_type(self.key_autovacumm),
-            'delay': self.Interval
+            'delay':  self.plugin_config('interval')
         })
 
     def discovery_rules(self, template):
@@ -86,13 +86,13 @@ class Databases(Plugin):
              'name': 'Database {#DATABASE}: size',
              'units': Plugin.UNITS.bytes,
              'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
-             'delay': self.Interval},
+             'delay':  self.plugin_config('interval')},
             {'key': self.right_type(self.key_db_age, var_discovery="{#DATABASE},"),
              'name': 'Max age (datfrozenxid) in: {#DATABASE}',
-             'delay': self.Interval},
+             'delay':  self.plugin_config('interval')},
             {'key': self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},"),
              'name': 'Count of bloating tables in database: {#DATABASE}',
-             'delay': self.Interval}
+             'delay':  self.plugin_config('interval')}
         ]
         graphs = [
             {

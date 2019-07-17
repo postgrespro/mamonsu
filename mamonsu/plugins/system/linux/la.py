@@ -14,6 +14,7 @@ class La(Plugin):
         return template.item({
             'name': 'System load average over 1 minute',
             'key': self.right_type(self.key, '1'),
+            'delay': self.plugin_config('interval')
         })
 
     def graphs(self, template):

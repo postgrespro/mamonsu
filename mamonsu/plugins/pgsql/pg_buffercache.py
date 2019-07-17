@@ -33,6 +33,7 @@ class PgBufferCache(Plugin):
             result += template.item({
                 'key': self.right_type(self.key, item[0]), #'pgsql.buffers[{0}]'.format(item[0]),
                 'name': item[1],
+                'delay': self.plugin_config('interval'),
                 'units': Plugin.UNITS.bytes
             })
         return result

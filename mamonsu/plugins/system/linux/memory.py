@@ -90,6 +90,7 @@ class Memory(Plugin):
                 'name': '{0}'.format(item[2]),
                 'key': self.right_type(self.key, item[0]),
                 'units': Plugin.UNITS.bytes,
+                'delay': self.plugin_config('interval'),
                 'value_type': Plugin.VALUE_TYPE.numeric_unsigned
             })
         return result

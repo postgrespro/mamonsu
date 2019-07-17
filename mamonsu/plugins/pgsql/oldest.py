@@ -55,10 +55,12 @@ class Oldest(Plugin):
         return template.item({
             'key': self.right_type(self.key, 'xid_age'),
             'name': 'PostgreSQL: age of oldest xid',
+            'delay': self.plugin_config('interval'),
             'value_type': Plugin.VALUE_TYPE.numeric_unsigned
         }) + template.item({
             'key': self.right_type(self.key, 'query_time'),
             'name': 'PostgreSQL: oldest query running time in sec',
+            'delay': self.plugin_config('interval'),
             'units': Plugin.UNITS.s
         })
 

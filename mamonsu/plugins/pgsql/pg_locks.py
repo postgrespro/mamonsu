@@ -55,6 +55,7 @@ class PgLocks(Plugin):
             result += template.item({
                 'key': self.right_type(self.key, item[0]),
                 'name': 'PostgreSQL locks: {0}'.format(item[1]),
+                'delay': self.plugin_config('interval'),
                 'value_type': self.VALUE_TYPE.numeric_unsigned
             })
         return result

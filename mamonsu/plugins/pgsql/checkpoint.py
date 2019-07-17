@@ -62,7 +62,7 @@ class Checkpoint(Plugin):
                 'name': 'PostgreSQL {0}'.format(item[2]),
                 'value_type': Plugin.VALUE_TYPE.numeric_float,
                 'units': item[4],
-                'delay': self.Interval,
+                'delay': self.plugin_config('interval'),
                 'delta': delta
             })
         return result

@@ -17,6 +17,7 @@ class SystemUptime(Plugin):
             'name': 'System up_time',
             'key':  self.right_type(self.key),
             'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
+            'delay': self.plugin_config('interval'),
             'units': Plugin.UNITS.uptime
         })
 

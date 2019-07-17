@@ -80,18 +80,22 @@ class DiskStats(Plugin):
         return template.item({
             'name': 'Block devices: read requests',
             'key': self.right_type(self.key + '.all_read{0}'),
+            'delay': self.plugin_config('interval'),
             'delta': delta
         }) + template.item({
             'name': 'Block devices: write requests',
             'key': self.right_type(self.key + '.all_write{0}'),
+            'delay': self.plugin_config('interval'),
             'delta': delta
         }) + template.item({
             'name': 'Block devices: read byte/s',
             'key': self.right_type(self.key + '.all_read_b{0}'),
+            'delay': self.plugin_config('interval'),
             'delta': delta
         }) + template.item({
             'name': 'Block devices: write byte/s',
             'key': self.right_type(self.key + '.all_write_b{0}'),
+            'delay': self.plugin_config('interval'),
             'delta': delta
         })
 
@@ -128,23 +132,28 @@ class DiskStats(Plugin):
                 'key': 'system.disk.utilization[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: utilization',
                 'units': Plugin.UNITS.percent,
+                'delay': self.plugin_config('interval'),
                 'delta': delta},
             {
                 'key': 'system.disk.read[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: read operations',
+                'delay': self.plugin_config('interval'),
                 'delta': delta},
             {
                 'key': 'system.disk.write[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: write operations',
+                'delay': self.plugin_config('interval'),
                 'delta': delta},
             {
                 'key': 'system.disk.read_b[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: read byte/s',
+                'delay': self.plugin_config('interval'),
                 'units': Plugin.UNITS.bytes,
                 'delta': delta},
             {
                 'key': 'system.disk.write_b[{#BLOCKDEVICE}]',
                 'name': 'Block device {#BLOCKDEVICE}: write byte/s',
+                'delay': self.plugin_config('interval'),
                 'units': Plugin.UNITS.bytes,
                 'delta': delta}]
 

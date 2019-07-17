@@ -73,6 +73,7 @@ class ArchiveCommand(Plugin):
                         'key': self.right_type(self.key, item[0]),
                         'name': self.name.format(item[1]),
                         'value_type': self.VALUE_TYPE.numeric_unsigned,
+                        'delay': self.plugin_config('interval'),
                         'delta': delta
                     })
         return result

@@ -46,6 +46,7 @@ class Net(Plugin):
                 'key': item[1] + '[{#NETDEVICE}]',
                 'name': 'Network device {#NETDEVICE}: ' + item[2],
                 'units': item[3],
+                'delay': self.plugin_config('interval'),
                 'delta': delta
             })
 

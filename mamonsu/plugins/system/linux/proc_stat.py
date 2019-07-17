@@ -84,6 +84,7 @@ class ProcStat(Plugin):
             result += template.item({
                 'name': 'Processes: {0}'.format(item[2]),
                 'key': self.right_type(self.key + keys[0] + '{0}', keys[1][:-1]),
+                'delay': self.plugin_config('interval'),
                 'delta': delta
             })
         if Plugin.Type == 'mamonsu':
@@ -96,6 +97,7 @@ class ProcStat(Plugin):
             result += template.item({
                 'name': 'CPU time spent {0}'.format(item[2]),
                 'key': self.right_type(self.key + keys[0] + '{0}', keys[1][:-1]),
+                'delay': self.plugin_config('interval'),
                 'delta': delta
             })
         return result

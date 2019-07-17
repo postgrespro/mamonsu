@@ -183,6 +183,7 @@ order by count desc;"""
             result += template.item({
                 'key': 'pgsql.{0}'.format(item[1]),
                 'name': 'PostgreSQL waits: {0}'.format(item[2]),
+                'delay': self.plugin_config('interval'),
                 'value_type': self.VALUE_TYPE.numeric_float})
         return result
 
@@ -220,6 +221,7 @@ order by count desc;"""
                 'key': self.right_type(self.key_all_lock, keys[1][:-1], var_discovery="{#ALL_LOCK},"),
                 'name': 'PostgreSQL waits: {0}'.format(item[2]),
                 'value_type': self.VALUE_TYPE.numeric_float,
+                'delay': self.plugin_config('interval'),
                 'delta': delta})
         graphs = []
         for graph_name, graph_items in [

@@ -44,6 +44,7 @@ class BgWriter(Plugin):
     ]
 
     def run(self, zbx):
+        #print(self.plugin_config('interval'))
         params = [x[0] for x in self.Items]
         result = Pooler.query(self.query.format(
                 ', '.join(params)))
@@ -64,6 +65,7 @@ class BgWriter(Plugin):
                 'key': self.right_type(self.key, item[0]),
                 'name': 'PostgreSQL {0}'.format(item[2]),
                 'value_type': self.VALUE_TYPE.numeric_unsigned,
+                'delay': self.plugin_config('interval'),
                 'delta': delta
             })
         return result

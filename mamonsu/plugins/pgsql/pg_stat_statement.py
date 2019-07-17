@@ -64,6 +64,7 @@ class PgStatStatement(Plugin):
                 'name': 'PostgreSQL statements: {0}'.format(item[2]),
                 'value_type': self.VALUE_TYPE.numeric_float,
                 'units': item[3],
+                'delay': self.plugin_config('interval'),
                 'delta': delta})
         return result
 

@@ -32,10 +32,10 @@ class PgHealth(Plugin):
     def items(self, template):
         result = ''
         if self.Type == "mamonsu":
-            delay = 60 #TODO check delay
+            delay = self.plugin_config('interval')  #TODO check delay
             value_type = Plugin.VALUE_TYPE.numeric_unsigned
         else:
-            delay = 5
+            delay = 5 #TODO check delay
             value_type = Plugin.VALUE_TYPE.numeric_float
         result += template.item({
             'name': 'PostgreSQL: ping',
@@ -47,11 +47,13 @@ class PgHealth(Plugin):
             'name': 'PostgreSQL: cache hit ratio',
             'key':  self.right_type(self.key_cache, "hit"),
             'value_type': value_type,
+            'delay': self.plugin_config('interval'),
             'units': Plugin.UNITS.percent
         }) + template.item({
             'name': 'PostgreSQL: service uptime',
             'key': self.right_type(self.key_uptime),
             'value_type': value_type,
+            'delay': self.plugin_config('interval'),
             'units': Plugin.UNITS.uptime
         })
         return result

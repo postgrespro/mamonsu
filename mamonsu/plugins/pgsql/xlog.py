@@ -48,13 +48,16 @@ class Xlog(Plugin):
                 'name': 'PostgreSQL: wal write speed',
                 'key': self.right_type(self.key_wall),
                 'units': Plugin.UNITS.bytes,
+                'delay': self.plugin_config('interval'),
                 'delta': delta
             }) + template.item({
                 'name': 'PostgreSQL: streaming replication lag',
-                'key': 'pgsql.replication_lag[sec]'
+                'key': 'pgsql.replication_lag[sec]',
+                'delay': self.plugin_config('interval')
             }) + template.item({
                 'name': 'PostgreSQL: count of xlog files',
                 'key': self.right_type(self.key_count_wall),
+                'delay': self.plugin_config('interval')
             })
         return result
 

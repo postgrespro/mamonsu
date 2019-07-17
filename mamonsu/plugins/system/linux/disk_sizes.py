@@ -79,19 +79,23 @@ class DiskSizes(Plugin):
                 'key': 'system.vfs.used[{#MOUNTPOINT}]',
                 'name': 'Mount point {#MOUNTPOINT}: used',
                 'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
+                'delay': self.plugin_config('interval'),
                 'units': Plugin.UNITS.bytes},
             {
                 'key': 'system.vfs.free[{#MOUNTPOINT}]',
                 'name': 'Mount point {#MOUNTPOINT}: free',
                 'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
+                'delay': self.plugin_config('interval'),
                 'units': Plugin.UNITS.bytes},
             {
                 'key': 'system.vfs.percent_free[{#MOUNTPOINT}]',
                 'name': 'Mount point {#MOUNTPOINT}: free in percents',
+                'delay': self.plugin_config('interval'),
                 'units': Plugin.UNITS.percent},
             {
                 'key': 'system.vfs.percent_inode_free[{#MOUNTPOINT}]',
                 'name': 'Mount point {#MOUNTPOINT}: free inodes in percent',
+                'delay': self.plugin_config('interval'),
                 'units': Plugin.UNITS.percent}]
 
         graphs = [{

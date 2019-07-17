@@ -87,6 +87,7 @@ class Instance(Plugin):
                     'name': 'PostgreSQL {0}'.format(item[2]),
                     'value_type': self.VALUE_TYPE.numeric_float,
                     'units': item[4],
+                    'delay': self.plugin_config('interval'),
                     'delta': delta
             })
         return result

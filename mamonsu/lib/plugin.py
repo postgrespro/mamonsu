@@ -75,10 +75,11 @@ class Plugin(object):
         return plugins
 
     @classmethod
-    def set_default_config(cls, config):
+    def set_default_config(cls, config, interval):
         name = cls.__name__.lower()
         # if section already loaded via config file
-        if not config.has_section(name) and len(cls.DEFAULT_CONFIG) > 0:
+        # if not config.has_section(name) and len(cls.DEFAULT_CONFIG) > 0:
+        if not config.has_section(name):
             config.add_section(name)
         for x in cls.DEFAULT_CONFIG:
             if config.has_option(name, x):
@@ -89,6 +90,8 @@ class Plugin(object):
                     'Config value {0} in section {1} must'
                     ' be string! Fix plugin please.\n'.format(x, name))
             config.set(name, x, '{0}'.format(cls.DEFAULT_CONFIG[x]))
+        if not config.has_option(name, 'interval') and interval is not None:
+            config.set(name, 'interval', '{0}'.format(interval))
 
     # get value from config
     def plugin_config(self, name, as_json=False):
@@ -161,7 +164,9 @@ class Plugin(object):
                 trace = traceback.format_exc()
                 self._log_exception(e, trace)
                 return
-            sleep_time = self.Interval - int(time.time() - last_start)
+            # time interval btw sending metrics
+            print(self.plugin_config('interval'))
+            sleep_time = int(self.plugin_config('interval')) - int(time.time() - last_start)
             if sleep_time > 0:
                 time.sleep(sleep_time)
             else:

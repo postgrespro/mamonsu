@@ -80,7 +80,7 @@ class Config(DefaultConfig):
         if not plugins == 'None':
             self._load_external_plugins_from_directory(plugins)
         self._apply_default_config()
-
+        self._check_interval()
         self._apply_log_setting()
         self._apply_environ()
         self._override_auto_variables()
@@ -176,5 +176,15 @@ class Config(DefaultConfig):
             self._apply_environ()
 
     def _apply_default_config(self):
+        if self.config.has_option('postgres', 'interval'):
+            interval = self.fetch('postgres', 'interval')
+        else:
+            interval = None
         for plugin in Plugin.only_child_subclasses():
-            plugin.set_default_config(self.config)
+            plugin.set_default_config(self.config, interval)
+
+    def _check_interval(self):
+        for plugin in Plugin.only_child_subclasses():
+            if not self.config.has_option(plugin.__name__.lower(), 'interval'):
+                self.config.set(plugin.__name__.lower(), 'interval', '{0}'.format(plugin.Interval))
+

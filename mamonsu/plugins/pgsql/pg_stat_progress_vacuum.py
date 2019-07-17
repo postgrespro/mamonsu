@@ -19,6 +19,7 @@ class PgStatProgressVacuum(Plugin):
         result += template.item({
             'key': self.right_type(self.key),
             'name': 'PostgreSQL vacuum count',
+            'delay': self.plugin_config('interval'),
             'value_type': self.VALUE_TYPE.numeric_unsigned
         })
         return result

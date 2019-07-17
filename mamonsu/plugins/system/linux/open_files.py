@@ -14,7 +14,8 @@ class OpenFiles(Plugin):
         return template.item({
             'name': 'Opened files',
             'key': self.right_type(self.key),
-            'value_type': Plugin.VALUE_TYPE.numeric_unsigned
+            'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
+            'delay': self.plugin_config('interval')
         })
 
     def graphs(self, template):
