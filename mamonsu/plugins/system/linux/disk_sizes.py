@@ -15,8 +15,8 @@ class DiskSizes(Plugin):
         'pstore', 'devtmpfs', 'autofs',
         'cgroup', 'configfs', 'devpts',
         'efivarfs', 'fusectl', 'fuse.gvfsd-fuse',
-        'hugetlbfs', 'mqueue',
-        'nfsd', 'proc', 'pstore',
+        'hugetlbfs', 'mqueue', 'binfmt_misc',
+        'nfsd', 'proc', 'pstore', 'selinuxfs'
         'rpc_pipefs', 'securityfs', 'sysfs',
         'nsfs', 'tmpfs', 'tracefs']
 
