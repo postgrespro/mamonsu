@@ -99,7 +99,6 @@ class Args(DefaultConfig):
         parser.add_option_group(group)
 
         self.args, _ = parser.parse_args()
-
         # apply logging
         logging.basicConfig(
             filename=self.args.report_path,
@@ -189,11 +188,15 @@ def run_report():
         pg_report = pg_info.collect()
 
     if args.print_report:
-        if args.run_system:
+        if is_true(args.run_system):
             print(sys_report)
         else:
             print('Disabled system collect')
-        if args.run_postgres:
+        if is_true(args.run_postgres):
             print(pg_report)
         else:
             print('Disabled postgres collect')
+
+
+def is_true(arg):
+    return arg in ("True", True)
