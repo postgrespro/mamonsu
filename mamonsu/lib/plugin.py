@@ -43,6 +43,7 @@ class Plugin(object):
     is_child = True
 
     # const
+    PATH = "/etc/zabbix/zabbix_agent.d/scripts"
     DELTA = Template.DELTA
     GRAPH_TYPE = Template.GRAPH_TYPE
     VALUE_TYPE = Template.VALUE_TYPE
@@ -165,7 +166,6 @@ class Plugin(object):
                 self._log_exception(e, trace)
                 return
             # time interval btw sending metrics
-            print(self.plugin_config('interval'))
             sleep_time = int(self.plugin_config('interval')) - int(time.time() - last_start)
             if sleep_time > 0:
                 time.sleep(sleep_time)
@@ -174,6 +174,7 @@ class Plugin(object):
                     'Timeout: {0}s'.format(int(time.time() - last_start)))
                 return
 
+    # convert zabbix key to right type: zabbix-trapper or zabbix-agent
     def right_type(self, key, var="", var_discovery=""):
         if self.Type == "mamonsu":
             new_key = key.format('[{0}{1}]'.format(var, var_discovery[:-1]))

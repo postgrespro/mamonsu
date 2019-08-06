@@ -56,7 +56,7 @@ Options:
     --add-plugins <directory>
     --template-name <template name>
     --application <application name in template>
-Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>, pg-version = 10,
+Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>
 
 
 Bootstrap DDL for monitoring:

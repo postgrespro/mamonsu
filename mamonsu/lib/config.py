@@ -77,7 +77,7 @@ class Config(DefaultConfig):
                 self.config.readfp(open(cfg_file))
 
         plugins = self.fetch('plugins', 'directory', str)
-        if not plugins == 'None':
+        if plugins is not None:
             self._load_external_plugins_from_directory(plugins)
         self._apply_default_config()
         self._check_interval()

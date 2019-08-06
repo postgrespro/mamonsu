@@ -14,6 +14,7 @@ from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
 from distutils.version import LooseVersion
+from mamonsu.plugins.system.linux.scripts import Scripts
 
 
 def start():
@@ -28,7 +29,8 @@ def start():
     refactored_classes = ["Oldest", "PgBufferCache", "ArchiveCommand", "BgWriter", "Checkpoint", "Connections",
                           "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
                           "PgStatProgressVacuum", "PgStatStatement", "PgWaitSampling", "La", "OpenFiles",
-                          "SystemUptime", "ProcStat", "Net", "Memory", "DiskStats", "DiskSizes"]
+                          "SystemUptime", "ProcStat", "Net", "Memory", "DiskStats", "DiskSizes", "DefConfTest",
+                          "Health"]
     commands = sys.argv[1:]
     if len(commands) > 0:
         tool = commands[0]
@@ -71,14 +73,12 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ in refactored_classes:
-                        if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
-                            if Plugin.VersionPG['type'] == 'PGEE':
-                                plugins.append(klass(cfg))
-                        elif klass.__name__ == "PgStatProgressVacuum" \
-                                and Plugin.VersionPG['number'] >= LooseVersion('9.6'):
+                    if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
+                        if Plugin.VersionPG['type'] == 'PGEE':
                             plugins.append(klass(cfg))
-                        else:
+
+                    else:
+                        if klass.__name__ != "Cfs":
                             plugins.append(klass(cfg))
                 types = args.plugin_type.split(',')
                 # check if any plugin types is equal
@@ -89,9 +89,29 @@ def start():
                 if len(types) > 1:
                     args.plugin_type = 'all'
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
+                    # check if conf file has a path
+                    len_path = commands[2].rfind("/")
+                    #print(len_path)
+                    #print(len(commands[2]))
+                    # get path for conf file and scripts
+                    if len_path != -1:
+                        path = commands[2][:len_path] + "/scripts"
+                        Plugin.PATH = path
+                    else:
+                        path = "./scripts"
+                        Plugin.PATH = path
+                    # create directory for scripts along the path of conf file if needed
+                    if not os.path.exists(path):
+                        os.makedirs(path)
+                        print("directory for scripts has created")
                     template = GetKeys()
+                    # write conf file
                     with codecs.open(commands[2], 'w', 'utf-8') as f:
                         f.write(template.txt(args.plugin_type, plugins))  # pass command type
+                    # write bash scripts for zabbix - agent to a file
+                    for key in Scripts.Bash:
+                        with codecs.open(path + "/" + key + ".sh", 'w', 'utf-8') as f:
+                            f.write(Scripts.Bash[key])  # pass script itself
                 else:
                     print_total_help()
                 sys.exit(0)
@@ -102,16 +122,11 @@ def start():
             elif commands[1] == 'template':
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    # temporary generate template for agent for classes that have been refactored
-                    if klass.__name__ in refactored_classes:
-                        if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
-                            if Plugin.VersionPG['type'] == 'PGEE':
-                                plugins.append(klass(cfg))
-                        elif klass.__name__ == "PgStatProgressVacuum" \
-                                and Plugin.VersionPG['number'] >= LooseVersion('9.6'):
+                    if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
+                        if Plugin.VersionPG['type'] == 'PGEE':
                             plugins.append(klass(cfg))
-                        else:
-                            plugins.append(klass(cfg))
+                    else:
+                        plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template, args.application)
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
@@ -124,18 +139,17 @@ def start():
                         if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
                             if Plugin.VersionPG['type'] == 'PGEE':
                                 plugins.append(klass(cfg))
-                        elif klass.__name__ == "PgStatProgressVacuum" \
-                                and Plugin.VersionPG['number'] >= LooseVersion('9.6'):
-                            plugins.append(klass(cfg))
                         else:
-                            plugins.append(klass(cfg))
-                template = ZbxTemplate(args.template,
-                                       args.application)
+                            if klass.__name__ != "Cfs":
+                                plugins.append(klass(cfg))
+                template = ZbxTemplate(args.template, args.application)
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
                     sys.exit(0)
             else:
                 print_total_help()
+        else:
+            print_total_help()
     args, commands = parse_args()
     if len(commands) > 0:
         print_total_help()
