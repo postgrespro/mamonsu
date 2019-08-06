@@ -1,13 +1,13 @@
 import os
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
-PATH = "/etc/zabbix/scripts/agentd/zapgix"
+#PATH = "/etc/zabbix/scripts/agentd/zapgix"
 
 
 class DiskSizes(Plugin):
     AgentPluginType = 'sys'
 
-    query_agent_discovery = PATH + "/disk_sizes.sh -j MOUNTPOINT"
+    query_agent_discovery = "/disk_sizes.sh -j MOUNTPOINT"
     query_agent_used = "df $1 | awk 'NR == 2 {print $$3 * 1024}'"
     query_agent_free = "df $1 | awk 'NR == 2 {print $$4 * 1024}'"
     query_agent_percent_free = "df $1 | awk 'NR == 2 {print 100 - $$5}'"
@@ -128,7 +128,7 @@ class DiskSizes(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('system.vfs.discovery,{0}'.format(self.query_agent_discovery))
+        result.append('system.vfs.discovery,{0}{1}'.format(Plugin.PATH, self.query_agent_discovery))
         result.append('system.vfs.used[*],{0}'.format(self.query_agent_used))
         result.append('system.vfs.free[*],{0}'.format(self.query_agent_free))
         result.append('system.vfs.percent_free[*],{0}'.format(self.query_agent_percent_free))

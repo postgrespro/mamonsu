@@ -1,23 +1,23 @@
 import re
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
-PATH = "/etc/zabbix/scripts/agentd/zapgix"
+#PATH = "/etc/zabbix/scripts/agentd/zapgix"
 
 
 class DiskStats(Plugin):
     # todo yaxis right 100%
     # bold line
     AgentPluginType = 'sys'
-    query_agent_discovery = PATH + "/disk_stats.sh -j BLOCKDEVICE"
+    query_agent_discovery = "/disk_stats.sh -j BLOCKDEVICE"
     agent_query_read_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $$4}'`"
     agent_query_read_sc = "expr `grep -w '$1' /proc/diskstats | awk '{print $$6 * 512}'`"
     agent_query_write_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $$8}'`"
     agent_query_write_sc = "expr `grep -w '$1' /proc/diskstats | awk '{print $$10 * 512}'`"
     agent_query_ticks = "expr `grep -w '$1' /proc/diskstats | awk '{print $$13 / 10}'`"
-    agent_query_read_op_all = PATH + "/disk_stats_read_op.sh"  # get sum for all read_op
-    agent_query_read_sc_all = PATH + "/disk_stats_read_b.sh"
-    agent_query_write_op_all = PATH + "/disk_stats_write_op.sh"
-    agent_query_write_sc_all = PATH + "/disk_stats_write_b.sh"
+    agent_query_read_op_all = "/disk_stats_read_op.sh"  # get sum for all read_op
+    agent_query_read_sc_all = "/disk_stats_read_b.sh"
+    agent_query_write_op_all = "/disk_stats_write_op.sh"
+    agent_query_write_sc_all = "/disk_stats_write_b.sh"
 
     key = 'system.disk'
 
@@ -187,14 +187,14 @@ class DiskStats(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('system.disk.discovery,{0}'.format(self.query_agent_discovery))
+        result.append('system.disk.discovery,{0}{1}'.format(Plugin.PATH, self.query_agent_discovery))
         result.append('system.disk.utilization[*],{0}'.format(self.agent_query_ticks))
         result.append('system.disk.read[*],{0}'.format(self.agent_query_read_op))
         result.append('system.disk.write[*],{0}'.format(self.agent_query_write_op))
         result.append('system.disk.read_b[*],{0}'.format(self.agent_query_read_sc))
         result.append('system.disk.write_b[*],{0}'.format(self.agent_query_write_sc))
-        result.append('system.disk.all_read,{0}'.format(self.agent_query_read_op_all))
-        result.append('system.disk.all_write,{0}'.format(self.agent_query_write_op_all))
-        result.append('system.disk.all_read_b,{0}'.format(self.agent_query_read_sc_all))
-        result.append('system.disk.all_write_b,{0}'.format(self.agent_query_write_sc_all))
+        result.append('system.disk.all_read,{0}{1}'.format(Plugin.PATH, self.agent_query_read_op_all))
+        result.append('system.disk.all_write,{0}{1}'.format(Plugin.PATH, self.agent_query_write_op_all))
+        result.append('system.disk.all_read_b,{0}{1}'.format(Plugin.PATH, self.agent_query_read_sc_all))
+        result.append('system.disk.all_write_b,{0}{1}'.format(Plugin.PATH, self.agent_query_write_sc_all))
         return template_zabbix.key_and_query(result)
