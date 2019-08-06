@@ -10,11 +10,14 @@ class Oldest(Plugin):
     OldestXidSql = "select greatest(max(age(backend_xmin)), max(age(backend_xid))) from pg_catalog.pg_stat_activity;"
 
     OldestXidSql_bootstrap = "select public.mamonsu_get_oldest_xid();"
-
     OldestQuerySql = "select case when extract(epoch from max(now() - xact_start)) is not null then extract(epoch" \
                      " from max(now() - xact_start)) else 0 end from pg_catalog.pg_stat_activity where pid not in " \
                      "(select pid from pg_stat_replication) AND pid <> pg_backend_pid() " \
                      "AND query not ilike '%%VACUUM%%'; "
+
+    # OldestQuery = " SELECT query FROM pg_catalog.pg_stat_activity WHERE extract(epoch FROM (now() - query_start))=(SELECT " \
+    #               "extract(epoch from max(now() - query_start)) FROM pg_catalog.pg_stat_activity) and pid not " \
+    #               "in (select pid from pg_stat_replication) AND pid <> pg_backend_pid() AND query not ilike '%%VACUUM%%';"
 
     OldestQuerySql_bootstrap = "select public.mamonsu_get_oldest_query();"
 
@@ -38,14 +41,14 @@ class Oldest(Plugin):
         result = template.graph({
             'name': 'PostgreSQL oldest query running time',
             'items': [{
-                'key': self.right_type(self.key, 'query_time') ,
+                'key': self.right_type(self.key, 'query_time'),
                 'color': '00CC00'
             }]
         })
         result += template.graph({
             'name': 'PostgreSQL age of oldest xid',
             'items': [{
-                'key': self.right_type(self.key, 'xid_age') ,
+                'key': self.right_type(self.key, 'xid_age'),
                 'color': '00CC00'
             }]
         })
@@ -80,5 +83,3 @@ class Oldest(Plugin):
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.xid_age'), self.OldestXidSql))
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.query_time'), self.OldestQuerySql))
         return template_zabbix.key_and_query(result)
-
-
