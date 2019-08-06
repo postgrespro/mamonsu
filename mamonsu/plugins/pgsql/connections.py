@@ -33,7 +33,6 @@ class Connections(Plugin):
     key = 'pgsql.connections{0}'
 
     def run(self, zbx):
-        #print(self.plugin_config('interval'))
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
             result = Pooler.query(
                 'select state, count(*) '
@@ -76,7 +75,6 @@ class Connections(Plugin):
         zbx.send('pgsql.connections[max_connections]', int(self.Max_connections))
 
     def items(self, template):
-        print(self.plugin_config('interval'))
         result = template.item({
             'name': 'PostgreSQL: number of total connections',
             'key': self.right_type(self.key, "total"),
