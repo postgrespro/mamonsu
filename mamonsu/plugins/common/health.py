@@ -6,6 +6,7 @@ if platform.LINUX:
 
 
 class Health(Plugin):
+    AgentPluginType = 'sys'
 
     DEFAULT_CONFIG = {'max_memory_usage': str(40 * 1024 * 1024)}
 
@@ -23,38 +24,57 @@ class Health(Plugin):
 
     def items(self, template):
         # see supervisor.py:
-        result = template.item({
-            'name': 'Mamonsu: plugin errors',
-            'key': 'mamonsu.plugin.errors[]',
-            'value_type': Plugin.VALUE_TYPE.text  # text
-        }) + template.item({
-            'name': 'Mamonsu: plugin keep alive',
-            'key': 'mamonsu.plugin.keepalive[]'
-        })
-        if platform.LINUX:
-            result += template.item({
-                'name': 'Mamonsu: rss memory max usage',
-                'key': 'mamonsu.memory.rss[max]',
-                'units': Plugin.UNITS.bytes
+        if self.Type == "mamonsu":
+            result = template.item({
+                'name': 'Mamonsu: plugin errors',
+                'key': 'mamonsu.plugin.errors[]',
+                'value_type': Plugin.VALUE_TYPE.text  # text
+            }) + template.item({
+                'name': 'Mamonsu: plugin keep alive',
+                'key': self.right_type("mamonsu.plugin.keepalive{0}")
+            })
+            if platform.LINUX:
+                result += template.item({
+                    'name': 'Mamonsu: rss memory max usage',
+                    'key': 'mamonsu.memory.rss[max]',
+                    'units': Plugin.UNITS.bytes
+                })
+        else:
+            result = template.item({
+                'name': 'Mamonsu: plugin keep alive',
+                'key': self.right_type("mamonsu.plugin.keepalive{0}")
             })
         return result
 
     def triggers(self, template):
-        result = template.trigger({
-            'name': 'Mamonsu plugin errors '
-            'on {HOSTNAME}. {ITEM.LASTVALUE}',
-            'expression': '{#TEMPLATE:mamonsu.plugin.errors[].strlen()'
-            '}&gt;1'
-        }) + template.trigger({
-            'name': 'Mamonsu nodata from {HOSTNAME}',
-            'expression': '{#TEMPLATE:mamonsu.plugin.keepalive[]'
-            '.nodata(180)}=1'
-        })
-        if platform.LINUX:
-            result += template.trigger({
-                'name': 'Mamonsu agent memory usage alert '
-                'on {HOSTNAME}: {ITEM.LASTVALUE} bytes',
-                'expression': '{#TEMPLATE:mamonsu.memory.rss[max].last()}'
-                '&gt;' + self.plugin_config('max_memory_usage')
+        if self.Type == "mamonsu":
+            result = template.trigger({
+                'name': 'Mamonsu plugin errors '
+                        'on {HOSTNAME}. {ITEM.LASTVALUE}',
+                'expression': '{#TEMPLATE:mamonsu.plugin.errors[].strlen()'
+                              '}&gt;1'
+            }) + template.trigger({
+                'name': 'Mamonsu nodata from {HOSTNAME}',
+                'expression': '{#TEMPLATE:' + self.right_type("mamonsu.plugin.keepalive{0}") +
+                              '.nodata(180)}=1'
+            })
+            if platform.LINUX:
+                result += template.trigger({
+                    'name': 'Mamonsu agent memory usage alert '
+                            'on {HOSTNAME}: {ITEM.LASTVALUE} bytes',
+                    'expression': '{#TEMPLATE:mamonsu.memory.rss[max].last()}'
+                                  '&gt;' + self.plugin_config('max_memory_usage')
+                })
+        else:
+            result = template.trigger({
+                'name': 'Mamonsu nodata from {HOSTNAME}',
+                'expression': '{#TEMPLATE:' + self.right_type("mamonsu.plugin.keepalive{0}") +
+                              '.nodata(180)}=1'
             })
         return result
+
+    def keys_and_queries(self, template_zabbix):
+        result = []
+        result.append('{0},{1}'.format("mamonsu.plugin.keepalive", "echo 0"))
+        return template_zabbix.key_and_query(result)
+
