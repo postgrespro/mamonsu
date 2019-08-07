@@ -148,8 +148,7 @@ def start():
                     sys.exit(0)
             else:
                 print_total_help()
-        else:
-            print_total_help()
+
     args, commands = parse_args()
     if len(commands) > 0:
         print_total_help()
