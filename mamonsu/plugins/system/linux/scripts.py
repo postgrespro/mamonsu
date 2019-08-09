@@ -72,7 +72,7 @@ exit ${rcode}
          """,
 
         'disk_stats':
-            """#!/usr/bin/env ksh
+            """#!/bin/bash
  IFS_DEFAULT="${IFS}"
  #
  #################################################################################
@@ -147,7 +147,7 @@ exit ${rcode}
  """,
 
         'disk_stats_read_op':
-            """#!/usr/bin/env ksh
+            """#!/bin/bash
 rval=`cat /proc/diskstats`
 
 count=1
@@ -186,7 +186,7 @@ echo $(($value))
 """,
 
         'disk_stats_read_b':
-            """#!/usr/bin/env ksh
+            """#!/bin/bash
 rval=`cat /proc/diskstats`
 
 count=1
@@ -221,7 +221,7 @@ echo $(($value*512))
 """,
 
         'disk_stats_write_op':
-            """#!/usr/bin/env ksh
+            """#!/bin/bash
 rval=`cat /proc/diskstats`
 
 count=1
@@ -261,7 +261,7 @@ echo $(($value))
 """,
 
         'disk_stats_write_b':
-            """#!/usr/bin/env ksh
+            """#!/bin/bash
 rval=`cat /proc/diskstats`
 
 count=1
@@ -296,7 +296,7 @@ done <<< ${rval}
 echo $(($value*512))
     """,
         'net':
-            """#!/usr/bin/env ksh
+            """#!/bin/bash
 
 
 #################################################################################
@@ -347,7 +347,7 @@ exit ${rcode}
 """,
 
         'disk_stats_ticks':
-            """#!/usr/bin/env ksh
+            """#!/bin/bash
 rval=`cat /proc/diskstats`
 
 count=1
