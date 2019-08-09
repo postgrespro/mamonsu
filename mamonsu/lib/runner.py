@@ -98,7 +98,7 @@ def start():
                         path = commands[2][:len_path] + "/scripts"
                         Plugin.PATH = path
                     else:
-                        path = "./scripts"
+                        path = os.getcwd()
                         Plugin.PATH = path
                     # create directory for scripts along the path of conf file if needed
                     if not os.path.exists(path):
@@ -110,8 +110,10 @@ def start():
                         f.write(template.txt(args.plugin_type, plugins))  # pass command type
                     # write bash scripts for zabbix - agent to a file
                     for key in Scripts.Bash:
-                        with codecs.open(path + "/" + key + ".sh", 'w', 'utf-8') as f:
+                        with codecs.open(path + "/" + key + ".sh", 'w+', 'utf-8') as f:
                             f.write(Scripts.Bash[key])  # pass script itself
+                        os.chmod(path + "/" + key + ".sh", 0o744)
+                    print("Bash scripts for native zabbix agent have been saved to {0}".format(path))
                 else:
                     print_total_help()
                 sys.exit(0)
