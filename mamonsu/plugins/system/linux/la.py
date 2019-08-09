@@ -4,7 +4,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 class La(Plugin):
     AgentPluginType = 'sys'
     query_agent = "cat /proc/loadavg | awk '{ print $1 }'"
-    key = 'system.la{}'
+    key = 'system.la{0}'
 
     def run(self, zbx):
         la_1 = open('/proc/loadavg', 'r').read().split(' ')[0]
@@ -13,7 +13,7 @@ class La(Plugin):
     def items(self, template):
         return template.item({
             'name': 'System load average over 1 minute',
-            'key': self.right_type(self.key, '1'),
+            'key': self.right_type(self.key, var='1'),
             'delay': self.plugin_config('interval')
         })
 
