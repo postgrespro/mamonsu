@@ -113,7 +113,7 @@ def start():
                     for key in Scripts.Bash:
                         with codecs.open(path + "/" + key + ".sh", 'w+', 'utf-8') as f:
                             f.write(Scripts.Bash[key])  # pass script itself
-                        os.chmod(path + "/" + key + ".sh", 0o744)
+                        os.chmod(path + "/" + key + ".sh", 0o755)
                     print("Bash scripts for native zabbix agent have been saved to {0}".format(path))
                 else:
                     print_total_help()
