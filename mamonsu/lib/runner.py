@@ -98,8 +98,9 @@ def start():
                         path = commands[2][:len_path] + "/scripts"
                         Plugin.PATH = path
                     else:
-                        path = os.getcwd()
+                        path = os.getcwd() + "/scripts"
                         Plugin.PATH = path
+                        print(path)
                     # create directory for scripts along the path of conf file if needed
                     if not os.path.exists(path):
                         os.makedirs(path)
