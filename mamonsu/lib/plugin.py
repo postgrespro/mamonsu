@@ -177,7 +177,10 @@ class Plugin(object):
     # convert zabbix key to right type: zabbix-trapper or zabbix-agent
     def right_type(self, key, var="", var_discovery=""):
         if self.Type == "mamonsu":
-            new_key = key.format('[{0}{1}]'.format(var, var_discovery[:-1]))
+            if len(var_discovery) == 0:
+                new_key = key.format('[{0}]'.format(var))
+            else:
+                new_key = key.format('[{0}{1}]'.format(var, var_discovery[:-1]))
         else:
             if self.AgentPluginType == 'sys':
                 if var_discovery != "":
