@@ -1,7 +1,8 @@
 import os
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
-#PATH = "/etc/zabbix/scripts/agentd/zapgix"
+
+# PATH = "/etc/zabbix/scripts/agentd/zapgix"
 
 
 class DiskSizes(Plugin):
@@ -91,12 +92,14 @@ class DiskSizes(Plugin):
                 'key': 'system.vfs.percent_free[{#MOUNTPOINT}]',
                 'name': 'Mount point {#MOUNTPOINT}: free in percents',
                 'delay': self.plugin_config('interval'),
-                'units': Plugin.UNITS.percent},
-            {
-                'key': 'system.vfs.percent_inode_free[{#MOUNTPOINT}]',
-                'name': 'Mount point {#MOUNTPOINT}: free inodes in percent',
-                'delay': self.plugin_config('interval'),
                 'units': Plugin.UNITS.percent}]
+        if Plugin.Type == 'mamonsu':
+            items.append(
+                {
+                    'key': 'system.vfs.percent_inode_free[{#MOUNTPOINT}]',
+                    'name': 'Mount point {#MOUNTPOINT}: free inodes in percent',
+                    'delay': self.plugin_config('interval'),
+                    'units': Plugin.UNITS.percent})
 
         graphs = [{
             'name': 'Mount point overview: {#MOUNTPOINT}',
@@ -115,13 +118,15 @@ class DiskSizes(Plugin):
             'expression': '{#TEMPLATE:system.vfs.'
                           'percent_free[{#MOUNTPOINT}].last'
                           '()}&lt;' + self.plugin_config('vfs_percent_free')},
-            {
+        ]
+        if Plugin.Type == 'mamonsu':
+            triggers.append({
                 'name': 'Free inode space less then 10% on mountpoint '
                         '{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
                 'expression': '{#TEMPLATE:system.vfs.'
                               'percent_inode_free[{#MOUNTPOINT}].last'
                               '()}&lt;' + self.plugin_config('vfs_inode_percent_free')
-            }]
+            })
 
         return template.discovery_rule(
             rule=rule, items=items, graphs=graphs, triggers=triggers)
