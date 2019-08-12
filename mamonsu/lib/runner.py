@@ -26,11 +26,11 @@ def start():
     if platform.LINUX:
         signal.signal(signal.SIGQUIT, quit_handler)
     # temporal list to keep names of all refactored classes
-    refactored_classes = ["Oldest", "PgBufferCache", "ArchiveCommand", "BgWriter", "Checkpoint", "Connections",
-                          "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
-                          "PgStatProgressVacuum", "PgStatStatement", "PgWaitSampling", "La", "OpenFiles",
-                          "SystemUptime", "ProcStat", "Net", "Memory", "DiskStats", "DiskSizes", "DefConfTest",
-                          "Health"]
+    #refactored_classes = ["Oldest", "PgBufferCache", "ArchiveCommand", "BgWriter", "Checkpoint", "Connections",
+    #                      "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
+    #                      "PgStatProgressVacuum", "PgStatStatement", "PgWaitSampling", "La", "OpenFiles",
+    #                      "SystemUptime", "ProcStat", "Net", "Memory", "DiskStats", "DiskSizes", "DefConfTest",
+    #                      "Health"]
     commands = sys.argv[1:]
     if len(commands) > 0:
         tool = commands[0]
@@ -91,8 +91,8 @@ def start():
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
                     # check if conf file has a path
                     len_path = commands[2].rfind("/")
-                    #print(len_path)
-                    #print(len(commands[2]))
+                    # print(len_path)
+                    # print(len(commands[2]))
                     # get path for conf file and scripts
                     if len_path != -1:
                         path = commands[2][:len_path] + "/scripts"
@@ -138,13 +138,12 @@ def start():
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ in refactored_classes:
-                        if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
-                            if Plugin.VersionPG['type'] == 'PGEE':
-                                plugins.append(klass(cfg))
-                        else:
-                            if klass.__name__ != "Cfs":
-                                plugins.append(klass(cfg))
+                    if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
+                        if Plugin.VersionPG['type'] == 'PGEE':
+                            plugins.append(klass(cfg))
+                    else:
+                        if klass.__name__ != "Cfs":
+                            plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template, args.application)
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     f.write(template.xml(plugins))
