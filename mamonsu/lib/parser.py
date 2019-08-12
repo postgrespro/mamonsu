@@ -18,7 +18,6 @@ Examples:
 Options:
     --add-plugins <directory>
 
-
 Export zabbix keys for native zabbix-agent:
 Command: export zabbix-parameters
 Examples:
@@ -172,11 +171,14 @@ class MissOptsParser(OptionParser):
 Options:
     -c, --config <file>
     -p, --pid    <pid-file>
+    -t, --template-name <template name>
+    -a, --add-plugins <directory>
 
 Export example config with default variables:
 Command: export
 Examples:
     {prog} export config <file>
+     --add-plugins <directory>
 
 
 Export zabbix template with additional plugins included in config file:
@@ -185,8 +187,9 @@ Examples:
     {prog} export template <file>
 Options:
     --config <file>
-    -t <template name>
+    --template-name <template name>
     --application <application name in template>
+    --add-plugins <directory>
 
 
 Export zabbix keys for native zabbix-agent:
@@ -195,6 +198,8 @@ Examples:
     {prog} export zabbix-parameters  <file>
 Options:
     --pg-version <pg_version>
+    --config <file>
+    --add-plugins <directory>
 
         
 Export template for native zabbix agent:
@@ -202,8 +207,10 @@ Command: export zabbix-template
 Examples:
     {prog} export zabbix-template <file>
 Options:
-    -t <template name>
+    --template-name  <template name>
     --application <application name in template>
+    --config <file>
+    --add-plugins <directory>
 
 """)
         sys.exit(2)
