@@ -99,5 +99,5 @@ class Xlog(Plugin):
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_wal_lsn_diff))
         # FIXME for lag
         result.append(
-            '{0},$2 $1 -c "{1}"'.format("pgsql.replication_lag.sec[*]", Pooler.SQL['replication_lag_slave_query']))
+            '{0},$2 $1 -c "{1}"'.format("pgsql.replication_lag.sec[*]", Pooler.SQL['replication_lag_slave_query'][0]))
         return template_zabbix.key_and_query(result)
