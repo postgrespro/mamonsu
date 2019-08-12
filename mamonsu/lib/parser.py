@@ -19,7 +19,7 @@ Options:
     --add-plugins <directory>
 
 
-Export zabbix keys for zabbix-agent in config file:
+Export zabbix keys for native zabbix-agent:
 Command: export zabbix-parameters
 Examples:
     {prog} export zabbix-parameters  <file>
@@ -28,21 +28,27 @@ EXAMPLE: /etc/zabbix/zabbix_agent.d/conf_file_name.conf
 Options:
     --plugin-type <plugin_type> (pg,sys,all)
     --pg-version <pg_version>
+    --add-plugins <directory>
+    --config  <file>
 Default plugin_type = all, pg-version = 10
 Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version
 numbers are 10, 11, 9.6, 9.5
 Example: PGPRO_10 or PGEE_11 or PGPRO_9.6 
 
     
-Export zabbix agent template with additional plugins included in config file:
+Export template for native zabbix agent:
 Command: export zabbix-template 
 Examples:
     {prog} export zabbix-template <file>
 Options:
     --template-name <template name>
+    --plugin-type <plugin_type> (pg,sys,all)
     --application  <application name in template>
     --pg-version <pg_version>
-Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>, pg-version = 10,
+    --add-plugins <directory>
+    --config  <file>
+Default plugin_type = all, template name = PostgresPro-<platform name>,
+application = App-PostgresPro-<platform name>, pg-version = 10,
 Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version 
 numbers are 10, 11, 9.6, 9.5
 Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
@@ -56,6 +62,7 @@ Options:
     --add-plugins <directory>
     --template-name <template name>
     --application <application name in template>
+    --config <file>
 Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>
 
 
@@ -179,25 +186,24 @@ Examples:
 Options:
     --config <file>
     -t <template name>
-    -a <application name in template>
+    --application <application name in template>
 
 
-Export zabbix keys for zabbix-agent in config file:
+Export zabbix keys for native zabbix-agent:
 Command: export zabbix-parameters
 Examples:
     {prog} export zabbix-parameters  <file>
 Options:
-    -v <pg_version>
+    --pg-version <pg_version>
 
-    
-    
-Export zabbix agent template with additional plugins included in config file:
+        
+Export template for native zabbix agent:
 Command: export zabbix-template 
 Examples:
     {prog} export zabbix-template <file>
 Options:
     -t <template name>
-    -a <application name in template>
+    --application <application name in template>
 
 """)
         sys.exit(2)
