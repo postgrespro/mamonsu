@@ -2,7 +2,6 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
-import random
 
 
 class Instance(Plugin):

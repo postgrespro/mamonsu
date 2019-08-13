@@ -21,7 +21,7 @@ class PgHealth(Plugin):
 
         start_time = time.time()
         Pooler.query(self.query_health)
-        zbx.send(self.key_ping.format('[]'), (time.time() - start_time) * 100)  # FIXME for agent type
+        zbx.send(self.key_ping.format('[]'), (time.time() - start_time) * 100)
 
         result = Pooler.query(self.query_uptime)
         zbx.send(self.key_uptime.format('[]'), int(result[0][0]))
@@ -32,7 +32,7 @@ class PgHealth(Plugin):
     def items(self, template):
         result = ''
         if self.Type == "mamonsu":
-            delay = self.plugin_config('interval')  #TODO check delay
+            delay = self.plugin_config('interval')
             value_type = Plugin.VALUE_TYPE.numeric_unsigned
         else:
             delay = 5 #TODO check delay
