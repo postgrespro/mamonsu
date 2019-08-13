@@ -5,7 +5,7 @@ from .pool import Pooler
 
 
 class Cfs(Plugin):
-
+    AgentPluginType = 'pg'
     ratioInterval, ratioCounter = 10, 0
     timeRatioInterval = ratioInterval * 60
 
