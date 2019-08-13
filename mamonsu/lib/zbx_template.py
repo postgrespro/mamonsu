@@ -6,6 +6,7 @@ import re
 
 
 class ZbxTemplate(object):
+    plg_type = 'all'
     mainTemplate = u"""<?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
 <version>2.0</version>
@@ -111,9 +112,10 @@ class ZbxTemplate(object):
         xml = re.sub(r"<type>2", "<type>0", xml)
         return xml
 
-    def xml(self, plugins=[]):
+    def xml(self, type, plugins=[]):
         # sort plugins!
         plugins.sort(key=lambda x: x.__class__.__name__)
+        self.plg_type = type
         # create template
         template_data = {}
         template_data['template'] = self.Template
@@ -136,10 +138,11 @@ class ZbxTemplate(object):
     def _get_all(self, items='items', plugins=[]):
         result = ''
         for plugin in plugins:
-            row = getattr(plugin, items)(self)  # get Items of this particular plugin
-            if row is None:
-                continue
-            result += row
+            if plugin.AgentPluginType == self.plg_type or self.plg_type == 'all':
+                row = getattr(plugin, items)(self)  # get Items of this particular plugin
+                if row is None:
+                    continue
+                result += row
         return result
 
     def _macro(self, xml_key='macro'):

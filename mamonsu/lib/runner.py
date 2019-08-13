@@ -25,12 +25,7 @@ def start():
     signal.signal(signal.SIGTERM, quit_handler)
     if platform.LINUX:
         signal.signal(signal.SIGQUIT, quit_handler)
-    # temporal list to keep names of all refactored classes
-    #refactored_classes = ["Oldest", "PgBufferCache", "ArchiveCommand", "BgWriter", "Checkpoint", "Connections",
-    #                      "Databases", "PgHealth", "Instance", "PgLocks", "Xlog",
-    #                      "PgStatProgressVacuum", "PgStatStatement", "PgWaitSampling", "La", "OpenFiles",
-    #                      "SystemUptime", "ProcStat", "Net", "Memory", "DiskStats", "DiskSizes", "DefConfTest",
-    #                      "Health"]
+
     commands = sys.argv[1:]
     if len(commands) > 0:
         tool = commands[0]
@@ -61,10 +56,6 @@ def start():
             # get PG version
             version_args = args.pg_version.split('_')
             define_pg_version(version_args)
-            # print(Plugin.VersionPG['type'])
-            # print(Plugin.VersionPG['number'])
-            # print("this is args", args)
-            # print("this is commands", commands)
             cfg = Config(args.config_file, args.plugins_dirs)
             if not len(commands) == 3:
                 print_total_help()
@@ -91,8 +82,6 @@ def start():
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
                     # check if conf file has a path
                     len_path = commands[2].rfind("/")
-                    # print(len_path)
-                    # print(len(commands[2]))
                     # get path for conf file and scripts
                     if len_path != -1:
                         path = commands[2][:len_path] + "/scripts"
@@ -112,9 +101,10 @@ def start():
                     # write bash scripts for zabbix - agent to a file
                     for key in Scripts.Bash:
                         with codecs.open(path + "/" + key + ".sh", 'w+', 'utf-8') as f:
+                            #   configuration file for zabbix-agent is generated for selected plugin-type
                             f.write(Scripts.Bash[key])  # pass script itself
                         os.chmod(path + "/" + key + ".sh", 0o755)
-                    print("Bash scripts for native zabbix agent have been saved to {0}".format(path))
+                    print("Bash scripts for native zabbix-agent have been saved to {0}".format(path))
                 else:
                     print_total_help()
                 sys.exit(0)
@@ -132,22 +122,35 @@ def start():
                         plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template, args.application)
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
-                    f.write(template.xml(plugins))
+                    #   template for mamonsu (zabbix-trapper) is generated for all available plugins
+                    f.write(template.xml("all", plugins))  # set type to 'all' for mamonsu
                     sys.exit(0)
             elif commands[1] == 'zabbix-template':
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
-                for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
-                        if Plugin.VersionPG['type'] == 'PGEE':
-                            plugins.append(klass(cfg))
-                    else:
-                        if klass.__name__ != "Cfs":
-                            plugins.append(klass(cfg))
-                template = ZbxTemplate(args.template, args.application)
-                with codecs.open(commands[2], 'w', 'utf-8') as f:
-                    f.write(template.xml(plugins))
+                types = args.plugin_type.split(',')
+                # check if any plugin types is equal
+                if len(types) > 1:
+                    if is_any_equal(types):
+                        print_total_help()
+                # if number of plugin types is more than 1 => plugin type should be 'all'
+                if len(types) > 1:
+                    args.plugin_type = 'all'
+                if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
+                    for klass in Plugin.only_child_subclasses():
+                        if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
+                            if Plugin.VersionPG['type'] == 'PGEE':
+                                plugins.append(klass(cfg))
+                        else:
+                            if klass.__name__ != "Cfs":
+                                plugins.append(klass(cfg))
+                    template = ZbxTemplate(args.template, args.application)
+                    with codecs.open(commands[2], 'w', 'utf-8') as f:
+                        #   template for zabbix-agent is generated for selected plugin-type
+                        f.write(template.xml(args.plugin_type, plugins))
                     sys.exit(0)
+                else:
+                    print_total_help()
             else:
                 print_total_help()
 
