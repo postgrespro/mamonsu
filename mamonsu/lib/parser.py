@@ -69,7 +69,7 @@ Bootstrap DDL for monitoring:
 Command: bootstrap
 Examples:
     {prog} bootstrap -M <mamonsu_username>
-HINT:  -M <mamonsu_username> is used to assign ownership of bootstap quiries
+HINT:  -M <mamonsu_username> is used to assign ownership of bootstap queries
 Options:
     -p, --port <PGPORT>
     -W <PGPASSWORD>
