@@ -130,10 +130,9 @@ class ZbxTemplate(object):
         template_data['discovery_rules'] = self._get_all('discovery_rules', plugins)
         _xml = minidom.parseString(self.mainTemplate.format(**template_data))
         output_xml = ''.join([line.strip() for line in _xml.toxml().splitlines()])
-        pretty_xml = minidom.parseString(output_xml).toprettyxml(indent="    ", newl="\n")
         if Plugin.Type == 'agent':
-            pretty_xml = ZbxTemplate.turn_agent_type(self, pretty_xml)
-        return pretty_xml
+            output_xml = ZbxTemplate.turn_agent_type(self, output_xml)
+        return output_xml
 
     def _get_all(self, items='items', plugins=[]):
         result = ''
