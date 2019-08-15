@@ -1,1 +1,0 @@
-export zabbix-template ./regression/test7.in.out --application=test_agent_app_name

@@ -1,1 +1,0 @@
-export zabbix-parameters ./regression/test5.in.out --plugin-type=pg --pg-version=10

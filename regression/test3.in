@@ -1,1 +1,0 @@
-export zabbix-parameters ./regression/test3.in.out --plugin-type=pg 
