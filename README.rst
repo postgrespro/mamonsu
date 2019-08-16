@@ -24,11 +24,15 @@ Pre-Build packages for:
 
     `Windows installers <https://oc.postgrespro.ru/index.php/s/qu7YsFvOE55LdXo>`_
 
+NOTE: pre-build packages on packagecloud only for mamonsu 2.3.4
+
 Install via pip:
 
 .. code-block:: bash
 
     $ pip install mamonsu
+
+NOTE: only for mamonsu 2.3.4
 
 Install from git:
 
@@ -52,6 +56,7 @@ Build rpm:
 
 Build win32 exe: (worked with python v3.{4,5}: py2exe v0.9.2.2 and pywin32 v220 or python v2.7: py2exe v0.6.9 and pywin32 v220):
 NOTE: windows installer only for mamonsu 2.3.4 version
+
 .. code-block:: bash
 
     $ git clone ... && cd mamonsu && python setup_win32.py py2exe
@@ -77,9 +82,8 @@ Export template for zabbix:
 
     $ mamonsu export template template.xml --add-plugins /etc/mamonsu/plugins
     or
-    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/template.xml
-    or
     $ cp /usr/share/mamonsu/template.xml .
+    or get example of config with all available parameters at https://postgrespro.ru/products/extensions/mamonsu
 
 Import this file in web interface of zabbix: Configuration => Templates => Import, or deploy with mamonsu:
 
@@ -93,13 +97,12 @@ Add this template like `PostgresPro-Linux` at your monitoring host, or create ho
 
     $ mamonsu zabbix host create <client name> <hostgroup id> <template id> <ip> --url=http://zabbix/ --user=Admin --password=zabbix
 
-Generate config on monitring host or use preinstalled:
+Generate config on monitoring host or use preinstalled:
 
 .. code-block:: bash
 
     $ mamonsu export config /etc/mamonsu/agent.conf --add-plugins /etc/mamonsu/plugins
-    or get example of config with all avaliable parameters
-    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/agent.conf.example
+    or get example of config with all available parameters at https://postgrespro.ru/products/extensions/mamonsu
 
 Change previously zabbix server address and client hostname:
 
@@ -134,7 +137,6 @@ Change previously zabbix server address and client hostname:
     level = INFO
 
 These are the main mamonsu settings to get started. You can also fine-tune other mamonsu settings
-as explained in the section called “Configuration Parameters” of the instruction avaliable at https://postgrespro.com/docs/postgrespro/10/mamonsu.
 
 Bootstrap DDL for monitoring (if you want to monitoring without superuser rights)
 
@@ -160,25 +162,21 @@ Export template for zabbix-agent
 .. code-block:: bash
 
     $ mamonsu export zabbix-template template_agent.xml
-    or
-    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/template_agent.xml.example
+
+    or get example of template at https://postgrespro.ru/products/extensions/mamonsu
 
 Export or download zabbix-agent configuration file for needed PostgreSQL version
 
 .. code-block:: bash
 
     $ mamonsu export zabbix-parameters userparameters_pgsql_v*.conf --pg-version=version_number (by default pg-version=10)
-    or
-    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/userparameters_pgsql_v*.conf.example
+
+    or get example of configuration file at https://postgrespro.ru/products/extensions/mamonsu
 
 NOTE: zabbix-agent configuration file for PostgreSQL 10 and 11 are equal
 
 Bash scripts for OS parameters monitoring are exported with configuration file in directory /scripts
-Or you can download them separately:
-
-.. code-block:: bash
-
-   $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/scripts
+Or you can download them  at https://postgrespro.ru/products/extensions/mamonsu
 
 Add configuration file to zabbix-agent directory as /etc/zabbix/zabbix_agentd.d/userparameters_pgsql.conf
 
