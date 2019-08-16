@@ -20,21 +20,6 @@ class Databases(Plugin):
     query_agent_discovery = "SELECT json_build_object ('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
                             " FROM pg_database d WHERE NOT datistemplate AND datallowconn AND datname!='postgres';"
 
-    # dictionary to keep all queries in one container
-    SQL = {"pgsql.database.discovery{0}": "SELECT json_build_object "
-                                          "('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
-                                          " FROM pg_database d WHERE NOT datistemplate AND datallowconn "
-                                          "AND datname!='postgres';",
-           "pgsql.database.size{0}": "select pg_database_size(datname::text) from pg_catalog.pg_database where" \
-                                     " datistemplate = false and datname = :'p1'",
-           "pgsql.database.max_age{0}": "select age(datfrozenxid) from pg_catalog.pg_database "
-                                        "where datistemplate = false " \
-                                        "and datname = :'p1'",
-           "pgsql.database.bloating_tables{0}": "select count(*) from pg_catalog.pg_stat_all_tables where " \
-                                                "(n_dead_tup/(n_live_tup+n_dead_tup)::float8) > {0} and " \
-                                                "(n_live_tup+n_dead_tup) > {1}",
-           "pgsql.autovacumm.count{0}": Pooler.SQL['count_autovacuum'][0]
-           }
     key_db_discovery = "pgsql.database.discovery{0}"
     key_db_size = "pgsql.database.size{0}"
     key_db_age = "pgsql.database.max_age{0}"
@@ -72,7 +57,7 @@ class Databases(Plugin):
         return template.item({
             'name': 'PostgreSQL: count of autovacuum workers',
             'key': self.right_type(self.key_autovacumm),
-            'delay':  self.plugin_config('interval')
+            'delay': self.plugin_config('interval')
         })
 
     def discovery_rules(self, template):
@@ -86,13 +71,13 @@ class Databases(Plugin):
              'name': 'Database {#DATABASE}: size',
              'units': Plugin.UNITS.bytes,
              'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
-             'delay':  self.plugin_config('interval')},
+             'delay': self.plugin_config('interval')},
             {'key': self.right_type(self.key_db_age, var_discovery="{#DATABASE},"),
              'name': 'Max age (datfrozenxid) in: {#DATABASE}',
-             'delay':  self.plugin_config('interval')},
+             'delay': self.plugin_config('interval')},
             {'key': self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},"),
              'name': 'Count of bloating tables in database: {#DATABASE}',
-             'delay':  self.plugin_config('interval')}
+             'delay': self.plugin_config('interval')}
         ]
         graphs = [
             {
@@ -131,6 +116,6 @@ class Databases(Plugin):
         result.append('{0},echo "{1}" | $3 $2 -v p1="$1"'.format(self.key_db_age.format("[*]"), self.query_age))
         result.append(
             '{0},$3 $2 -d "$1" -c "{1}"'.format(self.key_db_bloating_tables.format("[*]"),
-                                              self.query_bloating_tables.format(self.plugin_config('bloat_scale'),
-                                                                                self.plugin_config('min_rows'))))
+                                                self.query_bloating_tables.format(self.plugin_config('bloat_scale'),
+                                                                                  self.plugin_config('min_rows'))))
         return template_zabbix.key_and_query(result)
