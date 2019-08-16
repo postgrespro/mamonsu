@@ -84,7 +84,8 @@ Export template for zabbix:
     $ mamonsu export template template.xml --add-plugins /etc/mamonsu/plugins
     or
     $ cp /usr/share/mamonsu/template.xml .
-    or get example of config with all available parameters at https://postgrespro.ru/products/extensions/mamonsu
+
+or get example of config with all available parameters at https://postgrespro.ru/products/extensions/mamonsu
 
 Import this file in web interface of zabbix: Configuration => Templates => Import, or deploy with mamonsu:
 
@@ -103,7 +104,8 @@ Generate config on monitoring host or use preinstalled:
 .. code-block:: bash
 
     $ mamonsu export config /etc/mamonsu/agent.conf --add-plugins /etc/mamonsu/plugins
-    or get example of config with all available parameters at https://postgrespro.ru/products/extensions/mamonsu
+
+or get example of config with all available parameters at https://postgrespro.ru/products/extensions/mamonsu
 
 Change previously zabbix server address and client hostname:
 
@@ -164,7 +166,7 @@ Export template for zabbix-agent
 
     $ mamonsu export zabbix-template template_agent.xml
 
-    or get example of template at https://postgrespro.ru/products/extensions/mamonsu
+or get example of template at https://postgrespro.ru/products/extensions/mamonsu
 
 Export or download zabbix-agent configuration file for needed PostgreSQL version
 
@@ -172,7 +174,7 @@ Export or download zabbix-agent configuration file for needed PostgreSQL version
 
     $ mamonsu export zabbix-parameters userparameters_pgsql_v*.conf --pg-version=version_number (by default pg-version=10)
 
-    or get example of configuration file at https://postgrespro.ru/products/extensions/mamonsu
+or get example of configuration file at https://postgrespro.ru/products/extensions/mamonsu
 
 NOTE: zabbix-agent configuration file for PostgreSQL 10 and 11 are equal
 
