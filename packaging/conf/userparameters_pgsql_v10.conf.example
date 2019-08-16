@@ -26,7 +26,6 @@ UserParameter=pgsql.database.discovery[*],$2 $1 -c "SELECT json_build_object ('d
 UserParameter=pgsql.database.size[*],echo "select pg_database_size(datname::text) from pg_catalog.pg_database where datistemplate = false and datname = :'p1';" | $3 $2 -v p1="$1"
 UserParameter=pgsql.database.max_age[*],echo "select age(datfrozenxid) from pg_catalog.pg_database where datistemplate = false and datname = :'p1';" | $3 $2 -v p1="$1"
 UserParameter=pgsql.database.bloating_tables[*],$3 $2 -d "$1" -c "select count(*) from pg_catalog.pg_stat_all_tables where (n_dead_tup/(n_live_tup+n_dead_tup)::float8) > 0.2 and (n_live_tup+n_dead_tup) > 50;"
-UserParameter=pgsql.check[*],$2 $1 -c "select 1 as test"
 UserParameter=system.vfs.discovery,/home/dvilova/Projects/mamonsu/packaging/conf/scripts/disk_sizes.sh -j MOUNTPOINT
 UserParameter=system.vfs.used[*],df $1 | awk 'NR == 2 {print $$3 * 1024}'
 UserParameter=system.vfs.free[*],df $1 | awk 'NR == 2 {print $$4 * 1024}'
