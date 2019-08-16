@@ -87,7 +87,7 @@ def start():
                     # create directory for scripts along the path of conf file if needed
                     if not os.path.exists(path):
                         os.makedirs(path)
-                        print("directory for scripts has created")
+                        print("Directory for scripts has created")
                     template = GetKeys()
                     # if no name for zabbix-parameters save to postgrespro.conf
                     if commands[2].rfind("/") == len(commands[2]) - 1:
