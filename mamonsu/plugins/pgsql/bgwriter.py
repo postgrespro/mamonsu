@@ -44,7 +44,6 @@ class BgWriter(Plugin):
     ]
 
     def run(self, zbx):
-        #print(self.plugin_config('interval'))
         params = [x[0] for x in self.Items]
         result = Pooler.query(self.query.format(
                 ', '.join(params)))
