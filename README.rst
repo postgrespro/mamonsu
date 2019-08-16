@@ -93,11 +93,13 @@ Add this template like `PostgresPro-Linux` at your monitoring host, or create ho
 
     $ mamonsu zabbix host create <client name> <hostgroup id> <template id> <ip> --url=http://zabbix/ --user=Admin --password=zabbix
 
-Generate config on monitring host (or use preinstalled):
+Generate config on monitring host or use preinstalled:
 
 .. code-block:: bash
 
     $ mamonsu export config /etc/mamonsu/agent.conf --add-plugins /etc/mamonsu/plugins
+    or get example of config with all avaliable parameters
+    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/agent.conf.example
 
 Change previously zabbix server address and client hostname:
 
@@ -131,13 +133,57 @@ Change previously zabbix server address and client hostname:
     file = /var/log/mamonsu/agent.log
     level = INFO
 
+These are the main mamonsu settings to get started. You can also fine-tune other mamonsu settings
+as explained in the section called “Configuration Parameters” of the intruction avaliable at https://postgrespro.com/docs/postgrespro/10/mamonsu.
+
 Bootstrap DDL for monitoring (if you want to monitoring without superuser rights)
+
+Create non-privileged user (for example 'mamonsu')
 
 .. code-block:: bash
 
-    $ createdb mamonsu
     $ createuser mamonsu
-    $ mamonsu bootstrap -U postgres -d mamonsu
+
+Implement bootstrap from non-privileged user
+
+.. code-block:: bash
+
+    $ mamonsu bootstrap -M mamonsu
+
+=======================
+Work with zabbix-agent
+=======================
+NOTE: Mamonsu zabbix agent option does not work for Windows
+
+Export template for zabbix-agent:
+
+.. code-block:: bash
+
+    $ mamonsu export zabbix-template template_agent.xml
+    or
+    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/template_agent.xml.example
+
+Export configuration file for zabbix-agent:
+
+.. code-block:: bash
+
+    $ mamonsu export zabbix-parameters userparameters_pgsql.conf
+    or
+    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/userparameters_pgsql.conf.example
+
+NOTE: Bash scripts for OS parameters monitoring are exported with configuration file in directory /scripts
+
+Or you can download them separatly:
+
+.. code-block:: bash
+
+   $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/scripts
+
+Add configuration file to /etc/zabbix/zabbix_agentd.d/userparameters_pgsql.conf
+
+NOTE: Make sure path for bash scripts in zabbix-agent configuration file is valid
+
+Follow standart instructions for zabbix-agent installation (https://www.zabbix.com/documentation/3.4/manual/concepts/agent)
 
 ==================
 Write your plugin
