@@ -51,7 +51,7 @@ Build rpm:
     $ git clone ... && cd mamonsu && make rpm && rpm -i mamonsu*.rpm
 
 Build win32 exe: (worked with python v3.{4,5}: py2exe v0.9.2.2 and pywin32 v220 or python v2.7: py2exe v0.6.9 and pywin32 v220):
-
+NOTE: windows installer only for mamonsu 2.3.4 version
 .. code-block:: bash
 
     $ git clone ... && cd mamonsu && python setup_win32.py py2exe
@@ -134,7 +134,7 @@ Change previously zabbix server address and client hostname:
     level = INFO
 
 These are the main mamonsu settings to get started. You can also fine-tune other mamonsu settings
-as explained in the section called “Configuration Parameters” of the intruction avaliable at https://postgrespro.com/docs/postgrespro/10/mamonsu.
+as explained in the section called “Configuration Parameters” of the instruction avaliable at https://postgrespro.com/docs/postgrespro/10/mamonsu.
 
 Bootstrap DDL for monitoring (if you want to monitoring without superuser rights)
 
@@ -150,12 +150,12 @@ Implement bootstrap from non-privileged user
 
     $ mamonsu bootstrap -M mamonsu
 
-=======================
-Work with zabbix-agent
-=======================
+==========================================================================
+Work with zabbix-agent using template and configuration file from mamonsu
+==========================================================================
 NOTE: Mamonsu zabbix agent option does not work for Windows
 
-Export template for zabbix-agent:
+Export template for zabbix-agent
 
 .. code-block:: bash
 
@@ -163,27 +163,28 @@ Export template for zabbix-agent:
     or
     $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/template_agent.xml.example
 
-Export configuration file for zabbix-agent:
+Export or download zabbix-agent configuration file for needed PostgreSQL version
 
 .. code-block:: bash
 
-    $ mamonsu export zabbix-parameters userparameters_pgsql.conf
+    $ mamonsu export zabbix-parameters userparameters_pgsql_v*.conf --pg-version=version_number (by default pg-version=10)
     or
-    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/userparameters_pgsql.conf.example
+    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/userparameters_pgsql_v*.conf.example
 
-NOTE: Bash scripts for OS parameters monitoring are exported with configuration file in directory /scripts
+NOTE: zabbix-agent configuration file for PostgreSQL 10 and 11 are equal
 
-Or you can download them separatly:
+Bash scripts for OS parameters monitoring are exported with configuration file in directory /scripts
+Or you can download them separately:
 
 .. code-block:: bash
 
    $ wget https://raw.githubusercontent.com/postgrespro/mamonsu/master/packaging/conf/scripts
 
-Add configuration file to /etc/zabbix/zabbix_agentd.d/userparameters_pgsql.conf
+Add configuration file to zabbix-agent directory as /etc/zabbix/zabbix_agentd.d/userparameters_pgsql.conf
 
 NOTE: Make sure path for bash scripts in zabbix-agent configuration file is valid
 
-Follow standart instructions for zabbix-agent installation (https://www.zabbix.com/documentation/3.4/manual/concepts/agent)
+Edit connections options of zabbix-agent /etc/zabbix/zabbix_agentd.conf, following standard instructions for zabbix-agent installation (https://www.zabbix.com/documentation/3.4/manual/concepts/agent)
 
 ==================
 Write your plugin
