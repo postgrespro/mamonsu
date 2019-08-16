@@ -239,6 +239,7 @@ order by count desc;"""
 
     def keys_and_queries(self, template_zabbix):
         result = []
+        # queries for zabbix agent only for all lock
         result.append(
             '{0},$2 $1 -c "{1}"'.format(self.key_all_lock_discovery.format("[*]"), self.query_agent_discovery_all_lock))
         result.append(
