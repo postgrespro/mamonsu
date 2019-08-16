@@ -55,7 +55,6 @@ Build rpm:
     $ git clone ... && cd mamonsu && make rpm && rpm -i mamonsu*.rpm
 
 Build win32 exe: (worked with python v3.{4,5}: py2exe v0.9.2.2 and pywin32 v220 or python v2.7: py2exe v0.6.9 and pywin32 v220):
-NOTE: windows installer only for mamonsu 2.3.4 version
 
 .. code-block:: bash
 
@@ -64,6 +63,8 @@ NOTE: windows installer only for mamonsu 2.3.4 version
     $ c:\mamonsu\mamonsu.exe -w c:\mamonsu\agent.conf
     $ c:\mamonsu\service_win32.exe -install
     $ net start mamonsu
+
+NOTE: windows installer only for mamonsu 2.3.4 version
 
 Build nsis installer:
 
