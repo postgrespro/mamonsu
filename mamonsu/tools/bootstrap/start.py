@@ -64,8 +64,6 @@ class Args(DefaultConfig):
         parser.add_option_group(bootstrap_group)
 
         self.args, commands = parser.parse_args()
-        print(self.args)
-        print(commands)
         if len(commands) > 0:
             if len(commands) == 1:
                 self.args.dbname = commands[0]
