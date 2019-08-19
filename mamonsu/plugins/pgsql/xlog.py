@@ -11,6 +11,8 @@ class Xlog(Plugin):
                          "(pg_catalog.pg_current_wal_lsn(), '0/00000000');"
     query_xlog_lsn_diff = "select pg_catalog.pg_xlog_location_diff " \
                           "(pg_catalog.pg_current_xlog_location(), '0/00000000');"
+    query_agent_replication_lag = "SELECT CASE WHEN extract(epoch from now()-pg_last_xact_replay_timestamp()) " \
+                                  "IS NULL THEN 0 ELSE extract(epoch from now()-pg_last_xact_replay_timestamp()) END"
     key_wall = 'pgsql.wal.write{0}'
     key_count_wall = "pgsql.wal.count{0}"
     key_replication = "pgsql.replication_lag{0}"
@@ -97,7 +99,6 @@ class Xlog(Plugin):
             result.append(
                 '{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_wal_files'][0]))
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_wal_lsn_diff))
-        # FIXME for lag
         result.append(
-            '{0},$2 $1 -c "{1}"'.format("pgsql.replication_lag.sec[*]", Pooler.SQL['replication_lag_slave_query'][0]))
+            '{0},$2 $1 -c "{1}"'.format("pgsql.replication_lag.sec[*]", self.query_agent_replication_lag))
         return template_zabbix.key_and_query(result)
