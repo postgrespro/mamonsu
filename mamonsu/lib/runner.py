@@ -110,6 +110,9 @@ def start():
                 if len(commands) == 2:
                     commands.append('postgrespro.conf')
                     print('Configuration file for mamonsu have been saved in postgrespro.conf file')
+                # if no name for conf, save to mamonsu.conf
+                if commands[2].rfind("/") == len(commands[2]) - 1:
+                    commands[2] = commands[2][:-1] + "/mamonsu.conf"
                 with open(commands[2], 'w') as fd:
                     cfg.config.write(fd)
                     sys.exit(0)
