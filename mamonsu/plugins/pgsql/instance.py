@@ -19,7 +19,6 @@ class Instance(Plugin):
             ('PostgreSQL instance: rate', '00CC00', 0),
             Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ('blks_read', 'blocks[read]', 'blocks: read',
-
             ('PostgreSQL instance: rate', 'CC0000', 0),
             Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
 
