@@ -65,10 +65,7 @@ class Instance(Plugin):
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(
                 self.Items[idx][1]), int(val)
-            if key == 'pgsql.transactions[total]':
-                zbx.send(key, val, self.Items[idx][5], only_positive_speed=True)
-            else:
-                zbx.send(key, val, self.Items[idx][5])
+            zbx.send(key, val, self.Items[idx][5], only_positive_speed=True)
         del params, result
 
     def items(self, template):
