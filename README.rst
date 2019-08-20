@@ -93,7 +93,7 @@ Import this file in web interface of zabbix: Configuration => Templates => Impor
 
     $ mamonsu zabbix template export /usr/share/mamonsu/template.xml --url=http://zabbix/ --user=Admin --password=zabbix
 
-Add this template like `PostgresPro-Linux` at your monitoring host, or create host with mamonsu:
+Add this template like `PostgresPro-Linux2` at your monitoring host, or create host with mamonsu:
 
 .. code-block:: bash
 
@@ -139,13 +139,17 @@ Change previously zabbix server address and client hostname:
     file = /var/log/mamonsu/agent.log
     level = INFO
 
-These are the main mamonsu settings to get started. You can also fine-tune other mamonsu settings
+These are the main mamonsu settings to get started. You can also fine-tune other mamonsu settings.
+At https://postgrespro.ru/products/extensions/mamonsu you can find example of configuration file for mamonsu
+with all available parameters.
 
 Bootstrap DDL for monitoring (if you want to monitoring without superuser rights)
 
 Create non-privileged user (for example 'mamonsu')
 
 .. code-block:: bash
+
+    $ createdb mamonsu
 
     $ createuser mamonsu
 
