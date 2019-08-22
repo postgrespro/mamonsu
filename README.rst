@@ -280,7 +280,7 @@ Metrics:  PostgreSQL
     'PostgreSQL locks: Locks from application': pgsql.pg_locks[sharerowexclusive]
     'PostgreSQL locks: Locks from application or some operation on system catalogs': pgsql.pg_locks[exclusive]
     'PostgreSQL locks: ALTER TABLE, DROP TABLE, TRUNCATE, REINDEX, CLUSTER, VACUUM FULL, LOCK TABLE': pgsql.pg_locks[accessexclusive]
-    'PostgreSQL oldest query running time': pgsql.oldest[query_time]
+    'PostgreSQL oldest transaction running time': pgsql.oldest[transaction_time]
     'PostgreSQL age of oldest xid': pgsql.oldest[xid_age]
     'PostgreSQL waits: Lightweight locks': pgsql.all_lock[lwlock]
     'PostgreSQL waits: Heavyweight locks': pgsql.all_lock[hwlock]

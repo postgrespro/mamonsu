@@ -10,20 +10,21 @@ class Oldest(Plugin):
     OldestXidSql = "select greatest(max(age(backend_xmin)), max(age(backend_xid))) from pg_catalog.pg_stat_activity;"
 
     OldestXidSql_bootstrap = "select public.mamonsu_get_oldest_xid();"
-    OldestQuerySql = "select case when extract(epoch from max(now() - xact_start)) is not null then extract(epoch" \
-                     " from max(now() - xact_start)) else 0 end from pg_catalog.pg_stat_activity where pid not in " \
-                     "(select pid from pg_stat_replication) AND pid <> pg_backend_pid() " \
-                     "AND query not ilike '%%VACUUM%%'; "
 
     # OldestQuery = " SELECT query FROM pg_catalog.pg_stat_activity WHERE extract(epoch FROM (now() - query_start))=(SELECT " \
     #               "extract(epoch from max(now() - query_start)) FROM pg_catalog.pg_stat_activity) and pid not " \
     #               "in (select pid from pg_stat_replication) AND pid <> pg_backend_pid() AND query not ilike '%%VACUUM%%';"
-
-    OldestQuerySql_bootstrap = "select public.mamonsu_get_oldest_query();"
+    OldestQuerySql = "SELECT CASE WHEN extract(epoch from max(now() - xact_start)) IS NOT NULL AND extract(epoch" \
+                     " from max(now() - xact_start))>0 THEN extract(epoch from max(now() - xact_start)) ELSE 0 END FROM " \
+                     "pg_catalog.pg_stat_activity WHERE pid NOT IN (SELECT pid FROM pg_stat_replication) AND " \
+                     "pid <> pg_backend_pid(); "
+    OldestQuerySql_bootstrap = """
+select public.mamonsu_get_oldest_query();
+"""
 
     DEFAULT_CONFIG = {
         'max_xid_age': str(5000 * 60 * 60),
-        'max_query_time': str(5 * 60 * 60)
+        'max_transaction_time': str(5 * 60 * 60)
     }
 
     def run(self, zbx):
@@ -35,13 +36,13 @@ class Oldest(Plugin):
             query = Pooler.query(self.OldestQuerySql)[0][0]
 
         zbx.send('pgsql.oldest[xid_age]', xid)
-        zbx.send('pgsql.oldest[query_time]', query)
+        zbx.send('pgsql.oldest[transaction_time]', query)
 
     def graphs(self, template):
         result = template.graph({
-            'name': 'PostgreSQL oldest query running time',
+            'name': 'PostgreSQL oldest transaction running time',
             'items': [{
-                'key': self.right_type(self.key, 'query_time'),
+                'key': self.right_type(self.key, 'transaction_time'),
                 'color': '00CC00'
             }]
         })
@@ -61,8 +62,9 @@ class Oldest(Plugin):
             'delay': self.plugin_config('interval'),
             'value_type': Plugin.VALUE_TYPE.numeric_unsigned
         }) + template.item({
-            'key': self.right_type(self.key, 'query_time'),
-            'name': 'PostgreSQL: oldest query running time in sec',
+
+            'key': self.right_type(self.key, 'transaction_time'),
+            'name': 'PostgreSQL: oldest transaction running time in sec',
             'delay': self.plugin_config('interval'),
             'units': Plugin.UNITS.s
         })
@@ -74,8 +76,8 @@ class Oldest(Plugin):
                           '.last()}&gt;' + self.plugin_config('max_xid_age')
         }) + template.trigger({
             'name': 'PostgreSQL query running is too old on {HOSTNAME}',
-            'expression': '{#TEMPLATE:' + self.right_type(self.key, 'query_time') +
-                          '.last()}&gt;' + self.plugin_config('max_query_time')
+            'expression': '{#TEMPLATE:' + self.right_type(self.key, 'transaction_time') +
+                          '.last()}&gt;' + self.plugin_config('max_transaction_time')
         })
 
     def keys_and_queries(self, template_zabbix):

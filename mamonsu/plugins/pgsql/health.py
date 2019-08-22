@@ -21,8 +21,7 @@ class PgHealth(Plugin):
 
         start_time = time.time()
         Pooler.query(self.query_health)
-        zbx.send(self.key_ping.format('[]'), (time.time() - start_time) * 100)
-
+        zbx.send(self.key_ping.format('[]'), (time.time() - start_time) * 1000)
         result = Pooler.query(self.query_uptime)
         zbx.send(self.key_uptime.format('[]'), int(result[0][0]))
 
