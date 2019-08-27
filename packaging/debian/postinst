@@ -27,11 +27,6 @@ fi
 
 if [ -x "/etc/init.d/mamonsu" ]; then
     update-rc.d mamonsu defaults >/dev/null
-    if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
-        invoke-rc.d mamonsu start || exit $?
-    else
-        /etc/init.d/mamonsu start || exit $?
-    fi
 fi
 
 exit 0
