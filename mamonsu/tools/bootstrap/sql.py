@@ -77,8 +77,7 @@ RETURNS DOUBLE PRECISION AS $$
     FROM pg_catalog.pg_stat_activity 
     WHERE 
         pid NOT IN(select pid from pg_stat_replication) AND 
-        pid <> pg_backend_pid() AND 
-        query NOT ilike '%%VACUUM%%'
+        pid <> pg_backend_pid()
 $$ LANGUAGE SQL SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION public.mamonsu_count_{3}_files()

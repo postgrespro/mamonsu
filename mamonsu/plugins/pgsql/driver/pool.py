@@ -18,11 +18,11 @@ class Pool(object):
             'select public.mamonsu_timestamp_get()'
         ),
         'count_xlog_files': (
-            "select count(*) from pg_catalog.pg_ls_dir('pg_xlog')",
+            "WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_xlog')) SELECT COUNT(*)::BIGINT FROM list WHERE filename similar to [0-9A-F]{24}",
             'select public.mamonsu_count_xlog_files()'
         ),
         'count_wal_files': (
-            "select count(*) from pg_catalog.pg_ls_dir('pg_wal')",
+            "WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_wal')) SELECT COUNT(*)::BIGINT FROM list WHERE filename similar to [0-9A-F]{24}",
             'select public.mamonsu_count_wal_files()'
         ),
         'count_autovacuum': (
