@@ -1,3 +1,13 @@
+mamonsu (2.4.0-1) stable; urgency=low
+
+  * add zabbix-agent template and configuration file export,
+  * add new types of connections in "connections" plugin,
+  * add modification of interval for metric gather,
+  * add new plugin: archive_command,
+  * fix oldest transaction time instead of oldest query time and exclude excess processes from a query in "oldest" plugin,
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 22 Aug 2019 11:00:00 +0300
+
 mamonsu (2.3.4-1) stable; urgency=low
 
   * Connections states fix, cfs compression ratio fix

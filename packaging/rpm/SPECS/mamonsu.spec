@@ -70,6 +70,13 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Thu Aug 22 2019 Daria Vilkova <d.vilkova@postgrespro.ru> - 2.4.0-1
+- add zabbix-agent template and configuration file export,
+- add new types of connections in "connections" plugin,
+- add modification of interval for metric gather,
+- add new plugin: archive_command,
+- fix oldest transaction time instead of oldest query time and exclude excess processes from a query in "oldest" plugin
+
 * Thu Feb 15 2018 Grigory Smolkin <g.smolkin@postgrespro.ru> - 2.3.4-1
 - Connections states fix, cfs compression ratio fix
 
