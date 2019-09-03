@@ -1,3 +1,9 @@
+mamonsu (2.4.1-1) stable; urgency=low
+
+  * add trigger for pgsql.ping
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Tue, 3 Sep 2019 11:00:00 +0300
+
 mamonsu (2.4.0-1) stable; urgency=low
 
   * add zabbix-agent template and configuration file export,

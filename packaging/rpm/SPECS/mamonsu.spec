@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        2.4.0
+Version:        2.4.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Tue Sep 3 2019 Daria Vilkova <d.vilkova@postgrespro.ru> - 2.4.1-1
+-  add trigger for pgsql.ping
+
 * Thu Aug 22 2019 Daria Vilkova <d.vilkova@postgrespro.ru> - 2.4.0-1
 - add zabbix-agent template and configuration file export,
 - add new types of connections in "connections" plugin,
