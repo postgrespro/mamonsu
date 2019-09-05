@@ -77,9 +77,9 @@ class PgHealth(Plugin):
             'expression': '{#TEMPLATE:' + self.right_type(self.key_cache, "hit") + '.last()}&lt;' +
                           str(self.plugin_config('cache'))
         }) + template.trigger({
-            'name': 'PostgreSQL no ping from PostgreSQL for 90 seconds '
+            'name': 'PostgreSQL no ping from PostgreSQL for 2 minutes '
                     '{HOSTNAME} ',
-            'expression': '{#TEMPLATE:' + self.right_type(self.key_ping) + '.nodata(90)}=1'
+            'expression': '{#TEMPLATE:' + self.right_type(self.key_ping) + '.nodata(120)}=1'
         })
         return result
 
