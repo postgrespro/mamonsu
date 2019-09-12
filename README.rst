@@ -32,8 +32,6 @@ Install via pip:
 
     $ pip install mamonsu
 
-NOTE: only for mamonsu 2.3.4
-
 Install from git:
 
 .. code-block:: bash
@@ -230,11 +228,11 @@ Metrics:  PostgreSQL
     'PostgreSQL: number of waiting connections': pgsql.connections[waiting]
     'PostgreSQL: number of active connections': pgsql.connections[active]
     'PostgreSQL: number of idle connections': pgsql.connections[idle]
-    'PostgreSQL: number of idle connections': pgsql.connections[idle_in_transaction]
-    'PostgreSQL: number of idle connections': pgsql.connections[idle_in_transaction_aborted]
-    'PostgreSQL: number of idle connections': pgsql.connections[fastpath_function_call]
-    'PostgreSQL: number of idle connections': pgsql.connections[disabled]
-    'PostgreSQL: number of idle connections': pgsql.connections[max_connections]
+    'PostgreSQL: number of idle in transactions connections': pgsql.connections[idle_in_transaction]
+    'PostgreSQL: number of idle in transactions aborted connections': pgsql.connections[idle_in_transaction_aborted]
+    'PostgreSQL: number of fastpath frunction call connections': pgsql.connections[fastpath_function_call]
+    'PostgreSQL: number of disabled connections': pgsql.connections[disabled]
+    'PostgreSQL: number of max connections': pgsql.connections[max_connections]
     'PostgreSQL: count files in archive_status need to archive': pgsql.archive_command[count_files_to_archive]
     'PostgreSQL: size of files need to archive': pgsql.archive_command[size_files_to_archive]
     'PostgreSQL: count archived files': pgsql.archive_command[archived_files]
