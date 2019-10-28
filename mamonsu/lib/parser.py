@@ -46,10 +46,13 @@ Options:
     --pg-version <pg_version>
     --add-plugins <directory>
     --config  <file>
+    --old-zabbix
 Default plugin_type = all, template name = PostgresPro-<platform name>,
 application = App-PostgresPro-<platform name>, pg-version = 10,
 Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version 
 numbers are 10, 11, 9.6, 9.5
+default template export for currently supported zabbix -server versions, if template for unsupported versions 
+is needed use --old zabbix flag
 Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 
 
@@ -62,7 +65,10 @@ Options:
     --template-name <template name>
     --application <application name in template>
     --config <file>
+    --old-zabbix
 Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>
+Note: default template export for currently supported zabbix -server versions, if template for unsupported versions 
+is needed use --old zabbix flag
 
 
 Bootstrap DDL for monitoring:
@@ -261,4 +267,8 @@ def parse_args():
     parser.add_option(
         '--application', dest='application',
         default='App-PostgresPro-{0}'.format(sys.platform.title()))
+    parser.add_option(
+        '--old-zabbix',
+        dest='old_zabbix', action='store_true',
+        help='Create special template for currently unsupported zabbix versions')
     return parser.parse_args()

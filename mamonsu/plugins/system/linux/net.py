@@ -52,9 +52,23 @@ class Net(Plugin):
 
         rule = {
             'name': 'Net iface discovery',
-            'key': key_discovery,
-            'filter': '{#NETDEVICE}:.*'
+            'key': key_discovery
         }
+        if Plugin.old_zabbix:
+            rule['filter'] = '{#NETDEVICE}:.*'
+            conditions = []
+        else:
+            conditions = [
+                {
+                    'condition': [
+                        {'macro': '{#NETDEVICE}',
+                         'value': '.*',
+                         'operator': '',
+                         'formulaid': 'A'}
+                    ]
+                }
+
+            ]
         graphs = [{
             'name': 'Network device: {#NETDEVICE}',
             'items': [{
@@ -64,7 +78,7 @@ class Net(Plugin):
                     'color': '0000CC',
                     'key': 'system.net.tx_bytes[{#NETDEVICE}]'}]
         }]
-        return template.discovery_rule(rule=rule, items=items, graphs=graphs)
+        return template.discovery_rule(rule=rule,conditions=conditions, items=items, graphs=graphs)
 
     def keys_and_queries(self, template_zabbix):
         result = []

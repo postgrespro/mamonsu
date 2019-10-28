@@ -55,7 +55,7 @@ class ZbxTemplate(object):
         ('snmpv3_contextname', None), ('snmpv3_securityname', None),
         ('snmpv3_securitylevel', 0), ('snmpv3_authprotocol', 0),
         ('snmpv3_authpassphrase', None), ('snmpv3_privprotocol', 0),
-        ('snmpv3_privpassphrase', None), ('formula', 1),
+        ('snmpv3_privpassphrase', None), ('logtimefmt', None), ('formula', 1),
         ('delay_flex', None), ('params', None),
         ('ipmi_sensor', None), ('data_type', 0), ('authtype', 0),
         ('username', None), ('password', None), ('publickey', None),
@@ -89,6 +89,12 @@ class ZbxTemplate(object):
         ('calc_fnc', 2), ('type', Template.GRAPH_TYPE.normal)
     ]
 
+    condition_defaults = [
+        ('macro', None), ('value', 0),
+        ('operator', None),
+        ('formulaid', None)
+    ]
+
     discovery_defaults = [
         ('name', None), ('type', 2), ('snmp_community', None),
         ('snmp_oid', None), ('delay', 60), ('status', 0),
@@ -96,7 +102,7 @@ class ZbxTemplate(object):
         ('snmpv3_securityname', None), ('snmpv3_securitylevel', 0),
         ('snmpv3_authprotocol', 0), ('snmpv3_authpassphrase', None),
         ('snmpv3_privprotocol', 0), ('snmpv3_privpassphrase', None),
-        ('delay_flex', None), ('params', None), ('filter', None),
+        ('delay_flex', None), ('params', None),
         ('ipmi_sensor', None), ('authtype', 0),
         ('username', None), ('password', None), ('publickey', None),
         ('privatekey', None), ('port', None), ('lifetime', 7),
@@ -194,7 +200,23 @@ class ZbxTemplate(object):
             self._format_args(self.graph_values_defaults, args),
             graph_items, xml_key)
 
-    def discovery_rule(self, rule={}, items=[], triggers=[], graphs=[]):
+    # condition for template creation for zabbix version 4.4
+    def condition(self, args={}, xml_key='condition'):
+        try:
+            conditions = args['condition']
+        except KeyError:
+            raise LookupError(
+                'Miss item in conditions: {0}.'.format(args))
+        res = ''
+        for idx, item in enumerate(conditions):
+            res += '<{1}>{0}</{1}>'.format(
+                self._format_args(self.condition_defaults, item),
+                xml_key)
+        res = '<conditions>' + res + '</conditions>' + '<formula/><evaltype>0</evaltype>'
+
+        return res
+
+    def discovery_rule(self, rule={},conditions=[], items=[], triggers=[], graphs=[]):
 
         result_items = '<item_prototypes>'
         for item in items:
@@ -214,10 +236,24 @@ class ZbxTemplate(object):
                 graph, xml_key='graph_prototype')
         result_graphs += '</graph_prototypes>'
 
-        result = '<discovery_rule>{0}{1}{2}{3}</discovery_rule>'
+        if len(conditions) > 0:
+
+            result_conditions = '<filter>'
+            for condition in conditions:
+                result_conditions += self.condition(
+                    condition, xml_key='condition')
+            result_conditions += '</filter>'
+        else:
+            result = '<discovery_rule>{0}{1}{2}{3}</discovery_rule>'
+            self.discovery_defaults.append(('filter', None))
+            return result.format(
+                self._format_args(self.discovery_defaults, rule),
+                result_items, result_triggers, result_graphs)
+
+        result = '<discovery_rule>{0}{1}{2}{3}{4}</discovery_rule>'
         return result.format(
             self._format_args(self.discovery_defaults, rule),
-            result_items, result_triggers, result_graphs)
+            result_conditions, result_items, result_triggers, result_graphs)
 
     def _application(self):
         result = '<applications><application><name>{0}'

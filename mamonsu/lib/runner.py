@@ -57,6 +57,8 @@ def start():
             version_args = args.pg_version.split('_')
             define_pg_version(version_args)
             cfg = Config(args.config_file, args.plugins_dirs)
+            if args.old_zabbix:
+                Plugin.old_zabbix = True
             if not len(commands) == 2 and not len(commands) == 3:
                 print_total_help()
             if commands[1] == 'zabbix-parameters':
@@ -122,7 +124,7 @@ def start():
                     commands.append('postgrespro.xml')
                     print('Template for mamonsu have been saved in postgrespro.conf file')
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
+                    if klass.__name__ == "PgWaitSampling" or klass.__name__ == "Cfs" :  # check if plugin is for EE
                         if Plugin.VersionPG['type'] == 'PGEE':
                             plugins.append(klass(cfg))
                     else:

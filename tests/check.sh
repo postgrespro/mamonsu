@@ -49,11 +49,11 @@ grep external_plugin_config /tmp/config || exit 3
 sed -i 's|.*max_checkpoint_by_wal_in_hour =.*|max_checkpoint_by_wal_in_hour = 5555555555555|g' /tmp/config
 
 # write zabbix template
-mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME -c /tmp/config
+mamonsu export template $ZABBIX_TEMPLATE -t $ZABBIX_TEMPLATE_NAME -c /tmp/config --old-zabbix 
 grep 5555555555555 /tmp/template.xml || exit 4
 grep 'pgsql\.uptime\[\]' /tmp/template.xml || exit 4
 grep 'system\.disk\.all_read' /tmp/template.xml || exit 4
-
+grep 'pgsql\.database\.discovery' /tmp/template.xml || exit 4
 # test export config
 cat <<EOF > /etc/mamonsu/agent.conf
 [zabbix]
@@ -74,6 +74,7 @@ grep external_plugin_config2 /tmp/config || exit 5
 # install zabbix
 yum install -y http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm
 yum install -y zabbix-server-pgsql zabbix-web-pgsql
+
 sed -i "s,;date.timezone =,date.timezone = 'US/Eastern'," /etc/php.ini
 su postgres -c 'createdb zabbix'
 su postgres -c 'createuser -a -d -E zabbix'

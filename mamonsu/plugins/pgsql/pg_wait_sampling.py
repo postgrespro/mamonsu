@@ -206,10 +206,24 @@ order by count desc;"""
     def discovery_rules(self, template):
         rule = ({
             'name': 'AllLockItems',
-            'key': self.key_all_lock_discovery.format('[{0}]'.format(self.Macros[self.Type])),
-            'filter': '{#ALL_LOCK}:.*'
+            'key': self.key_all_lock_discovery.format('[{0}]'.format(self.Macros[self.Type]))
         })
 
+        if Plugin.old_zabbix:
+            rule['filter'] = '{#ALL_LOCK}:.*'
+            conditions = []
+        else:
+            conditions = [
+                {
+                    'condition': [
+                        {'macro': '{#ALL_LOCK}',
+                         'value': '.*',
+                         'operator': '',
+                         'formulaid': 'A'}
+                    ]
+                }
+
+            ]
         if self.Type == "mamonsu":
             delta = Plugin.DELTA.as_is
         else:
@@ -235,7 +249,7 @@ order by count desc;"""
                 'color': item[3]})
             graphs.append({'name': graph_name, 'type': 1, 'items': items})
 
-        return template.discovery_rule(rule=rule, items=items, graphs=graphs)
+        return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)
 
     def keys_and_queries(self, template_zabbix):
         result = []

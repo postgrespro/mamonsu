@@ -64,8 +64,23 @@ class Databases(Plugin):
         rule = {
             'name': 'Database discovery',
             'key': self.key_db_discovery.format('[{0}]'.format(self.Macros[self.Type])),
-            'filter': '{#DATABASE}:.*'
+
         }
+        if Plugin.old_zabbix:
+            conditions = []
+            rule['filter'] = '{#DATABASE}:.*'
+        else:
+            conditions = [
+                {
+                    'condition': [
+                        {'macro': '{#DATABASE}',
+                        'value': '.*',
+                        'operator': '',
+                        'formulaid': 'A'}
+                    ]
+                }
+
+            ]
         items = [
             {'key': self.right_type(self.key_db_size, var_discovery="{#DATABASE},"),
              'name': 'Database {#DATABASE}: size',
@@ -106,7 +121,7 @@ class Databases(Plugin):
                      'yaxisside': 1}]
             }
         ]
-        return template.discovery_rule(rule=rule, items=items, graphs=graphs)
+        return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)
 
     def keys_and_queries(self, template_zabbix):
         result = []
