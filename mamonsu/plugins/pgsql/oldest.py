@@ -14,12 +14,12 @@ class Oldest(Plugin):
     # OldestQuery = " SELECT query FROM pg_catalog.pg_stat_activity WHERE extract(epoch FROM (now() - query_start))=(SELECT " \
     #               "extract(epoch from max(now() - query_start)) FROM pg_catalog.pg_stat_activity) and pid not " \
     #               "in (select pid from pg_stat_replication) AND pid <> pg_backend_pid() AND query not ilike '%%VACUUM%%';"
-    OldestQuerySql = "SELECT CASE WHEN extract(epoch from max(now() - xact_start)) IS NOT NULL AND extract(epoch" \
+    OldestTransactionSql = "SELECT CASE WHEN extract(epoch from max(now() - xact_start)) IS NOT NULL AND extract(epoch" \
                      " from max(now() - xact_start))>0 THEN extract(epoch from max(now() - xact_start)) ELSE 0 END FROM " \
                      "pg_catalog.pg_stat_activity WHERE pid NOT IN (SELECT pid FROM pg_stat_replication) AND " \
                      "pid <> pg_backend_pid(); "
-    OldestQuerySql_bootstrap = """
-select public.mamonsu_get_oldest_query();
+    OldestTransactionSql_bootstrap = """
+select public.mamonsu_get_oldest_transaction();
 """
 
     DEFAULT_CONFIG = {
@@ -30,10 +30,10 @@ select public.mamonsu_get_oldest_query();
     def run(self, zbx):
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.2'):
             xid = Pooler.query(self.OldestXidSql_bootstrap)[0][0]
-            query = Pooler.query(self.OldestQuerySql_bootstrap)[0][0]
+            query = Pooler.query(self.OldestTransactionSql_bootstrap)[0][0]
         else:
             xid = Pooler.query(self.OldestXidSql)[0][0]
-            query = Pooler.query(self.OldestQuerySql)[0][0]
+            query = Pooler.query(self.OldestTransactionSql)[0][0]
 
         zbx.send('pgsql.oldest[xid_age]', xid)
         zbx.send('pgsql.oldest[transaction_time]', query)
@@ -83,5 +83,5 @@ select public.mamonsu_get_oldest_query();
     def keys_and_queries(self, template_zabbix):
         result = []
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.xid_age'), self.OldestXidSql))
-        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.query_time'), self.OldestQuerySql))
+        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.query_time'), self.OldestTransactionSql))
         return template_zabbix.key_and_query(result)

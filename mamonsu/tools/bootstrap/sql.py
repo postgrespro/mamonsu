@@ -66,7 +66,7 @@ RETURNS BIGINT AS $$
     FROM pg_catalog.pg_stat_activity
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE or REPLACE FUNCTION public.mamonsu_get_oldest_query()
+CREATE or REPLACE FUNCTION public.mamonsu_get_oldest_transaction()
 RETURNS DOUBLE PRECISION AS $$
     SELECT 
         CASE WHEN extract(epoch from max(now() - xact_start)) IS NOT null 
@@ -132,7 +132,7 @@ GRANT EXECUTE ON FUNCTION public.mamonsu_count_autovacuum() TO {1};
 
 GRANT EXECUTE ON FUNCTION public.mamonsu_get_oldest_xid() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_get_oldest_query() TO {1};
+GRANT EXECUTE ON FUNCTION public.mamonsu_get_oldest_transaction() TO {1};
 
 GRANT EXECUTE ON FUNCTION public.mamonsu_count_{2}_files() TO {1};
 
