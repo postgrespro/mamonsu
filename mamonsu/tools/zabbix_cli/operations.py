@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import sys
 import json
 from mamonsu.tools.zabbix_cli.request import Request
