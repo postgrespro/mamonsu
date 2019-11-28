@@ -1,4 +1,4 @@
-TOKEN ?= $(PACKAGECLOUD_TOKEN)
+# TOKEN ?= $(PACKAGECLOUD_TOKEN)
 # Check for SUSE and alt linux which need specific spec file
 ifeq "$(wildcard /etc/SuSE-rel*)" ""
 ifeq "$(wildcard /etc/altlinux-rel*)" ""
@@ -30,12 +30,12 @@ rpm: prepare_builddir $(BUILDDIR)/packaging/rpm/SPECS/$(SPEC)
 		$(BUILDDIR)/packaging/rpm/SPECS/$(SPEC)
 	cp -av $(BUILDDIR)/packaging/rpm/RPMS/noarch/mamonsu*.rpm .
 
-pkg: build/prepare build/all
-	docker run -v "$(WORKDIR)":/src --rm debian:wheezy bash -exc " \
-		cp /src/packaging/push.rb /src/build/out && cd /src/build/out && \
-		(apt-get update -m || apt-get update -m || apt-get update -m) && \
-		apt-get install -y ruby-dev && gem install --no-ri --no-rdoc package_cloud -v 0.2.37 && \
-		TOKEN=$(TOKEN) ruby push.rb"
+#pkg: build/prepare build/all
+#	docker run -v "$(WORKDIR)":/src --rm debian:wheezy bash -exc " \
+#		cp /src/packaging/push.rb /src/build/out && cd /src/build/out && \
+#		(apt-get update -m || apt-get update -m || apt-get update -m) && \
+#		apt-get install -y ruby-dev && gem install --no-ri --no-rdoc package_cloud -v 0.2.37 && \
+#		TOKEN=$(TOKEN) ruby push.rb"
 
 build/prepare:
 	mkdir -p build
@@ -45,59 +45,67 @@ build/all: build/pkg_debian build/pkg_ubuntu build/pkg_centos
 	@echo Build for all platform: done
 	touch build/all
 
-build/pkg_debian: build/pkg_debian_7 build/pkg_debian_8 build/pkg_debian_9
+build/pkg_debian: build/pkg_debian_8 build/pkg_debian_9 build/pkg_debian_10
 	@echo Debian: done
 
-build/pkg_ubuntu: build/pkg_ubuntu_14_04 build/pkg_ubuntu_16_04 build/pkg_ubuntu_17_10 build/pkg_ubuntu_18_04
+build/pkg_ubuntu: build/pkg_ubuntu_16_04 build/pkg_ubuntu_18_04 build/pkg_ubuntu_18_10
 	@echo Ubuntu: done
 
-build/pkg_centos: build/pkg_centos_6 build/pkg_centos_7
+build/pkg_centos: build/pkg_centos_6 build/pkg_centos_7 build/rpm_repo_package_centos
 	@echo Centos: done
 
 define build_deb
-	docker run -v "$(WORKDIR)":/src --rm $1:$2 bash -exc " \
-		cp -a /src /var/build && \
-		find /var/build -type d -exec chmod 0755 {} \; && find /var/build -type f -exec chmod 0644 {} \; && \
-		cd /var/build && (apt-get update -m || apt-get update -m || apt-get update -m) && \
-		apt-get install -y make dpkg-dev debhelper python-dev python-setuptools && make deb && \
-		mkdir -p /src/build/out/$1/$2 && cp *.deb /src/build/out/$1/$2"
+	docker run -v "$(WORKDIR)":/app/in \
+		-v "$(WORKDIR)/build/pkg/$1/$2/mamonsu/$(VERSION)":/app/out \
+		-e "DISTRIB=$1" -e "DISTRIB_VERSION=$2" \
+		--rm $1:$2 /app/in/packaging/scripts/deb.sh
 endef
 
 define build_rpm
-	docker run -v "$(WORKDIR)":/src --rm $1:$2 bash -exc " \
-		cp -a /src /var/build && \
-		find /var/build -type d -exec chmod 0755 {} \; && find /var/build -type f -exec chmod 0644 {} \; && \
-		cd /var/build && yum install -y tar make rpm-build python2-devel python-setuptools && make rpm && \
-		mkdir -p /src/build/out/el/$2 && cp *.rpm /src/build/out/el/$2"
+	docker run -v "$(WORKDIR)":/app/in \
+		-v "$(WORKDIR)/build/pkg/$1/$2/mamonsu/$(VERSION)":/app/out \
+		-e "VERSION=$(VERSION)" -e "DISTRIB=$1" -e "DISTRIB_VERSION=$2" \
+		--rm $1:$2 /app/in/packaging/scripts/rpm.sh
 endef
 
-build/pkg_debian_7:
-	$(call build_deb,debian,wheezy)
-	touch build/pkg_debian_7
+define build_rpm_repo_pkg
+	docker run -v "$(WORKDIR)":/app/in \
+		-v "$(WORKDIR)/build/pkg/keys":/app/out \
+		-e "VERSION=$(VERSION)" -e "DISTRIB=$1" -e "DISTRIB_VERSION=$2" \
+		--rm $1:$2 /app/in/packaging/scripts/repo_rpm.sh
+endef
+
+build/rpm_repo_package_centos:
+	$(call build_rpm_repo_pkg,centos,7)
+	touch build/rpm_repo_package_centos
 
 build/pkg_debian_8:
-	$(call build_deb,debian,jessie)
+	$(call build_deb,debian,8,jessie)
 	touch build/pkg_debian_8
 
 build/pkg_debian_9:
-	$(call build_deb,debian,stretch)
+	$(call build_deb,debian,9,stretch)
 	touch build/pkg_debian_9
 
+build/pkg_debian_10:
+	$(call build_deb,debian,10,buster)
+	touch build/pkg_debian_10
+
 build/pkg_ubuntu_14_04:
-	$(call build_deb,ubuntu,trusty)
+	$(call build_deb,ubuntu,14.04,trusty)
 	touch build/pkg_ubuntu_14_04
 
 build/pkg_ubuntu_16_04:
-	$(call build_deb,ubuntu,xenial)
+	$(call build_deb,ubuntu,16.04,xenial)
 	touch build/pkg_ubuntu_16_04
 
-build/pkg_ubuntu_17_10:
-	$(call build_deb,ubuntu,artful)
-	touch build/pkg_ubuntu_17_10
-
 build/pkg_ubuntu_18_04:
-	$(call build_deb,ubuntu,bionic)
+	$(call build_deb,ubuntu,18.04,bionic)
 	touch build/pkg_ubuntu_18_04
+
+build/pkg_ubuntu_18_10:
+	$(call build_deb,ubuntu,18.10,cosmic)
+	touch build/pkg_ubuntu_18_10
 
 build/pkg_centos_6:
 	$(call build_rpm,centos,6)
@@ -106,3 +114,84 @@ build/pkg_centos_6:
 build/pkg_centos_7:
 	$(call build_rpm,centos,7)
 	touch build/pkg_centos_7
+
+#build/pkg_centos_8:
+#	$(call build_rpm,centos,8)
+#	touch build/pkg_centos_8
+
+repo/all: repo/debian repo/ubuntu repo/centos repo/keys
+	@echo Build repo for all platform: done
+	touch build/repo_all
+
+repo/debian: repo/debian_8 repo/debian_9 repo/debian_10
+	@echo Build repo for debian platforms: done
+	touch build/repo_debian
+
+repo/ubuntu: repo/ubuntu_16_04 repo/ubuntu_18_04 repo/ubuntu_18_10
+	@echo Build repo for ubuntu platforms: done
+	touch build/repo_ubuntu
+
+repo/centos: repo/centos_6 repo/centos_7
+	@echo Build repo for centos platforms: done
+	touch build/repo_centos
+
+repo/centos_6:
+	$(call build_repo_rpm,centos,6,6)
+	touch build/repo_centos_6
+
+repo/centos_7:
+	$(call build_repo_rpm,centos,7,6)
+	touch build/repo_centos_7
+
+repo/debian_8:
+	$(call build_repo_deb,debian,8,jessie)
+	touch build/repo_debian_8
+
+repo/debian_9:
+	$(call build_repo_deb,debian,9,stretch)
+	touch build/repo_debian_9
+
+repo/debian_10:
+	$(call build_repo_deb,debian,10,buster)
+	touch build/repo_debian_10
+
+repo/ubuntu_14_04:
+	$(call build_repo_deb,ubuntu,14.04,trusty)
+	touch build/repo_ubuntu_14_04
+
+repo/ubuntu_16_04:
+	$(call build_repo_deb,ubuntu,16.04,xenial)
+	touch build/repo_ubuntu_16_04
+
+repo/ubuntu_18_04:
+	$(call build_repo_deb,ubuntu,18.04,bionic)
+	touch build/repo_ubuntu_18_04
+
+repo/ubuntu_18_10:
+	$(call build_repo_deb,ubuntu,18.10,cosmic)
+	touch build/repo_ubuntu_18_10
+
+repo/keys:
+	$(call repo_copy_keys,centos,7)
+	touch build/repo_keys
+
+define build_repo_deb
+	docker run -v $(WORKDIR)/build/pkg/$1/$2:/app/in -v $(WORKDIR)/packaging/repo:/app/repo \
+	-v $(WORKDIR)/packaging/repo:/app/repo -v $(WORKDIR)/build/www:/app/www \
+	-e "DISTRIB=$1" -e "DISTRIB_VERSION=$2" -e "CODENAME=$3" \
+	--rm $1:$2 /app/repo/scripts/deb.sh
+endef
+
+define build_repo_rpm
+	docker run -v $(WORKDIR)/build/pkg/$1/$2:/app/in -v $(WORKDIR)/packaging/repo:/app/repo \
+	-v $(WORKDIR)/packaging/repo:/app/repo -v $(WORKDIR)/build/www:/app/www \
+	-e "DISTRIB=$1" -e "DISTRIB_VERSION=$2" -e "CODENAME=$3" \
+	--rm $1:$2 /app/repo/scripts/rpm.sh
+endef
+
+define repo_copy_keys
+	docker run -v $(WORKDIR)/build/pkg/keys:/app/in -v $(WORKDIR)/build/www:/app/www \
+	-e "DISTRIB=$1" -e "DISTRIB_VERSION=$2" -e "CODENAME=$3" \
+	--rm $1:$2 bash -exc "cp -av /app/in/*rpm /app/www/mamonsu/keys && cd /app/www/mamonsu/rpm && \
+	ln -s $(VERSION) latest"
+endef

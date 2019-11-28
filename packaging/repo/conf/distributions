@@ -1,0 +1,159 @@
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: squeeze
+Architectures: amd64 i386
+Components: main-squeeze
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: wheezy
+Architectures: amd64 i386
+Components: main-wheezy
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: jessie
+Architectures: amd64 i386
+Components: main-jessie
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: wily
+Architectures: amd64 i386
+Components: main-wily
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: precise
+Architectures: amd64 i386
+Components: main-precise
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: vivid
+Architectures: amd64 i386
+Components: main-vivid
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: trusty
+Architectures: amd64 i386
+Components: main-trusty
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: lucid
+Architectures: amd64 i386
+Components: main-lucid
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: cosmic
+Architectures: amd64 i386
+Components: main-cosmic
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: xenial
+Architectures: amd64 i386
+Components: main-xenial
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: yakkety
+Architectures: amd64 i386
+Components: main-yakkety
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: zesty
+Architectures: amd64 i386
+Components: main-zesty
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: stretch
+Architectures: amd64 i386
+Components: main-stretch
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: buster
+Architectures: amd64 i386
+Components: main-buster
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: artful
+Architectures: amd64 i386
+Components: main-artful
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
+
+Origin: repo.postgrespro.ru
+Label: PostgreSQL monitoring utility mamonsu
+Codename: bionic
+Architectures: amd64 i386
+Components: main-bionic
+Description: Postgres Professional mamonsu repo
+SignWith: yes
+Log:
+ --type=dsc changelog.script
