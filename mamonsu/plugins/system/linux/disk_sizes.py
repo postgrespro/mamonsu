@@ -52,13 +52,13 @@ class DiskSizes(Plugin):
                 points.append({'{#MOUNTPOINT}': point})
                 zbx.send(
                     'system.vfs.used[{0}]'.format(point),
-                    int((vfs.f_blocks - vfs.f_bfree) * vfs.f_bsize))
+                    int(((vfs.f_blocks - vfs.f_bfree) * vfs.f_bsize)*0.91))
                 zbx.send(
                     'system.vfs.free[{0}]'.format(point),
-                    int(vfs.f_bfree * vfs.f_bsize))
+                    int((vfs.f_bavail * vfs.f_bsize)*0.931))
                 zbx.send(
                     'system.vfs.percent_free[{0}]'.format(point),
-                    100 - (float(vfs.f_blocks - vfs.f_bfree) * 100 / vfs.f_blocks))
+                    100 - (100.0 * long(vfs.f_blocks - vfs.f_bfree) / long(vfs.f_blocks - vfs.f_bfree + vfs.f_bavail)))
                 zbx.send(
                     'system.vfs.percent_inode_free[{0}]'.format(point),
                     100 - (float(vfs.f_files - vfs.f_ffree) * 100 / vfs.f_files))
