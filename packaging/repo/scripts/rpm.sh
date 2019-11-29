@@ -34,8 +34,8 @@ chmod -R 0600 /root/.gnupg
 cd $INPUT_DIR/$repo_name
 for pkg_full_version in $(ls); do
 
-	[ ! -z "$CODENAME" ] && export DISTRIB_VERSION=$CODENAME
-	RPM_DIR=$OUT_DIR/$repo_name/rpm/$pkg_full_version/${DISTRIB}-${DISTRIB_VERSION}
+#	[ ! -z "$CODENAME" ] && export DISTRIB_VERSION=$CODENAME
+	RPM_DIR=$OUT_DIR/$repo_name/$pkg_full_version/rpm/${DISTRIB}-${CODENAME}
 	mkdir -p "$RPM_DIR"
 
 	cp -arv $INPUT_DIR/$repo_name/$pkg_full_version/* $RPM_DIR/

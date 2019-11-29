@@ -15,7 +15,7 @@ ulimit -n 1024
 export INPUT_DIR=/app/in # dir with builded deb
 export repo_name=mamonsu
 export OUT_DIR=/app/www/$repo_name
-export DEB_DIR=$OUT_DIR/deb
+#export DEB_DIR=$OUT_DIR/deb
 export KEYS_DIR=$OUT_DIR/keys
 export CONF=/app/repo/conf
 
@@ -26,7 +26,7 @@ apt-get -qq update
 apt-get -qq install reprepro gnupg rsync expect rsync dpkg-dev
 
 mkdir -p $KEYS_DIR
-mkdir -p $DEB_DIR
+#mkdir -p $DEB_DIR
 
 cp -av /app/repo/gnupg /root/.gnupg
 rsync /app/repo/gnupg/key.public $KEYS_DIR/GPG-KEY-MAMONSU
@@ -35,6 +35,9 @@ echo -e 'User-agent: *\nDisallow: /' > $OUT_DIR/robots.txt
 cd $INPUT_DIR/$repo_name
 for pkg_full_version in $(ls); do
 
+	DEB_DIR=$OUT_DIR/$pkg_full_version/deb
+
+	mkdir -p $DEB_DIR
 	cd $DEB_DIR
 	cp -av $CONF ./
 
@@ -50,7 +53,7 @@ for pkg_full_version in $(ls); do
 	#find $INPUT_DIR/ -name '*.changes' -exec reprepro -P optional -Vb . include ${CODENAME} {} \;
 	# find $INPUT_DIR/$repo_name -name "*${CODENAME}*.deb" -exec ./remove-debpkg $CODENAME {} \;
 	# find $INPUT_DIR/$repo_name -name "*${CODENAME}*.dsc" -exec reprepro --waitforlock 5 -i undefinedtarget --ignore=missingfile -P optional -S main -Vb . includedsc $CODENAME {} \;
-	find $INPUT_DIR/$repo_name -name "*.deb" -exec reprepro --waitforlock 5 -i undefinedtarget --ignore=missingfile -P optional -Vb . includedeb main-$CODENAME {} \;
+	find $INPUT_DIR/$repo_name -name "*.deb" -exec reprepro --waitforlock 5 -i undefinedtarget --ignore=missingfile -P optional -Vb . includedeb $CODENAME {} \;
 	reprepro export $CODENAME
 
 	rm -f remove-debpkg

@@ -1,6 +1,6 @@
 [pg_probackup]
 name=Mamonsu Packages for Red Hat Linux derivatives
-baseurl=https://repo.postgrespro.ru/mamonsu/rpm/latest/@DISTRIB@-$releasever
+baseurl=https://repo.postgrespro.ru/mamonsu/latest/rpm/@DISTRIB@-$releasever
 enabled=1
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/GPG-KEY-MAMONSU

@@ -119,7 +119,7 @@ build/pkg_centos_7:
 #	$(call build_rpm,centos,8)
 #	touch build/pkg_centos_8
 
-repo/all: repo/debian repo/ubuntu repo/centos repo/keys
+repo/all: repo/debian repo/ubuntu repo/centos repo/finish
 	@echo Build repo for all platform: done
 	touch build/repo_all
 
@@ -140,7 +140,7 @@ repo/centos_6:
 	touch build/repo_centos_6
 
 repo/centos_7:
-	$(call build_repo_rpm,centos,7,6)
+	$(call build_repo_rpm,centos,7,7)
 	touch build/repo_centos_7
 
 repo/debian_8:
@@ -171,9 +171,9 @@ repo/ubuntu_18_10:
 	$(call build_repo_deb,ubuntu,18.10,cosmic)
 	touch build/repo_ubuntu_18_10
 
-repo/keys:
-	$(call repo_copy_keys,centos,7)
-	touch build/repo_keys
+repo/finish:
+	$(call repo_finish,centos,7)
+	touch build/repo_finish
 
 define build_repo_deb
 	docker run -v $(WORKDIR)/build/pkg/$1/$2:/app/in -v $(WORKDIR)/packaging/repo:/app/repo \
@@ -189,9 +189,9 @@ define build_repo_rpm
 	--rm $1:$2 /app/repo/scripts/rpm.sh
 endef
 
-define repo_copy_keys
+define repo_finish
 	docker run -v $(WORKDIR)/build/pkg/keys:/app/in -v $(WORKDIR)/build/www:/app/www \
 	-e "DISTRIB=$1" -e "DISTRIB_VERSION=$2" -e "CODENAME=$3" \
-	--rm $1:$2 bash -exc "cp -av /app/in/*rpm /app/www/mamonsu/keys && cd /app/www/mamonsu/rpm && \
+	--rm $1:$2 bash -exc "cp -av /app/in/*rpm /app/www/mamonsu/keys && cd /app/www/mamonsu/ && \
 	ln -s $(VERSION) latest"
 endef
