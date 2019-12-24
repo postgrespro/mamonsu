@@ -12,7 +12,7 @@ import encodings.idna
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.queue import Queue
-
+from itertools import islice
 
 class ZbxSender(Plugin):
 
@@ -63,6 +63,34 @@ class ZbxSender(Plugin):
             'clock': int(time.time())
         })
         self._send_data(data)
+
+    def send_file_to_zabbix (self,path):
+        zabbix_client = self.config.fetch('zabbix', 'client')
+        self.log.setLevel((self.config.fetch('log', 'level')).upper())
+
+        metrics = []
+        with open(path, 'r') as f:
+            while True:
+                lines=list(islice(f, 100))
+                for line in lines:
+                    split_line = line.rstrip('\n').split('\t')
+                    metric = {
+                        'host': zabbix_client,
+                        'key': split_line[2],
+                        'value': split_line[1],
+                        'clock': int(split_line[0])}
+                    metrics.append(metric)
+
+                data = json.dumps({
+                    'request': 'sender data',
+                    'data': metrics,
+                    'clock': int(time.time())
+                })
+                self._send_data(data)
+                self.log.info('sended {0} metrics'.format(str(len(metrics))))
+                metrics = []
+                if not lines:
+                    break
 
     def _send_data(self, data):
         data_len = struct.pack('<Q', len(data))
