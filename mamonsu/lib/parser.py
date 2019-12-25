@@ -121,7 +121,7 @@ Examples:
 Export metrics to zabbix server
 Command: --send-data-zabbix 
 Example:
-    {prog} --send-data-zabbix --zabbix-file=localhost.log --zabbix-addres=licalhost 
+    {prog} --send-data-zabbix --zabbix-file=localhost.log --zabbix-address=localhost 
 Options:    
     --zabbix-address <name of the Zabbix host to send metrics>
     --zabbix-port <port of Zabbix server to send metrics> by default 10051
