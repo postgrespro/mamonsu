@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2019-12-26T15:24:41Z</date>
+    <date>2019-12-26T15:24:35Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -9,8 +9,8 @@
     </groups>
     <templates>
         <template>
-            <template>4.4.1-standart</template>
-            <name>4.4.1-standart</name>
+            <template>4.4.1-agent</template>
+            <name>4.4.1-agent</name>
             <description/>
             <groups>
                 <group>
@@ -24,94 +24,12 @@
             </applications>
             <items>
                 <item>
-                    <name>Mamonsu: rss memory max usage</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>mamonsu.memory.rss[max]</key>
-                    <delay>0</delay>
-                    <history>7d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units>b</units>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux2</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>Mamonsu: plugin errors</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>mamonsu.plugin.errors[]</key>
-                    <delay>0</delay>
-                    <history>7d</history>
-                    <trends>0</trends>
-                    <status>0</status>
-                    <value_type>4</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux2</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
                     <name>Mamonsu: plugin keep alive</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>mamonsu.plugin.keepalive[]</key>
-                    <delay>0</delay>
+                    <key>mamonsu.plugin.keepalive</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -148,11 +66,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL archive command count archived files</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.archive_command[archived_files]</key>
-                    <delay>0</delay>
+                    <key>pgsql.archive_command.archived_files[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -183,17 +101,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL archive command count files in archive_status need to archive</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.archive_command[count_files_to_archive]</key>
-                    <delay>0</delay>
+                    <key>pgsql.archive_command.count_files_to_archive[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -230,11 +153,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL archive command count attempts to archive files</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.archive_command[failed_trying_to_archive]</key>
-                    <delay>0</delay>
+                    <key>pgsql.archive_command.failed_trying_to_archive[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -265,17 +188,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL archive command size of files need to archive</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.archive_command[size_files_to_archive]</key>
-                    <delay>0</delay>
+                    <key>pgsql.archive_command.size_files_to_archive[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -312,11 +240,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: count of autovacuum workers</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.autovacumm.count[]</key>
-                    <delay>0</delay>
+                    <key>pgsql.autovacumm.count[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>300</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -353,11 +281,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: buffers allocated</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.bgwriter[buffers_alloc]</key>
-                    <delay>0</delay>
+                    <key>pgsql.bgwriter.buffers_alloc[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -388,17 +316,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: buffers written directly by a backend</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.bgwriter[buffers_backend]</key>
-                    <delay>0</delay>
+                    <key>pgsql.bgwriter.buffers_backend[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -429,17 +362,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: times a backend execute its own fsync</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.bgwriter[buffers_backend_fsync]</key>
-                    <delay>0</delay>
+                    <key>pgsql.bgwriter.buffers_backend_fsync[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -470,17 +408,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: buffers written during checkpoints</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.bgwriter[buffers_checkpoint]</key>
-                    <delay>0</delay>
+                    <key>pgsql.bgwriter.buffers_checkpoint[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -511,17 +454,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: buffers written</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.bgwriter[buffers_clean]</key>
-                    <delay>0</delay>
+                    <key>pgsql.bgwriter.buffers_clean[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -552,17 +500,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL bgwriter: number of bgwriter stopped by max write count</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.bgwriter[maxwritten_clean]</key>
-                    <delay>0</delay>
+                    <key>pgsql.bgwriter.maxwritten_clean[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -593,17 +546,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL blocks: hit</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.blocks[hit]</key>
-                    <delay>0</delay>
+                    <key>pgsql.blocks.hit[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -634,17 +592,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL blocks: read</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.blocks[read]</key>
-                    <delay>0</delay>
+                    <key>pgsql.blocks.read[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -675,17 +638,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL: shared buffer dirty size</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.buffers[dirty]</key>
-                    <delay>0</delay>
+                    <key>pgsql.buffers.dirty[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -722,11 +690,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: shared buffer size</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.buffers[size]</key>
-                    <delay>0</delay>
+                    <key>pgsql.buffers.size[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -763,11 +731,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: shared buffer twice used size</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.buffers[twice_used]</key>
-                    <delay>0</delay>
+                    <key>pgsql.buffers.twice_used[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -804,15 +772,15 @@
                 </item>
                 <item>
                     <name>PostgreSQL: cache hit ratio</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.cache[hit]</key>
-                    <delay>0</delay>
+                    <key>pgsql.cache.hit[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <units>%</units>
                     <snmpv3_contextname/>
@@ -844,258 +812,12 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>PostgreSQL cfs compression: compressed files</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>pgsql.cfs.activity[compressed_files]</key>
-                    <delay>0</delay>
-                    <history>7d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux2</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>PostgreSQL cfs compression: current ratio</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>pgsql.cfs.activity[current_compress_ratio]</key>
-                    <delay>0</delay>
-                    <history>7d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux2</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>PostgreSQL cfs compression: scanned byte/s</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>pgsql.cfs.activity[scanned_bytes]</key>
-                    <delay>0</delay>
-                    <history>7d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units>b</units>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux2</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>PostgreSQL cfs compression: scanned files</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>pgsql.cfs.activity[scanned_files]</key>
-                    <delay>0</delay>
-                    <history>7d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux2</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>PostgreSQL cfs compression: total ratio</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>pgsql.cfs.activity[total_compress_ratio]</key>
-                    <delay>0</delay>
-                    <history>7d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux2</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>PostgreSQL cfs compression: written byte/s</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>pgsql.cfs.activity[written_bytes]</key>
-                    <delay>0</delay>
-                    <history>7d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units>b</units>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>App-PostgresPro-Linux2</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
                     <name>PostgreSQL checkpoint: sync time</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.checkpoint[checkpoint_sync_time]</key>
-                    <delay>0</delay>
+                    <key>pgsql.checkpoint.checkpoint_sync_time[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>300</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1126,17 +848,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL checkpoints: by timeout (in hour)</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.checkpoint[count_timed]</key>
-                    <delay>0</delay>
+                    <key>pgsql.checkpoint.count_timed[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>300</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1167,17 +894,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL checkpoints: by wal (in hour)</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.checkpoint[count_wal]</key>
-                    <delay>0</delay>
+                    <key>pgsql.checkpoint.count_wal[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>300</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1208,17 +940,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL checkpoint: write time</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.checkpoint[write_time]</key>
-                    <delay>0</delay>
+                    <key>pgsql.checkpoint.write_time[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>300</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1249,17 +986,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL: number of active connections</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.connections[active]</key>
-                    <delay>0</delay>
+                    <key>pgsql.connections.active[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1296,11 +1038,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of disabled</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.connections[disabled]</key>
-                    <delay>0</delay>
+                    <key>pgsql.connections.disabled[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1337,11 +1079,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of fastpath function call</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.connections[fastpath_function_call]</key>
-                    <delay>0</delay>
+                    <key>pgsql.connections.fastpath_function_call[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1378,11 +1120,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of idle connections</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.connections[idle]</key>
-                    <delay>0</delay>
+                    <key>pgsql.connections.idle[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1419,11 +1161,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of idle in transaction connections</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.connections[idle_in_transaction]</key>
-                    <delay>0</delay>
+                    <key>pgsql.connections.idle_in_transaction[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1460,11 +1202,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of idle in transaction (aborted)</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.connections[idle_in_transaction_aborted]</key>
-                    <delay>0</delay>
+                    <key>pgsql.connections.idle_in_transaction_aborted[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1501,11 +1243,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: max connections</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.connections[max_connections]</key>
-                    <delay>0</delay>
+                    <key>pgsql.connections.max_connections[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1542,11 +1284,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of total connections</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.connections[total]</key>
-                    <delay>0</delay>
+                    <key>pgsql.connections.total[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1583,11 +1325,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: number of waiting connections</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.connections[waiting]</key>
-                    <delay>0</delay>
+                    <key>pgsql.connections.waiting[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1624,11 +1366,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL event: conflicts</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.events[conflicts]</key>
-                    <delay>0</delay>
+                    <key>pgsql.events.conflicts[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1659,17 +1401,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL event: deadlocks</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.events[deadlocks]</key>
-                    <delay>0</delay>
+                    <key>pgsql.events.deadlocks[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1700,17 +1447,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL event: rollbacks</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.events[xact_rollback]</key>
-                    <delay>0</delay>
+                    <key>pgsql.events.xact_rollback[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1741,17 +1493,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL: oldest transaction running time in sec</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.oldest[transaction_time]</key>
-                    <delay>0</delay>
+                    <key>pgsql.oldest.transaction_time[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1788,11 +1545,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: age of oldest xid</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.oldest[xid_age]</key>
-                    <delay>0</delay>
+                    <key>pgsql.oldest.xid_age[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1829,11 +1586,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: ALTER TABLE, DROP TABLE, TRUNCATE, REINDEX, CLUSTER, VACUUM FULL, LOCK TABLE</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.pg_locks[accessexclusive]</key>
-                    <delay>0</delay>
+                    <key>pgsql.pg_locks.accessexclusive[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1870,11 +1627,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: Read only queries</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.pg_locks[accessshare]</key>
-                    <delay>0</delay>
+                    <key>pgsql.pg_locks.accessshare[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1911,11 +1668,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: Locks from application or some operation on system catalogs</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.pg_locks[exclusive]</key>
-                    <delay>0</delay>
+                    <key>pgsql.pg_locks.exclusive[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1952,11 +1709,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: Write queries</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.pg_locks[rowexclusive]</key>
-                    <delay>0</delay>
+                    <key>pgsql.pg_locks.rowexclusive[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -1993,11 +1750,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: SELECT FOR SHARE and SELECT FOR UPDATE</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.pg_locks[rowshare]</key>
-                    <delay>0</delay>
+                    <key>pgsql.pg_locks.rowshare[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2034,11 +1791,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: Locks from application</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.pg_locks[sharerowexclusive]</key>
-                    <delay>0</delay>
+                    <key>pgsql.pg_locks.sharerowexclusive[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2075,11 +1832,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: VACUUM, ANALYZE, CREATE INDEX CONCURRENTLY</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.pg_locks[shareupdateexclusive]</key>
-                    <delay>0</delay>
+                    <key>pgsql.pg_locks.shareupdateexclusive[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2116,11 +1873,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL locks: CREATE INDEX</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.pg_locks[share]</key>
-                    <delay>0</delay>
+                    <key>pgsql.pg_locks.share[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2157,11 +1914,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: ping</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.ping[]</key>
-                    <delay>0</delay>
+                    <key>pgsql.ping[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>5</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2198,11 +1955,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: streaming replication lag</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.replication_lag[sec]</key>
-                    <delay>0</delay>
+                    <key>pgsql.replication_lag.sec[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2239,11 +1996,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL statements: dirty bytes/s</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.stat[dirty_bytes]</key>
-                    <delay>0</delay>
+                    <key>pgsql.stat.dirty_bytes[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2274,17 +2031,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL statements: other (mostly cpu) time</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.stat[other_time]</key>
-                    <delay>0</delay>
+                    <key>pgsql.stat.other_time[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2315,17 +2077,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL statements: read bytes/s</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.stat[read_bytes]</key>
-                    <delay>0</delay>
+                    <key>pgsql.stat.read_bytes[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2356,17 +2123,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL statements: read io time</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.stat[read_time]</key>
-                    <delay>0</delay>
+                    <key>pgsql.stat.read_time[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2397,17 +2169,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL statements: write bytes/s</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.stat[write_bytes]</key>
-                    <delay>0</delay>
+                    <key>pgsql.stat.write_bytes[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2438,17 +2215,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL statements: write io time</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.stat[write_time]</key>
-                    <delay>0</delay>
+                    <key>pgsql.stat.write_time[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2479,17 +2261,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL temp: bytes written</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.temp[bytes]</key>
-                    <delay>0</delay>
+                    <key>pgsql.temp.bytes[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2520,17 +2307,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL temp: files created</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.temp[files]</key>
-                    <delay>0</delay>
+                    <key>pgsql.temp.files[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2561,17 +2353,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL transactions: total</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.transactions[total]</key>
-                    <delay>0</delay>
+                    <key>pgsql.transactions.total[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2602,17 +2399,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL tuples: deleted</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.tuples[deleted]</key>
-                    <delay>0</delay>
+                    <key>pgsql.tuples.deleted[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2643,17 +2445,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL tuples: fetched</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.tuples[fetched]</key>
-                    <delay>0</delay>
+                    <key>pgsql.tuples.fetched[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2684,17 +2491,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL tuples: inserted</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.tuples[inserted]</key>
-                    <delay>0</delay>
+                    <key>pgsql.tuples.inserted[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2725,17 +2537,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL tuples: returned</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.tuples[returned]</key>
-                    <delay>0</delay>
+                    <key>pgsql.tuples.returned[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2766,17 +2583,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL tuples: updated</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.tuples[updated]</key>
-                    <delay>0</delay>
+                    <key>pgsql.tuples.updated[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2807,21 +2629,26 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>PostgreSQL: service uptime</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.uptime[]</key>
-                    <delay>0</delay>
+                    <key>pgsql.uptime[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
-                    <value_type>3</value_type>
+                    <value_type>0</value_type>
                     <allowed_hosts/>
                     <units>uptime</units>
                     <snmpv3_contextname/>
@@ -2854,11 +2681,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: count of xlog files</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.wal.count[]</key>
-                    <delay>0</delay>
+                    <key>pgsql.wal.count[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2895,11 +2722,11 @@
                 </item>
                 <item>
                     <name>PostgreSQL: wal write speed</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.wal.write[]</key>
-                    <delay>0</delay>
+                    <key>pgsql.wal.write[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2930,17 +2757,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>CPU time spent Idle CPU time</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.cpu[idle]</key>
-                    <delay>0</delay>
+                    <key>system.cpu.idle</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -2971,17 +2803,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>CPU time spent waiting for I/O operations</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.cpu[iowait]</key>
-                    <delay>0</delay>
+                    <key>system.cpu.iowait</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3012,17 +2849,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>CPU time spent handling interrupts</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.cpu[irq]</key>
-                    <delay>0</delay>
+                    <key>system.cpu.irq</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3053,17 +2895,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>CPU time spent by nice(1)d programs</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.cpu[nice]</key>
-                    <delay>0</delay>
+                    <key>system.cpu.nice</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3094,17 +2941,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>CPU time spent handling batched interrupts</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.cpu[softirq]</key>
-                    <delay>0</delay>
+                    <key>system.cpu.softirq</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3135,17 +2987,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>CPU time spent by the kernel in system activities</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.cpu[system]</key>
-                    <delay>0</delay>
+                    <key>system.cpu.system</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3176,17 +3033,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>CPU time spent by normal programs and daemons</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.cpu[user]</key>
-                    <delay>0</delay>
+                    <key>system.cpu.user</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3217,17 +3079,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>Block devices: read requests</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.disk.all_read[]</key>
-                    <delay>0</delay>
+                    <key>system.disk.all_read</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3258,17 +3125,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>Block devices: read byte/s</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.disk.all_read_b[]</key>
-                    <delay>0</delay>
+                    <key>system.disk.all_read_b</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3299,17 +3171,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>Block devices: write requests</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.disk.all_write[]</key>
-                    <delay>0</delay>
+                    <key>system.disk.all_write</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3340,17 +3217,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>Block devices: write byte/s</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.disk.all_write_b[]</key>
-                    <delay>0</delay>
+                    <key>system.disk.all_write_b</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3381,17 +3263,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>System load average over 1 minute</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.la[1]</key>
-                    <delay>0</delay>
+                    <key>system.la.1</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3428,11 +3315,11 @@
                 </item>
                 <item>
                     <name>Active: Memory recently used</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[active]</key>
-                    <delay>0</delay>
+                    <key>system.memory.active</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3469,11 +3356,11 @@
                 </item>
                 <item>
                     <name>Apps: User-space applications</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[apps]</key>
-                    <delay>0</delay>
+                    <key>system.memory.apps</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3510,11 +3397,11 @@
                 </item>
                 <item>
                     <name>Buffers: Block device cache and dirty</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[buffers]</key>
-                    <delay>0</delay>
+                    <key>system.memory.buffers</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3551,11 +3438,11 @@
                 </item>
                 <item>
                     <name>Cached: Parked file data (file content) cache</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[cached]</key>
-                    <delay>0</delay>
+                    <key>system.memory.cached</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3592,11 +3479,11 @@
                 </item>
                 <item>
                     <name>Committed_AS: Total committed memory</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[committed]</key>
-                    <delay>0</delay>
+                    <key>system.memory.committed</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3633,11 +3520,11 @@
                 </item>
                 <item>
                     <name>Inactive: Memory not currently used</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[inactive]</key>
-                    <delay>0</delay>
+                    <key>system.memory.inactive</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3674,11 +3561,11 @@
                 </item>
                 <item>
                     <name>Mapped: All mmap()ed pages</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[mapped]</key>
-                    <delay>0</delay>
+                    <key>system.memory.mapped</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3715,11 +3602,11 @@
                 </item>
                 <item>
                     <name>PageTables: Map bt virtual and physical</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[page_tables]</key>
-                    <delay>0</delay>
+                    <key>system.memory.page_tables</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3756,11 +3643,11 @@
                 </item>
                 <item>
                     <name>Slab: Kernel used memory (inode cache)</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[slab]</key>
-                    <delay>0</delay>
+                    <key>system.memory.slab</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3797,11 +3684,11 @@
                 </item>
                 <item>
                     <name>Swap: Swap space used</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[swap]</key>
-                    <delay>0</delay>
+                    <key>system.memory.swap</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3838,11 +3725,11 @@
                 </item>
                 <item>
                     <name>SwapCached: Fetched unmod yet swap pages</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[swap_cache]</key>
-                    <delay>0</delay>
+                    <key>system.memory.swap_cache</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3879,11 +3766,11 @@
                 </item>
                 <item>
                     <name>Free: Wasted memory</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[unused]</key>
-                    <delay>0</delay>
+                    <key>system.memory.unused</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3920,11 +3807,11 @@
                 </item>
                 <item>
                     <name>VMallocUsed: vmaloc() allocated by kernel</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.memory[vmalloc_used]</key>
-                    <delay>0</delay>
+                    <key>system.memory.vmalloc_used</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -3961,11 +3848,11 @@
                 </item>
                 <item>
                     <name>Opened files</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.open_files[]</key>
-                    <delay>0</delay>
+                    <key>system.open_files</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -4002,11 +3889,11 @@
                 </item>
                 <item>
                     <name>Processes: in state blocked</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.processes[blocked]</key>
-                    <delay>0</delay>
+                    <key>system.processes.blocked</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -4043,11 +3930,11 @@
                 </item>
                 <item>
                     <name>Processes: forkrate</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.processes[forkrate]</key>
-                    <delay>0</delay>
+                    <key>system.processes.forkrate</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -4078,17 +3965,22 @@
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
                 <item>
                     <name>Processes: in state running</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.processes[running]</key>
-                    <delay>0</delay>
+                    <key>system.processes.running</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -4125,11 +4017,11 @@
                 </item>
                 <item>
                     <name>System up_time</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.up_time[]</key>
-                    <delay>0</delay>
+                    <key>system.up_time</key>
+                    <delay>60</delay>
                     <history>7d</history>
                     <trends>365d</trends>
                     <status>0</status>
@@ -4167,132 +4059,12 @@
             </items>
             <discovery_rules>
                 <discovery_rule>
-                    <name>Compressed relations discovery</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>pgsql.cfs.discovery_compressed_relations[]</key>
-                    <delay>0</delay>
-                    <status>0</status>
-                    <allowed_hosts/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <filter>
-                        <evaltype>0</evaltype>
-                        <formula/>
-                        <conditions>
-                            <condition>
-                                <macro>{#COMPRESSED_RELATION}</macro>
-                                <value>.*</value>
-                                <operator>8</operator>
-                                <formulaid>A</formulaid>
-                            </condition>
-                        </conditions>
-                    </filter>
-                    <lifetime>7d</lifetime>
-                    <description/>
-                    <item_prototypes>
-                        <item_prototype>
-                            <name>Relation {#COMPRESSED_RELATION}: compress ratio</name>
-                            <type>2</type>
-                            <snmp_community/>
-                            <snmp_oid/>
-                            <key>pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]</key>
-                            <delay>0</delay>
-                            <history>7d</history>
-                            <trends>365d</trends>
-                            <status>0</status>
-                            <value_type>0</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
-                            <applications>
-                                <application>
-                                    <name>App-PostgresPro-Linux2</name>
-                                </application>
-                            </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <application_prototypes/>
-                            <master_item_prototype/>
-                        </item_prototype>
-                    </item_prototypes>
-                    <trigger_prototypes/>
-                    <graph_prototypes>
-                        <graph_prototype>
-                            <name>Relation {#COMPRESSED_RELATION}: compress ratio</name>
-                            <width>900</width>
-                            <height>200</height>
-                            <yaxismin>0.0000</yaxismin>
-                            <yaxismax>100.0000</yaxismax>
-                            <show_work_period>1</show_work_period>
-                            <show_triggers>1</show_triggers>
-                            <type>0</type>
-                            <show_legend>1</show_legend>
-                            <show_3d>0</show_3d>
-                            <percent_left>0.0000</percent_left>
-                            <percent_right>0.0000</percent_right>
-                            <ymin_type_1>0</ymin_type_1>
-                            <ymax_type_1>0</ymax_type_1>
-                            <ymin_item_1>0</ymin_item_1>
-                            <ymax_item_1>0</ymax_item_1>
-                            <graph_items>
-                                <graph_item>
-                                    <sortorder>0</sortorder>
-                                    <drawtype>0</drawtype>
-                                    <color>00CC00</color>
-                                    <yaxisside>0</yaxisside>
-                                    <calc_fnc>2</calc_fnc>
-                                    <type>0</type>
-                                    <item>
-                                        <host>4.4.1-standart</host>
-                                        <key>pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]</key>
-                                    </item>
-                                </graph_item>
-                            </graph_items>
-                        </graph_prototype>
-                    </graph_prototypes>
-                    <host_prototypes/>
-                    <jmx_endpoint/>
-                </discovery_rule>
-                <discovery_rule>
                     <name>Database discovery</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>pgsql.database.discovery[]</key>
-                    <delay>0</delay>
+                    <key>pgsql.database.discovery[{$PG_CONNINFO},{$PG_PATH}]</key>
+                    <delay>60</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
@@ -4327,11 +4099,11 @@
                     <item_prototypes>
                         <item_prototype>
                             <name>Count of bloating tables in database: {#DATABASE}</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>pgsql.database.bloating_tables[{#DATABASE}]</key>
-                            <delay>0</delay>
+                            <key>pgsql.database.bloating_tables[{#DATABASE},{$PG_CONNINFO},{$PG_PATH}]</key>
+                            <delay>300</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -4369,11 +4141,11 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Max age (datfrozenxid) in: {#DATABASE}</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>pgsql.database.max_age[{#DATABASE}]</key>
-                            <delay>0</delay>
+                            <key>pgsql.database.max_age[{#DATABASE},{$PG_CONNINFO},{$PG_PATH}]</key>
+                            <delay>300</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -4411,11 +4183,11 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Database {#DATABASE}: size</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>pgsql.database.size[{#DATABASE}]</key>
-                            <delay>0</delay>
+                            <key>pgsql.database.size[{#DATABASE},{$PG_CONNINFO},{$PG_PATH}]</key>
+                            <delay>300</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -4480,8 +4252,8 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
-                                        <key>pgsql.database.size[{#DATABASE}]</key>
+                                        <host>4.4.1-agent</host>
+                                        <key>pgsql.database.size[{#DATABASE},{$PG_CONNINFO},{$PG_PATH}]</key>
                                     </item>
                                 </graph_item>
                             </graph_items>
@@ -4512,8 +4284,8 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
-                                        <key>pgsql.database.bloating_tables[{#DATABASE}]</key>
+                                        <host>4.4.1-agent</host>
+                                        <key>pgsql.database.bloating_tables[{#DATABASE},{$PG_CONNINFO},{$PG_PATH}]</key>
                                     </item>
                                 </graph_item>
                                 <graph_item>
@@ -4524,8 +4296,8 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
-                                        <key>pgsql.autovacumm.count[]</key>
+                                        <host>4.4.1-agent</host>
+                                        <key>pgsql.autovacumm.count[{$PG_CONNINFO},{$PG_PATH}]</key>
                                     </item>
                                 </graph_item>
                             </graph_items>
@@ -4556,8 +4328,8 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
-                                        <key>pgsql.database.max_age[{#DATABASE}]</key>
+                                        <host>4.4.1-agent</host>
+                                        <key>pgsql.database.max_age[{#DATABASE},{$PG_CONNINFO},{$PG_PATH}]</key>
                                     </item>
                                 </graph_item>
                                 <graph_item>
@@ -4568,8 +4340,8 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
-                                        <key>pgsql.autovacumm.count[]</key>
+                                        <host>4.4.1-agent</host>
+                                        <key>pgsql.autovacumm.count[{$PG_CONNINFO},{$PG_PATH}]</key>
                                     </item>
                                 </graph_item>
                             </graph_items>
@@ -4580,11 +4352,11 @@
                 </discovery_rule>
                 <discovery_rule>
                     <name>Block device discovery</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.disk.discovery[]</key>
-                    <delay>0</delay>
+                    <key>system.disk.discovery</key>
+                    <delay>60</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
@@ -4619,11 +4391,11 @@
                     <item_prototypes>
                         <item_prototype>
                             <name>Block device {#BLOCKDEVICE}: read operations</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.disk.read[{#BLOCKDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -4654,18 +4426,23 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
                         </item_prototype>
                         <item_prototype>
                             <name>Block device {#BLOCKDEVICE}: read byte/s</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.disk.read_b[{#BLOCKDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -4696,18 +4473,23 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
                         </item_prototype>
                         <item_prototype>
                             <name>Block device {#BLOCKDEVICE}: utilization</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.disk.utilization[{#BLOCKDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -4738,18 +4520,23 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
                         </item_prototype>
                         <item_prototype>
                             <name>Block device {#BLOCKDEVICE}: write operations</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.disk.write[{#BLOCKDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -4780,18 +4567,23 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
                         </item_prototype>
                         <item_prototype>
                             <name>Block device {#BLOCKDEVICE}: write byte/s</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.disk.write_b[{#BLOCKDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -4822,7 +4614,12 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
@@ -4856,7 +4653,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
+                                        <host>4.4.1-agent</host>
                                         <key>system.disk.read_b[{#BLOCKDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -4868,7 +4665,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
+                                        <host>4.4.1-agent</host>
                                         <key>system.disk.write_b[{#BLOCKDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -4880,7 +4677,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
+                                        <host>4.4.1-agent</host>
                                         <key>system.disk.utilization[{#BLOCKDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -4912,7 +4709,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
+                                        <host>4.4.1-agent</host>
                                         <key>system.disk.read[{#BLOCKDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -4924,7 +4721,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
+                                        <host>4.4.1-agent</host>
                                         <key>system.disk.write[{#BLOCKDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -4936,7 +4733,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
+                                        <host>4.4.1-agent</host>
                                         <key>system.disk.utilization[{#BLOCKDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -4948,11 +4745,11 @@
                 </discovery_rule>
                 <discovery_rule>
                     <name>Net iface discovery</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.net.discovery[]</key>
-                    <delay>0</delay>
+                    <key>system.net.discovery</key>
+                    <delay>60</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
@@ -4987,11 +4784,11 @@
                     <item_prototypes>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: RX bytes/s</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.net.rx_bytes[{#NETDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -5022,18 +4819,23 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
                         </item_prototype>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: RX drops/s</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.net.rx_drop[{#NETDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -5064,18 +4866,23 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
                         </item_prototype>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: RX errors/s</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.net.rx_errs[{#NETDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -5106,18 +4913,23 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
                         </item_prototype>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: TX bytes/s</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.net.tx_bytes[{#NETDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -5148,18 +4960,23 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
                         </item_prototype>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: TX drops/s</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.net.tx_drop[{#NETDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -5190,18 +5007,23 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
                         </item_prototype>
                         <item_prototype>
                             <name>Network device {#NETDEVICE}: TX errors/s</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.net.tx_errs[{#NETDEVICE}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -5232,7 +5054,12 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>10</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
@@ -5266,7 +5093,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
+                                        <host>4.4.1-agent</host>
                                         <key>system.net.rx_bytes[{#NETDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -5278,7 +5105,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
+                                        <host>4.4.1-agent</host>
                                         <key>system.net.tx_bytes[{#NETDEVICE}]</key>
                                     </item>
                                 </graph_item>
@@ -5290,11 +5117,11 @@
                 </discovery_rule>
                 <discovery_rule>
                     <name>VFS discovery</name>
-                    <type>2</type>
+                    <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>system.vfs.discovery[]</key>
-                    <delay>0</delay>
+                    <key>system.vfs.discovery</key>
+                    <delay>60</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
@@ -5329,11 +5156,11 @@
                     <item_prototypes>
                         <item_prototype>
                             <name>Mount point {#MOUNTPOINT}: free</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.vfs.free[{#MOUNTPOINT}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -5371,53 +5198,11 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Mount point {#MOUNTPOINT}: free in percents</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.vfs.percent_free[{#MOUNTPOINT}]</key>
-                            <delay>0</delay>
-                            <history>7d</history>
-                            <trends>365d</trends>
-                            <status>0</status>
-                            <value_type>0</value_type>
-                            <allowed_hosts/>
-                            <units>%</units>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
-                            <applications>
-                                <application>
-                                    <name>App-PostgresPro-Linux2</name>
-                                </application>
-                            </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <application_prototypes/>
-                            <master_item_prototype/>
-                        </item_prototype>
-                        <item_prototype>
-                            <name>Mount point {#MOUNTPOINT}: free inodes in percent</name>
-                            <type>2</type>
-                            <snmp_community/>
-                            <snmp_oid/>
-                            <key>system.vfs.percent_inode_free[{#MOUNTPOINT}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -5455,11 +5240,11 @@
                         </item_prototype>
                         <item_prototype>
                             <name>Mount point {#MOUNTPOINT}: used</name>
-                            <type>2</type>
+                            <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
                             <key>system.vfs.used[{#MOUNTPOINT}]</key>
-                            <delay>0</delay>
+                            <delay>60</delay>
                             <history>7d</history>
                             <trends>365d</trends>
                             <status>0</status>
@@ -5498,26 +5283,10 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{4.4.1-standart:system.vfs.percent_free[{#MOUNTPOINT}].last()}&lt;10</expression>
+                            <expression>{4.4.1-agent:system.vfs.percent_free[{#MOUNTPOINT}].last()}&lt;10</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Free disk space less then 10% on mountpoint {#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>3</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{4.4.1-standart:system.vfs.percent_inode_free[{#MOUNTPOINT}].last()}&lt;10</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Free inode space less then 10% on mountpoint {#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -5557,7 +5326,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
+                                        <host>4.4.1-agent</host>
                                         <key>system.vfs.used[{#MOUNTPOINT}]</key>
                                     </item>
                                 </graph_item>
@@ -5569,7 +5338,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>4.4.1-standart</host>
+                                        <host>4.4.1-agent</host>
                                         <key>system.vfs.free[{#MOUNTPOINT}]</key>
                                     </item>
                                 </graph_item>
@@ -5581,30 +5350,23 @@
                 </discovery_rule>
             </discovery_rules>
             <httptests/>
-            <macros/>
+            <macros>
+                <macro>
+                    <macro>{$PG_CONNINFO}</macro>
+                    <value>-qAt -p 5433 -U postgres </value>
+                </macro>
+                <macro>
+                    <macro>{$PG_PATH}</macro>
+                    <value>/opt/pgpro/std-10/bin/psql</value>
+                </macro>
+            </macros>
             <templates/>
             <screens/>
         </template>
     </templates>
     <triggers>
         <trigger>
-            <expression>{4.4.1-standart:mamonsu.memory.rss[max].last()}&gt;41943040</expression>
-            <recovery_mode>0</recovery_mode>
-            <recovery_expression/>
-            <name>Mamonsu agent memory usage alert on {HOSTNAME}: {ITEM.LASTVALUE} bytes</name>
-            <correlation_mode>0</correlation_mode>
-            <correlation_tag/>
-            <url/>
-            <status>0</status>
-            <priority>3</priority>
-            <description/>
-            <type>0</type>
-            <manual_close>0</manual_close>
-            <dependencies/>
-            <tags/>
-        </trigger>
-        <trigger>
-            <expression>{4.4.1-standart:mamonsu.plugin.keepalive[].nodata(180)}=1</expression>
+            <expression>{4.4.1-agent:mamonsu.plugin.keepalive.nodata(180)}=1</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Mamonsu nodata from {HOSTNAME}</name>
@@ -5620,23 +5382,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{4.4.1-standart:mamonsu.plugin.errors[].strlen()}&gt;1</expression>
-            <recovery_mode>0</recovery_mode>
-            <recovery_expression/>
-            <name>Mamonsu plugin errors on {HOSTNAME}. {ITEM.LASTVALUE}</name>
-            <correlation_mode>0</correlation_mode>
-            <correlation_tag/>
-            <url/>
-            <status>0</status>
-            <priority>3</priority>
-            <description/>
-            <type>0</type>
-            <manual_close>0</manual_close>
-            <dependencies/>
-            <tags/>
-        </trigger>
-        <trigger>
-            <expression>{4.4.1-standart:pgsql.cache[hit].last()}&lt;80</expression>
+            <expression>{4.4.1-agent:pgsql.cache.hit[{$PG_CONNINFO},{$PG_PATH}].last()}&lt;80</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>PostgreSQL cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})</name>
@@ -5652,7 +5398,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{4.4.1-standart:pgsql.archive_command[count_files_to_archive].last()}&gt;2</expression>
+            <expression>{4.4.1-agent:pgsql.archive_command.count_files_to_archive[{$PG_CONNINFO},{$PG_PATH}].last()}&gt;2</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>PostgreSQL count files in ./archive_status on {HOSTNAME} more than 2</name>
@@ -5668,7 +5414,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression> {4.4.1-standart:pgsql.connections[total].last()}/{4.4.1-standart:pgsql.connections[max_connections].last()}*100 &gt;90</expression>
+            <expression> {4.4.1-agent:pgsql.connections.total[{$PG_CONNINFO},{$PG_PATH}].last()}/{4.4.1-agent:pgsql.connections.max_connections[{$PG_CONNINFO},{$PG_PATH}].last()}*100 &gt;90</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>PostgreSQL many connections on {HOSTNAME} (total connections more than 90% max connections)</name>
@@ -5684,7 +5430,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{4.4.1-standart:pgsql.ping[].nodata(180)}=1</expression>
+            <expression>{4.4.1-agent:pgsql.ping[{$PG_CONNINFO},{$PG_PATH}].nodata(180)}=1</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>PostgreSQL no ping from PostgreSQL for 3 minutes {HOSTNAME} </name>
@@ -5700,7 +5446,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{4.4.1-standart:pgsql.oldest[xid_age].last()}&gt;18000000</expression>
+            <expression>{4.4.1-agent:pgsql.oldest.xid_age[{$PG_CONNINFO},{$PG_PATH}].last()}&gt;18000000</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>PostgreSQL oldest xid is too big on {HOSTNAME}</name>
@@ -5716,7 +5462,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{4.4.1-standart:pgsql.oldest[transaction_time].last()}&gt;18000</expression>
+            <expression>{4.4.1-agent:pgsql.oldest.transaction_time[{$PG_CONNINFO},{$PG_PATH}].last()}&gt;18000</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>PostgreSQL query running is too old on {HOSTNAME}</name>
@@ -5732,7 +5478,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{4.4.1-standart:pgsql.checkpoint[count_wal].last()}&gt;12</expression>
+            <expression>{4.4.1-agent:pgsql.checkpoint.count_wal[{$PG_CONNINFO},{$PG_PATH}].last()}&gt;12</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>PostgreSQL required checkpoints occurs to frequently on {HOSTNAME}</name>
@@ -5748,7 +5494,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{4.4.1-standart:pgsql.uptime[].last()}&lt;600</expression>
+            <expression>{4.4.1-agent:pgsql.uptime[{$PG_CONNINFO},{$PG_PATH}].last()}&lt;600</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>PostgreSQL service was restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})</name>
@@ -5764,7 +5510,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{4.4.1-standart:pgsql.replication_lag[sec].last()}&gt;300</expression>
+            <expression>{4.4.1-agent:pgsql.replication_lag.sec[{$PG_CONNINFO},{$PG_PATH}].last()}&gt;300</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>PostgreSQL streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})</name>
@@ -5780,7 +5526,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{4.4.1-standart:system.processes[forkrate].min(5m)}&gt;500</expression>
+            <expression>{4.4.1-agent:system.processes.forkrate.min(5m)}&gt;500</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Process fork-rate to frequently on {HOSTNAME}</name>
@@ -5796,7 +5542,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{4.4.1-standart:system.up_time[].last()}&lt;300</expression>
+            <expression>{4.4.1-agent:system.up_time.last()}&lt;300</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>System was restarted on {HOSTNAME} (up_time={ITEM.LASTVALUE})</name>
@@ -5839,8 +5585,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.disk.all_read_b[]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.disk.all_read_b</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5851,8 +5597,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.disk.all_write_b[]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.disk.all_write_b</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -5883,8 +5629,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.disk.all_read[]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.disk.all_read</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5895,8 +5641,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.disk.all_write[]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.disk.all_write</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -5927,8 +5673,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.cpu[user]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.cpu.user</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5939,8 +5685,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.cpu[nice]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.cpu.nice</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5951,8 +5697,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.cpu[system]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.cpu.system</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5963,8 +5709,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.cpu[idle]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.cpu.idle</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5975,8 +5721,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.cpu[iowait]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.cpu.iowait</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5987,8 +5733,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.cpu[irq]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.cpu.irq</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -5999,8 +5745,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.cpu[softirq]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.cpu.softirq</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6031,8 +5777,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[apps]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.apps</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6043,8 +5789,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[buffers]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.buffers</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6055,8 +5801,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[swap]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.swap</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6067,8 +5813,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[cached]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.cached</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6079,8 +5825,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[unused]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.unused</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6091,8 +5837,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[slab]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.slab</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6103,8 +5849,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[swap_cache]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.swap_cache</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6115,8 +5861,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[page_tables]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.page_tables</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6127,8 +5873,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[vmalloc_used]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.vmalloc_used</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6139,8 +5885,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[committed]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.committed</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6151,8 +5897,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[mapped]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.mapped</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6163,8 +5909,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[active]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.active</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6175,8 +5921,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.memory[inactive]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.memory.inactive</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6207,8 +5953,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.buffers[size]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.buffers.size[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6219,8 +5965,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.buffers[twice_used]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.buffers.twice_used[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6231,8 +5977,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.buffers[dirty]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.buffers.dirty[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6263,8 +6009,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.oldest[xid_age]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.oldest.xid_age[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6295,8 +6041,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.archive_command[count_files_to_archive]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.archive_command.count_files_to_archive[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6307,8 +6053,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.archive_command[size_files_to_archive]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.archive_command.size_files_to_archive[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6339,8 +6085,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.archive_command[archived_files]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.archive_command.archived_files[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6351,8 +6097,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.archive_command[failed_trying_to_archive]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.archive_command.failed_trying_to_archive[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6383,8 +6129,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.bgwriter[buffers_checkpoint]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.bgwriter.buffers_checkpoint[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6395,8 +6141,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.bgwriter[buffers_clean]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.bgwriter.buffers_clean[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6407,8 +6153,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.bgwriter[maxwritten_clean]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.bgwriter.maxwritten_clean[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6419,8 +6165,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.bgwriter[buffers_backend]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.bgwriter.buffers_backend[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6431,8 +6177,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.bgwriter[buffers_backend_fsync]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.bgwriter.buffers_backend_fsync[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6443,136 +6189,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.bgwriter[buffers_alloc]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL cfs compression: compressed files</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0000</yaxismin>
-            <yaxismax>100.0000</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0000</percent_left>
-            <percent_right>0.0000</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00CC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.cfs.activity[compressed_files]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL cfs compression: current ratio</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0000</yaxismin>
-            <yaxismax>100.0000</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0000</percent_left>
-            <percent_right>0.0000</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00CC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.cfs.activity[current_compress_ratio]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL cfs compression: total ratio</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0000</yaxismin>
-            <yaxismax>100.0000</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0000</percent_left>
-            <percent_right>0.0000</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00CC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.cfs.activity[total_compress_ratio]</key>
-                    </item>
-                </graph_item>
-            </graph_items>
-        </graph>
-        <graph>
-            <name>PostgreSQL cfs compression: written bytes</name>
-            <width>900</width>
-            <height>200</height>
-            <yaxismin>0.0000</yaxismin>
-            <yaxismax>100.0000</yaxismax>
-            <show_work_period>1</show_work_period>
-            <show_triggers>1</show_triggers>
-            <type>0</type>
-            <show_legend>1</show_legend>
-            <show_3d>0</show_3d>
-            <percent_left>0.0000</percent_left>
-            <percent_right>0.0000</percent_right>
-            <ymin_type_1>0</ymin_type_1>
-            <ymax_type_1>0</ymax_type_1>
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
-            <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>00CC00</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.cfs.activity[written_bytes]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.bgwriter.buffers_alloc[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6603,8 +6221,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.checkpoint[count_timed]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.checkpoint.count_timed[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6615,8 +6233,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.checkpoint[count_wal]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.checkpoint.count_wal[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6627,8 +6245,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.checkpoint[write_time]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.checkpoint.write_time[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6639,8 +6257,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.checkpoint[checkpoint_sync_time]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.checkpoint.checkpoint_sync_time[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6671,8 +6289,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.connections[active]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.connections.active[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6683,8 +6301,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.connections[idle]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.connections.idle[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6695,8 +6313,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.connections[idle_in_transaction]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.connections.idle_in_transaction[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6707,8 +6325,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.connections[idle_in_transaction_aborted]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.connections.idle_in_transaction_aborted[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6719,8 +6337,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.connections[fastpath_function_call]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.connections.fastpath_function_call[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6731,8 +6349,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.connections[disabled]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.connections.disabled[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6743,8 +6361,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.connections[total]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.connections.total[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6755,8 +6373,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.connections[waiting]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.connections.waiting[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6767,8 +6385,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.connections[max_connections]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.connections.max_connections[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6799,8 +6417,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.wal.count[]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.wal.count[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6831,8 +6449,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.events[conflicts]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.events.conflicts[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6843,8 +6461,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.events[deadlocks]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.events.deadlocks[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6855,8 +6473,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.events[xact_rollback]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.events.xact_rollback[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6887,8 +6505,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.transactions[total]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.transactions.total[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6899,8 +6517,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.blocks[hit]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.blocks.hit[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6911,8 +6529,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.blocks[read]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.blocks.read[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6943,8 +6561,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.temp[bytes]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.temp.bytes[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6955,8 +6573,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.temp[files]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.temp.files[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -6987,8 +6605,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.tuples[deleted]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.tuples.deleted[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -6999,8 +6617,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.tuples[fetched]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.tuples.fetched[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7011,8 +6629,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.tuples[inserted]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.tuples.inserted[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7023,8 +6641,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.tuples[returned]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.tuples.returned[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7035,8 +6653,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.tuples[updated]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.tuples.updated[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7067,8 +6685,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.pg_locks[accessshare]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.pg_locks.accessshare[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7079,8 +6697,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.pg_locks[rowshare]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.pg_locks.rowshare[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7091,8 +6709,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.pg_locks[rowexclusive]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.pg_locks.rowexclusive[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7103,8 +6721,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.pg_locks[shareupdateexclusive]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.pg_locks.shareupdateexclusive[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7115,8 +6733,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.pg_locks[share]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.pg_locks.share[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7127,8 +6745,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.pg_locks[sharerowexclusive]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.pg_locks.sharerowexclusive[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7139,8 +6757,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.pg_locks[exclusive]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.pg_locks.exclusive[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7151,8 +6769,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.pg_locks[accessexclusive]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.pg_locks.accessexclusive[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7183,8 +6801,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.oldest[transaction_time]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.oldest.transaction_time[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7215,8 +6833,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.replication_lag[sec]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.replication_lag.sec[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7247,8 +6865,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.stat[read_bytes]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.stat.read_bytes[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7259,8 +6877,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.stat[write_bytes]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.stat.write_bytes[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7271,8 +6889,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.stat[dirty_bytes]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.stat.dirty_bytes[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7303,8 +6921,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.stat[read_time]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.stat.read_time[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7315,8 +6933,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.stat[write_time]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.stat.write_time[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7327,8 +6945,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.stat[other_time]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.stat.other_time[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7359,8 +6977,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.cache[hit]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.cache.hit[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7371,8 +6989,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.uptime[]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.uptime[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7403,8 +7021,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>pgsql.wal.write[]</key>
+                        <host>4.4.1-agent</host>
+                        <key>pgsql.wal.write[{$PG_CONNINFO},{$PG_PATH}]</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7435,8 +7053,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.processes[running]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.processes.running</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7447,8 +7065,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.processes[blocked]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.processes.blocked</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -7459,8 +7077,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.processes[forkrate]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.processes.forkrate</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7491,8 +7109,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.open_files[]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.open_files</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7523,8 +7141,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.la[1]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.la.1</key>
                     </item>
                 </graph_item>
             </graph_items>
@@ -7555,8 +7173,8 @@
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>4.4.1-standart</host>
-                        <key>system.up_time[]</key>
+                        <host>4.4.1-agent</host>
+                        <key>system.up_time</key>
                     </item>
                 </graph_item>
             </graph_items>
