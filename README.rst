@@ -18,13 +18,20 @@ Development version, available on github, released under BSD 3-clause.
 Installation
 ============
 
-Pre-Build packages for:
+DEB packages for Debian|Ubuntu:
+.. code-block:: bash
 
-    Linux distros: https://packagecloud.io/postgrespro/mamonsu
+    echo "deb [arch=amd64] http://repo.postgrespro.ru/mamonsu/latest/deb/ $(lsb_release -cs) main-$(lsb_release -cs)" > /etc/apt/sources.list.d/mamonsu.list
+    wget -O - http://repo.postgrespro.ru/mamonsu/keys/GPG-KEY-MAMONSU | sudo apt-key add - && sudo apt-get update
+    sudo apt-get install mamonsu
 
-    `Windows installers <https://oc.postgrespro.ru/index.php/s/qu7YsFvOE55LdXo>`_
+RPM packages for Centos:
+.. code-block:: bash
 
-NOTE: pre-build packages on packagecloud only for mamonsu 2.3.4
+    rpm -ivh https://repo.postgrespro.ru/mamonsu/keys/mamonsu-repo-centos.noarch.rpm
+    yum install mamonsu
+
+Pre-Build packages for Windows: `Windows installers <https://oc.postgrespro.ru/index.php/s/qu7YsFvOE55LdXo>`_
 
 Install via pip:
 
