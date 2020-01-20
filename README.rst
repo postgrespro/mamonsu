@@ -18,13 +18,20 @@ Development version, available on github, released under BSD 3-clause.
 Installation
 ============
 
-Pre-Build packages for:
+DEB packages for Debian|Ubuntu:
+.. code-block:: bash
 
-    Linux distros: https://packagecloud.io/postgrespro/mamonsu
+    echo "deb [arch=amd64] http://repo.postgrespro.ru/mamonsu/latest/deb/ $(lsb_release -cs) main-$(lsb_release -cs)" > /etc/apt/sources.list.d/mamonsu.list
+    wget -O - http://repo.postgrespro.ru/mamonsu/keys/GPG-KEY-MAMONSU | sudo apt-key add - && sudo apt-get update
+    sudo apt-get install mamonsu
 
-    `Windows installers <https://oc.postgrespro.ru/index.php/s/qu7YsFvOE55LdXo>`_
+RPM packages for Centos:
+.. code-block:: bash
 
-NOTE: pre-build packages on packagecloud only for mamonsu 2.3.4
+    rpm -ivh https://repo.postgrespro.ru/mamonsu/keys/mamonsu-repo-centos.noarch.rpm
+    yum install mamonsu
+
+Pre-Build packages for Windows: `Windows installers <https://oc.postgrespro.ru/index.php/s/qu7YsFvOE55LdXo>`_
 
 Install via pip:
 
@@ -51,6 +58,12 @@ Build rpm:
 
     $ yum install make rpm-build python2-devel python-setuptools
     $ git clone ... && cd mamonsu && make rpm && rpm -i mamonsu*.rpm
+
+Build repository, `./packaging/repo/gnupg` and `./packaging/repo/rpmmacros` must be provided by caller:
+
+.. code-block:: bash
+
+    $ make -j2 build/all && make -j1 repo/all
 
 Build win32 exe: (worked with python v3.{4,5}: py2exe v0.9.2.2 and pywin32 v220 or python v2.7: py2exe v0.6.9 and pywin32 v220):
 

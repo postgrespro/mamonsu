@@ -8,6 +8,8 @@ __pycache__
 tags
 dist
 build
+packaging/repo/gnupg/*
+packaging/repo/rpmmacros
 
 *.deb
 *.rpm
