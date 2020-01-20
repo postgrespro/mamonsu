@@ -19,13 +19,15 @@ Installation
 ============
 
 DEB packages for Debian|Ubuntu:
-.. code-block:: bash
 
+```
     echo "deb [arch=amd64] https://repo.postgrespro.ru/mamonsu/latest/deb/ $(lsb_release -cs) main-$(lsb_release -cs)" > /etc/apt/sources.list.d/mamonsu.list
     wget -O - https://repo.postgrespro.ru/mamonsu/keys/GPG-KEY-MAMONSU | sudo apt-key add - && sudo apt-get update
     sudo apt-get install mamonsu
+```
 
 RPM packages for Centos:
+
 .. code-block:: bash
 
     rpm -ivh https://repo.postgrespro.ru/mamonsu/keys/mamonsu-repo-centos.noarch.rpm
