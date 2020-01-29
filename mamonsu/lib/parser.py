@@ -123,6 +123,17 @@ Examples:
     {prog} zabbix item error <host name>
     {prog} zabbix item lastvalue <host name>
     {prog} zabbix item lastclock <host name>
+    
+Export metrics to zabbix server
+Command: --send-data-zabbix 
+Example:
+    {prog} --send-data-zabbix --zabbix-file=localhost.log --zabbix-address=localhost 
+Options:    
+    --zabbix-address <name of the Zabbix host to send metrics>
+    --zabbix-port <port of Zabbix server to send metrics> by default 10051
+    --zabbix-file <path to file with metrics to send metrics>
+    --zabbix-client <name of the Zabbix host to send metrics> by default localhost 
+    --zabbix-log-level <log level to send metrics> (INFO|DEBUG|WARN) by default INFO
 """
 
 if platform.LINUX:
@@ -271,4 +282,14 @@ def parse_args():
         '--old-zabbix',
         dest='old_zabbix', action='store_true',
         help='Create special template for currently unsupported zabbix versions')
+    # Zabbix server to send metrics
+    parser.add_option('--zabbix-address', dest='zabbix_address', default=None)
+    # port of Zabbix server to send metrics
+    parser.add_option('--zabbix-port', dest='zabbix_port', default='10051')
+    # name of the Zabbix host to send metrics
+    parser.add_option('--zabbix-client', dest='zabbix_client', default='localhost')
+    # path to file with metrics to send metrics
+    parser.add_option('--zabbix-file', dest='zabbix_file', default=None)
+    # log level to send metrics
+    parser.add_option('--zabbix-log-level', dest='zabbix_log_level', default='INFO')
     return parser.parse_args()
