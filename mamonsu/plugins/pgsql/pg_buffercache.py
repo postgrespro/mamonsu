@@ -7,10 +7,10 @@ from .pool import Pooler
 class PgBufferCache(Plugin):
     AgentPluginType = 'pg'
     key = 'pgsql.buffers{0}'
-    query_agent_size = "select sum(1) * 8 * 1024 as size from public.pg_buffercache;"  # for zabbix
-    query_agent_twice_used = "select sum(case when usagecount > 1 then 1 else 0 end) * 8 * 1024 as twice_used " \
+    query_agent_size = "select sum(1) *  (current_setting('block_size')::int8) as size from public.pg_buffercache;"  # for zabbix
+    query_agent_twice_used = "select sum(case when usagecount > 1 then 1 else 0 end) *  (current_setting('block_size')::int8) as twice_used " \
                              "from public.pg_buffercache;" # for zabbix
-    query_agent_dirty = "select sum(case isdirty when true then 1 else 0 end) * 8 * 1024 as dirty " \
+    query_agent_dirty = "select sum(case isdirty when true then 1 else 0 end) *  (current_setting('block_size')::int8) as dirty " \
                         "from public.pg_buffercache;" # for zabbix
     query = [query_agent_size, query_agent_twice_used, query_agent_dirty]
     Items = [
