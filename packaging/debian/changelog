@@ -1,3 +1,10 @@
+mamonsu (2.4.2-1) stable; urgency=low
+
+  * fix longest running xact metric
+  * fixes for python 3
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 20 Jan 2020 19:50:00 +0300
+
 mamonsu (2.4.1-1) stable; urgency=low
 
   * add trigger for pgsql.ping

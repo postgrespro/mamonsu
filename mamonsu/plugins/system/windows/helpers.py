@@ -143,9 +143,7 @@ class PerfData(object):
 
         errs = pdh.PdhOpenQueryW(None, 0, byref(hQuery))
         if errs:
-            raise(
-                BaseException,
-                'PdhOpenQueryW error: {0}'.format(errs))
+            raise BaseException
 
         for counter in counters:
             hCounter = HCOUNTER()
@@ -156,39 +154,29 @@ class PerfData(object):
                 errs = pdh.PdhAddCounterW(
                     hQuery, counter, 0, byref(hCounter))
             if errs:
-                raise(
-                    BaseException,
-                    'PdhAddCounterW error: {0}'.format(errs))
+                raise BaseException
             hCounters.append(hCounter)
 
         errs = pdh.PdhCollectQueryData(hQuery)
         if errs:
-            raise(
-                BaseException,
-                'PdhCollectQueryData error: {0}'.format(errs))
+            raise BaseException
         if delay:
             kernel32.Sleep(delay)
             errs = pdh.PdhCollectQueryData(hQuery)
             if errs:
-                raise(
-                    BaseException,
-                    'PdhCollectQueryData error: {0}'.format(errs))
+                raise BaseException
 
         for i, hCounter in enumerate(hCounters):
             value = PDHFmtCounterValue()
             errs = pdh.PdhGetFormattedCounterValue(
                 hCounter, ifmts[i], None, byref(value))
             if errs:
-                raise(
-                    BaseException,
-                    'PdhGetFormattedCounterValue error: {0}'.format(errs))
+                raise BaseException
             values.append(value)
 
         errs = pdh.PdhCloseQuery(hQuery)
         if errs:
-            raise(
-                BaseException,
-                'PdhCloseQuery failed, error: {0}'.format(errs))
+            raise BaseException
 
         return tuple([getattr(value.union, fmts[i] + 'Value')
                       for i, value in enumerate(values)])

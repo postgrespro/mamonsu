@@ -2,7 +2,6 @@ import os
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
-# PATH = "/etc/zabbix/scripts/agentd/zapgix"
 
 
 class DiskSizes(Plugin):
