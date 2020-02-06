@@ -1,4 +1,4 @@
-[pg_probackup]
+[mamonsu]
 name=Mamonsu Packages for Red Hat Linux derivatives
 baseurl=https://repo.postgrespro.ru/mamonsu/latest/rpm/@DISTRIB@-$releasever
 enabled=1

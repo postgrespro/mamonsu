@@ -1,6 +1,6 @@
 Summary:	Mamonsu rpm packages
 Name:		mamonsu-repo
-Version:	1.0.0
+Version:	1.0.1
 Release:	1
 Summary:	Repository package for Mamonsu
 Group:		Applications/Internet
@@ -42,5 +42,8 @@ rm -rf $RPM_BUILD_ROOT
 /etc/pki/rpm-gpg/*
 
 %changelog
+* Thu Feb 6 2020 Grigory Smolkin <g.smolkin@postgrespro.ru>
+- Fix repository name
+
 * Wed Nov 27 2019 Grigory Smolkin <g.smolkin@postgrespro.ru>
 - Initial Package
