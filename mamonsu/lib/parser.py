@@ -10,6 +10,8 @@ Options:
     -c, --config       <file>
     -p, --pid          <pid-file>
     -d                 daemonize
+        --version      output version information, then exit
+        --help         show this help, then exit
 
 Export example config with default variables:
 Command: export
