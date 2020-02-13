@@ -95,9 +95,9 @@ CREATE EXTENSION IF NOT EXISTS pg_buffercache;
 CREATE OR REPLACE FUNCTION public.mamonsu_buffer_cache()
 RETURNS TABLE(SIZE BIGINT, TWICE_USED BIGINT, DIRTY BIGINT) AS $$
 SELECT
-   SUM(1) * 8 * 1024,
-   SUM(CASE WHEN usagecount > 1 THEN 1 ELSE 0 END) * 8 * 1024,
-   SUM(CASE isdirty WHEN true THEN 1 ELSE 0 END) * 8 * 1024
+   SUM(1) * (current_setting('block_size')::int8),
+   SUM(CASE WHEN usagecount > 1 THEN 1 ELSE 0 END) * (current_setting('block_size')::int8),
+   SUM(CASE isdirty WHEN true THEN 1 ELSE 0 END) * (current_setting('block_size')::int8)
 FROM public.pg_buffercache
 $$ LANGUAGE SQL SECURITY DEFINER;
 

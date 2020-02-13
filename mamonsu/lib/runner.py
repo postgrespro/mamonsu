@@ -51,12 +51,34 @@ def start():
             from mamonsu.tools.agent.start import run_agent
             sys.argv.remove('agent')
             return run_agent()
+        elif tool == '--send-data-zabbix':
+            args, _ = parse_args()
+            if not args.zabbix_address:
+                print('To send metrics to zabbix, please, add option --zabbix-addres')
+                exit(125)
+
+            if not args.zabbix_file:
+                print ('To send metrics to zabbix, please, add option --zabbix_file')
+                exit(123)
+
+            cfg = Config(args.config_file, args.plugins_dirs)
+            cfg.config.set('zabbix','address',args.zabbix_address)
+            cfg.config.set('zabbix','port',args.zabbix_port)
+            cfg.config.set('zabbix', 'client', args.zabbix_client)
+            cfg.config.set('log', 'level', args.zabbix_log_level)
+
+            supervisor = Supervisor(cfg)
+            supervisor.send_file_zabbix(cfg,args.zabbix_file)
+            exit(0)
+
         elif tool == 'export':
             args, commands = parse_args()
             # get PG version
             version_args = args.pg_version.split('_')
             define_pg_version(version_args)
             cfg = Config(args.config_file, args.plugins_dirs)
+            if args.old_zabbix:
+                Plugin.old_zabbix = True
             if not len(commands) == 2 and not len(commands) == 3:
                 print_total_help()
             if commands[1] == 'zabbix-parameters':
@@ -122,7 +144,7 @@ def start():
                     commands.append('postgrespro.xml')
                     print('Template for mamonsu have been saved in postgrespro.conf file')
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
+                    if klass.__name__ == "PgWaitSampling" or klass.__name__ == "Cfs" :  # check if plugin is for EE
                         if Plugin.VersionPG['type'] == 'PGEE':
                             plugins.append(klass(cfg))
                     else:

@@ -10,6 +10,8 @@ Options:
     -c, --config       <file>
     -p, --pid          <pid-file>
     -d                 daemonize
+        --version      output version information, then exit
+        --help         show this help, then exit
 
 Export example config with default variables:
 Command: export
@@ -38,7 +40,7 @@ Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 Export template for native zabbix agent:
 Command: export zabbix-template 
 Examples:
-    {prog} export zabbix-template <file>
+    {prog} export zabbix-template [options] <file>
 Options:
     --template-name <template name>
     --plugin-type <plugin_type> (pg,sys,all)
@@ -46,23 +48,29 @@ Options:
     --pg-version <pg_version>
     --add-plugins <directory>
     --config  <file>
+    --old-zabbix
 Default plugin_type = all, template name = PostgresPro-<platform name>,
 application = App-PostgresPro-<platform name>, pg-version = 10,
 Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version 
 numbers are 10, 11, 9.6, 9.5
+default template export for currently supported zabbix -server versions, if template for unsupported versions 
+is needed use --old zabbix flag
 Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 
 
 Export zabbix template with additional plugins included in config file:
 Command: export template 
 Examples:
-    {prog} export template <file>
+    {prog} export template [options] <file>
 Options:
     --add-plugins <directory>
     --template-name <template name>
     --application <application name in template>
     --config <file>
+    --old-zabbix
 Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>
+Note: default template export for currently supported zabbix -server versions, if template for unsupported versions 
+is needed use --old zabbix flag
 
 
 Bootstrap DDL for monitoring:
@@ -117,6 +125,17 @@ Examples:
     {prog} zabbix item error <host name>
     {prog} zabbix item lastvalue <host name>
     {prog} zabbix item lastclock <host name>
+    
+Export metrics to zabbix server
+Command: --send-data-zabbix 
+Example:
+    {prog} --send-data-zabbix --zabbix-file=localhost.log --zabbix-address=localhost 
+Options:    
+    --zabbix-address <name of the Zabbix host to send metrics>
+    --zabbix-port <port of Zabbix server to send metrics> by default 10051
+    --zabbix-file <path to file with metrics to send metrics>
+    --zabbix-client <name of the Zabbix host to send metrics> by default localhost 
+    --zabbix-log-level <log level to send metrics> (INFO|DEBUG|WARN) by default INFO
 """
 
 if platform.LINUX:
@@ -261,4 +280,18 @@ def parse_args():
     parser.add_option(
         '--application', dest='application',
         default='App-PostgresPro-{0}'.format(sys.platform.title()))
+    parser.add_option(
+        '--old-zabbix',
+        dest='old_zabbix', action='store_true',
+        help='Create special template for currently unsupported zabbix versions')
+    # Zabbix server to send metrics
+    parser.add_option('--zabbix-address', dest='zabbix_address', default=None)
+    # port of Zabbix server to send metrics
+    parser.add_option('--zabbix-port', dest='zabbix_port', default='10051')
+    # name of the Zabbix host to send metrics
+    parser.add_option('--zabbix-client', dest='zabbix_client', default='localhost')
+    # path to file with metrics to send metrics
+    parser.add_option('--zabbix-file', dest='zabbix_file', default=None)
+    # log level to send metrics
+    parser.add_option('--zabbix-log-level', dest='zabbix_log_level', default='INFO')
     return parser.parse_args()

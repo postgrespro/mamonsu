@@ -6,6 +6,7 @@ from mamonsu.lib.sender import *
 from mamonsu.lib.senders import *
 from mamonsu.tools.agent import *
 from mamonsu.plugins import *
+from mamonsu.lib.senders.zbx import ZbxSender
 
 
 class Supervisor(object):
@@ -62,3 +63,7 @@ class Supervisor(object):
                 else:
                     self._sender.send('mamonsu.plugin.errors[]', '')
                 plugin_errors, plugin_probes = 0, 0
+
+    def send_file_zabbix(self,cfg,path):
+        zbxSender = ZbxSender (cfg)
+        zbxSender.send_file_to_zabbix(path)

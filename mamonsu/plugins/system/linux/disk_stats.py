@@ -124,9 +124,23 @@ class DiskStats(Plugin):
             delta = Plugin.DELTA_SPEED
         rule = {
             'name': 'Block device discovery',
-            'key': key_discovery,
-            'filter': '{#BLOCKDEVICE}:.*'
+            'key': key_discovery
         }
+        if Plugin.old_zabbix:
+            rule['filter'] = '{#BLOCKDEVICE}:.*'
+            conditions = []
+        else:
+            conditions = [
+                {
+                    'condition': [
+                        {'macro': '{#BLOCKDEVICE}',
+                         'value': '.*',
+                         'operator': '',
+                         'formulaid': 'A'}
+                    ]
+                }
+
+            ]
         items = [
             {
                 'key': 'system.disk.utilization[{#BLOCKDEVICE}]',
@@ -183,7 +197,7 @@ class DiskStats(Plugin):
                         'key': 'system.disk.utilization[{#BLOCKDEVICE}]'}]
             }]
 
-        return template.discovery_rule(rule=rule, items=items, graphs=graphs)
+        return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)
 
     def keys_and_queries(self, template_zabbix):
         result = []

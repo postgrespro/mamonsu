@@ -74,7 +74,7 @@ class Connection(ConnectionInfo):
                 self.log.error('close error: {0}'.format(e))
 
     def _connect(self):
-        self.log.debug('connecting')
+        self.log.info('connecting')
         host, unix_sock = self.host, None
         if host.startswith('/'):
             unix_sock, host = host, None
@@ -87,7 +87,7 @@ class Connection(ConnectionInfo):
             database=self.db,
             application_name=self.appname
         )
-        self.log.debug('connected')
+        self.log.info('connected')
         self.conn.autocommit = True
         cur = self.conn.cursor()
         cur.execute('set statement_timeout to {0}'.format(self.timeout * 1000))

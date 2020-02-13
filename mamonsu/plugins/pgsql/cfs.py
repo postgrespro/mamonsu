@@ -159,13 +159,28 @@ select
     def discovery_rules(self, template):
         rule = {
             'name': 'Compressed relations discovery',
-            'key': 'pgsql.cfs.discovery_compressed_relations[]',
-            'filter': '{#COMPRESSED_RELATION}:.*'
+            'key': 'pgsql.cfs.discovery_compressed_relations[]'
+            # 'filter': '{#COMPRESSED_RELATION}:.*'
         }
+        if Plugin.old_zabbix:
+            rule['filter'] = '{#DATABASE}:.*'
+            conditions = []
+        else:
+            conditions = [
+                {
+                    'condition': [
+                        {'macro': '{#COMPRESSED_RELATION}',
+                         'value': '.*',
+                         'operator': '',
+                         'formulaid': 'A'}
+                    ]
+                }
+
+            ]
         items = [
             {'key': 'pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]',
-                'name': 'Relation {#COMPRESSED_RELATION}: compress ratio',
-                'delay': self.timeRatioInterval}
+             'name': 'Relation {#COMPRESSED_RELATION}: compress ratio',
+             'delay': self.timeRatioInterval}
         ]
         graphs = [
             {
@@ -173,7 +188,7 @@ select
                 'delay': self.timeRatioInterval,
                 'items': [
                     {'color': '00CC00',
-                        'key': 'pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]'}]
+                     'key': 'pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]'}]
             },
         ]
-        return template.discovery_rule(rule=rule, items=items, graphs=graphs)
+        return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)

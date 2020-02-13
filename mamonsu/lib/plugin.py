@@ -42,6 +42,9 @@ class Plugin(object):
     # for all childs
     is_child = True
 
+    # old_zabbix_server_version
+    old_zabbix = False
+
     # const
     PATH = "/etc/zabbix/zabbix_agent.d/scripts"
     DELTA = Template.DELTA

@@ -27,7 +27,7 @@ class DiskSizes(Plugin):
         'efivarfs', 'fusectl', 'fuse.gvfsd-fuse',
         'hugetlbfs', 'mqueue', 'binfmt_misc',
         'nfsd', 'proc', 'pstore', 'selinuxfs'
-        'rpc_pipefs', 'securityfs', 'sysfs',
+                                  'rpc_pipefs', 'securityfs', 'sysfs',
         'nsfs', 'tmpfs', 'tracefs']
 
     def run(self, zbx):
@@ -71,9 +71,23 @@ class DiskSizes(Plugin):
             key_discovery = 'system.vfs.discovery'
         rule = {
             'name': 'VFS discovery',
-            'key': key_discovery,
-            'filter': '{#MOUNTPOINT}:.*'
+            'key': key_discovery
         }
+        if Plugin.old_zabbix:
+            rule['filter'] = '{#MOUNTPOINT}:.*'
+            conditions = []
+        else:
+            conditions = [
+                {
+                    'condition': [
+                        {'macro': '{#MOUNTPOINT}',
+                         'value': '.*',
+                         'operator': '',
+                         'formulaid': 'A'}
+                    ]
+                }
+
+            ]
         items = [
             {
                 'key': 'system.vfs.used[{#MOUNTPOINT}]',
@@ -128,7 +142,7 @@ class DiskSizes(Plugin):
             })
 
         return template.discovery_rule(
-            rule=rule, items=items, graphs=graphs, triggers=triggers)
+            rule=rule, conditions=conditions, items=items, graphs=graphs, triggers=triggers)
 
     def keys_and_queries(self, template_zabbix):
         result = []
