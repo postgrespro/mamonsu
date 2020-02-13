@@ -40,7 +40,7 @@ Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 Export template for native zabbix agent:
 Command: export zabbix-template 
 Examples:
-    {prog} export zabbix-template <file>
+    {prog} export zabbix-template [options] <file>
 Options:
     --template-name <template name>
     --plugin-type <plugin_type> (pg,sys,all)
@@ -61,7 +61,7 @@ Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 Export zabbix template with additional plugins included in config file:
 Command: export template 
 Examples:
-    {prog} export template <file>
+    {prog} export template [options] <file>
 Options:
     --add-plugins <directory>
     --template-name <template name>
