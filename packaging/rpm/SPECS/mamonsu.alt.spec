@@ -2,7 +2,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mamonsu
-Version:        2.4.2
+Version:        2.4.3
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,11 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Fri Feb 14 2020 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.4.3-1
+- display postgres connections parameters in log
+- add support for Zabbix 4.4 Server
+- new feature: export metrics from file (written by mamonsu /var/log/mamonsu/localhost.log, [metric_log] to parameter in agent.conf file) to Zabbix Server
+
 * Mon Jan 20 2020 Grigory Smolkin <g.smolkin@postgrespro.ru> - 2.4.2-1
 - fix longest running xact metric
 - fixes for python 3

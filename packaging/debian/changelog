@@ -1,3 +1,11 @@
+mamonsu (2.4.3-1) stable; urgency=low
+
+  * display postgres connections parameters in log
+  * add support for Zabbix 4.4 Server
+  * new feature: export metrics from file (written by mamonsu /var/log/mamonsu/localhost.log, [metric_log] to parameter in agent.conf file) to Zabbix Server
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 14 Feb 2020 09:59:00 +0300
+
 mamonsu (2.4.2-1) stable; urgency=low
 
   * fix longest running xact metric
