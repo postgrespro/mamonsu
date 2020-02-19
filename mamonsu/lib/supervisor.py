@@ -64,6 +64,6 @@ class Supervisor(object):
                     self._sender.send('mamonsu.plugin.errors[]', '')
                 plugin_errors, plugin_probes = 0, 0
 
-    def send_file_zabbix(self,cfg,path):
-        zbxSender = ZbxSender (cfg)
-        zbxSender.send_file_to_zabbix(path)
+    def send_file_zabbix(self, cfg, path):
+        sender = ZbxSender(cfg)
+        sender.send_file_to_zabbix(path)

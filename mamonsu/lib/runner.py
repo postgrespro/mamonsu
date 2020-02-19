@@ -51,24 +51,21 @@ def start():
             from mamonsu.tools.agent.start import run_agent
             sys.argv.remove('agent')
             return run_agent()
-        elif tool == '--send-data-zabbix':
-            args, _ = parse_args()
+        elif tool == 'upload':
+            args, commands = parse_args()
             if not args.zabbix_address:
-                print('To send metrics to zabbix, please, add option --zabbix-addres')
+                print('Option --zabbix-address is missing')
+                print_total_help()
                 exit(125)
 
-            if not args.zabbix_file:
-                print ('To send metrics to zabbix, please, add option --zabbix_file')
-                exit(123)
-
             cfg = Config(args.config_file, args.plugins_dirs)
-            cfg.config.set('zabbix','address',args.zabbix_address)
-            cfg.config.set('zabbix','port',args.zabbix_port)
-            cfg.config.set('zabbix', 'client', args.zabbix_client)
+            cfg.config.set('zabbix', 'address', args.zabbix_address)
+            cfg.config.set('zabbix', 'port', args.zabbix_port)
+            cfg.config.set('zabbix',  'client', args.zabbix_client)
             cfg.config.set('log', 'level', args.zabbix_log_level)
 
             supervisor = Supervisor(cfg)
-            supervisor.send_file_zabbix(cfg,args.zabbix_file)
+            supervisor.send_file_zabbix(cfg, args.zabbix_file)
             exit(0)
 
         elif tool == 'export':

@@ -53,8 +53,8 @@ Default plugin_type = all, template name = PostgresPro-<platform name>,
 application = App-PostgresPro-<platform name>, pg-version = 10,
 Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version 
 numbers are 10, 11, 9.6, 9.5
-default template export for currently supported zabbix -server versions, if template for unsupported versions 
-is needed use --old zabbix flag
+By default, mamonsu exports the template for Zabbix 4.4 or higher.
+To export a template for older Zabbix versions, use the --old-zabbix option.
 Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 
 
@@ -69,8 +69,8 @@ Options:
     --config <file>
     --old-zabbix
 Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>
-Note: default template export for currently supported zabbix -server versions, if template for unsupported versions 
-is needed use --old zabbix flag
+By default, mamonsu exports the template for Zabbix 4.4 or higher.
+To export a template for older Zabbix versions, use the --old-zabbix option.
 
 
 Bootstrap DDL for monitoring:
@@ -127,14 +127,14 @@ Examples:
     {prog} zabbix item lastclock <host name>
     
 Export metrics to zabbix server
-Command: --send-data-zabbix 
+Command: upload
 Example:
-    {prog} --send-data-zabbix --zabbix-file=localhost.log --zabbix-address=localhost 
+    {prog} upload --zabbix-address=localhost 
 Options:    
     --zabbix-address <name of the Zabbix host to send metrics>
     --zabbix-port <port of Zabbix server to send metrics> by default 10051
-    --zabbix-file <path to file with metrics to send metrics>
-    --zabbix-client <name of the Zabbix host to send metrics> by default localhost 
+    --zabbix-file <text file that stores the collected metric data to be visualized, such as localhost>
+    --zabbix-client <name of the host on Zabbix Server to send metrics> 
     --zabbix-log-level <log level to send metrics> (INFO|DEBUG|WARN) by default INFO
 """
 
@@ -291,7 +291,7 @@ def parse_args():
     # name of the Zabbix host to send metrics
     parser.add_option('--zabbix-client', dest='zabbix_client', default='localhost')
     # path to file with metrics to send metrics
-    parser.add_option('--zabbix-file', dest='zabbix_file', default=None)
+    parser.add_option('--zabbix-file', dest='zabbix_file', default='/var/log/mamonsu/localhost')
     # log level to send metrics
     parser.add_option('--zabbix-log-level', dest='zabbix_log_level', default='INFO')
     return parser.parse_args()
