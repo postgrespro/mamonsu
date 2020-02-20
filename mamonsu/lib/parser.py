@@ -133,7 +133,7 @@ Example:
 Options:    
     --zabbix-address <name of the Zabbix host to send metrics>
     --zabbix-port <port of Zabbix server to send metrics> by default 10051
-    --zabbix-file <text file that stores the collected metric data to be visualized, such as localhost>
+    --zabbix-file <text file that stores the collected metric data to be visualized, such as localhost.log>
     --zabbix-client <name of the host on Zabbix Server to send metrics> 
     --zabbix-log-level <log level to send metrics> (INFO|DEBUG|WARN) by default INFO
 """
@@ -291,7 +291,7 @@ def parse_args():
     # name of the Zabbix host to send metrics
     parser.add_option('--zabbix-client', dest='zabbix_client', default='localhost')
     # path to file with metrics to send metrics
-    parser.add_option('--zabbix-file', dest='zabbix_file', default='/var/log/mamonsu/localhost')
+    parser.add_option('--zabbix-file', dest='zabbix_file', default='/var/log/mamonsu/localhost.log')
     # log level to send metrics
     parser.add_option('--zabbix-log-level', dest='zabbix_log_level', default='INFO')
     return parser.parse_args()
