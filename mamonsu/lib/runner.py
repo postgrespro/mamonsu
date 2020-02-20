@@ -55,13 +55,15 @@ def start():
             args, commands = parse_args()
             if not args.zabbix_address:
                 print('Option --zabbix-address is missing')
-                print_total_help()
+                exit(125)
+            if not os.path.isfile(args.zabbix_file):
+                print('Cannot find zabbix file with metric to upload. Check path in --zabbix-file option.')
                 exit(125)
 
             cfg = Config(args.config_file, args.plugins_dirs)
             cfg.config.set('zabbix', 'address', args.zabbix_address)
             cfg.config.set('zabbix', 'port', args.zabbix_port)
-            cfg.config.set('zabbix',  'client', args.zabbix_client)
+            cfg.config.set('zabbix', 'client', args.zabbix_client)
             cfg.config.set('log', 'level', args.zabbix_log_level)
 
             supervisor = Supervisor(cfg)
