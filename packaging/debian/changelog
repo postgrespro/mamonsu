@@ -1,3 +1,10 @@
+mamonsu (2.4.4-1) stable; urgency=low
+
+  * change command name for uploading metrics from file (written by mamonsu /var/log/mamonsu/localhost.log, [metric_log] parameter in agent.conf file) to Zabbix Server
+  * update help message for 'upload' function
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Thu, 20 Feb 2020 09:59:00 +0300
+
 mamonsu (2.4.3-1) stable; urgency=low
 
   * display postgres connections parameters in log
