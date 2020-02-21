@@ -227,7 +227,7 @@ def is_any_equal(iterator):
 #  extract pg version from input
 def define_pg_version(version_args):
     if len(version_args) == 1:
-        if version_args[0] == "11" or LooseVersion(version_args[0]) == "10" or \
+        if version_args[0] == "11" or version_args[0] == "12" or LooseVersion(version_args[0]) == "10" or \
                 LooseVersion(version_args[0]) == "9.6" or LooseVersion(version_args[0]) == "9.5":
             version_number = version_args[0].split('.')
             if len(version_number) > 3:
@@ -252,7 +252,7 @@ def define_pg_version(version_args):
                 if not num.isdigit():
                     print("Version number contains only digits. For help, see the message below")
                     print_total_help()
-            if version_args[1] == "11" or LooseVersion(version_args[1]) == "10" or \
+            if version_args[1] == "11" or version_args[1] == "12" or LooseVersion(version_args[1]) == "10" or \
                     LooseVersion(version_args[1]) == "9.6" or LooseVersion(version_args[1]) == "9.5":
                 Plugin.VersionPG['number'] = version_args[1]
                 Plugin.VersionPG['type'] = version_args[0]

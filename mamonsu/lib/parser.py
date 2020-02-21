@@ -24,17 +24,13 @@ Export zabbix keys for native zabbix-agent:
 Command: export zabbix-parameters
 Examples:
     {prog} export zabbix-parameters  <file>
-NOTE: <file> can be stated with a path, along which it will be exported
-EXAMPLE: /etc/zabbix/zabbix_agent.d/conf_file_name.conf
 Options:
-    --plugin-type <plugin_type> (pg,sys,all)
-    --pg-version <pg_version>
+    --plugin-type <plugin_type> (pg|sys|all) by default all
+    --pg-version <pg_version> by default 10
     --add-plugins <directory>
     --config  <file>
-Default plugin_type = all, pg-version = 10
-Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version
-numbers are 10, 11, 9.6, 9.5
-Example: PGPRO_10 or PGEE_11 or PGPRO_9.6 
+HINT: default pg-version is vanilla, but with PGEE or PGPRO before version number it can be changed (PGEE_10). Supported version
+numbers are 12, 10, 11, 9.6, 9.5
 
     
 Export template for native zabbix agent:
@@ -42,20 +38,17 @@ Command: export zabbix-template
 Examples:
     {prog} export zabbix-template [options] <file>
 Options:
-    --template-name <template name>
-    --plugin-type <plugin_type> (pg,sys,all)
-    --application  <application name in template>
-    --pg-version <pg_version>
+    --template-name <template name> by default PostgresPro-<platform name>
+    --plugin-type <plugin_type> (pg|sys|all) by default all
+    --application  <application name in template> by default App-PostgresPro-<platform name>
+    --pg-version <pg_version> by default 10
     --add-plugins <directory>
     --config  <file>
     --old-zabbix
-Default plugin_type = all, template name = PostgresPro-<platform name>,
-application = App-PostgresPro-<platform name>, pg-version = 10,
-Note: default pg-version is vanilla, but with PGPRO or PGEE before version number it can be changed. Supported version 
-numbers are 10, 11, 9.6, 9.5
+HINT: default pg-version is vanilla, but with PGEE or PGPRO before version number it can be changed (PGEE_10). Supported version
+numbers are 12, 10, 11, 9.6, 9.5
 By default, mamonsu exports the template for Zabbix 4.4 or higher.
 To export a template for older Zabbix versions, use the --old-zabbix option.
-Example: PGPRO_10 or PGEE_11 or PGPRO_9.6
 
 
 Export zabbix template with additional plugins included in config file:
@@ -64,12 +57,11 @@ Examples:
     {prog} export template [options] <file>
 Options:
     --add-plugins <directory>
-    --template-name <template name>
-    --application <application name in template>
+    --template-name <template name> by default PostgresPro-<platform name>
+    --application <application name in template> by default App-PostgresPro-<platform name>
     --config <file>
     --old-zabbix
-Default template name = PostgresPro-<platform name>, application = App-PostgresPro-<platform name>
-By default, mamonsu exports the template for Zabbix 4.4 or higher.
+HINT: By default, mamonsu exports the template for Zabbix 4.4 or higher.
 To export a template for older Zabbix versions, use the --old-zabbix option.
 
 
@@ -77,7 +69,7 @@ Bootstrap DDL for monitoring:
 Command: bootstrap
 Examples:
     {prog} bootstrap -M <mamonsu_username>
-HINT:  -M <mamonsu_username> is used to assign ownership of bootstap queries
+HINT:  -M <mamonsu_username> is used to assign ownership of bootstrap queries
 Options:
     -p, --port <PGPORT>
     -W <PGPASSWORD>
@@ -88,21 +80,18 @@ Options:
 
 Information about working mamonsu:
 Command: agent
-Options:
-    -c, --config <file>
 Examples:
     {prog} agent version
     {prog} agent metric-list
     {prog} agent metric-get <metric key>
+Options:
+    -c, --config <file>
+
 
 
 Zabbix API toolbox:
 Command: zabbix
-Options:
-    --url=http://zabbix/web/face
-    --user=WebUser
-    --password=WebPassword
-Examples:
+Usage:
     {prog} zabbix template list
     {prog} zabbix template show <template name>
     {prog} zabbix template id <template name>
@@ -125,7 +114,11 @@ Examples:
     {prog} zabbix item error <host name>
     {prog} zabbix item lastvalue <host name>
     {prog} zabbix item lastclock <host name>
-    
+Options:
+    --url=http://zabbix/web/face
+    --user=WebUser
+    --password=WebPassword
+        
 Export metrics to zabbix server
 Command: upload
 Example:
@@ -144,21 +137,23 @@ if platform.LINUX:
 Report about hardware and software:
 Command: report
 Options:
-    --run-system
-    --run-postgres
+    --run-system=Boolean by default True
+    --run-postgres=Boolean by default True
     --host <PGHOST>
     --port <PGPORT>
+    --disable-sudo
     -W <PGPASSWORD>
     -d, --dbname <DBNAME>
     -U, --username <USERNAME>
     -r, --print-report
     -w, --report-path <path to file>
+    
 
 
 AutoTune config and system:
 Command: tune
 Options:
-    -l, --log-level INFO|DEBUG|WARN
+    -l, --log-level (INFO|DEBUG|WARN) by default INFO
     --dry-run
     --disable-sudo
     --dont-tune-pgbadger
@@ -171,7 +166,7 @@ if platform.WINDOWS:
 AutoTune config and system:
 Command: tune
 Options:
-    -l, --log-level INFO|DEBUG|WARN
+    -l, --log-level (INFO|DEBUG|WARN) by default INFO
     --dry-run
     --dont-tune-pgbadger
     --dont-reload-postgresql
@@ -187,17 +182,17 @@ class MissOptsParser(OptionParser):
 
     def print_help(self):
         print("""
-Options:
-    -c, --config <file>
-    -p, --pid    <pid-file>
-    -t, --template-name <template name>
-    -a, --add-plugins <directory>
+
 
 Export example config with default variables:
 Command: export
 Examples:
-    {prog} export config <file>
-     --add-plugins <directory>
+    {prog} export config <file> --add-plugins <directory>
+Options:
+    -c, --config <file>
+    -p, --pid    <pid-file>
+    -t, --template-name <template name> by default PostgresPro-<platform name>
+    -a, --add-plugins <directory>
 
 
 Export zabbix template with additional plugins included in config file:
@@ -206,8 +201,8 @@ Examples:
     {prog} export template <file>
 Options:
     --config <file>
-    --template-name <template name>
-    --application <application name in template>
+    --template-name <template name> by default PostgresPro-<platform name>
+    --application <application name in template> by default App-PostgresPro-<platform name>
     --add-plugins <directory>
 
 
@@ -216,9 +211,11 @@ Command: export zabbix-parameters
 Examples:
     {prog} export zabbix-parameters  <file>
 Options:
-    --pg-version <pg_version>
+    --pg-version <pg_version> by default 10
     --config <file>
     --add-plugins <directory>
+HINT: default pg-version is vanilla, but with PGEE or PGPRO before version number it can be changed (PGEE_10). Supported version
+numbers are 12, 10, 11, 9.6, 9.5
 
         
 Export template for native zabbix agent:
@@ -226,8 +223,8 @@ Command: export zabbix-template
 Examples:
     {prog} export zabbix-template <file>
 Options:
-    --template-name  <template name>
-    --application <application name in template>
+    --template-name <template name> by default PostgresPro-<platform name>
+    --application <application name in template> by default App-PostgresPro-<platform name>
     --config <file>
     --add-plugins <directory>
 
