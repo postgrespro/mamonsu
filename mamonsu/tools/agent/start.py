@@ -35,7 +35,7 @@ Options:
         usage=usage_msg,
         version='%prog agent {0}'.format(__version__))
     parser.add_option(
-        '-c', '--config', dest='config',
+        '-c', '--config', dest='config', default='/etc/mamonsu/agent.conf',
         help=optparse.SUPPRESS_HELP)
     args, commands = parser.parse_args()
 

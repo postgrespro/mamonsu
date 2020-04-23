@@ -141,7 +141,6 @@ def start():
                 plugins = []
                 if len(commands) == 2:
                     commands.append('postgrespro.xml')
-                    print('Template for mamonsu have been saved in postgrespro.conf file')
                 for klass in Plugin.only_child_subclasses():
                     if klass.__name__ == "PgWaitSampling" or klass.__name__ == "Cfs" :  # check if plugin is for EE
                         if Plugin.VersionPG['type'] == 'PGEE':
@@ -155,6 +154,7 @@ def start():
                 with codecs.open(commands[2], 'w', 'utf-8') as f:
                     #   template for mamonsu (zabbix-trapper) is generated for all available plugins
                     f.write(template.xml("all", plugins))  # set type to 'all' for mamonsu
+                    print('Configuration file for mamonsu have been saved in {file} file'.format(file=commands[2]))
                     sys.exit(0)
             elif commands[1] == 'zabbix-template':
                 Plugin.Type = 'agent'  # change plugin type for template generator

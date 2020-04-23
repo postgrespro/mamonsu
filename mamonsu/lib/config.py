@@ -70,7 +70,7 @@ class Config(DefaultConfig):
         self._apply_default_config()
 
         if cfg_file and not os.path.isfile(cfg_file):
-            sys.stderr.write('Can\'t found file: {0}'.format(cfg_file))
+            sys.stderr.write('Can\'t found file: {0}\n'.format(cfg_file))
             sys.exit(1)
         else:
             if cfg_file is not None:

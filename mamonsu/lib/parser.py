@@ -204,7 +204,9 @@ Options:
     --template-name <template name> by default PostgresPro-<platform name>
     --application <application name in template> by default App-PostgresPro-<platform name>
     --add-plugins <directory>
-
+    --pg-version <pg_version> by default 10
+HINT: default pg-version is vanilla, but with PGEE or PGPRO before version number it can be changed (PGEE_10). Supported version
+numbers are 12, 10, 11, 9.6, 9.5, PGEE_9.6, PGEE_10, PGEE_11, PGEE_12, PGPRO_9.6, PGPRO_10, PGPRO_11, PGPRO_12
 
 Export zabbix keys for native zabbix-agent:
 Command: export zabbix-parameters
@@ -215,7 +217,7 @@ Options:
     --config <file>
     --add-plugins <directory>
 HINT: default pg-version is vanilla, but with PGEE or PGPRO before version number it can be changed (PGEE_10). Supported version
-numbers are 12, 10, 11, 9.6, 9.5
+numbers are 12, 10, 11, 9.6, 9.5, PGEE_9.6, PGEE_10, PGEE_11, PGEE_12, PGPRO_9.6, PGPRO_10, PGPRO_11, PGPRO_12
 
         
 Export template for native zabbix agent:
@@ -254,7 +256,7 @@ def parse_args():
         usage=usage_msg,
         version='%prog {0}'.format(__version__))
     parser.add_option(
-        '-c', '--config', dest='config_file', default=None)
+        '-c', '--config', dest='config_file', default='/etc/mamonsu/agent.conf')
     # pid
     parser.add_option(
         '-p', '--pid', dest='pid', default=None)
