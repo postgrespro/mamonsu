@@ -27,6 +27,8 @@ Examples:
     {prog} agent version
     {prog} agent metric-list
     {prog} agent metric-get <metric key>
+Options:
+    -c, --config <file>    
 """.format(prog=sys.argv[0])
 
     parser = optparse.OptionParser(
