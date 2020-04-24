@@ -417,7 +417,7 @@ Tool: Upload metrics for a certain time period
 ==========
 
 Upload metrics data previously saved into a file onto a Zabbix server for visualization.
-For details on how to save metrics into a file, see the section called “Logging Parameters”. :
+For details on how to save metrics into a file, see the section called “Logging Parameters" in documentation https://postgrespro.com/docs/postgrespro/11/mamonsu#MAMONSU-LOGGING-PARAMETERS:
 
 .. code-block:: bash
 
