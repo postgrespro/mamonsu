@@ -229,7 +229,9 @@ Options:
     --application <application name in template> by default App-PostgresPro-<platform name>
     --config <file>
     --add-plugins <directory>
-
+    --pg-version <pg_version> by default 10
+HINT: default pg-version is vanilla, but with PGEE or PGPRO before version number it can be changed (PGEE_10). Supported version
+numbers are 12, 10, 11, 9.6, 9.5, PGEE_9.6, PGEE_10, PGEE_11, PGEE_12, PGPRO_9.6, PGPRO_10, PGPRO_11, PGPRO_12
 """)
         sys.exit(2)
 
