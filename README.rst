@@ -78,8 +78,6 @@ Build win32 exe: (worked with python v3.{4,5}: py2exe v0.9.2.2 and pywin32 v220 
     $ c:\mamonsu\service_win32.exe -install
     $ net start mamonsu
 
-NOTE: windows installer only for mamonsu 2.3.4 version
-
 Build nsis installer:
 
 .. code-block:: bash
@@ -413,6 +411,17 @@ Make generic optimization for system and PostgreSQL, based on hardware informati
 .. code-block:: bash
 
     $ mamonsu tune
+
+==========
+Tool: Upload metrics for a certain time period 
+==========
+
+Upload metrics data previously saved into a file onto a Zabbix server for visualization.
+For details on how to save metrics into a file, see the section called “Logging Parameters”. :
+
+.. code-block:: bash
+
+    $ mamonsu upload
 
 ==========================
 Tool: analog of zabbix_get
