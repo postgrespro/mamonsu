@@ -245,8 +245,8 @@ class ZbxTemplate(object):
             result_conditions += '</filter>'
         else:
             result = '<discovery_rule>{0}{1}{2}{3}</discovery_rule>'
-	    if ('filter', None) not in self.discovery_defaults:
-            	self.discovery_defaults.append(('filter', None))
+            if ('filter', None) not in self.discovery_defaults:
+                self.discovery_defaults.append(('filter', None))
             return result.format(
                 self._format_args(self.discovery_defaults, rule),
                 result_items, result_triggers, result_graphs)
