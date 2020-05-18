@@ -7,11 +7,14 @@ from .pool import Pooler
 class PgBufferCache(Plugin):
     AgentPluginType = 'pg'
     key = 'pgsql.buffers{0}'
-    query_agent_size = "select sum(1) *  (current_setting('block_size')::int8) as size from public.pg_buffercache;"  # for zabbix
-    query_agent_twice_used = "select sum(case when usagecount > 1 then 1 else 0 end) *  (current_setting('block_size')::int8) as twice_used " \
-                             "from public.pg_buffercache;" # for zabbix
-    query_agent_dirty = "select sum(case isdirty when true then 1 else 0 end) *  (current_setting('block_size')::int8) as dirty " \
-                        "from public.pg_buffercache;" # for zabbix
+    query_agent_size = "select sum(1) *  (current_setting('block_size')::int8) as size from public.pg_buffercache;"
+    # for zabbix
+    query_agent_twice_used = "select " \
+                             "sum(case when usagecount > 1 then 1 else 0 end) * (current_setting('block_size')::int8) as twice_used " \
+                             "from public.pg_buffercache;"  # for zabbix
+    query_agent_dirty = "select " \
+                        "sum(case isdirty when true then 1 else 0 end) * (current_setting('block_size')::int8) as dirty " \
+                        "from public.pg_buffercache;"  # for zabbix
     query = [query_agent_size, query_agent_twice_used, query_agent_dirty]
     Items = [
         # key, name, color
@@ -31,7 +34,7 @@ class PgBufferCache(Plugin):
         result = ''
         for item in self.Items:
             result += template.item({
-                'key': self.right_type(self.key, item[0]), #'pgsql.buffers[{0}]'.format(item[0]),
+                'key': self.right_type(self.key, item[0]),  # 'pgsql.buffers[{0}]'.format(item[0]),
                 'name': item[1],
                 'delay': self.plugin_config('interval'),
                 'units': Plugin.UNITS.bytes
@@ -51,6 +54,7 @@ class PgBufferCache(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for i, item in enumerate(self.Items):
-                result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.'+item[0]), self.query[i].format(item[0])))
+                result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.'+item[0]),
+                                                             self.query[i].format(item[0])))
         return template_zabbix.key_and_query(result)
 

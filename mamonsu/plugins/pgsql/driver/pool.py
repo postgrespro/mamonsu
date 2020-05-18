@@ -4,7 +4,6 @@ from .connection import Connection, ConnectionInfo
 
 
 class Pool(object):
-
     ExcludeDBs = ['template0', 'template1']
 
     SQL = {
@@ -40,7 +39,9 @@ class Pool(object):
         ),
     }
 
-    def __init__(self, params={}):
+    def __init__(self, params=None):
+        if params is None:
+            params = {}
         self._params = params
         self._primary_connection_hash = None
         self._connections = {}
@@ -123,7 +124,7 @@ class Pool(object):
         return self._cache['bootstrap']['storage'][db]
 
     def is_superuser(self, db=None):
-        db = self._normalize_db(db)
+        _ = self._normalize_db(db)
         if self.query("select current_setting('is_superuser')")[0][0] == 'on':
             return True
         else:
@@ -208,9 +209,9 @@ class Pool(object):
             # create new connection
             self._connections[db] = Connection(self._build_connection_hash(db))
 
-    def get_sys_param (self, param, db=None):
+    def get_sys_param(self, param, db=None):
         if param == '':
-            #todo
+            #  todo
             pass
         db = self._normalize_db(db)
         if self.is_bootstraped() and self.bootstrap_version_greater('2.3.4'):

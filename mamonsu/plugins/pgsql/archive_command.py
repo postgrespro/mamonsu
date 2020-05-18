@@ -104,7 +104,7 @@ class ArchiveCommand(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if self.VersionPG['number'] < LooseVersion('10'):
+        if LooseVersion(self.VersionPG) < LooseVersion('10'):
             xlog = 'xlog'
         else:
             xlog = 'wal'

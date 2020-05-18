@@ -136,7 +136,7 @@ class Connections(Plugin):
             result.append(
                 '{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[1]), self.query_agent.format(item[1])))
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.total'), self.query_agent_total))
-        if self.VersionPG['number'] < LooseVersion('9.6'):
+        if LooseVersion(self.VersionPG) < LooseVersion('9.6'):
             result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting_old_v))
         else:
             result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting_new_v))

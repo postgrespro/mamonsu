@@ -7,36 +7,36 @@ from .pool import Pooler
 class PgStatStatement(Plugin):
     query = "select {0} from public.pg_stat_statements;"
     AgentPluginType = 'pg'
-    key="pgsql."
+    key = "pgsql."
     # zbx_key, sql, desc, unit, delta, (Graph, color, side)
     Items = [
 
         ('stat[read_bytes]',
-            'sum(shared_blks_read+local_blks_read+temp_blks_read)*8*1024',
-            'read bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: bytes', 'BBBB00', 0)),
+         'sum(shared_blks_read+local_blks_read+temp_blks_read)*8*1024',
+         'read bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
+         ('PostgreSQL statements: bytes', 'BBBB00', 0)),
         ('stat[write_bytes]',
-            'sum(shared_blks_written+local_blks_written'
-            '+temp_blks_written)*8*1024',
-            'write bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: bytes', '00CC00', 0)),
+         'sum(shared_blks_written+local_blks_written'
+         '+temp_blks_written)*8*1024',
+         'write bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
+         ('PostgreSQL statements: bytes', '00CC00', 0)),
         ('stat[dirty_bytes]',
-            'sum(shared_blks_dirtied+local_blks_dirtied)*8*1024',
-            'dirty bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: bytes', '0000CC', 0)),
+         'sum(shared_blks_dirtied+local_blks_dirtied)*8*1024',
+         'dirty bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
+         ('PostgreSQL statements: bytes', '0000CC', 0)),
 
         ('stat[read_time]',
-            'sum(blk_read_time)/float4(100)',
-            'read io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: spend time', '00CC00', 0)),
+         'sum(blk_read_time)/float4(100)',
+         'read io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+         ('PostgreSQL statements: spend time', '00CC00', 0)),
         ('stat[write_time]',
-            'sum(blk_write_time)/float4(100)',
-            'write io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: spend time', '0000CC', 0)),
+         'sum(blk_write_time)/float4(100)',
+         'write io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+         ('PostgreSQL statements: spend time', '0000CC', 0)),
         ('stat[other_time]',
-            'sum(total_time-blk_read_time-blk_write_time)/float4(100)',
-            'other (mostly cpu) time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-            ('PostgreSQL statements: spend time', 'BBBB00', 0))
+         'sum(total_time-blk_read_time-blk_write_time)/float4(100)',
+         'other (mostly cpu) time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+         ('PostgreSQL statements: spend time', 'BBBB00', 0))
     ]
 
     def run(self, zbx):
@@ -92,10 +92,7 @@ class PgStatStatement(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for i, item in enumerate(self.Items):
-                keys = item[0].split('[')
-                result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
-                                                             self.query.format(item[1])))
+            keys = item[0].split('[')
+            result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
+                                                         self.query.format(item[1])))
         return template_zabbix.key_and_query(result)
-
-
-

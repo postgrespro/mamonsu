@@ -9,7 +9,9 @@ from mamonsu.plugins.pgsql.driver.pg8000.core import ProgrammingError
 
 class ConnectionInfo(object):
 
-    def __init__(self, connection_hash={}):
+    def __init__(self, connection_hash=None):
+        if connection_hash is None:
+            connection_hash = {}
         self.host = connection_hash.get('host') or os.environ.get('PGHOST')
         self.port = connection_hash.get('port') or int(os.environ.get('PGPORT') or 5432)
         self.user = connection_hash.get('user') or os.environ.get('PGUSER')
@@ -38,8 +40,10 @@ class ConnectionInfo(object):
 
 class Connection(ConnectionInfo):
 
-    def __init__(self, info={}):
+    def __init__(self, info=None):
         super(Connection, self).__init__(info)
+        if info is None:
+            info = {}
         self.lock = threading.Lock()
         self.conn = None
         self.connected = False

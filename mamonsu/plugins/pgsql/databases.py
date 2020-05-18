@@ -33,6 +33,7 @@ class Databases(Plugin):
             datname, pg_database_size(datname::text), age(datfrozenxid) \
             from pg_catalog.pg_database where datistemplate = false')
         dbs = []
+        bloat_count = []
         for info in result:
             dbs.append({'{#DATABASE}': info[0]})
             zbx.send('pgsql.database.size[{0}]'.format(
@@ -74,9 +75,9 @@ class Databases(Plugin):
                 {
                     'condition': [
                         {'macro': '{#DATABASE}',
-                        'value': '.*',
-                        'operator': '',
-                        'formulaid': 'A'}
+                         'value': '.*',
+                         'operator': '',
+                         'formulaid': 'A'}
                     ]
                 }
 
@@ -124,13 +125,12 @@ class Databases(Plugin):
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)
 
     def keys_and_queries(self, template_zabbix):
-        result = []
-        result.append('{0},$2 $1 -c "{1}"'.format(self.key_autovacumm.format("[*]"), Pooler.SQL['count_autovacuum'][0]))
-        result.append('{0},$2 $1 -c "{1}"'.format(self.key_db_discovery.format("[*]"), self.query_agent_discovery))
-        result.append('{0},echo "{1}" | $3 $2 -v p1="$1"'.format(self.key_db_size.format("[*]"), self.query_size))
-        result.append('{0},echo "{1}" | $3 $2 -v p1="$1"'.format(self.key_db_age.format("[*]"), self.query_age))
-        result.append(
-            '{0},$3 $2 -d "$1" -c "{1}"'.format(self.key_db_bloating_tables.format("[*]"),
-                                                self.query_bloating_tables.format(self.plugin_config('bloat_scale'),
-                                                                                  self.plugin_config('min_rows'))))
+        result = ['{0},$2 $1 -c "{1}"'.format(self.key_autovacumm.format("[*]"), Pooler.SQL['count_autovacuum'][0]),
+                  '{0},$2 $1 -c "{1}"'.format(self.key_db_discovery.format("[*]"), self.query_agent_discovery),
+                  '{0},echo "{1}" | $3 $2 -v p1="$1"'.format(self.key_db_size.format("[*]"), self.query_size),
+                  '{0},echo "{1}" | $3 $2 -v p1="$1"'.format(self.key_db_age.format("[*]"), self.query_age),
+                  '{0},$3 $2 -d "$1" -c "{1}"'.format(self.key_db_bloating_tables.format("[*]"),
+                                                      self.query_bloating_tables.format(
+                                                          self.plugin_config('bloat_scale'),
+                                                          self.plugin_config('min_rows')))]
         return template_zabbix.key_and_query(result)

@@ -160,10 +160,9 @@ select
         rule = {
             'name': 'Compressed relations discovery',
             'key': 'pgsql.cfs.discovery_compressed_relations[]'
-            # 'filter': '{#COMPRESSED_RELATION}:.*'
         }
         if Plugin.old_zabbix:
-            rule['filter'] = '{#DATABASE}:.*'
+            rule['filter'] = '{#COMPRESSED_RELATION}:.*'
             conditions = []
         else:
             conditions = [
