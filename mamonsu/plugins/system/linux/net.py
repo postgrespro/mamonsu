@@ -1,8 +1,6 @@
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
-
-
 class Net(Plugin):
     query_agent_discovery = "/net.sh -j NETDEVICE"
     query_agent = "expr `grep -Ei '$1' /proc/net/dev | awk '{print $$"
@@ -78,11 +76,10 @@ class Net(Plugin):
                     'color': '0000CC',
                     'key': 'system.net.tx_bytes[{#NETDEVICE}]'}]
         }]
-        return template.discovery_rule(rule=rule,conditions=conditions, items=items, graphs=graphs)
+        return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)
 
     def keys_and_queries(self, template_zabbix):
-        result = []
-        result.append('system.net.discovery,{0}{1}'.format(Plugin.PATH, self.query_agent_discovery))
+        result = ['system.net.discovery,{0}{1}'.format(Plugin.PATH, self.query_agent_discovery)]
         for item in self.Items:
             result.append('{0}[*], {1}'.format(item[1], self.query_agent + str(item[0] + 2) + "}'`"))
         return template_zabbix.key_and_query(result)

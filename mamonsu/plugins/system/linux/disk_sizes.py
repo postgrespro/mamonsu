@@ -2,8 +2,6 @@ import os
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
-
-
 class DiskSizes(Plugin):
     AgentPluginType = 'sys'
 
@@ -145,9 +143,8 @@ class DiskSizes(Plugin):
             rule=rule, conditions=conditions, items=items, graphs=graphs, triggers=triggers)
 
     def keys_and_queries(self, template_zabbix):
-        result = []
-        result.append('system.vfs.discovery,{0}{1}'.format(Plugin.PATH, self.query_agent_discovery))
-        result.append('system.vfs.used[*],{0}'.format(self.query_agent_used))
-        result.append('system.vfs.free[*],{0}'.format(self.query_agent_free))
-        result.append('system.vfs.percent_free[*],{0}'.format(self.query_agent_percent_free))
+        result = ['system.vfs.discovery,{0}{1}'.format(Plugin.PATH, self.query_agent_discovery),
+                  'system.vfs.used[*],{0}'.format(self.query_agent_used),
+                  'system.vfs.free[*],{0}'.format(self.query_agent_free),
+                  'system.vfs.percent_free[*],{0}'.format(self.query_agent_percent_free)]
         return template_zabbix.key_and_query(result)

@@ -2,8 +2,6 @@ import re
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
-
-
 class DiskStats(Plugin):
     # todo yaxis right 100%
     # bold line
@@ -47,7 +45,8 @@ class DiskStats(Plugin):
                     continue
                 val = [int(x) for x in val.split()]
                 read_op, read_sc, write_op, write_sc, ticks = val[0], val[2], val[4], val[6], val[9]
-                read_b, write_b = read_sc * 512, write_sc * 512  # https://github.com/sysstat/sysstat/blob/v11.5.2/iostat.c#L940
+                read_b, write_b = read_sc * 512, write_sc * 512
+                # https://github.com/sysstat/sysstat/blob/v11.5.2/iostat.c#L940
 
                 zbx.send('system.disk.read[{0}]'.format(
                     dev), read_op, self.DELTA_SPEED)
@@ -200,15 +199,14 @@ class DiskStats(Plugin):
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)
 
     def keys_and_queries(self, template_zabbix):
-        result = []
-        result.append('system.disk.discovery,{0}{1}'.format(Plugin.PATH, self.query_agent_discovery))
-        result.append('system.disk.utilization[*],{0}'.format(self.agent_query_ticks))
-        result.append('system.disk.read[*],{0}'.format(self.agent_query_read_op))
-        result.append('system.disk.write[*],{0}'.format(self.agent_query_write_op))
-        result.append('system.disk.read_b[*],{0}'.format(self.agent_query_read_sc))
-        result.append('system.disk.write_b[*],{0}'.format(self.agent_query_write_sc))
-        result.append('system.disk.all_read,{0}{1}'.format(Plugin.PATH, self.agent_query_read_op_all))
-        result.append('system.disk.all_write,{0}{1}'.format(Plugin.PATH, self.agent_query_write_op_all))
-        result.append('system.disk.all_read_b,{0}{1}'.format(Plugin.PATH, self.agent_query_read_sc_all))
-        result.append('system.disk.all_write_b,{0}{1}'.format(Plugin.PATH, self.agent_query_write_sc_all))
+        result = ['system.disk.discovery,{0}{1}'.format(Plugin.PATH, self.query_agent_discovery),
+                  'system.disk.utilization[*],{0}'.format(self.agent_query_ticks),
+                  'system.disk.read[*],{0}'.format(self.agent_query_read_op),
+                  'system.disk.write[*],{0}'.format(self.agent_query_write_op),
+                  'system.disk.read_b[*],{0}'.format(self.agent_query_read_sc),
+                  'system.disk.write_b[*],{0}'.format(self.agent_query_write_sc),
+                  'system.disk.all_read,{0}{1}'.format(Plugin.PATH, self.agent_query_read_op_all),
+                  'system.disk.all_write,{0}{1}'.format(Plugin.PATH, self.agent_query_write_op_all),
+                  'system.disk.all_read_b,{0}{1}'.format(Plugin.PATH, self.agent_query_read_sc_all),
+                  'system.disk.all_write_b,{0}{1}'.format(Plugin.PATH, self.agent_query_write_sc_all)]
         return template_zabbix.key_and_query(result)

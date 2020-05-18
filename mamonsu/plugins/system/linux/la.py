@@ -23,6 +23,5 @@ class La(Plugin):
         return template.graph(graph)
 
     def keys_and_queries(self, template_zabbix):
-        result = []
-        result.append('system.la.1,{0}'.format(self.query_agent))
+        result = ['system.la.1,{0}'.format(self.query_agent)]
         return template_zabbix.key_and_query(result)

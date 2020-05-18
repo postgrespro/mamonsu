@@ -15,7 +15,7 @@ class SystemUptime(Plugin):
     def items(self, template):
         return template.item({
             'name': 'System up_time',
-            'key':  self.right_type(self.key),
+            'key': self.right_type(self.key),
             'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
             'delay': self.plugin_config('interval'),
             'units': Plugin.UNITS.uptime
@@ -31,10 +31,9 @@ class SystemUptime(Plugin):
             'name': 'System was restarted on '
                     '{HOSTNAME} (up_time={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:' + self.right_type(self.key) + '.last'
-            '()}&lt;' + self.plugin_config('up_time')
+                                                                      '()}&lt;' + self.plugin_config('up_time')
         })
 
     def keys_and_queries(self, template_zabbix):
-        result = []
-        result.append('system.up_time,{0}'.format(self.query_agent))
+        result = ['system.up_time,{0}'.format(self.query_agent)]
         return template_zabbix.key_and_query(result)

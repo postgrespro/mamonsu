@@ -142,11 +142,11 @@ class ProcStat(Plugin):
             keys = item[1].split('[')
             result.append(
                 '{0},{1}'.format('{0}{1}.{2}'.format(self.key.format(""), keys[0], keys[1][:-1]),
-                                               self.query_agent_procs[i]))
+                                 self.query_agent_procs[i]))
         for i, item in enumerate(self.CpuItems):
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[1].split('[')
             result.append(
                 '{0},{1}'.format('{0}{1}.{2}'.format(self.key.format(""), keys[0], keys[1][:-1]),
-                                               self.query_agent_cpu + str(i + 2) + "}'`"))
+                                 self.query_agent_cpu + str(i + 2) + "}'`"))
         return template_zabbix.key_and_query(result)

@@ -24,6 +24,5 @@ class OpenFiles(Plugin):
         return template.graph(graph)
 
     def keys_and_queries(self, template_zabbix):
-        result = []
-        result.append('{0},{1}'.format("system.open_files", self.query_agent))
+        result = ['{0},{1}'.format("system.open_files", self.query_agent)]
         return template_zabbix.key_and_query(result)

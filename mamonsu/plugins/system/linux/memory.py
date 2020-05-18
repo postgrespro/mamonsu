@@ -112,11 +112,11 @@ class Memory(Plugin):
         for item in self.Items:
             if item[1] is None and item[0] == 'apps':
                 result.append('{0},{1}'.format(self.key.format('.' + item[0]),
-                                                   self.query_agent_apps))
+                                               self.query_agent_apps))
             elif item[1] is None and item[0] == 'swap':
                 result.append('{0},{1}'.format(self.key.format('.' + item[0]),
-                                                   self.query_agent_swap))
+                                               self.query_agent_swap))
             else:
                 result.append('{0},{1}{2}'.format(self.key.format('.' + item[0]),
-                                                      self.query_agent.format(item[1]), "{ print $2*1024 }'"))
+                                                  self.query_agent.format(item[1]), "{ print $2*1024 }'"))
         return template_zabbix.key_and_query(result)
