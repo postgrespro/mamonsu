@@ -213,7 +213,9 @@ class SysInfoLinux(object):
     def _pci_storage_devices(self):
         result = []
         for line in self.lspci_raw.split("\n"):
-            if re.search(r'(Fibre Channel|RAID bus controller|Mass storage controller|SCSI storage controller|SATA controller|Serial Attached SCSI controller)', line, re.M):
+            if re.search(
+                    r'(Fibre Channel|RAID bus controller|Mass storage controller|SCSI storage controller|SATA controller|Serial Attached SCSI controller)',
+                    line, re.M):
                 line = line[8:]
                 result.append(line)
         return result
@@ -240,12 +242,9 @@ class SysInfoLinux(object):
         return self._shell_out('dmidecode -s \'{0}\''.format(key), sudo=True)
 
     def _dmi_info(self):
-        result = {}
-        result['vendor'] = self._dmidecode('system-manufacturer')
-        result['product'] = self._dmidecode('system-product-name')
-        result['version'] = self._dmidecode('system-version')
-        result['chassis'] = self._dmidecode('chassis-type')
-        result['SERIAL'] = self._dmidecode('system-serial-number')
+        result = {'vendor': self._dmidecode('system-manufacturer'), 'product': self._dmidecode('system-product-name'),
+                  'version': self._dmidecode('system-version'), 'chassis': self._dmidecode('chassis-type'),
+                  'SERIAL': self._dmidecode('system-serial-number')}
         result['TOTAL'] = '{0}; {1}; {2} ({3})'.format(
             result['vendor'], result['product'],
             result['chassis'], result['version'])
@@ -305,10 +304,10 @@ class SysInfoLinux(object):
         result['_FLAGS_IMPORTANT'] = ', '.join(flags)
         result['speed'] = fetch_first(
             r'^cpu MHz\s+\:\s+(\d+\.\d+)$', info) + ' MHz'
-        result['_TOTAL'] = 'physical = {0}, cores = {1}, '\
-            'virtual = {2}, hyperthreading = {3}'.format(
-                result['physical'], result['cores'],
-                result['virtual'], result['hyperthreading']
+        result['_TOTAL'] = 'physical = {0}, cores = {1}, ' \
+                           'virtual = {2}, hyperthreading = {3}'.format(
+            result['physical'], result['cores'],
+            result['virtual'], result['hyperthreading']
         )
         return result
 
@@ -316,11 +315,11 @@ class SysInfoLinux(object):
 
         data, result = self._read_file('/proc/meminfo'), {}
         for key in [
-                '_RAW', '_TOTAL', '_COMMITED', '_COMMITEDLIMIT',
-                '_FREE', '_SWAPUSED', '_SLAB'
-                '_SWAPTOTAL', '_CACHED', '_DIRTY', '_BUFFERS',
-                '_HUGEPAGES_SIZE', '_HUGEPAGES_FREE',
-                '_SHMEM', '_PAGETABLES']:
+            '_RAW', '_TOTAL', '_COMMITED', '_COMMITEDLIMIT',
+            '_FREE', '_SWAPUSED', '_SLAB'
+                                  '_SWAPTOTAL', '_CACHED', '_DIRTY', '_BUFFERS',
+            '_HUGEPAGES_SIZE', '_HUGEPAGES_FREE',
+            '_SHMEM', '_PAGETABLES']:
             result[key] = NA
 
         if self.is_empty(data):
@@ -472,35 +471,35 @@ class SysInfoLinux(object):
         controllers = []
         if not self.is_empty(self.lspci_raw):
             if re.search(
-                r'RAID bus controller: LSI Logic / Symbios Logic MegaRAID SAS',
+                    r'RAID bus controller: LSI Logic / Symbios Logic MegaRAID SAS',
                     self.lspci_raw, re.I):
                 controllers.append(RAID_LSI)
             if re.search(
-                r'RAID bus controller: LSI Logic / Symbios Logic LSI MegaSAS',
+                    r'RAID bus controller: LSI Logic / Symbios Logic LSI MegaSAS',
                     self.lspci_raw, re.I):
                 controllers.append(RAID_LSI)
             if re.search(
-                r'Fusion-MPT SAS',
+                    r'Fusion-MPT SAS',
                     self.lspci_raw, re.I):
                 controllers.append(RAID_FUSION_SAS)
             if re.search(
-                r'RAID bus controller: LSI Logic / Symbios Logic Unknown',
+                    r'RAID bus controller: LSI Logic / Symbios Logic Unknown',
                     self.lspci_raw, re.I):
                 controllers.append(RAID_LSI)
             if re.search(
-                r'RAID bus controller: Adaptec AAC-RAID',
+                    r'RAID bus controller: Adaptec AAC-RAID',
                     self.lspci_raw, re.I):
                 controllers.append(RAID_ADAPTEC)
             if re.search(
-                r'3ware [0-9]* Storage Controller',
+                    r'3ware [0-9]* Storage Controller',
                     self.lspci_raw, re.I):
                 controllers.append(RAID_3WARE)
             if re.search(
-                r'Hewlett-Packard Company Smart Array',
+                    r'Hewlett-Packard Company Smart Array',
                     self.lspci_raw, re.I):
                 controllers.append(RAID_HP_SMART)
             if re.search(
-                r'Hewlett-Packard Company Smart Array',
+                    r'Hewlett-Packard Company Smart Array',
                     self.lspci_raw, re.I):
                 controllers.append(RAID_HP_SMART)
         if not self.is_empty(self.dmesg_raw):
@@ -511,7 +510,7 @@ class SysInfoLinux(object):
             if re.search(r'scsi[0-9].*: .*aacraid', self.dmesg_raw, re.I):
                 controllers.append(RAID_ADAPTEC)
             if re.search(
-                r'scsi[0-9].*: .*3ware [0-9]* Storage Controller',
+                    r'scsi[0-9].*: .*3ware [0-9]* Storage Controller',
                     self.dmesg_raw, re.I):
                 controllers.append(RAID_3WARE)
         if len(controllers) == 0:

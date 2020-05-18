@@ -283,8 +283,7 @@ order by b.size desc
         return result
 
     def _collect_rate(self):
-        result = {}
-        result['_TPS'], result['_ROLLBACKS'] = '', ''
+        result = {'_TPS': '', '_ROLLBACKS': ''}
         try:
             result['row_1'] = Pooler.query(self.QueryRate)[0]
             time.sleep(2)

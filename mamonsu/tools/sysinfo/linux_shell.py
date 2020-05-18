@@ -34,11 +34,10 @@ def is_sudo_working():
 
 
 class Shell(object):
-
     # exit status of timeout code
     TimeoutCode = -1
     # local var
-    _sudo_result = None # type: bool
+    _sudo_result = None  # type: bool
 
     def __init__(self, cmd, timeout=10, sudo=False):
         self.status = self.TimeoutCode
@@ -63,7 +62,7 @@ class Shell(object):
             line = p.stderr.read()
             if not line == '':
                 self.stderr += line.decode('utf-8', 'replace')
-            if self.wait_time > 0 and self.exec_time >= self.wait_time:
+            if 0 < self.wait_time <= self.exec_time:
                 return
         self.status = p.returncode
         for line in p.stdout.readlines():

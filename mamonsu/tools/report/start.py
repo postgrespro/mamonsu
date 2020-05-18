@@ -12,6 +12,7 @@ from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 
 from mamonsu.tools.report.pgsql import PostgresInfo
+
 if platform.LINUX:
     from mamonsu.tools.report.os_linux import SystemInfo
 else:
@@ -142,10 +143,10 @@ class Args(DefaultConfig):
         def test_db(self, host_pre):
             logging.debug('Test host: {0}'.format(host_pre))
             if is_conn_to_db(
-                host=host_pre,
-                db=self.args.dbname,
-                port=self.args.port,
-                user=self.args.username,
+                    host=host_pre,
+                    db=self.args.dbname,
+                    port=self.args.port,
+                    user=self.args.username,
                     paswd=self.args.password):
                 self.args.hostname = host_pre
                 os.environ['PGHOST'] = self.args.hostname
@@ -176,7 +177,6 @@ class Args(DefaultConfig):
 
 
 def run_report():
-
     args = Args()
 
     if args.run_system:

@@ -98,7 +98,9 @@ def key_val_h2(key, val, delim=': '):
         TermColor.BOLD, TermColor.BLUE, key, TermColor.END, delim, val)
 
 
-def topline_h1(arr=[], delim="  \t"):
+def topline_h1(arr=None, delim="  \t"):
+    if arr is None:
+        arr = []
     result = "{0}{1}".format(TermColor.BOLD, TermColor.BLUE)
     for x in arr:
         result = "{0}{1}{2}".format(result, delim, x)
