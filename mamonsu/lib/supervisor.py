@@ -10,7 +10,6 @@ from mamonsu.lib.senders.zbx import ZbxSender
 
 
 class Supervisor(object):
-
     Running = True
 
     def __init__(self, config):
@@ -42,7 +41,7 @@ class Supervisor(object):
                 plugin.start()
             else:
                 plugin.log.info('plugin {0} was disabled due to the statement in '
-                          'the config file '. format(plugin.__class__.__name__.lower()))
+                                'the config file '.format(plugin.__class__.__name__.lower()))
 
     def _loop(self):
         plugin_errors, plugin_probes, last_error = 0, 0, ''

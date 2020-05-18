@@ -14,8 +14,8 @@ from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.queue import Queue
 from itertools import islice
 
-class ZbxSender(Plugin):
 
+class ZbxSender(Plugin):
     Interval = 10
     _sender = True
 
@@ -64,14 +64,14 @@ class ZbxSender(Plugin):
         })
         self._send_data(data)
 
-    def send_file_to_zabbix (self,path):
+    def send_file_to_zabbix(self, path):
         zabbix_client = self.config.fetch('zabbix', 'client')
         self.log.setLevel((self.config.fetch('log', 'level')).upper())
 
         metrics = []
         with open(path, 'r') as f:
             while True:
-                lines=list(islice(f, 100))
+                lines = list(islice(f, 100))
                 for line in lines:
                     try:
                         split_line = line.rstrip('\n').split('\t')
@@ -83,9 +83,11 @@ class ZbxSender(Plugin):
                                 'clock': int(split_line[0])}
                             metrics.append(metric)
                         else:
-                            self.log.error('Can\'t load metric in line: "{0}". The line must have the format: time <tab> value <tab> metric\'s name.'.format(line.rstrip('\n')))
+                            self.log.error(
+                                'Can\'t load metric in line: "{0}". The line must have the format: time <tab> value <tab> metric\'s name.'.format(
+                                    line.rstrip('\n')))
                     except Exception as e:
-                        self.log.error('Can\'t load metric in line: "{0}". Error : {1} '.format(line.rstrip('\n'),e,))
+                        self.log.error('Can\'t load metric in line: "{0}". Error : {1} '.format(line.rstrip('\n'), e, ))
 
                 data = json.dumps({
                     'request': 'sender data',

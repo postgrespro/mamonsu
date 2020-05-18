@@ -6,7 +6,7 @@ from mamonsu.lib.plugin import Plugin
 import mamonsu.lib.platform as platform
 
 
-class Sender():
+class Sender:
 
     def __init__(self):
         self._senders = []

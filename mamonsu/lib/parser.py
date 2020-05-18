@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from mamonsu import __version__
-from optparse import OptionParser, BadOptionError, OptionGroup
+from optparse import OptionParser, BadOptionError
 import mamonsu.lib.platform as platform
 
 usage_msg = """
@@ -180,7 +180,7 @@ def print_total_help():
 
 class MissOptsParser(OptionParser):
 
-    def print_help(self):
+    def print_help(self, **kwargs):
         print("""
 
 
@@ -250,7 +250,7 @@ numbers are 12, 10, 11, 9.6, 9.5, PGEE_9.6, PGEE_10, PGEE_11, PGEE_12, PGPRO_9.6
     def _add_help_option(self):
         self.add_option("--help",
                         action="help",
-                        help=("show this help message and exit"))
+                        help="show this help message and exit")
 
 
 def parse_args():

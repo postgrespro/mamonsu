@@ -5,15 +5,19 @@ import logging
 class GetKeys(object):
     plg_type = 'all'
 
-    def txt(self, type, plugins=[]):
+    def txt(self, type, plugins=None):
         # sort plugins!
+        if plugins is None:
+            plugins = []
         self.plg_type = type
         plugins.sort(key=lambda x: x.__class__.__name__)
         # create template
         template_data = self._get_all('keys_and_queries', plugins)  # get data from all plugins
         return template_data
 
-    def _get_all(self, keys_and_queries, plugins=[]):
+    def _get_all(self, keys_and_queries, plugins=None):
+        if plugins is None:
+            plugins = []
         result = ''
         # don't need keys for zabbix agent from these classes
         non_keys_classes = ('AgentApi', 'LogSender', 'ZbxSender')
@@ -28,7 +32,9 @@ class GetKeys(object):
                     result += row
         return result
 
-    def key_and_query(self, args=[]):
+    def key_and_query(self, args=None):
+        if args is None:
+            args = []
         result = ""
         for one in args:
             result += 'UserParameter={0}\n'.format(one)

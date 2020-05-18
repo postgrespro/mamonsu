@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from xml.dom import minidom
 from mamonsu.lib.const import Template
 from mamonsu.lib.plugin import Plugin
 import re
@@ -118,14 +117,14 @@ class ZbxTemplate(object):
         xml = re.sub(r"<type>2", "<type>0", xml)
         return xml
 
-    def xml(self, type, plugins=[]):
+    def xml(self, type, plugins=None):
         # sort plugins!
+        if plugins is None:
+            plugins = []
         plugins.sort(key=lambda x: x.__class__.__name__)
         self.plg_type = type
         # create template
-        template_data = {}
-        template_data['template'] = self.Template
-        template_data['application'] = self.Application
+        template_data = {'template': self.Template, 'application': self.Application}
         if Plugin.Type == 'agent':
             template_data['macros'] = self._macro()
         else:
@@ -139,7 +138,9 @@ class ZbxTemplate(object):
             output_xml = ZbxTemplate.turn_agent_type(self, output_xml)
         return output_xml
 
-    def _get_all(self, items='items', plugins=[]):
+    def _get_all(self, items='items', plugins=None):
+        if plugins is None:
+            plugins = []
         result = ''
         for plugin in plugins:
             if plugin.AgentPluginType == self.plg_type or self.plg_type == 'all':
@@ -157,12 +158,16 @@ class ZbxTemplate(object):
         result += '<{1}>{0}</{1}>'.format(self._format_args(self.macro_defaults, value), xml_key)
         return result
 
-    def item(self, args={}, xml_key='item'):
+    def item(self, args=None, xml_key='item'):
+        if args is None:
+            args = {}
         return '<{2}>{0}{1}</{2}>'.format(
             self._format_args(self.item_defaults, args),
             self._application(), xml_key)
 
-    def trigger(self, args={}, xml_key='trigger', defaults=None):
+    def trigger(self, args=None, xml_key='trigger', defaults=None):
+        if args is None:
+            args = {}
         if defaults is None:
             defaults = self.trigger_defaults
         try:
@@ -175,7 +180,9 @@ class ZbxTemplate(object):
             self._format_args(defaults, args),
             xml_key)
 
-    def graph(self, args={}, xml_key='graph'):
+    def graph(self, args=None, xml_key='graph'):
+        if args is None:
+            args = {}
         try:
             items = args['items']
         except KeyError:
@@ -201,7 +208,9 @@ class ZbxTemplate(object):
             graph_items, xml_key)
 
     # condition for template creation for zabbix version 4.4
-    def condition(self, args={}, xml_key='condition'):
+    def condition(self, args=None, xml_key='condition'):
+        if args is None:
+            args = {}
         try:
             conditions = args['condition']
         except KeyError:
@@ -216,8 +225,18 @@ class ZbxTemplate(object):
 
         return res
 
-    def discovery_rule(self, rule={},conditions=[], items=[], triggers=[], graphs=[]):
+    def discovery_rule(self, rule=None, conditions=None, items=None, triggers=None, graphs=None):
 
+        if rule is None:
+            rule = {}
+        if conditions is None:
+            conditions = []
+        if items is None:
+            items = []
+        if triggers is None:
+            triggers = []
+        if graphs is None:
+            graphs = []
         result_items = '<item_prototypes>'
         for item in items:
             result_items += self.item(item, xml_key='item_prototype')
@@ -237,7 +256,6 @@ class ZbxTemplate(object):
         result_graphs += '</graph_prototypes>'
 
         if len(conditions) > 0:
-
             result_conditions = '<filter>'
             for condition in conditions:
                 result_conditions += self.condition(

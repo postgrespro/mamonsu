@@ -18,8 +18,10 @@ else:
 
 class Config(DefaultConfig):
 
-    def __init__(self, cfg_file=None, plugin_directories=[]):
+    def __init__(self, cfg_file=None, plugin_directories=None):
 
+        if plugin_directories is None:
+            plugin_directories = []
         config = configparser.ConfigParser()
 
         config.add_section('postgres')

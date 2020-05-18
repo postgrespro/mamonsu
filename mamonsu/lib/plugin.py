@@ -24,7 +24,7 @@ class Plugin(object):
     AgentPluginType = 'all'
 
     # PG version
-    VersionPG = {'type': 'PG_V', 'number': '10.0'}
+    VersionPG = '10'
 
     # Macros for run as agent type or as mamonsu
     Macros = {"mamonsu": "", "agent": "{$PG_CONNINFO},{$PG_PATH}"}
@@ -33,7 +33,7 @@ class Plugin(object):
     Interval = 60
 
     # plugin config
-    DEFAULT_CONFIG = {}  # type: Dict[str, str]
+    DEFAULT_CONFIG = {}  # type: dict[str, str]
 
     _thread = None  # type: Thread
     _sender = False
@@ -46,7 +46,7 @@ class Plugin(object):
     old_zabbix = False
 
     # const
-    PATH = "/etc/zabbix/zabbix_agent.d/scripts"
+    PATH = "/etc/zabbix/zabbix_agentd.d/scripts"
     DELTA = Template.DELTA
     GRAPH_TYPE = Template.GRAPH_TYPE
     VALUE_TYPE = Template.VALUE_TYPE
@@ -156,7 +156,7 @@ class Plugin(object):
         self.log.debug(trace)
 
     def _loop(self):
-        while (True):
+        while True:
             last_start = time.time()
             try:
                 self.run(self.sender)
