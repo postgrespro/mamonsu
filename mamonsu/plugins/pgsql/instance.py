@@ -56,8 +56,18 @@ class Instance(Plugin):
             ('PostgreSQL instance: tuples', 'CC0000', 0),
             Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
     ]
+    Items_pg_12 = [
+        # key, zbx_key, description,
+        #    ('graph name', color, side), units, delta
+        ('checksum_failures', 'events[checksum_failures]', 'event: checksum_failures',
+         ('PostgreSQL instance: events', '00FF00', 0),
+         Plugin.UNITS.none, Plugin.DELTA.simple_change)
+    ]
 
     def run(self, zbx):
+        if Pooler.server_version_greater('12.0'):
+            self.Items.extend(self.Items_pg_12)
+
         params = ['sum({0}) as {0}'.format(x[0]) for x in self.Items]
         result = Pooler.query('select {0} from \
             pg_catalog.pg_stat_database'.format(
@@ -70,7 +80,7 @@ class Instance(Plugin):
 
     def items(self, template):
         result = ''
-        for num, item in enumerate(self.Items):
+        for num, item in enumerate(self.Items + self.Items_pg_12):
             if self.Type == "mamonsu":
                 delta = Plugin.DELTA.as_is
             else:
@@ -96,7 +106,7 @@ class Instance(Plugin):
         result = ''
         for name in graphs_name:
             items = []
-            for num, item in enumerate(self.Items):
+            for num, item in enumerate(self.Items + self.Items_pg_12):
                 if item[3][0] == name:
                     # split each item to get values for keys of both agent type and mamonsu type
                     keys = item[1].split('[')
@@ -112,7 +122,7 @@ class Instance(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        for item in self.Items:
+        for item in (self.Items + self.Items_pg_12):
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[1].split('[')
             result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
