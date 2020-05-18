@@ -74,7 +74,6 @@ class Health(Plugin):
         return result
 
     def keys_and_queries(self, template_zabbix):
-        result = []
-        result.append('{0},{1}'.format("mamonsu.plugin.keepalive", "echo 0"))
+        result = ['{0},{1}'.format("mamonsu.plugin.keepalive", "echo 0")]
         return template_zabbix.key_and_query(result)
 
