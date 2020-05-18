@@ -14,7 +14,7 @@ yum install -y tar make rpm-build python2-devel python-setuptools
 make rpm && yum install -y mamonsu*.rpm
 
 # install postgres
-yum install -y https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-3.noarch.rpm
+yum install -y https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-redhat-repo-42.0-11.noarch.rpm
 yum install -y postgresql95-server postgresql95-contrib
 su postgres -c '/usr/pgsql-9.5/bin/initdb -D /var/lib/pgsql/9.5/data'
 su postgres -c '/usr/pgsql-9.5/bin/pg_ctl start -w -D /var/lib/pgsql/9.5/data'
