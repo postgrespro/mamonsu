@@ -10,7 +10,7 @@ class Cpu(Plugin):
     Items = [
 
         (r'\Processor(*)\% User Time', '[user_time]',
-            'User time', Plugin.UNITS.percent, ('CC0000')),
+            'User time', Plugin.UNITS.percent, 'CC0000'),
 
         (r'\Processor(*)\% Idle Time', '[idle_time]',
             'Idle time', Plugin.UNITS.percent, ('00CC00')),

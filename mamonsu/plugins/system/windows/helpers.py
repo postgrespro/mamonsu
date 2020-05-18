@@ -93,7 +93,7 @@ class DiskInfo(object):
         ret = kernel32.GetDiskFreeSpaceExW(
             str(drive), byref(used), byref(total), byref(free))
         if ret == 0:
-            raise
+            raise BaseException
         else:
             return _diskusage(total.value, used, free.value)
 
