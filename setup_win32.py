@@ -9,6 +9,7 @@ class Target:
         self.version = mamonsu.__version__
         self.company_name = 'Postgres Professional'
 
+
 setup(
     name='mamonsu',
     version=mamonsu.__version__,
