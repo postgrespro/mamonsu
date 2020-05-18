@@ -55,10 +55,10 @@ def start():
             args, commands = parse_args()
             if not args.zabbix_address:
                 print('Option --zabbix-address is missing')
-                exit(125)
+                sys.exit(2)
             if not os.path.isfile(args.zabbix_file):
                 print('Cannot find zabbix file with metric to upload. Check path in --zabbix-file option.')
-                exit(125)
+                sys.exit(2)
 
             cfg = Config(args.config_file, args.plugins_dirs)
             cfg.config.set('zabbix', 'address', args.zabbix_address)
@@ -68,13 +68,12 @@ def start():
 
             supervisor = Supervisor(cfg)
             supervisor.send_file_zabbix(cfg, args.zabbix_file)
-            exit(0)
+            sys.exit(0)
 
         elif tool == 'export':
             args, commands = parse_args()
             # get PG version
-            version_args = args.pg_version.split('_')
-            define_pg_version(version_args)
+            Plugin.VersionPG = define_pg_version(args.pg_version)
             cfg = Config(args.config_file, args.plugins_dirs)
             if args.old_zabbix:
                 Plugin.old_zabbix = True
@@ -86,37 +85,33 @@ def start():
                 plugins = []
                 if len(commands) == 2:
                     commands.append('postgrespro_agent.conf')
-                    print('Configuration file for zabbix-agent have been saved in postgrespro_agent.conf file')
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
-                        if Plugin.VersionPG['type'] == 'PGEE':
-                            plugins.append(klass(cfg))
-                    else:
-                        if klass.__name__ != "Cfs":
+                    if klass.__name__ != "PgWaitSampling" and  klass.__name__ != "Cfs":
                             plugins.append(klass(cfg))
                 args.plugin_type = correct_plugin_type(args.plugin_type)
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
+                    template = GetKeys()
+                    # write conf file
+                    try:
+                        fd = codecs.open(commands[2], 'w', 'utf-8')
+                        fd.write(template.txt(args.plugin_type, plugins))  # pass command type
+                        print("Configuration file for zabbix-agent has been saved as {0}".format(commands[2]))
+                    except (IOError, EOFError) as e:
+                        print(" {0} ".format(e))
+                        sys.exit(2)
+                    # write bash scripts for zabbix - agent to a file
                     # check if conf file has a path
                     len_path = commands[2].rfind("/")
                     # get path for conf file and scripts
                     if len_path != -1:
-                            path = commands[2][:len_path] + "/scripts"
-                            Plugin.PATH = path
+                        path = commands[2][:len_path] + "/scripts"
+                        Plugin.PATH = path
                     else:
                         path = os.getcwd() + "/scripts"
                         Plugin.PATH = path
                     # create directory for scripts along the path of conf file if needed
                     if not os.path.exists(path):
-                        os.makedirs(path)
-                        print("Directory for scripts has created")
-                    template = GetKeys()
-                    # if no name for zabbix-parameters save to postgrespro.conf
-                    if commands[2].rfind("/") == len(commands[2]) - 1:
-                        commands[2] = commands[2][:-1] + "/postgrespro.conf"
-                    # write conf file
-                    with codecs.open(commands[2], 'w', 'utf-8') as f:
-                        f.write(template.txt(args.plugin_type, plugins))  # pass command type
-                    # write bash scripts for zabbix - agent to a file
+                            os.makedirs(path)
                     for key in Scripts.Bash:
                         with codecs.open(path + "/" + key + ".sh", 'w+', 'utf-8') as f:
                             #   configuration file for zabbix-agent is generated for selected plugin-type
@@ -124,64 +119,58 @@ def start():
                         os.chmod(path + "/" + key + ".sh", 0o755)
                     print("Bash scripts for native zabbix-agent have been saved to {0}".format(path))
                 else:
-                    print("Got wrong plugin types. For help, see the message below")
-                    print_total_help()
+                    print("Got wrong plugin types. See help 'mamonsu -- help' ")
+                    sys.exit(2)
                 sys.exit(0)
             elif commands[1] == 'config':
+                # if no name for conf, save to postgrespro.conf
                 if len(commands) == 2:
                     commands.append('postgrespro.conf')
-                    print('Configuration file for mamonsu have been saved in postgrespro.conf file')
-                # if no name for conf, save to mamonsu.conf
-                if commands[2].rfind("/") == len(commands[2]) - 1:
-                    commands[2] = commands[2][:-1] + "/mamonsu.conf"
-                with open(commands[2], 'w') as fd:
+                try:
+                    fd = open(commands[2], 'w')
                     cfg.config.write(fd)
+                    print("Configuration file for mamonsu has been saved as {0}".format(commands[2]))
                     sys.exit(0)
+                except (IOError, EOFError) as e:
+                    print(" {0} ".format(e))
+                    sys.exit(2)
             elif commands[1] == 'template':
                 plugins = []
                 if len(commands) == 2:
                     commands.append('postgrespro.xml')
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ == "PgWaitSampling" or klass.__name__ == "Cfs" :  # check if plugin is for EE
-                        if Plugin.VersionPG['type'] == 'PGEE':
-                            plugins.append(klass(cfg))
-                    else:
                         plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template, args.application)
-                # if no name for template save to postgrespro.xml
-                if commands[2].rfind("/") == len(commands[2]) - 1:
-                    commands[2] = commands[2][:-1] + "/postgrespro.xml"
-                with codecs.open(commands[2], 'w', 'utf-8') as f:
-                    #   template for mamonsu (zabbix-trapper) is generated for all available plugins
-                    f.write(template.xml("all", plugins))  # set type to 'all' for mamonsu
-                    print('Configuration file for mamonsu have been saved in {file} file'.format(file=commands[2]))
+                try:
+                    fd = codecs.open(commands[2], 'w', 'utf-8')
+                    fd.write(template.xml("all", plugins))  # set type to 'all' for mamonsu
+                    print('Template for mamonsu has been saved as {file}'.format(file=commands[2]))
                     sys.exit(0)
+                except (IOError, EOFError) as e:
+                    print(" {0} ".format(e))
+                    sys.exit(2)
             elif commands[1] == 'zabbix-template':
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 if len(commands) == 2:
                     commands.append('postgrespro_agent.xml')
-                    print('Template for zabbix-agent have been saved in postgrespro_agent.xml file')
                 plugins = []
                 args.plugin_type = correct_plugin_type(args.plugin_type)
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
                     for klass in Plugin.only_child_subclasses():
-                        if klass.__name__ == "PgWaitSampling":  # check if plugin is for EE
-                            if Plugin.VersionPG['type'] == 'PGEE':
-                                plugins.append(klass(cfg))
-                        else:
-                            if klass.__name__ != "Cfs":
+                        if klass.__name__ != "PgWaitSampling" and klass.__name__ != "Cfs":  # check if plugin is for EE
                                 plugins.append(klass(cfg))
                     template = ZbxTemplate(args.template, args.application)
-                    # if no name for template save to postgrespro.xml
-                    if commands[2].rfind("/") == len(commands[2]) - 1:
-                        commands[2] = commands[2][:-1] + "/postgrespro.xml"
-                    with codecs.open(commands[2], 'w', 'utf-8') as f:
-                        #   template for zabbix-agent is generated for selected plugin-type
-                        f.write(template.xml(args.plugin_type, plugins))
-                    sys.exit(0)
+                    try:
+                        fd = codecs.open(commands[2], 'w', 'utf-8')
+                        fd.write(template.xml(args.plugin_type, plugins))
+                        print('Template for zabbix-agent has been saved as {file}'.format(file=commands[2]))
+                        sys.exit(0)
+                    except (IOError, EOFError) as e:
+                        print(" {0} ".format(e))
+                        sys.exit(2)
                 else:
-                    print("Got wrong plugin types. For help, see the message below")
-                    print_total_help()
+                    print("Got wrong plugin types. See help 'mamonsu -- help' ")
+                    sys.exit(2)
             else:
                 print_total_help()
 
@@ -219,49 +208,28 @@ def start():
 
 
 #  check if any equal elements in array
-def is_any_equal(iterator):
-    length = len(iterator)
-    return len(set(iterator)) < length
+def is_any_equal(array):
+    length = len(array)
+    return len(set(array)) < length
 
 
 #  extract pg version from input
 def define_pg_version(version_args):
-    if len(version_args) == 1:
-        if version_args[0] == "11" or version_args[0] == "12" or LooseVersion(version_args[0]) == "10" or \
-                LooseVersion(version_args[0]) == "9.6" or LooseVersion(version_args[0]) == "9.5":
+    if len(version_args) < 4:
+        if version_args == "11" or version_args == "12" or version_args == "10" or version_args == "9.6" \
+                or version_args == "9.5":
             version_number = version_args[0].split('.')
-            if len(version_number) > 3:
-                print("Version number is too long. For help, see the message below")
-                print_total_help()
-            else:
-                for num in version_number:
-                    if not num.isdigit():
-                        print("Version number contains only digits. For help, see the message below")
-                        print_total_help()
-                Plugin.VersionPG['number'] = version_args[0]
-        else:
-            print("Version number is not valid. For help, see the message below")
-            print_total_help()
-    elif len(version_args) == 2 and (version_args[0] == "PGEE" or version_args[0] == "PGPRO"):
-        version_number = version_args[1].split('.')
-        if len(version_number) > 3:
-            print("Version number is too long. For help, see the message below")
-            print_total_help()
-        else:
-            for num in version_number[1:]:
+            for num in version_number:
                 if not num.isdigit():
-                    print("Version number contains only digits. For help, see the message below")
-                    print_total_help()
-            if version_args[1] == "11" or version_args[1] == "12" or LooseVersion(version_args[1]) == "10" or \
-                    LooseVersion(version_args[1]) == "9.6" or LooseVersion(version_args[1]) == "9.5":
-                Plugin.VersionPG['number'] = version_args[1]
-                Plugin.VersionPG['type'] = version_args[0]
-            else:
-                print("Version number is not valid. For help, see the message below")
-                print_total_help()
+                    print("Version number contains only digits. See help 'mamonsu -- help' ")
+                    sys.exit(2)
+            return version_args
+        else:
+            print("Version number is not valid. See help 'mamonsu -- help' ")
+            sys.exit(2)
     else:
-        print("Version number is not valid. For help, see the message below")
-        print_total_help()
+        print("Version number is not valid. See help 'mamonsu -- help' ")
+        sys.exit(2)
 
 
 #  check if plugin type is valid
@@ -272,17 +240,17 @@ def correct_plugin_type(plugin_type):
     if len(types) == 2 or len(types) == 3:
         # check if any plugin types is equal
         if is_any_equal(types):
-            print("Got equal plugin types. For help, see the message below")
-            print_total_help()
+            print("Got equal plugin types. See help 'mamonsu -- help' ")
+            sys.exit(2)
         # if plugin type name is wrong
         if False in [type in valid_plugin_types for type in types]:
-            print("Got wrong plugin types. For help, see the message below")
-            print_total_help()
+            print("Got wrong plugin types. See help 'mamonsu -- help' ")
+            sys.exit(2)
         else:
             plugin_type = 'all'
             return plugin_type
     elif len(types) > 3:
-        print("Got more than 3 plugin types. For help, see the message below")
-        print_total_help()
+        print("Got more than 3 plugin types. See help 'mamonsu -- help' ")
+        sys.exit(2)
     else:
         return plugin_type
