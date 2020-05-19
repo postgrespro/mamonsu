@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
+from distutils.version import LooseVersion
 from .pool import Pooler
 
 
@@ -122,7 +123,12 @@ class Instance(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        for item in (self.Items + self.Items_pg_12):
+        all_items = []
+        if LooseVersion(self.VersionPG) > LooseVersion('11'):
+            all_items = self.Items + self.Items_pg_12
+        else:
+            all_items = self.Items
+        for item in all_items:
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[1].split('[')
             result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
