@@ -66,17 +66,18 @@ class Instance(Plugin):
     ]
 
     def run(self, zbx):
+        items_all = self.Items
         if Pooler.server_version_greater('12.0'):
-            self.Items.extend(self.Items_pg_12)
+            items_all = self.Items + self.Items_pg_12
 
-        params = ['sum({0}) as {0}'.format(x[0]) for x in self.Items]
+        params = ['sum({0}) as {0}'.format(x[0]) for x in items_all]
         result = Pooler.query('select {0} from \
             pg_catalog.pg_stat_database'.format(
             ', '.join(params)))
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(
-                self.Items[idx][1]), int(val)
-            zbx.send(key, val, self.Items[idx][5], only_positive_speed=True)
+                items_all[idx][1]), int(val)
+            zbx.send(key, val, items_all[idx][5], only_positive_speed=True)
         del params, result
 
     def items(self, template):
