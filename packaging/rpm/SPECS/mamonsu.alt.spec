@@ -2,7 +2,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mamonsu
-Version:        2.4.4
+Version:        2.4.5
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,15 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Tue May 26 2020 Alexander Popov <a.popov@postgrespro.ru>  - 2.4.5-1
+- added checksum_failures metric in Instance plugin for Postgresql 12
+- changed PG version support in commands:
+	mamonsu export zabbix-parameters
+	mamonsu export zabbix-template
+	mamonsu export template <file>
+	mamonsu export zabbix-template
+- update help message for 'mamonsu export'
+
 * Thu Feb 20 2020 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.4.4-1
 - change command name for uploading metrics from file (written by mamonsu /var/log/mamonsu/localhost.log, [metric_log] parameter in agent.conf file) to Zabbix Server
 - update help message for 'upload' function
