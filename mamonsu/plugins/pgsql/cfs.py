@@ -170,7 +170,7 @@ select
                     'condition': [
                         {'macro': '{#COMPRESSED_RELATION}',
                          'value': '.*',
-                         'operator': '',
+                         'operator': None,
                          'formulaid': 'A'}
                     ]
                 }

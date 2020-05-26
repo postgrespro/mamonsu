@@ -134,7 +134,7 @@ class DiskStats(Plugin):
                     'condition': [
                         {'macro': '{#BLOCKDEVICE}',
                          'value': '.*',
-                         'operator': '',
+                         'operator': None,
                          'formulaid': 'A'}
                     ]
                 }

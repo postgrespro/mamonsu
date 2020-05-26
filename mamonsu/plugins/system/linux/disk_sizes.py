@@ -80,7 +80,7 @@ class DiskSizes(Plugin):
                     'condition': [
                         {'macro': '{#MOUNTPOINT}',
                          'value': '.*',
-                         'operator': '',
+                         'operator': None,
                          'formulaid': 'A'}
                     ]
                 }

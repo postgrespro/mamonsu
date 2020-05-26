@@ -76,7 +76,7 @@ class Databases(Plugin):
                     'condition': [
                         {'macro': '{#DATABASE}',
                          'value': '.*',
-                         'operator': '',
+                         'operator': None,
                          'formulaid': 'A'}
                     ]
                 }

@@ -61,7 +61,7 @@ class Net(Plugin):
                     'condition': [
                         {'macro': '{#NETDEVICE}',
                          'value': '.*',
-                         'operator': '',
+                         'operator': None,
                          'formulaid': 'A'}
                     ]
                 }
