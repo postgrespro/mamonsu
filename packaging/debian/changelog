@@ -1,13 +1,10 @@
 mamonsu (2.4.5-1) stable; urgency=low
-* added checksum_failures metric in Instance plugin for Postgresql 12
-* changed PG version support in commands:
-	mamonsu export zabbix-parameters
-	mamonsu export zabbix-template
-	mamonsu export template <file>
-	mamonsu export zabbix-template
-* update help message for 'mamonsu export'
 
- -- PostgresPro DBA <dba@postgrespro.ru>  Tue, May 26 2020 15:43:00 +0300
+  * added checksum_failures metric in Instance plugin for Postgresql 12
+  * changed PG version support in commands: export zabbix-parameters, export zabbix-template, export template
+  * update help message for 'mamonsu export'
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Tue, 24 May 2020 15:43:00 +0300
 
 mamonsu (2.4.4-1) stable; urgency=low
 

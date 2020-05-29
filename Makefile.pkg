@@ -48,7 +48,7 @@ build/all: build/pkg_debian build/pkg_ubuntu build/pkg_centos
 build/pkg_debian: build/pkg_debian_8 build/pkg_debian_9 build/pkg_debian_10
 	@echo Debian: done
 
-build/pkg_ubuntu: build/pkg_ubuntu_16_04 build/pkg_ubuntu_18_04 build/pkg_ubuntu_18_10
+build/pkg_ubuntu: build/pkg_ubuntu_16_04 build/pkg_ubuntu_18_04
 	@echo Ubuntu: done
 
 build/pkg_centos: build/pkg_centos_6 build/pkg_centos_7 build/rpm_repo_package_centos
@@ -103,10 +103,6 @@ build/pkg_ubuntu_18_04:
 	$(call build_deb,ubuntu,18.04,bionic)
 	touch build/pkg_ubuntu_18_04
 
-build/pkg_ubuntu_18_10:
-	$(call build_deb,ubuntu,18.10,cosmic)
-	touch build/pkg_ubuntu_18_10
-
 build/pkg_centos_6:
 	$(call build_rpm,centos,6)
 	touch build/pkg_centos_6
@@ -127,7 +123,7 @@ repo/debian: repo/debian_8 repo/debian_9 repo/debian_10
 	@echo Build repo for debian platforms: done
 	touch build/repo_debian
 
-repo/ubuntu: repo/ubuntu_16_04 repo/ubuntu_18_04 repo/ubuntu_18_10
+repo/ubuntu: repo/ubuntu_16_04 repo/ubuntu_18_04
 	@echo Build repo for ubuntu platforms: done
 	touch build/repo_ubuntu
 
@@ -166,10 +162,6 @@ repo/ubuntu_16_04:
 repo/ubuntu_18_04:
 	$(call build_repo_deb,ubuntu,18.04,bionic)
 	touch build/repo_ubuntu_18_04
-
-repo/ubuntu_18_10:
-	$(call build_repo_deb,ubuntu,18.10,cosmic)
-	touch build/repo_ubuntu_18_10
 
 repo/finish:
 	$(call repo_finish,centos,7)
