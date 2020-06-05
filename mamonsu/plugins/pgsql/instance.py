@@ -70,7 +70,7 @@ class Instance(Plugin):
         if Pooler.server_version_greater('12.0'):
             all_items = self.Items + self.Items_pg_12
 
-        params = ['sum({0}) as {0}'.format(x[0]) for x in all_items]
+        params = ['sum(COALESCE({0}, 0)) as {0}'.format(x[0]) for x in all_items]
         result = Pooler.query('select {0} from \
             pg_catalog.pg_stat_database'.format(
             ', '.join(params)))
