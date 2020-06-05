@@ -101,7 +101,7 @@ class ZbxTemplate(object):
         ('snmpv3_securityname', None), ('snmpv3_securitylevel', 0),
         ('snmpv3_authprotocol', 0), ('snmpv3_authpassphrase', None),
         ('snmpv3_privprotocol', 0), ('snmpv3_privpassphrase', None),
-        ('delay_flex', None), ('params', None),
+        ('delay_flex', None), ('params', 8),
         ('ipmi_sensor', None), ('authtype', 0),
         ('username', None), ('password', None), ('publickey', None),
         ('privatekey', None), ('port', None), ('lifetime', 7),
