@@ -71,7 +71,7 @@ GROUP BY relation.schema
                 size = -1
             elif  pg_total_relation_size  ==-1 or  pg_total_relation_size_part ==-1:
                 self.log.error(
-                    "The relation: {full_name_relation} is lock. "
+                    "The relation: {full_name_relation} is locked. "
                     "You can find this lock in query: "
                     "SELECT relation::regclass AS lock_relation, mode FROM  pg_locks WHERE relation::regclass = 'pg_locks'::regclass;".format(full_name_relation=full_name_relation))
                 size = -1
