@@ -82,11 +82,6 @@ GROUP BY relation.schema
 
         zbx.send('pgsql.relation.size[]', zbx.json({'data': rels}))
 
-
-    def items(self, template):
-
-        return ''
-
     def discovery_rules(self, template):
         rule = {
             'name': 'Relation size discovery',

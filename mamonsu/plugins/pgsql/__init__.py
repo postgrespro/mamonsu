@@ -5,5 +5,6 @@ __all__ += ['checkpoint', 'oldest', 'pg_locks']
 __all__ += ['cfs']
 __all__ += ['archive_command']
 __all__ += ['relations_size']
+__all__ += ['prepared_transaction']
 
 from . import *
