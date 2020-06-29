@@ -5,7 +5,7 @@ from .pool import Pooler
 
 
 class PreparedTransaction(Plugin):
-    Interval = 6
+
     key_count = {
         'state': 'count_prepared',
         'key': 'pgsql.prepared.count',
