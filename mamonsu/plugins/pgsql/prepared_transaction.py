@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
-from distutils.version import LooseVersion
 from .pool import Pooler
 
 
@@ -10,7 +9,7 @@ class PreparedTransaction(Plugin):
     key_count = {
         'state': 'count_prepared',
         'key': 'pgsql.prepared.count',
-        'name': 'PostgreSQL: numder of prepared transactions',
+        'name': 'PostgreSQL: number of prepared transactions',
         'color': '00BB00',
         'yaxisside': 0,
     }
