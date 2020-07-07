@@ -2,13 +2,13 @@ Source: mamonsu
 Section: admin
 Priority: optional
 Maintainer: Dmitry Vasilyev <dba@postgrespro.ru>
-Build-Depends:  debhelper, python-dev, python-setuptools
+Build-Depends:  debhelper, python3-dev, python3-setuptools
 XS-Python-Version: all
 Standards-Version: 3.7.3
 
 Package: mamonsu
 Architecture: all
-Depends: ${python:Depends}, python-pkg-resources
+Depends: ${python:Depends}, python3-pkg-resources
 XB-Python-Version: ${python:Versions}
 Provides: ${python:Provides}
 Description: Monitoring agent for PostgreSQL

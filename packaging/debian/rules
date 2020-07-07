@@ -8,13 +8,13 @@ configure-stamp:
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	python setup.py build build_ext
+	python3 setup.py build build_ext
 	touch build-stamp
 
 clean:
 	rm -f build-stamp configure-stamp
 	[ ! -f Makefile ] || $(MAKE) clean
-	python setup.py clean
+	python3 setup.py clean
 	find mamonsu -name "*.pyc" -exec rm {} \;
 
 install: build
@@ -22,7 +22,7 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	python setup.py install --install-layout=deb --root=debian/mamonsu
+	python3 setup.py install --install-layout=deb --root=debian/mamonsu
 
 binary-indep: build install
 	dh_testdir -i
