@@ -15,10 +15,10 @@ class Sender:
     def _hash(self, key, host=None):
         return '{0}_+_{1}'.format(host, key)
 
-    def _key_from_hash(self, hash, host=None):
-        result = hash.split('{0}_+_'.format(host))
+    def _key_from_hash(self, hash_string, host=None):
+        result = hash_string.split('{0}_+_'.format(host))
         if len(result) == 1:
-            return hash
+            return hash_string
         else:
             return result[1]
 

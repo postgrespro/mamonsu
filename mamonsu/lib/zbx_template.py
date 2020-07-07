@@ -117,12 +117,12 @@ class ZbxTemplate(object):
         xml = re.sub(r"<type>2", "<type>0", xml)
         return xml
 
-    def xml(self, type, plugins=None):
+    def xml(self, plg_type, plugins=None):
         # sort plugins!
         if plugins is None:
             plugins = []
         plugins.sort(key=lambda x: x.__class__.__name__)
-        self.plg_type = type
+        self.plg_type = plg_type
         # create template
         template_data = {'template': self.Template, 'application': self.Application}
         if Plugin.Type == 'agent':
