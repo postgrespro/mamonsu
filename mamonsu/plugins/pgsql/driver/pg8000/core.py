@@ -13,10 +13,9 @@ from calendar import timegm
 from distutils.version import LooseVersion
 from struct import Struct
 from time import localtime
-import pg8000
 from json import loads, dumps
 from os import getpid
-from scramp import ScramClient
+from mamonsu.plugins.pgsql.driver.pg8000.scramp import ScramClient
 import enum
 from ipaddress import (
     ip_address, IPv4Address, IPv6Address, ip_network, IPv4Network, IPv6Network)
@@ -792,7 +791,7 @@ class Cursor():
         self._row_count = -1
         self._cached_rows = deque()
         if paramstyle is None:
-            self.paramstyle = pg8000.paramstyle
+            self.paramstyle = 'format'
         else:
             self.paramstyle = paramstyle
 
