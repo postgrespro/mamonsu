@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-import sys
 import logging
 import optparse
 import os
@@ -20,12 +19,6 @@ else:
         from mamonsu.tools.report.os_win import SystemInfo
 if platform.LINUX:
     import pwd
-
-from mamonsu.tools.report.format import TermColor
-
-if platform.PY2:
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
 
 
 class Args(DefaultConfig):
