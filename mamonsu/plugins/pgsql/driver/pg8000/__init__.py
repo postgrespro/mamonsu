@@ -1,4 +1,4 @@
-from pg8000.core import (
+from .core import (
     Warning, DataError, DatabaseError, InterfaceError, ProgrammingError,
     Error, OperationalError, IntegrityError, InternalError, NotSupportedError,
     ArrayContentNotHomogenousError, ArrayDimensionsNotConsistentError,
