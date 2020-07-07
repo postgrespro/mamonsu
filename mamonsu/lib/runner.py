@@ -13,7 +13,6 @@ from mamonsu.lib.supervisor import Supervisor
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
-from distutils.version import LooseVersion
 from mamonsu.plugins.system.linux.scripts import Scripts
 
 
@@ -86,8 +85,8 @@ def start():
                 if len(commands) == 2:
                     commands.append('postgrespro_agent.conf')
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ != "PgWaitSampling" and  klass.__name__ != "Cfs":
-                            plugins.append(klass(cfg))
+                    if klass.__name__ != "PgWaitSampling" and klass.__name__ != "Cfs":
+                        plugins.append(klass(cfg))
                 args.plugin_type = correct_plugin_type(args.plugin_type)
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
                     template = GetKeys()
@@ -111,7 +110,7 @@ def start():
                         Plugin.PATH = path
                     # create directory for scripts along the path of conf file if needed
                     if not os.path.exists(path):
-                            os.makedirs(path)
+                        os.makedirs(path)
                     for key in Scripts.Bash:
                         with codecs.open(path + "/" + key + ".sh", 'w+', 'utf-8') as f:
                             #   configuration file for zabbix-agent is generated for selected plugin-type
@@ -139,7 +138,7 @@ def start():
                 if len(commands) == 2:
                     commands.append('postgrespro.xml')
                 for klass in Plugin.only_child_subclasses():
-                        plugins.append(klass(cfg))
+                    plugins.append(klass(cfg))
                 template = ZbxTemplate(args.template, args.application)
                 try:
                     fd = codecs.open(commands[2], 'w', 'utf-8')
@@ -158,7 +157,7 @@ def start():
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
                     for klass in Plugin.only_child_subclasses():
                         if klass.__name__ != "PgWaitSampling" and klass.__name__ != "Cfs":  # check if plugin is for EE
-                                plugins.append(klass(cfg))
+                            plugins.append(klass(cfg))
                     template = ZbxTemplate(args.template, args.application)
                     try:
                         fd = codecs.open(commands[2], 'w', 'utf-8')
@@ -243,7 +242,7 @@ def correct_plugin_type(plugin_type):
             print("Got equal plugin types. See help 'mamonsu -- help' ")
             sys.exit(2)
         # if plugin type name is wrong
-        if False in [type in valid_plugin_types for type in types]:
+        if False in [t in valid_plugin_types for t in types]:
             print("Got wrong plugin types. See help 'mamonsu -- help' ")
             sys.exit(2)
         else:
