@@ -83,7 +83,6 @@ class SparkmesActivity(Plugin):
         # send a resulting value to zabbix
         for idx, item in enumerate(self.Items):
             key, zbxkey, val, delta = item[0], item[1], 0, item[4]
-            #self.log.info('{0}[{1}] '.format(zbxkey, key)+str(idx))
             for row in result:
                 if key.endswith(row[0]):
                     val = row[item[5]]
