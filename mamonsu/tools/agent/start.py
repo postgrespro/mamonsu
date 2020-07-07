@@ -6,12 +6,8 @@ import optparse
 from mamonsu import __version__
 from mamonsu.lib.const import API
 from mamonsu.lib.config import Config
-import mamonsu.lib.platform as platform
 
-if platform.PY3:
-    import urllib.request as urllib2
-else:
-    import urllib2
+import urllib.request as urllib2
 
 
 def run_agent():

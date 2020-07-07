@@ -1,5 +1,4 @@
 import ctypes
-import mamonsu.lib.platform as platform
 
 from ctypes import (Structure, Union, byref, c_double, c_longlong,
                     c_ulong, c_ulonglong, c_size_t, sizeof)
@@ -11,16 +10,10 @@ psapi = ctypes.windll.psapi
 pdh = ctypes.windll.pdh
 kernel32 = ctypes.windll.kernel32
 
-if platform.PY2:
-    import codecs
+long = int
 
-    def u(x):
-        return codecs.unicode_escape_decode(x)[0]
-else:
-    long = int
-
-    def u(x):
-        return x
+def u(x):
+    return x
 
 PDH_FMT_RAW = long(16)
 PDH_FMT_ANSI = long(32)
