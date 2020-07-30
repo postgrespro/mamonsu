@@ -38,12 +38,16 @@ class AgentApiHandler(BaseHTTPRequestHandler):
         self.sender = config.sender
         BaseHTTPRequestHandler.__init__(self, *args)
 
-    def do_HEAD(self):
+    def _set_header(self):
         self.send_response(200)
-        self.send_header('Content-type', 'text/html')
+        self.send_header("Content-type", "text/html")
         self.end_headers()
 
+    def do_HEAD(self):
+        self._set_header()
+
     def do_GET(self):
+        self._set_header()
         req = parse(self.path)
         if req.path in '/version':
             self.wfile.write(API.VERSION)
