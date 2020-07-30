@@ -5,11 +5,7 @@ import logging
 from collections import OrderedDict
 
 
-import mamonsu.lib.platform as platform
-if platform.PY3:
-    import urllib.request as urllib2
-else:
-    import urllib2
+import urllib.request as urllib2
 
 
 class Request(object):
@@ -52,14 +48,12 @@ class Request(object):
         request.add_header('Content-Type', 'application/json; charset=utf-8')
         data = self._get_json(method, params)
         logging.debug('Post to zabbix: {0}'.format(data))
-        if platform.PY3:
-            data = bytearray(data, 'utf-8')
+        data = bytearray(data, 'utf-8')
         response = urllib2.urlopen(request, data)
         logging.debug('Zabbix response code: {0}'.format(response.code))
         if response.code == 200:
             body = response.read()
-            if platform.PY3:
-                body = body.decode('utf-8')
+            body = body.decode('utf-8')
             logging.debug('Zabbix response body: {0}'.format(body))
         else:
             raise Exception('Response code: {0}'.format(response.code))

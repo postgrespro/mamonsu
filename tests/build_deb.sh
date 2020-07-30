@@ -3,7 +3,7 @@
 # test build
 cp -a /var/tmp /root/mamonsu && pushd /root/mamonsu
 apt-get update || apt-get update || apt-get update
-(apt-get install -y make dpkg-dev debhelper python-dev python-setuptools || apt-get install -y make dpkg-dev debhelper python-dev python-setuptools)
+(apt-get install -y make dpkg-dev debhelper python3-dev python3-setuptools || apt-get install -y make dpkg-dev debhelper python3-dev python3-setuptools)
 make deb && dpkg -i mamonsu*.deb && cd /
 
 /etc/init.d/mamonsu start

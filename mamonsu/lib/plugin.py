@@ -33,7 +33,7 @@ class Plugin(object):
     Interval = 60
 
     # plugin config
-    DEFAULT_CONFIG = {}  # type: dict[str, str]
+    DEFAULT_CONFIG = {}  # type
 
     _thread = None  # type: Thread
     _sender = False

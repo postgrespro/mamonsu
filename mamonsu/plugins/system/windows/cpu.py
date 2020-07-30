@@ -13,7 +13,7 @@ class Cpu(Plugin):
             'User time', Plugin.UNITS.percent, 'CC0000'),
 
         (r'\Processor(*)\% Idle Time', '[idle_time]',
-            'Idle time', Plugin.UNITS.percent, ('00CC00')),
+            'Idle time', Plugin.UNITS.percent, '00CC00'),
 
         (r'\Processor(*)\% Privileged Time', '[privileged_time]',
             'Privileged time', Plugin.UNITS.percent, ('770000')),

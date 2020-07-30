@@ -2,16 +2,10 @@
 from mamonsu.lib.plugin import Plugin
 
 from mamonsu.lib.const import API
-import mamonsu.lib.platform as platform
 
-if platform.PY3:
-    from urllib.parse import urlparse as parse
-    from urllib.parse import parse_qs
-    from http.server import BaseHTTPRequestHandler, HTTPServer
-else:
-    from urlparse import urlparse as parse
-    from urlparse import parse_qs
-    from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlparse as parse
+from urllib.parse import parse_qs
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
 class AgentApi(Plugin):
@@ -21,6 +15,7 @@ class AgentApi(Plugin):
         self._enabled = config.fetch('agent', 'enabled', bool)
         self.host = config.fetch('agent', 'host')
         self.port = config.fetch('agent', 'port', int)
+        self.server = None
 
     def run(self, _=None):
         self.log.info('Starting at http://{0}:{1}'.format(
@@ -64,8 +59,7 @@ class AgentApiHandler(BaseHTTPRequestHandler):
             if resp[0] is not None:
                 result = '{0}\t{1}\t{2}'.format(
                     key, resp[0], resp[1])
-                if platform.PY3:
-                    result = bytearray(result, 'utf-8')
+                result = bytearray(result, 'utf-8')
                 self.wfile.write(result)
             else:
                 self.wfile.write(API.METRIC_NOT_FOUND)
@@ -77,8 +71,7 @@ class AgentApiHandler(BaseHTTPRequestHandler):
             for val in self.sender.list_metrics(host):
                 result += '{0}\t{1}\t{2}\n'.format(
                     val[0], val[1][0], val[1][1])
-            if platform.PY3:
-                result = bytearray(result, 'utf-8')
+            result = bytearray(result, 'utf-8')
             self.wfile.write(result)
         else:
             # unknown path

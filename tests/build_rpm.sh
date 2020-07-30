@@ -2,7 +2,7 @@
 
 # test build
 cp -a /var/tmp /root/mamonsu && pushd /root/mamonsu
-yum install -y tar make rpm-build python2-devel python-setuptools rpmlint
+yum install -y tar make rpm-build python3-devel python3-setuptools rpmlint
 rpmlint packaging/rpm/SPECS/mamonsu.spec
 make rpm && rpm -i mamonsu*.rpm
 

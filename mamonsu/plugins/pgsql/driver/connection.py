@@ -12,7 +12,7 @@ class ConnectionInfo(object):
     def __init__(self, connection_hash=None):
         if connection_hash is None:
             connection_hash = {}
-        self.host = connection_hash.get('host') or os.environ.get('PGHOST')
+        self.host = connection_hash.get('host') or (os.environ.get('PGHOST') or "localhost")
         self.port = connection_hash.get('port') or int(os.environ.get('PGPORT') or 5432)
         self.user = connection_hash.get('user') or os.environ.get('PGUSER')
         self.passwd = connection_hash.get('passwd') or os.environ.get('PGPASSWORD')

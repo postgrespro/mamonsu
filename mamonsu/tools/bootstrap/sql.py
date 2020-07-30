@@ -1,4 +1,4 @@
-from mamonsu import __version__ as mamonsu_version
+
 
 QuerySplit = """
 

@@ -7,9 +7,7 @@ import struct
 import socket
 import json
 import logging
-import encodings.idna
 
-import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.queue import Queue
 from itertools import islice
@@ -102,10 +100,7 @@ class ZbxSender(Plugin):
 
     def _send_data(self, data):
         data_len = struct.pack('<Q', len(data))
-        if platform.PY3:
-            packet = b'ZBXD\x01' + data_len + str.encode(data)
-        else:
-            packet = 'ZBXD\x01' + data_len + data
+        packet = b'ZBXD\x01' + data_len + str.encode(data)
         try:
             sock = socket.socket()
             sock.connect((self.host, self.port))

@@ -10,7 +10,7 @@ export ZABBIX_TEMPLATE_NAME='PostgresPro'
 
 # install mamonsu
 cp -a /var/tmp /root/mamonsu && pushd /root/mamonsu
-yum install -y tar make rpm-build python2-devel python-setuptools
+yum install -y tar make rpm-build python3-devel python3-setuptools
 make rpm && yum install -y mamonsu*.rpm
 
 # install postgres

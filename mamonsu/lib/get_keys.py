@@ -5,11 +5,11 @@ import logging
 class GetKeys(object):
     plg_type = 'all'
 
-    def txt(self, type, plugins=None):
+    def txt(self, plg_type, plugins=None):
         # sort plugins!
         if plugins is None:
             plugins = []
-        self.plg_type = type
+        self.plg_type = plg_type
         plugins.sort(key=lambda x: x.__class__.__name__)
         # create template
         template_data = self._get_all('keys_and_queries', plugins)  # get data from all plugins
