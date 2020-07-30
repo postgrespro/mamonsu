@@ -61,6 +61,8 @@ class PgProbackup(Plugin):
             else:
                 zbx.send(self.key_dir_size.format('[' + _dir + ']'), dir_size)
 
+            # Search for backups with bad status is done by running
+            # "pg_probackup  show -B backup_dir" command
             command = [config_pg_probackup_path, 'show', '-B', _dir, '--format=json']
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
