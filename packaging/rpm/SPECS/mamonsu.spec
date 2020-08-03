@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        2.4.5
+Version:        2.5.0
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,13 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Fri Jul 31 2020 Alexander Popov <a.popov@postgrespro.ru>  - 2.5.0-1
+- drop python2 support
+- add old templates for mamonsu and zabbix-agent
+- add new plugin: pg_probackup
+- add new plugin: relations_size
+- add new plugin: prepared_transaction
+
 * Tue May 26 2020 Alexander Popov <a.popov@postgrespro.ru>  - 2.4.5-1
 - added checksum_failures metric in Instance plugin for Postgresql 12
 - changed PG version support in commands:
