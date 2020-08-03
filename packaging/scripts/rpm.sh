@@ -7,7 +7,7 @@ set -o pipefail
 
 ulimit -n 1024
 
-yum install -y -q tar make rpm-build python2-devel python-setuptools
+yum install -y -q tar make rpm-build python3-devel python3-setuptools
 
 cp -a /app/in /var/build
 find /var/build -type d -exec chmod 0755 {} \;

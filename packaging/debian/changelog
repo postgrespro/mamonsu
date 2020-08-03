@@ -1,3 +1,12 @@
+mamonsu (2.5.0-1) stable; urgency=low
+  * drop python2 support
+  * add old templates for mamonsu and zabbix-agent
+  * add new plugin: pg_probackup
+  * add new plugin: relations_size
+  * add new plugin: prepared_transaction
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Fri, 31 July 2020 16:37:00 +0300
+
 mamonsu (2.4.5-1) stable; urgency=low
 
   * added checksum_failures metric in Instance plugin for Postgresql 12

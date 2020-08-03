@@ -46,20 +46,20 @@ Install from git:
 
 .. code-block:: bash
 
-    $ git clone ... && cd mamonsu && python setup.py build && python setup.py install
+    $ git clone ... && cd mamonsu && python3 setup.py build && python3 setup.py install
 
 Build deb:
 
 .. code-block:: bash
 
-    $ apt-get install make dpkg-dev debhelper python-dev python-setuptools
+    $ apt-get install make dpkg-dev debhelper python3-dev python3-setuptools
     $ git clone ... && cd mamonsu && make deb && dpkg -i mamonsu*.deb
 
 Build rpm:
 
 .. code-block:: bash
 
-    $ yum install make rpm-build python2-devel python-setuptools
+    $ yum install make rpm-build python3-devel python3-setuptools
     $ git clone ... && cd mamonsu && make rpm && rpm -i mamonsu*.rpm
 
 Build repository, `./packaging/repo/gnupg` and `./packaging/repo/rpmmacros` must be provided by caller:

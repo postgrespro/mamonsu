@@ -1,4 +1,4 @@
-from mamonsu import __version__ as mamonsu_version
+
 
 QuerySplit = """
 
@@ -117,6 +117,12 @@ CREATE OR REPLACE FUNCTION public.mamonsu_get_sys_param(param text)
 RETURNS TABLE(SETTING TEXT) AS $$
 select setting from pg_catalog.pg_settings where name = param
 $$ LANGUAGE SQL SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION public.mamonsu_prepared_transaction()
+RETURNS TABLE(count_prepared BIGINT, oldest_prepared BIGINT) AS $$
+SELECT COUNT(*) AS count_prepared,
+coalesce (ROUND(MAX(EXTRACT (EPOCH FROM (now() - prepared)))),0)::bigint AS oldest_prepared  
+FROM pg_catalog.pg_prepared_xacts$$ LANGUAGE SQL SECURITY DEFINER;
 """
 
 GrantsOnSchemaSQL = """
@@ -145,4 +151,6 @@ GRANT EXECUTE ON FUNCTION public.mamonsu_archive_stat() TO {1};
 GRANT EXECUTE ON FUNCTION public.mamonsu_get_sys_param(param text) TO {1};
 
 GRANT EXECUTE ON FUNCTION public.mamonsu_get_connections_states() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_prepared_transaction() TO {1};
 """

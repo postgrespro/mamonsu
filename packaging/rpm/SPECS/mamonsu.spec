@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        2.4.5
+Version:        2.5.0
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -7,10 +7,10 @@ License:        BSD
 Source0:        http://pypi.python.org/packages/source/m/mamonsu/mamonsu-%{version}.tar.gz
 Source1:        mamonsu.init
 Source2:        mamonsu-logrotate.in
-BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
+BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
 BuildArch:      noarch
-Requires:       python-setuptools
+Requires:       python3-setuptools
 
 %description
 Monitoring agent for PostgreSQL.
@@ -19,11 +19,11 @@ Monitoring agent for PostgreSQL.
 %setup -q
 
 %build
-%{__python} setup.py build
+%{__python3} setup.py build
 
 %install
-%{__python} setup.py install --skip-build --root %{buildroot}
-export PYTHONPATH=%{buildroot}%{python_sitelib}
+%{__python3} setup.py install --skip-build --root %{buildroot}
+export PYTHONPATH=%{buildroot}%{python3_sitelib}
 
 %{__mkdir} -p %{buildroot}/%{_sysconfdir}/%{name}
 %{__mkdir} -p %{buildroot}/%{_sysconfdir}/init.d
@@ -39,8 +39,8 @@ export PYTHONPATH=%{buildroot}%{python_sitelib}
 %files
 %doc README.rst
 %config(noreplace) %{_sysconfdir}/%{name}/agent.conf
-%{python_sitelib}/%{name}/
-%{python_sitelib}/%{name}-%{version}*
+%{python3_sitelib}/%{name}/
+%{python3_sitelib}/%{name}-%{version}*
 %{_sysconfdir}/%{name}
 %{_datarootdir}/%{name}
 %{_sysconfdir}/init.d/%{name}
@@ -70,6 +70,13 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Fri Jul 31 2020 Alexander Popov <a.popov@postgrespro.ru>  - 2.5.0-1
+- drop python2 support
+- add old templates for mamonsu and zabbix-agent
+- add new plugin: pg_probackup
+- add new plugin: relations_size
+- add new plugin: prepared_transaction
+
 * Tue May 26 2020 Alexander Popov <a.popov@postgrespro.ru>  - 2.4.5-1
 - added checksum_failures metric in Instance plugin for Postgresql 12
 - changed PG version support in commands:

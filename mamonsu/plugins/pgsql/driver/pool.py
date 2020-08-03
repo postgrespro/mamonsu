@@ -1,4 +1,3 @@
-import mamonsu.lib.platform as platform
 from distutils.version import LooseVersion
 from .connection import Connection, ConnectionInfo
 
@@ -66,10 +65,7 @@ class Pool(object):
         db = self._normalize_db(db)
         if db in self._cache['server_version']['storage']:
             return self._cache['server_version']['storage'][db]
-        if platform.PY2:
-            result = self.query('show server_version', db)[0][0]
-        elif platform.PY3:
-            result = bytes(
+        result = bytes(
                 self.query('show server_version', db)[0][0], 'utf-8')
         self._cache['server_version']['storage'][db] = '{0}'.format(
             result.decode('ascii'))

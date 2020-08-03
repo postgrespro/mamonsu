@@ -10,10 +10,8 @@ from mamonsu.lib.plugin import Plugin
 from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu.lib.default_config import DefaultConfig
 
-if platform.PY2:
-    import ConfigParser as configparser
-else:
-    import configparser
+
+import configparser
 
 
 class Config(DefaultConfig):
@@ -76,7 +74,7 @@ class Config(DefaultConfig):
             sys.exit(1)
         else:
             if cfg_file is not None:
-                self.config.readfp(open(cfg_file))
+                self.config.read_file(open(cfg_file))
 
         plugins = self.fetch('plugins', 'directory', str)
         if plugins is not None:
