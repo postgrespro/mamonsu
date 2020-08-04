@@ -316,7 +316,12 @@ Metrics:  PostgreSQL
     'PostgreSQL waits: Replication Locks': pgsql.lwlock[replication]
     'PostgreSQL waits: Buffer operations': pgsql.lwlock[buffer]
     'PostgreSQL waits: Other operations': pgsql.lwlock[other]
+    'PostgreSQL: number of prepared transactions': 'pgsql.prepared.count'
+    'PostgreSQL: oldest prepared transaction running time in sec': 'pgsql.prepared.oldest'
 
+    'Pg_probackup catalog {#BACKUPDIR}: size':  pg_probackup.dir.size[{#BACKUPDIR}]
+    'Pg_probackup catalog {#BACKUPDIR}: error': 'pg_probackup.dir.error[{#BACKUPDIR}]
+    'Relation size: {#RELATIONNAME}':  'pgsql.relation.size[{#RELATIONNAME}]'
     'Database {#DATABASE}: size': pgsql.database.size[{#DATABASE}]
     'Count of bloating tables in database: {#DATABASE}': pgsql.database.bloating_tables[{#DATABASE}]
     'Max age (datfrozenxid) in: {#DATABASE}': pgsql.database.bloating_tables[{#DATABASE}]
