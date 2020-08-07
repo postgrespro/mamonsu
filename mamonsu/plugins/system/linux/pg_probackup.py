@@ -78,7 +78,7 @@ class PgProbackup(Plugin):
             except Exception as e:
                 self.log.error('Error in convert data: {stdout} \n {e}'.format(stdout=stdout, e=e))
                 continue
-
+            no_error= True
             for instance in result:
                 for backup in instance.get('backups', []):
                     status = backup['status']
@@ -88,7 +88,10 @@ class PgProbackup(Plugin):
                                                                                  instance_name=instance['instance'],
                                                                                  status=status, backup_catalog=_dir)
                         self.log.info(error)
+                        no_error = False
                         zbx.send(self.key_dir_error.format('[' + _dir + ']'), error)
+            if no_error:
+                zbx.send(self.key_dir_error.format('[' + _dir + ']'), 'ok')
 
         zbx.send(self.key_main.format('[]'), zbx.json({'data': dirs}))
         del dirs
@@ -135,6 +138,6 @@ class PgProbackup(Plugin):
         triggers = [{
             'name': 'Error in backup dir  '
                     '{#BACKUPDIR} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
-            'expression': '{#TEMPLATE:pg_probackup.dir.error[{#BACKUPDIR}].strlen()}&gt;1'}
+            'expression': '{#TEMPLATE:pg_probackup.dir.error[{#BACKUPDIR}].str(ok)}&lt;&gt;1'}
         ]
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs, triggers=triggers)
