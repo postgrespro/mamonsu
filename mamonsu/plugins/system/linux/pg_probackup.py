@@ -56,7 +56,7 @@ class PgProbackup(Plugin):
             dir_size = self.dir_size(_dir)
             if self.os_walk_error:
                 self.log.error(
-                    "Error in count size backup catalog: {backup_catalog}. Error: {error}".format(
+                    "Error in count size pg_probackup dir: {backup_catalog}. Error: {error}".format(
                         backup_catalog=_dir, error=str(self.os_walk_error)))
             else:
                 zbx.send(self.key_dir_size.format('[' + _dir + ']'), dir_size)
@@ -83,7 +83,7 @@ class PgProbackup(Plugin):
                 for backup in instance.get('backups', []):
                     status = backup['status']
                     if status in ['ERROR', 'CORRUPT', 'ORPHAN']:
-                        error = 'Backup with id: {backup_id} in instance: {instance_name} in backup catalog: ' \
+                        error = 'Backup with id: {backup_id} in instance: {instance_name} in pg_probackup dir: ' \
                                 '{backup_catalog}  has status: {status}.'.format(backup_id=backup['id'],
                                                                                  instance_name=instance['instance'],
                                                                                  status=status, backup_catalog=_dir)
@@ -117,12 +117,12 @@ class PgProbackup(Plugin):
             ]
         items = [
             {'key': self.right_type(self.key_dir_size, var_discovery="{#BACKUPDIR},"),
-             'name': 'Pg_probackup catalog {#BACKUPDIR}: size',
+             'name': 'Pg_probackup dir {#BACKUPDIR}: size',
              'units': Plugin.UNITS.bytes,
              'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
              'delay': self.plugin_config('interval')},
             {'key': self.right_type(self.key_dir_error, var_discovery="{#BACKUPDIR},"),
-             'name': 'Pg_probackup catalog {#BACKUPDIR}: error',
+             'name': 'Pg_probackup dir {#BACKUPDIR}: error',
              'value_type': Plugin.VALUE_TYPE.text,
              'delay': self.plugin_config('interval')},
         ]
@@ -136,7 +136,7 @@ class PgProbackup(Plugin):
             },
         ]
         triggers = [{
-            'name': 'Error in backup dir  '
+            'name': 'Error in pg_probackup dir  '
                     '{#BACKUPDIR} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:pg_probackup.dir.error[{#BACKUPDIR}].str(ok)}&lt;&gt;1'}
         ]
