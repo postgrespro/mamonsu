@@ -8,27 +8,28 @@ from mamonsu.lib.plugin import PluginDisableException
 class RelationsSize(Plugin):
     def __init__(self, config):
         super(Plugin, self).__init__(config)
-        self.relations = []
-        self.create_relations()
-        self.key_rel_size_discovery = "pgsql.relation.size{0}"
-        self.query_template = """SELECT relation.schema
-         , relation.name
-         , CASE WHEN l.mode = 'AccessExclusiveLock' THEN '-1'
-               ELSE (pg_total_relation_size(cl.oid))
-           END AS pg_total_relation_size
-         , CASE WHEN l.mode = 'AccessExclusiveLock' THEN '-1'
-               ELSE (sum(pg_total_relation_size(inh.inhrelid)))
-           END AS pg_total_relation_size_part
-    FROM (VALUES {values}) as relation (schema,name)
-    LEFT JOIN pg_catalog.pg_class cl ON cl.relname =  relation.name
-    LEFT JOIN pg_catalog.pg_namespace ns ON ns.oid = cl.relnamespace AND ns.nspname=relation.schema
-    LEFT JOIN pg_catalog.pg_inherits inh ON inh.inhparent = cl.oid
-    LEFT JOIN pg_catalog.pg_locks l ON l.relation = cl.oid AND l.mode= 'AccessExclusiveLock' AND l.locktype = 'relation'
-    LEFT JOIN pg_catalog.pg_locks l_part ON l_part.relation = inh.inhrelid AND l.mode= 'AccessExclusiveLock' AND l.locktype = 'relation'
-    GROUP BY relation.schema
-           , relation.name
-           , l.mode
-           , cl.oid"""
+        if self.is_enabled():
+            self.relations = []
+            self.create_relations()
+            self.key_rel_size_discovery = "pgsql.relation.size{0}"
+            self.query_template = """SELECT relation.schema
+             , relation.name
+             , CASE WHEN l.mode = 'AccessExclusiveLock' THEN '-1'
+                   ELSE (pg_total_relation_size(cl.oid))
+               END AS pg_total_relation_size
+             , CASE WHEN l.mode = 'AccessExclusiveLock' THEN '-1'
+                   ELSE (sum(pg_total_relation_size(inh.inhrelid)))
+               END AS pg_total_relation_size_part
+        FROM (VALUES {values}) as relation (schema,name)
+        LEFT JOIN pg_catalog.pg_class cl ON cl.relname =  relation.name
+        LEFT JOIN pg_catalog.pg_namespace ns ON ns.oid = cl.relnamespace AND ns.nspname=relation.schema
+        LEFT JOIN pg_catalog.pg_inherits inh ON inh.inhparent = cl.oid
+        LEFT JOIN pg_catalog.pg_locks l ON l.relation = cl.oid AND l.mode= 'AccessExclusiveLock' AND l.locktype = 'relation'
+        LEFT JOIN pg_catalog.pg_locks l_part ON l_part.relation = inh.inhrelid AND l.mode= 'AccessExclusiveLock' AND l.locktype = 'relation'
+        GROUP BY relation.schema
+               , relation.name
+               , l.mode
+               , cl.oid"""
 
     def create_relations(self):
 
