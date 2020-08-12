@@ -8,6 +8,12 @@ from urllib.parse import parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
+# rewrite log_request method of http lib to avoid getting log messages in console
+class QuietBaseHTTPRequestHandler(BaseHTTPRequestHandler):
+    def log_request(self, code='-', size='-'):
+        pass
+
+
 class AgentApi(Plugin):
 
     def __init__(self, config):
@@ -32,11 +38,11 @@ class AgentApiHttpServer:
         server.serve_forever()
 
 
-class AgentApiHandler(BaseHTTPRequestHandler):
+class AgentApiHandler(QuietBaseHTTPRequestHandler):
 
     def __init__(self, config, *args):
         self.sender = config.sender
-        BaseHTTPRequestHandler.__init__(self, *args)
+        QuietBaseHTTPRequestHandler.__init__(self, *args)
 
     def _set_header(self):
         self.send_response(200)
