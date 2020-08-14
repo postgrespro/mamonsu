@@ -16,7 +16,7 @@ class PreparedTransaction(Plugin):
     key_prepared = {
         'state': 'oldest_prepared',
         'key': 'pgsql.prepared.oldest',
-        'name': 'PostgreSQL: oldest prepared transaction running time in sec',
+        'name': 'PostgreSQL: oldest prepared transaction time in sec',
         'color': '0000BB',
         'yaxisside': 1,
     }
@@ -71,7 +71,7 @@ class PreparedTransaction(Plugin):
 
     def triggers(self, template):
         result = template.trigger({
-            'name': 'PostgreSQL prepared transaction running is too old on {HOSTNAME}',
+            'name': 'PostgreSQL prepared transaction is too old on {HOSTNAME}',
             'expression': '{#TEMPLATE:' + self.key_prepared['key'] +
                           '.last()}&gt;' + self.plugin_config('max_prepared_transaction_time')
         })
