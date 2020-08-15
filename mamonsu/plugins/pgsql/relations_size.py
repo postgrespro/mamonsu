@@ -9,8 +9,7 @@ class RelationsSize(Plugin):
     def __init__(self, config):
         super(Plugin, self).__init__(config)
         if self.is_enabled():
-            self.relations = []
-            self.create_relations()
+            self.relations = None
             self.key_rel_size_discovery = "pgsql.relation.size{0}"
             self.query_template = """SELECT relation.schema
              , relation.name
@@ -32,7 +31,6 @@ class RelationsSize(Plugin):
                , cl.oid"""
 
     def create_relations(self):
-
         config_relations = self._plugin_config.get('relations', None)
         if config_relations is None or config_relations == '':
             self.disable()
@@ -50,6 +48,8 @@ class RelationsSize(Plugin):
                         relation=relation))
 
     def run(self, zbx):
+        if not self.relations:
+            self.create_relations()
         rels = []
         all_databases = Pooler.databases()
         for database_name, schema, relation in self.relations:
