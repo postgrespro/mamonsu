@@ -1,3 +1,11 @@
+mamonsu (2.5.1-1) stable; urgency=low
+  * update pg8000 driver
+  * drop relations_size plugin
+  * redirect log messages for mamonsu agent to log fle
+  * fix pg_probackup trigger
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 17 August 2020 15:22:00 +0300
+
 mamonsu (2.5.0-1) stable; urgency=low
   * drop python2 support
   * add old templates for mamonsu and zabbix-agent

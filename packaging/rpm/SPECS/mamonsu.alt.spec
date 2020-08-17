@@ -2,7 +2,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mamonsu
-Version:        2.5.0
+Version:        2.5.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,12 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Aug 17 2020 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.5.1-1
+- update pg8000 driver
+- drop relations_size plugin
+- redirect log messages for mamonsu agent to log fle
+- fix pg_probackup trigger
+
 * Fri Jul 31 2020 Alexander Popov <a.popov@postgrespro.ru>  - 2.5.0-1
 - drop python2 support
 - add old templates for mamonsu and zabbix-agent
