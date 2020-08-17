@@ -169,11 +169,6 @@ directory = /tmp
 file = /var/log/mamonsu/agent.log
 level = DEBUG
 
-[relationssize]
-enabled = True
-relations=pg_catalog.pg_class,pg_catalog.pg_user
-interval = 60
-
 [preparedtransaction]
 max_prepared_transaction_time = 60
 interval = 60
@@ -194,7 +189,6 @@ mamonsu agent -c /etc/mamonsu/agent.conf metric-list | grep system
 ## metric log
 grep utilization /tmp/localhost.log || exit 7
 grep 'pgsql\.uptime' /tmp/localhost.log || exit 7
-grep 'pgsql\.relation\.size' /tmp/localhost.log || exit 7
 grep 'pgsql\.prepared\.count' /tmp/localhost.log || exit 7
 grep 'pgsql\.prepared\.oldest' /tmp/localhost.log || exit 7
 

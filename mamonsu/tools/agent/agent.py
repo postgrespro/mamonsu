@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from mamonsu.lib.plugin import Plugin
-
 from mamonsu.lib.const import API
 
 from urllib.parse import urlparse as parse
 from urllib.parse import parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import logging
 
 
 class AgentApi(Plugin):
@@ -36,7 +36,12 @@ class AgentApiHandler(BaseHTTPRequestHandler):
 
     def __init__(self, config, *args):
         self.sender = config.sender
+        self.log = logging.getLogger('AGENTAPI')
         BaseHTTPRequestHandler.__init__(self, *args)
+
+    # rewrite log_message method of http lib to avoid getting log messages in console
+    def log_message(self, format, *args):
+        self.log.info(format, *args)
 
     def _set_header(self):
         self.send_response(200)
