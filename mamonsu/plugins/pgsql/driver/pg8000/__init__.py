@@ -1,10 +1,18 @@
-from .core import (
-    Warning, DataError, DatabaseError, InterfaceError, ProgrammingError,
-    Error, OperationalError, IntegrityError, InternalError, NotSupportedError,
-    ArrayContentNotHomogenousError, ArrayDimensionsNotConsistentError,
-    ArrayContentNotSupportedError, Connection, Cursor, Binary, Date,
-    DateFromTicks, Time, TimeFromTicks, Timestamp, TimestampFromTicks, BINARY,
-    Interval, PGEnum, PGJson, PGJsonb, PGTsvector, PGText, PGVarchar)
+from .converters import (
+    BIGINTEGER, BINARY, BOOLEAN, BOOLEAN_ARRAY, BYTES, Binary, CHAR,
+    CHAR_ARRAY, DATE, DATETIME, DECIMAL, DECIMAL_ARRAY, Date, DateFromTicks,
+    FLOAT, FLOAT_ARRAY, INET, INT2VECTOR, INTEGER, INTEGER_ARRAY, INTERVAL,
+    JSON, JSONB, MACADDR, NAME, NAME_ARRAY, NULLTYPE, NUMBER, OID, PGEnum,
+    PGInterval, PGJson, PGJsonb, PGText, PGTsvector, PGVarchar, ROWID, STRING,
+    TEXT, TEXT_ARRAY, TIME, TIMEDELTA, TIMESTAMP, TIMESTAMPTZ, Time,
+    TimeFromTicks, Timestamp, TimestampFromTicks, UNKNOWN, UUID_TYPE, VARCHAR,
+    VARCHAR_ARRAY, XID)
+from .core import Connection, Cursor
+from .exceptions import (
+    DataError, DatabaseError, Error, IntegrityError, InterfaceError,
+    InternalError, NotSupportedError, OperationalError, ProgrammingError,
+    Warning)
+
 from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
@@ -43,16 +51,13 @@ __author__ = "Mathieu Fenniak"
 def connect(
         user, host='localhost', database=None, port=5432, password=None,
         source_address=None, unix_sock=None, ssl_context=None, timeout=None,
-        max_prepared_statements=1000, tcp_keepalive=True,
-        application_name=None, replication=None):
+        tcp_keepalive=True, application_name=None, replication=None):
 
     return Connection(
         user, host=host, database=database, port=port, password=password,
         source_address=source_address, unix_sock=unix_sock,
-        ssl_context=ssl_context, timeout=timeout,
-        max_prepared_statements=max_prepared_statements,
-        tcp_keepalive=tcp_keepalive, application_name=application_name,
-        replication=replication)
+        ssl_context=ssl_context, timeout=timeout, tcp_keepalive=tcp_keepalive,
+        application_name=application_name, replication=replication)
 
 
 apilevel = "2.0"
@@ -74,34 +79,16 @@ This property is part of the `DBAPI 2.0 specification
 
 paramstyle = 'format'
 
-# I have no idea what this would be used for by a client app.  Should it be
-# TEXT, VARCHAR, CHAR?  It will only compare against row_description's
-# type_code if it is this one type.  It is the varchar type oid for now, this
-# appears to match expectations in the DB API 2.0 compliance test suite.
-
-STRING = 1043
-"""String type oid."""
-
-
-NUMBER = 1700
-"""Numeric type oid"""
-
-DATETIME = 1114
-"""Timestamp type oid"""
-
-ROWID = 26
-"""ROWID type oid"""
 
 __all__ = [
     Warning, DataError, DatabaseError, connect, InterfaceError,
     ProgrammingError, Error, OperationalError, IntegrityError, InternalError,
-    NotSupportedError, ArrayContentNotHomogenousError,
-    ArrayDimensionsNotConsistentError, ArrayContentNotSupportedError,
-    Connection, Cursor, Binary, Date, DateFromTicks, Time, TimeFromTicks,
-    Timestamp, TimestampFromTicks, BINARY, Interval, PGEnum, PGJson, PGJsonb,
-    PGTsvector, PGText, PGVarchar]
-
-"""Version string for pg8000.
-
-    .. versionadded:: 1.9.11
-"""
+    NotSupportedError, Connection, Cursor, Binary, Date, DateFromTicks, Time,
+    TimeFromTicks, Timestamp, TimestampFromTicks, BINARY, PGInterval, PGEnum,
+    PGJson, PGJsonb, PGTsvector, PGText, PGVarchar, STRING, NUMBER, DATETIME,
+    TIME, BOOLEAN, INTEGER, BIGINTEGER, INTERVAL, JSON, JSONB, UNKNOWN,
+    NULLTYPE, ROWID, BOOLEAN_ARRAY, BYTES, CHAR, CHAR_ARRAY, DATE, DECIMAL,
+    DECIMAL_ARRAY, FLOAT, FLOAT_ARRAY, INET, INT2VECTOR, INTEGER_ARRAY,
+    MACADDR, NAME, NAME_ARRAY, OID, TEXT, TEXT_ARRAY, TIMEDELTA, TIMESTAMP,
+    TIMESTAMPTZ, UUID_TYPE, VARCHAR, VARCHAR_ARRAY, XID
+]
