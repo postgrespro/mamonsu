@@ -3,13 +3,14 @@ import sys
 from mamonsu import __version__
 from optparse import OptionParser, BadOptionError
 import mamonsu.lib.platform as platform
+from mamonsu.lib.default_config import DefaultConfig
 
 usage_msg = """
 Options:
     -a, --add-plugins  <directory>
     -c, --config       <file>
     -p, --pid          <pid-file>
-    -d                 daemonize
+    -d                 daemonize (this functional do not support in windows)
         --version      output version information, then exit
         --help         show this help, then exit
 
@@ -20,7 +21,7 @@ Examples:
 Options:
     --add-plugins <directory>
 
-Export zabbix keys for native zabbix-agent:
+Export zabbix keys for native zabbix-agent (this functional do not support in windows):
 Command: export zabbix-parameters
 Examples:
     {prog} export zabbix-parameters  <file>
@@ -32,7 +33,7 @@ Options:
 HINT: Supported version numbers are 12, 10, 11, 9.6, 9.5
 
     
-Export template for native zabbix agent:
+Export template for native zabbix agent  (this functional do not support in windows):
 Command: export zabbix-template 
 Examples:
     {prog} export zabbix-template [options] <file>
@@ -248,7 +249,7 @@ def parse_args():
         usage=usage_msg,
         version='%prog {0}'.format(__version__))
     parser.add_option(
-        '-c', '--config', dest='config_file', default='/etc/mamonsu/agent.conf')
+        '-c', '--config', dest='config_file', default=DefaultConfig.default_config_path())
     # pid
     parser.add_option(
         '-p', '--pid', dest='pid', default=None)

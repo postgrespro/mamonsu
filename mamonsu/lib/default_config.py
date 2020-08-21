@@ -50,6 +50,8 @@ class DefaultConfig(PgsqlConfig):
     def default_config_path():
         if platform.LINUX:
             return '/etc/mamonsu/agent.conf'
+        elif platform.WINDOWS:
+            return 'C:\\mamonsu\\agent_win32.conf'
 
     @staticmethod
     def get_logger_level(level):

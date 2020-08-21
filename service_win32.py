@@ -38,7 +38,7 @@ class MamonsuSvc(win32serviceutil.ServiceFramework):
             servicemanager.EVENTLOG_INFORMATION_TYPE,
             (self._svc_name_, ''))
 
-        config_file = os.path.join(exe_dir, 'agent.conf')
+        config_file = os.path.join(exe_dir, 'agent_win32.conf')
         config = Config(config_file)
 
         supervisor = Supervisor(config)

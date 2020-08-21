@@ -13,7 +13,9 @@ from mamonsu.lib.supervisor import Supervisor
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
-from mamonsu.plugins.system.linux.scripts import Scripts
+
+if platform.LINUX:
+    from mamonsu.plugins.system.linux.scripts import Scripts
 
 
 def start():
@@ -79,6 +81,9 @@ def start():
             if not len(commands) == 2 and not len(commands) == 3:
                 print_total_help()
             if commands[1] == 'zabbix-parameters':
+                if platform.WINDOWS:
+                    print("This functional do not support in windows")
+                    sys.exit(10)
                 # zabbix agent keys generation
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 plugins = []
@@ -149,6 +154,9 @@ def start():
                     print(" {0} ".format(e))
                     sys.exit(2)
             elif commands[1] == 'zabbix-template':
+                if platform.WINDOWS:
+                    print("This functional do not support in windows")
+                    sys.exit(10)
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 if len(commands) == 2:
                     commands.append('postgrespro_agent.xml')

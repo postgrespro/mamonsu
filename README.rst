@@ -78,6 +78,10 @@ Build win32 exe: (worked with python v3.{4,5}: py2exe v0.9.2.2 and pywin32 v220 
     $ c:\mamonsu\service_win32.exe -install
     $ net start mamonsu
 
+    or
+    $ pyinstaller --onefile mamonsu_win32.spec
+    $ pyinstaller --onefile service_win32.spec
+
 Build nsis installer:
 
 .. code-block:: bash
