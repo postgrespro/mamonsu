@@ -2,13 +2,12 @@ import win32serviceutil
 import win32service
 import win32event
 import win32evtlogutil
-import servicemanager
+#import servicemanager
 import os
 
 from threading import Thread
 from mamonsu.lib.config import Config
 from mamonsu.lib.supervisor import Supervisor
-
 
 class MamonsuSvc(win32serviceutil.ServiceFramework):
 
@@ -31,23 +30,24 @@ class MamonsuSvc(win32serviceutil.ServiceFramework):
         exe_dir = os.path.dirname(os.path.dirname(__file__))
         os.chdir(exe_dir)
 
-        win32evtlogutil.ReportEvent(
-            self._svc_name_,
-            servicemanager.PYS_SERVICE_STARTED,
-            0,
-            servicemanager.EVENTLOG_INFORMATION_TYPE,
-            (self._svc_name_, ''))
+        # win32evtlogutil.ReportEvent(
+        #     self._svc_name_,
+        #     servicemanager.PYS_SERVICE_STARTED,
+        #     0,
+        #     servicemanager.EVENTLOG_INFORMATION_TYPE,
+        #     (self._svc_name_, ''))
 
         config_file = os.path.join(exe_dir, 'agent_win32.conf')
-        config = Config(config_file)
+#        config = Config(config_file)
+        config = Config('c:\\mamonsu\\agent_win32.conf')
 
         supervisor = Supervisor(config)
-        win32evtlogutil.ReportEvent(
-            self._svc_name_,
-            servicemanager.PYS_SERVICE_STOPPED,
-            0,
-            servicemanager.EVENTLOG_INFORMATION_TYPE,
-            (self._svc_name_, ''))
+        # win32evtlogutil.ReportEvent(
+        #     self._svc_name_,
+        #     servicemanager.PYS_SERVICE_STOPPED,
+        #     0,
+        #     servicemanager.EVENTLOG_INFORMATION_TYPE,
+        #     (self._svc_name_, ''))
 
         thread = Thread(target=supervisor.start)
         thread.daemon = True
@@ -57,12 +57,12 @@ class MamonsuSvc(win32serviceutil.ServiceFramework):
             rc = win32event.WaitForSingleObject(
                 self.hWaitStop, win32event.INFINITE)
             if rc == win32event.WAIT_OBJECT_0:
-                win32evtlogutil.ReportEvent(
-                    self._svc_name_,
-                    servicemanager.PYS_SERVICE_STOPPED,
-                    0,
-                    servicemanager.EVENTLOG_INFORMATION_TYPE,
-                    (self._svc_name_, ''))
+                # win32evtlogutil.ReportEvent(
+                #     self._svc_name_,
+                #     servicemanager.PYS_SERVICE_STOPPED,
+                #     0,
+                #     servicemanager.EVENTLOG_INFORMATION_TYPE,
+                #     (self._svc_name_, ''))
                 break
 
 

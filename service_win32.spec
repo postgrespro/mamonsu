@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['mamonsu_win32.py'],
+a = Analysis(['service_win32.py'],
              pathex=['C:\\data\\mamonsu'],
              binaries=[],
              datas=[],
@@ -45,7 +45,9 @@ a = Analysis(['mamonsu_win32.py'],
                 'mamonsu.tools.sysinfo',
                 'mamonsu.tools.tune',
                 'mamonsu.tools.zabbix_cli',
-                'mamonsu.plugins.common.health'
+                'mamonsu.plugins.common.health',
+                'mamonsu.plugins.common',
+                'win32timezone'
             ],
              hookspath=[],
              runtime_hooks=[],
@@ -62,7 +64,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='mamonsu',
+          name='service_win32',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,

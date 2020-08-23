@@ -45,7 +45,9 @@ a = Analysis(['mamonsu_win32.py'],
                 'mamonsu.tools.sysinfo',
                 'mamonsu.tools.tune',
                 'mamonsu.tools.zabbix_cli',
-                'mamonsu.plugins.common.health'
+                'mamonsu.plugins.common.health',
+                'mamonsu.plugins.common',
+                'win32timezone'
              ],
              hookspath=[],
              runtime_hooks=[],
