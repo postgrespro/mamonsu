@@ -12,27 +12,50 @@ Build status
 License
 ========
 
-Development version, available on github, released under BSD 3-clause.
+Development version, available on GitHub, released under BSD 3-clause.
 
 ============
 Installation
 ============
 
-DEB packages for Debian|Ubuntu:
+For Debian, Ubuntu, Astra:
 
 .. code-block:: bash
 
-    echo "deb [arch=amd64] https://repo.postgrespro.ru/mamonsu/latest/deb/ $(lsb_release -cs) main-$(lsb_release -cs)" > /etc/apt/sources.list.d/mamonsu.list
-    wget -O - https://repo.postgrespro.ru/mamonsu/keys/GPG-KEY-MAMONSU | sudo apt-key add - && sudo apt-get update
-    sudo apt-get install mamonsu
+    $ wget  https://repo.postgrespro.ru/mamonsu/keys/apt-repo-add.sh
+    $ sudo chmod 700 ./apt-repo-add.sh
+    $ sudo ./apt-repo-add.sh
+    $ apt-get install mamonsu
 
 
-RPM packages for Centos:
+For RPM-based distros such as Centos, RHEL, Oraclelinux, SLES, AltLinux, AltLinux-spt
+
+Install rpm from https://repo.postgrespro.ru/mamonsu/keys  adding name of specific distro such as:
 
 .. code-block:: bash
 
-    rpm -ivh https://repo.postgrespro.ru/mamonsu/keys/mamonsu-repo-centos.noarch.rpm
-    yum install mamonsu
+    $ rpm -i https://repo.postgrespro.ru/mamonsu/keys/centos.rpm
+
+Install package
+
+For RH-like:
+
+.. code-block:: bash
+
+   $ yum install mamonsu
+
+For SLES:
+
+.. code-block:: bash
+
+   $ zypper install mamonsu
+
+For AltLinux, AltlLinux-spt:
+
+.. code-block:: bash
+
+   $ apt-get update
+   $ apt-get install mamonsu
 
 Pre-Build packages for Windows: `Windows installers <https://oc.postgrespro.ru/index.php/s/qu7YsFvOE55LdXo>`_
 
@@ -70,6 +93,8 @@ Build repository, `./packaging/repo/gnupg` and `./packaging/repo/rpmmacros` must
 
 Build win32 exe: (worked with python v3.{4,5}: py2exe v0.9.2.2 and pywin32 v220 or python v2.7: py2exe v0.6.9 and pywin32 v220):
 
+NOTE: only mamonsu 2.3.4 builds for Windows.
+
 .. code-block:: bash
 
     $ git clone ... && cd mamonsu && python setup_win32.py py2exe
@@ -89,7 +114,7 @@ Build nsis installer:
 Configure
 ==========
 
-Export template for zabbix:
+Export template for Zabbix:
 
 .. code-block:: bash
 
@@ -97,7 +122,7 @@ Export template for zabbix:
     or
     $ cp /usr/share/mamonsu/template.xml .
 
-or get example of config with all available parameters at https://postgrespro.ru/products/extensions/mamonsu
+or get an example of config with all available parameters at https://postgrespro.ru/products/extensions/mamonsu
 
 Import this file in web interface of zabbix: Configuration => Templates => Import, or deploy with mamonsu:
 
@@ -105,7 +130,7 @@ Import this file in web interface of zabbix: Configuration => Templates => Impor
 
     $ mamonsu zabbix template export /usr/share/mamonsu/template.xml --url=http://zabbix/ --user=Admin --password=zabbix
 
-Add this template like `PostgresPro-Linux2` at your monitoring host, or create host with mamonsu:
+Add this template like `PostgresPro-Linux2` at your monitoring host, or create a host with mamonsu:
 
 .. code-block:: bash
 
@@ -117,9 +142,9 @@ Generate config on monitoring host or use preinstalled:
 
     $ mamonsu export config /etc/mamonsu/agent.conf --add-plugins /etc/mamonsu/plugins
 
-or get example of config with all available parameters at https://postgrespro.ru/products/extensions/mamonsu
+or get an example of config with all available parameters at https://postgrespro.ru/products/extensions/mamonsu
 
-Change previously zabbix server address and client hostname:
+Change previously Zabbix server address and client hostname:
 
 .. code-block:: bash
 
@@ -152,12 +177,12 @@ Change previously zabbix server address and client hostname:
     level = INFO
 
 These are the main mamonsu settings to get started. You can also fine-tune other mamonsu settings.
-At https://postgrespro.ru/products/extensions/mamonsu you can find example of configuration file for mamonsu
+At https://postgrespro.ru/products/extensions/mamonsu you can find an example of the configuration file for mamonsu
 with all available parameters.
 
-Bootstrap DDL for monitoring (if you want to monitoring without superuser rights)
+Bootstrap DDL for monitoring (if you want to monitor without superuser rights)
 
-Create non-privileged user (for example 'mamonsu')
+Create a non-privileged user (for example 'mamonsu')
 
 .. code-block:: bash
 
@@ -165,7 +190,7 @@ Create non-privileged user (for example 'mamonsu')
 
     $ createuser mamonsu
 
-Implement bootstrap from non-privileged user
+Implement bootstrap from a non-privileged user
 
 .. code-block:: bash
 
@@ -182,7 +207,7 @@ Export template for zabbix-agent
 
     $ mamonsu export zabbix-template template_agent.xml
 
-or get example of template at https://postgrespro.ru/products/extensions/mamonsu
+or get an example of the template at https://postgrespro.ru/products/extensions/mamonsu
 
 Export or download zabbix-agent configuration file for needed PostgreSQL version
 
@@ -190,16 +215,16 @@ Export or download zabbix-agent configuration file for needed PostgreSQL version
 
     $ mamonsu export zabbix-parameters userparameters_pgsql_v*.conf --pg-version=version_number (by default pg-version=10)
 
-or get example of configuration file at https://postgrespro.ru/products/extensions/mamonsu
+or get an example of configuration file at https://postgrespro.ru/products/extensions/mamonsu
 
 NOTE: zabbix-agent configuration file for PostgreSQL 10 and 11 are equal
 
-Bash scripts for OS parameters monitoring are exported with configuration file in directory /scripts
+Bash scripts for OS parameters monitoring are exported with the configuration file in directory /scripts
 Or you can download them  at https://postgrespro.ru/products/extensions/mamonsu
 
 Add configuration file to zabbix-agent directory as /etc/zabbix/zabbix_agentd.d/userparameters_pgsql.conf
 
-NOTE: Make sure path for bash scripts in zabbix-agent configuration file is valid
+NOTE: Make sure that the path for bash scripts in the zabbix-agent configuration file is valid
 
 Edit connections options of zabbix-agent /etc/zabbix/zabbix_agentd.conf, following standard instructions for zabbix-agent installation (https://www.zabbix.com/documentation/3.4/manual/concepts/agent)
 
@@ -207,11 +232,11 @@ Edit connections options of zabbix-agent /etc/zabbix/zabbix_agentd.conf, followi
 Write your plugin
 ==================
 
-All plugins must exist in plugin directory which is defined in your configuration file.
+All plugins must exist in the plugin directory which is defined in your configuration file.
 
-See the `examples <https://github.com/postgrespro/mamonsu/tree/master/examples>`_ for aditional information.
+See the `examples <https://github.com/postgrespro/mamonsu/tree/master/examples>`_ for additional information.
 
-After add new plugin, you must to reexport template and import this file to zabbix.
+After adding a new plugin, you must re-export the template and import a new template to Zabbix.
 
 =========
 3rd-party
@@ -405,7 +430,7 @@ Screenshots
 Tool: Report
 ============
 
-Create report about used hardware and PostgreSQL:
+Create a report about used hardware and PostgreSQL:
 
 .. code-block:: bash
 
