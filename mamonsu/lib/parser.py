@@ -12,10 +12,10 @@ Options:
     -p, --pid          <pid-file>
 """
 if platform.LINUX:
-    usage_msg += """    -d                 daemonize"""
+    usage_msg += """    -d                 daemonize
+"""
 
-usage_msg += """
-        --version      output version information, then exit
+usage_msg += """        --version      output version information, then exit
         --help         show this help, then exit
 
 Export example config with default variables:
