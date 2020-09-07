@@ -82,7 +82,7 @@ def start():
                 print_total_help()
             if commands[1] == 'zabbix-parameters':
                 if platform.WINDOWS:
-                    print("This functional do not support in windows")
+                    print("Export of zabbix keys for native zabbix-agent is not supported on Windows systems")
                     sys.exit(10)
                 # zabbix agent keys generation
                 Plugin.Type = 'agent'  # change plugin type for template generator
@@ -155,7 +155,7 @@ def start():
                     sys.exit(2)
             elif commands[1] == 'zabbix-template':
                 if platform.WINDOWS:
-                    print("This functional do not support in windows")
+                    print("Export of template for native zabbix agent is not supported on Windows systems")
                     sys.exit(10)
                 Plugin.Type = 'agent'  # change plugin type for template generator
                 if len(commands) == 2:

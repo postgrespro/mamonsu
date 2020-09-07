@@ -10,7 +10,11 @@ Options:
     -a, --add-plugins  <directory>
     -c, --config       <file>
     -p, --pid          <pid-file>
-    -d                 daemonize (this functional do not support in windows)
+"""
+if platform.LINUX:
+    usage_msg += """    -d                 daemonize"""
+
+usage_msg += """
         --version      output version information, then exit
         --help         show this help, then exit
 
@@ -20,34 +24,7 @@ Examples:
     {prog} export config <file>
 Options:
     --add-plugins <directory>
-
-Export zabbix keys for native zabbix-agent (this functional do not support in windows):
-Command: export zabbix-parameters
-Examples:
-    {prog} export zabbix-parameters  <file>
-Options:
-    --plugin-type <plugin_type> (pg|sys|all) by default all
-    --pg-version <pg_version> by default 10
-    --add-plugins <directory>
-    --config  <file>
-HINT: Supported version numbers are 12, 10, 11, 9.6, 9.5
-
     
-Export template for native zabbix agent  (this functional do not support in windows):
-Command: export zabbix-template 
-Examples:
-    {prog} export zabbix-template [options] <file>
-Options:
-    --template-name <template name> by default PostgresPro-<platform name>
-    --plugin-type <plugin_type> (pg|sys|all) by default all
-    --application  <application name in template> by default App-PostgresPro-<platform name>
-    --add-plugins <directory>
-    --config  <file>
-    --old-zabbix
-By default, mamonsu exports the template for Zabbix 4.4 or higher.
-To export a template for older Zabbix versions, use the --old-zabbix option.
-
-
 Export zabbix template with additional plugins included in config file:
 Command: export template 
 Examples:
@@ -61,7 +38,6 @@ Options:
 HINT: By default, mamonsu exports the template for Zabbix 4.4 or higher.
 To export a template for older Zabbix versions, use the --old-zabbix option.
 
-
 Bootstrap DDL for monitoring:
 Command: bootstrap
 Examples:
@@ -74,7 +50,6 @@ Options:
     -U, --username <USERNAME>
     --host <PGHOST>
    
-
 Information about working mamonsu:
 Command: agent
 Examples:
@@ -83,8 +58,6 @@ Examples:
     {prog} agent metric-get <metric key>
 Options:
     -c, --config <file>
-
-
 
 Zabbix API toolbox:
 Command: zabbix
@@ -115,7 +88,7 @@ Options:
     --url=http://zabbix/web/face
     --user=WebUser
     --password=WebPassword
-        
+    
 Export metrics to zabbix server
 Command: upload
 Example:
@@ -130,6 +103,30 @@ Options:
 
 if platform.LINUX:
     usage_msg += """
+Export zabbix keys for native zabbix-agent:
+Command: export zabbix-parameters
+Examples:
+    {prog} export zabbix-parameters  <file>
+Options:
+    --plugin-type <plugin_type> (pg|sys|all) by default all
+    --pg-version <pg_version> by default 10
+    --add-plugins <directory>
+    --config  <file>
+HINT: Supported version numbers are 12, 10, 11, 9.6, 9.5
+
+Export template for native zabbix agent:
+Command: export zabbix-template
+Examples:
+    {prog} export zabbix-template [options] <file>
+Options:
+    --template-name <template name> by default PostgresPro-<platform name>
+    --plugin-type <plugin_type> (pg|sys|all) by default all
+    --application  <application name in template> by default App-PostgresPro-<platform name>
+    --add-plugins <directory>
+    --config  <file>
+    --old-zabbix
+By default, mamonsu exports the template for Zabbix 4.4 or higher.
+To export a template for older Zabbix versions, use the --old-zabbix option.
 
 Report about hardware and software:
 Command: report
@@ -145,8 +142,6 @@ Options:
     -r, --print-report
     -w, --report-path <path to file>
     
-
-
 AutoTune config and system:
 Command: tune
 Options:
@@ -159,7 +154,6 @@ Options:
 
 if platform.WINDOWS:
     usage_msg += """
-
 AutoTune config and system:
 Command: tune
 Options:
@@ -179,7 +173,6 @@ class MissOptsParser(OptionParser):
 
     def print_help(self, **kwargs):
         print("""
-
 
 Export example config with default variables:
 Command: export
