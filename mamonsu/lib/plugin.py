@@ -123,9 +123,15 @@ class Plugin(object):
     def is_sender(self):
         return self._sender
 
+    def get_boolean(self, value):
+        if value:
+            if value.upper() in ('FALSE', '0', 'NO', 'F'):
+                return False
+        return True
+
     def is_enabled(self):
-        if self.plugin_config('enabled') == 'False':
-            return False
+        if self.plugin_config('enabled'):
+            return self.get_boolean(self.plugin_config('enabled'))
         return self._enabled
 
     def disable(self):

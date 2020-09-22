@@ -48,9 +48,9 @@ select
     prev = {}
 
     def run(self, zbx):
-
-        if self.plugin_config('force_enable') == 'False':
-            self.disable_and_exit_if_not_pgpro_ee()
+        if self.plugin_config('force_enable'):
+            if not self.get_boolean(self.plugin_config('force_enable')):
+                self.disable_and_exit_if_not_pgpro_ee()
 
         # tick every 100 seconds
         if self.ratioCounter == self.ratioInterval:
