@@ -4,11 +4,15 @@ import win32event
 import win32evtlogutil
 import servicemanager
 import os
+import sys
+
+import logging
 
 from threading import Thread
 from mamonsu.lib.config import Config
 from mamonsu.lib.supervisor import Supervisor
 
+config = None
 
 class MamonsuSvc(win32serviceutil.ServiceFramework):
 
@@ -27,19 +31,12 @@ class MamonsuSvc(win32serviceutil.ServiceFramework):
 
     def SvcDoRun(self):
 
-        # __file__ == 'service_win32.py'
-        exe_dir = os.path.dirname(os.path.dirname(__file__))
-        os.chdir(exe_dir)
-
         win32evtlogutil.ReportEvent(
             self._svc_name_,
             servicemanager.PYS_SERVICE_STARTED,
             0,
             servicemanager.EVENTLOG_INFORMATION_TYPE,
             (self._svc_name_, ''))
-
-        config_file = os.path.join(exe_dir, 'agent.conf')
-        config = Config(config_file)
 
         supervisor = Supervisor(config)
         win32evtlogutil.ReportEvent(
@@ -52,7 +49,6 @@ class MamonsuSvc(win32serviceutil.ServiceFramework):
         thread = Thread(target=supervisor.start)
         thread.daemon = True
         thread.start()
-
         while True:
             rc = win32event.WaitForSingleObject(
                 self.hWaitStop, win32event.INFINITE)
@@ -66,5 +62,24 @@ class MamonsuSvc(win32serviceutil.ServiceFramework):
                 break
 
 
+#if __name__ == '__main__':
+#    win32serviceutil.HandleCommandLine(MamonsuSvc)
+
 if __name__ == '__main__':
-    win32serviceutil.HandleCommandLine(MamonsuSvc)
+    # determine if application is a script file or frozen exe       
+    if getattr(sys, 'frozen', False):
+        exe_dir = os.path.dirname(sys.executable)
+    elif __file__:
+        # exe_dir = C:\WINDOWS\system32 for service
+        exe_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # initializing in this place for logging
+    config_file = os.path.join(exe_dir, 'agent.conf')
+    config = Config(config_file)
+
+    if len(sys.argv) == 1:
+        servicemanager.Initialize()
+        servicemanager.PrepareToHostSingle(MamonsuSvc)
+        servicemanager.StartServiceCtrlDispatcher()
+    else:
+        win32serviceutil.HandleCommandLine(MamonsuSvc)

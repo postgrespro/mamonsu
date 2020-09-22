@@ -9,6 +9,7 @@ from mamonsu.lib.config import Config
 
 import urllib.request as urllib
 from urllib.error import URLError, HTTPError
+from mamonsu.lib.default_config import DefaultConfig
 
 
 def run_agent():
@@ -32,7 +33,7 @@ Options:
         usage=usage_msg,
         version='%prog agent {0}'.format(__version__))
     parser.add_option(
-        '-c', '--config', dest='config', default='/etc/mamonsu/agent.conf',
+        '-c', '--config', dest='config', default=DefaultConfig.default_config_path(),
         help=optparse.SUPPRESS_HELP)
     args, commands = parser.parse_args()
 

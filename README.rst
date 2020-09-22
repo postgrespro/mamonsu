@@ -103,6 +103,10 @@ NOTE: only mamonsu 2.3.4 builds for Windows.
     $ c:\mamonsu\service_win32.exe -install
     $ net start mamonsu
 
+    or
+    $ pyinstaller --onefile mamonsu_win32.spec
+    $ pyinstaller --onefile service_win32.spec
+
 Build nsis installer:
 
 .. code-block:: bash
