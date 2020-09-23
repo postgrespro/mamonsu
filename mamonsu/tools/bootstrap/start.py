@@ -59,6 +59,7 @@ class Args(DefaultConfig):
         bootstrap_group.add_option(
             '-M', '--mamonsu-username',
             dest='mamonsu_username',
+            default=self.default_user(),
             help='database non-privileged user for mamonsu')
         parser.add_option_group(group)
         parser.add_option_group(bootstrap_group)

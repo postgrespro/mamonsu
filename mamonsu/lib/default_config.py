@@ -2,6 +2,7 @@
 
 import os
 import logging
+import getpass
 import mamonsu.lib.platform as platform
 
 
@@ -9,7 +10,7 @@ class PgsqlConfig(object):
 
     @staticmethod
     def default_user():
-        user = os.environ.get('PGUSER') or 'postgres'
+        user = os.environ.get('PGUSER') or getpass.getuser() or 'postgres'
         return user
 
     @staticmethod
@@ -39,7 +40,7 @@ class PgsqlConfig(object):
 
     @staticmethod
     def default_db():
-        database = os.environ.get('PGDATABASE') or os.environ.get('PGUSER')
+        database = os.environ.get('PGDATABASE') or os.environ.get('PGUSER') or getpass.getuser()
         database = database or 'postgres'
         return database
 
