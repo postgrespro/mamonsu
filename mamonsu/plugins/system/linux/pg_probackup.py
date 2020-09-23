@@ -24,11 +24,19 @@ class PgProbackup(Plugin):
         total_size = 0
         for dirpath, dirnames, filenames in tree:
             for file in filenames:
-                size = os.path.getsize(os.path.join(dirpath, file))
-                if 0 < size < self.block_size:
-                    size = round(size / self.block_size) * self.block_size + self.block_size
+                try:
+                    size = os.path.getsize(os.path.join(dirpath, file))
+                    if 0 < size < self.block_size:
+                        size = round(size / self.block_size) * self.block_size + self.block_size
+                except FileNotFoundError as e:
+                    self.log.debug(str(e))
+                    size = 0
                 total_size += size
-            size = os.path.getsize(dirpath)
+            try:
+                size = os.path.getsize(dirpath)
+            except FileNotFoundError as e:
+                self.log.debug(str(e))
+                size = 0
             total_size += size
         return total_size
 
