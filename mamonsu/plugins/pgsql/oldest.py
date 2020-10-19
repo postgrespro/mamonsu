@@ -23,6 +23,7 @@ class Oldest(Plugin):
     OldestTransactionSql_bootstrap = """
 select public.mamonsu_get_oldest_transaction();
 """
+    ParallelQueries = "SELECT count(*) FROM pg_stat_activity WHERE leader_pid is not NULL;"
 
     DEFAULT_CONFIG = {
         'max_xid_age': str(5000 * 60 * 60),
@@ -36,7 +37,9 @@ select public.mamonsu_get_oldest_transaction();
         else:
             xid = Pooler.query(self.OldestXidSql)[0][0]
             query = Pooler.query(self.OldestTransactionSql)[0][0]
-
+        if Pooler.server_version_greater('13'):
+            parallel_queries = Pooler.query(self.ParallelQueries)[0][0]
+            zbx.send('pgsql.parallel[queries]', parallel_queries)
         zbx.send('pgsql.oldest[xid_age]', xid)
         zbx.send('pgsql.oldest[transaction_time]', query)
 
@@ -55,6 +58,13 @@ select public.mamonsu_get_oldest_transaction();
                 'color': '00CC00'
             }]
         })
+        result += template.graph({
+            'name': 'PostgreSQL number of parallel queries being executed now',
+            'items': [{
+                'key': self.right_type("pgsql.parallel{0}", 'queries'),
+                'color': '0000CC'
+            }]
+        })
         return result
 
     def items(self, template):
@@ -64,11 +74,15 @@ select public.mamonsu_get_oldest_transaction();
             'delay': self.plugin_config('interval'),
             'value_type': Plugin.VALUE_TYPE.numeric_unsigned
         }) + template.item({
-
             'key': self.right_type(self.key, 'transaction_time'),
             'name': 'PostgreSQL: oldest transaction running time in sec',
             'delay': self.plugin_config('interval'),
             'units': Plugin.UNITS.s
+        }) + template.item({
+            'key': self.right_type("pgsql.parallel{0}", 'queries'),
+            'name': 'PostgreSQL: number of parallel queries being executed now',
+            'delay': self.plugin_config('interval'),
+            'value_type': Plugin.VALUE_TYPE.numeric_unsigned
         })
 
     def triggers(self, template):
@@ -84,5 +98,6 @@ select public.mamonsu_get_oldest_transaction();
 
     def keys_and_queries(self, template_zabbix):
         result = ['{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.xid_age'), self.OldestXidSql),
-                  '{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.transaction_time'), self.OldestTransactionSql)]
+                  '{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.transaction_time'), self.OldestTransactionSql),
+                  '{0}[*],$2 $1 -c "{1}"'.format("pgsql.parallel{0}".format('.queries'), self.ParallelQueries)]
         return template_zabbix.key_and_query(result)

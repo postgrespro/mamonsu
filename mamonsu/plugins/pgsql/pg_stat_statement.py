@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
+from distutils.version import LooseVersion
 from .pool import Pooler
 
 
@@ -33,22 +34,45 @@ class PgStatStatement(Plugin):
          'sum(blk_write_time)/float4(100)',
          'write io time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
          ('PostgreSQL statements: spend time', '0000CC', 0)),
-        ('stat[other_time]',
-         'sum(total_time-blk_read_time-blk_write_time)/float4(100)',
+        ['stat[other_time]',
+         'sum({0}-blk_read_time-blk_write_time)/float4(100)',
          'other (mostly cpu) time', Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ('PostgreSQL statements: spend time', 'BBBB00', 0))
+         ('PostgreSQL statements: spend time', 'BBBB00', 0)]]
+
+    Items_pg_13 = [
+
+        # PostgreSQL 13 specific metrics:
+        ('stat[wal_bytes]',
+         'sum(wal_bytes)',
+         'amount of wal files', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
+         ('PostgreSQL statements: wal statistics', 'BCC000', 0)),
+        ('stat[wal_records]',
+         'sum(wal_records)',
+         'amount of wal records', Plugin.UNITS.none, Plugin.DELTA.speed_per_second,
+         ('PostgreSQL statements: wal statistics', 'CC6600', 0)),
+        ('stat[wal_fpi]',
+         'sum(wal_fpi)',
+         'full page writes', Plugin.UNITS.none, Plugin.DELTA.speed_per_second,
+         ('PostgreSQL statements: wal statistics', '00CCCC', 0))
     ]
 
     def run(self, zbx):
         if not self.extension_installed('pg_stat_statements'):
             return
-        params = [x[1] for x in self.Items]
+        if Pooler.server_version_greater('13'):
+            self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
+            all_items = self.Items + self.Items_pg_13
+            params = [x[1] for x in all_items]
+        else:
+            self.Items[5][1] = self.Items[5][1].format("total_time")
+            all_items = self.Items
+            params = [x[1] for x in all_items]
         result = Pooler.query(self.query.format(
             ', '.join(params)))
         for idx, val in enumerate(result[0]):
             key, val = 'pgsql.{0}'.format(
-                self.Items[idx][0]), int(val)
-            zbx.send(key, val, self.Items[idx][4])
+                all_items[idx][0]), int(val)
+            zbx.send(key, val, all_items[idx][4])
 
     def items(self, template):
         result = ''
@@ -56,7 +80,7 @@ class PgStatStatement(Plugin):
             delta = Plugin.DELTA.as_is
         else:
             delta = Plugin.DELTA.speed_per_second
-        for item in self.Items:
+        for item in self.Items + self.Items_pg_13:
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[0].split('[')
             result += template.item({
@@ -71,11 +95,12 @@ class PgStatStatement(Plugin):
     def graphs(self, template):
         all_graphs = [
             ('PostgreSQL statements: bytes', None),
-            ('PostgreSQL statements: spend time', 1)]
+            ('PostgreSQL statements: spend time', 1),
+            ('PostgreSQL statements: wal statistics', None)]
         result = ''
         for graph_item in all_graphs:
             items = []
-            for item in self.Items:
+            for item in self.Items + self.Items_pg_13:
                 if item[5][0] == graph_item[0]:
                     keys = item[0].split('[')
                     items.append({
@@ -91,7 +116,14 @@ class PgStatStatement(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        for i, item in enumerate(self.Items):
+        if LooseVersion(self.VersionPG) < LooseVersion('13'):
+            self.Items[5][1] = self.Items[5][1].format("total_time")
+            all_items = self.Items
+        else:
+            self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
+            all_items = self.Items + self.Items_pg_13
+
+        for i, item in enumerate(all_items):
             keys = item[0].split('[')
             result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
                                                          self.query.format(item[1])))
