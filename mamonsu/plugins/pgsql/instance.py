@@ -124,11 +124,10 @@ class Instance(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        all_items = []
-        if LooseVersion(self.VersionPG) > LooseVersion('11'):
-            all_items = self.Items + self.Items_pg_12
-        else:
+        if LooseVersion(self.VersionPG) < LooseVersion('12'):
             all_items = self.Items
+        else:
+            all_items = self.Items + self.Items_pg_12
         for item in all_items:
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[1].split('[')
