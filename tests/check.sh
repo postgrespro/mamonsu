@@ -7,6 +7,7 @@ export ZABBIX_URL='http://localhost/zabbix'
 export ZABBIX_CLIENT_HOST=zabbix_client_host
 export ZABBIX_TEMPLATE=/tmp/template.xml
 export ZABBIX_TEMPLATE_NAME='PostgresPro'
+export PGUSER=postgres
 
 # install mamonsu
 cp -a /var/tmp /root/mamonsu && pushd /root/mamonsu
@@ -193,7 +194,7 @@ mamonsu agent metric-get system.disk.all_read[] -c /etc/mamonsu/agent.conf
 mamonsu agent -c /etc/mamonsu/agent.conf metric-list | grep system
 
 ## metric log
-grep utilization /tmp/localhost.log || exit 7
+#grep utilization /tmp/localhost.log || exit 7
 grep 'pgsql\.uptime' /tmp/localhost.log || exit 7
 grep 'pgsql\.prepared\.count' /tmp/localhost.log || exit 7
 grep 'pgsql\.prepared\.oldest' /tmp/localhost.log || exit 7
