@@ -7,12 +7,12 @@ from mamonsu.lib.plugin import PluginDisableException
 
 class RelationsSize(Plugin):
     DEFAULT_CONFIG = {'enabled': 'False'}
+    key_rel_size_discovery = "pgsql.relation.size{0}"
 
     def __init__(self, config):
         super(Plugin, self).__init__(config)
         if self.is_enabled():
             self.relations = None
-            self.key_rel_size_discovery = "pgsql.relation.size{0}"
             self.query_template = """SELECT relation.schema
              , relation.name
              , CASE WHEN l.mode = 'AccessExclusiveLock' THEN '-1'
