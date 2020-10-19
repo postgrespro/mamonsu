@@ -6,7 +6,7 @@ from .pool import Pooler
 
 
 class Xlog(Plugin):
-    DEFAULT_CONFIG = {'lag_more_then_in_sec': str(60 * 5)}
+    DEFAULT_CONFIG = {'lag_more_than_in_sec': str(60 * 5)}
     query_wal_lsn_diff = " select pg_catalog.pg_wal_lsn_diff " \
                          "(pg_catalog.pg_current_wal_lsn(), '0/00000000');"
     query_xlog_lsn_diff = "select pg_catalog.pg_xlog_location_diff " \
