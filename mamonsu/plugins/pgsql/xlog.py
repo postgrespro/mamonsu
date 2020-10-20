@@ -86,7 +86,7 @@ class Xlog(Plugin):
             'name': 'PostgreSQL streaming lag too high '
                     'on {HOSTNAME} (value={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:' + self.right_type(self.key_replication, "sec") + '.last()}&gt;' +
-            self.plugin_config('lag_more_then_in_sec')
+            self.plugin_config('lag_more_than_in_sec')
         })
 
     def keys_and_queries(self, template_zabbix):
