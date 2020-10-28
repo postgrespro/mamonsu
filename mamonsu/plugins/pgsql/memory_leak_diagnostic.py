@@ -5,6 +5,7 @@ import re
 from distutils.version import LooseVersion
 import mamonsu.lib.platform as platform
 from mamonsu.lib.plugin import PluginDisableException
+import logging
 
 class MemoryLeakDiagnostic(Plugin):
     DEFAULT_CONFIG = {'enabled': 'False',
@@ -23,7 +24,7 @@ class MemoryLeakDiagnostic(Plugin):
         super(Plugin, self).__init__(config)
         if not platform.LINUX:
             self.disable()
-            raise PluginDisableException('Plugin {name} work only on Linux. '.format(name=self.__class__.__name__))
+            logging.error('Plugin {name} work only on Linux. '.format(name=self.__class__.__name__))
 
         if self.is_enabled():
             self.page_size = os.sysconf('SC_PAGE_SIZE')
@@ -41,9 +42,11 @@ class MemoryLeakDiagnostic(Plugin):
                 ratio = 1024 * 1024 * 1024 * 1024
             else:
                 self.disable()
-                raise PluginDisableException('Error in config, section [{section}], parameter private_anon_mem_threshold. '
+                logging.error('Error in config, section [{section}], parameter private_anon_mem_threshold. '
                               'Possible values MB, GB, TB. For example 1GB.'
                               .format(section=self.__class__.__name__.lower()))
+                ratio = 1024 * 1024 * 1024
+
             self.diff = ratio * int(private_anon_mem_threshold)
 
             self.os_release = os.uname().release
@@ -52,15 +55,17 @@ class MemoryLeakDiagnostic(Plugin):
                 release_file = open(os_release_file, 'r').readlines()
             except Exception as e:
                 self.disable()
-                raise PluginDisableException(f'Cannot read file {os_release_file} : {e}')
+                release_file = None
+                logging.error(f'Cannot read file {os_release_file} : {e}')
 
-            for line in release_file:
-                if line.strip('"\n') != '':
-                    k, v = line.split('=', 1)
-                    if k == 'ID':
-                        self.os_name = v.strip('"\n')
-                    elif k == 'VERSION_ID':
-                        self.os_version = v.strip('"\n')
+            if release_file:
+                for line in release_file:
+                    if line.strip('"\n') != '':
+                        k, v = line.split('=', 1)
+                        if k == 'ID':
+                            self.os_name = v.strip('"\n')
+                        elif k == 'VERSION_ID':
+                            self.os_version = v.strip('"\n')
 
     def run(self, zbx):
         pids = []
