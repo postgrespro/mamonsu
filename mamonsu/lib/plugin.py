@@ -135,6 +135,7 @@ class Plugin(object):
         return self._enabled
 
     def disable(self):
+        self._plugin_config['enabled'] = 'False'
         self._enabled = False
 
     def set_sender(self, sender):

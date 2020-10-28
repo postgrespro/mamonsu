@@ -4,8 +4,8 @@ from .pool import Pooler
 import re
 from distutils.version import LooseVersion
 import mamonsu.lib.platform as platform
-from mamonsu.lib.plugin import PluginDisableException
 import logging
+
 
 class MemoryLeakDiagnostic(Plugin):
     DEFAULT_CONFIG = {'enabled': 'False',
@@ -45,7 +45,6 @@ class MemoryLeakDiagnostic(Plugin):
                 logging.error('Error in config, section [{section}], parameter private_anon_mem_threshold. '
                               'Possible values MB, GB, TB. For example 1GB.'
                               .format(section=self.__class__.__name__.lower()))
-                ratio = 1024 * 1024 * 1024
 
             self.diff = ratio * int(private_anon_mem_threshold)
 
@@ -54,9 +53,8 @@ class MemoryLeakDiagnostic(Plugin):
             try:
                 release_file = open(os_release_file, 'r').readlines()
             except Exception as e:
-                self.disable()
+                logging.info(f'Cannot read file {os_release_file} : {e}')
                 release_file = None
-                logging.error(f'Cannot read file {os_release_file} : {e}')
 
             if release_file:
                 for line in release_file:
@@ -66,6 +64,9 @@ class MemoryLeakDiagnostic(Plugin):
                             self.os_name = v.strip('"\n')
                         elif k == 'VERSION_ID':
                             self.os_version = v.strip('"\n')
+            else:
+                self.os_name = None
+                self.os_version = None
 
     def run(self, zbx):
         pids = []
@@ -75,13 +76,10 @@ class MemoryLeakDiagnostic(Plugin):
 
         for row in Pooler.query(query=self.query):
             pids.append(row[0])
-        print(self.os_release.split('.')[0])
-        print(int(self.os_release.split('.')[1]))
-        print(self.os_name)
-        print(self.os_version)
-        if LooseVersion(self.os_release) < LooseVersion("4.5") and \
-                not (self.os_name == 'centos' and self.os_version == '7'):
-            print('point 1')
+
+        if (LooseVersion(self.os_release) < LooseVersion("4.5")
+            and not (self.os_name == 'centos' and self.os_version == '7'))\
+                or (not self.os_name and not self.os_version):
             for pid in pids:
                 try:
                     statm = open(f'/proc/{pid}/statm', 'r').read().split(' ')
@@ -97,7 +95,6 @@ class MemoryLeakDiagnostic(Plugin):
                 for diff in diffs:
                     msg_text += 'pid: {pid},  RES {RES} - SHR {SHR} more then {diff}\n'.format_map(diff)
         else:
-            print('point 2')
             for pid in pids:
                 try:
                     statm = open(f'/proc/{pid}/status', 'r').readlines()
