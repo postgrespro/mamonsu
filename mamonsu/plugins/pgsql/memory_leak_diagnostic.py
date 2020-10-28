@@ -3,7 +3,8 @@ import os
 from .pool import Pooler
 import logging
 import re
-
+from distutils.version import LooseVersion
+import mamonsu.lib.platform as platform
 
 class MemoryLeakDiagnostic(Plugin):
     DEFAULT_CONFIG = {'enabled': 'False',
@@ -20,6 +21,9 @@ class MemoryLeakDiagnostic(Plugin):
 
     def __init__(self, config):
         super(Plugin, self).__init__(config)
+        if not platform.LINUX:
+            logging.info('Plugin {name} work only on Linux. '.format(name=self.__class__.__name__))
+            self.disable()
 
         if self.is_enabled():
             self.page_size = os.sysconf('SC_PAGE_SIZE')
@@ -51,11 +55,12 @@ class MemoryLeakDiagnostic(Plugin):
                 self.disable()
 
             for line in release_file:
-                k, v = line.split('=', 1)
-                if k == 'ID':
-                    self.os_name = v.strip('"\n')
-                elif k == 'VERSION_ID':
-                    self.os_version = v.strip('"\n')
+                if line.strip('"\n') != '':
+                    k, v = line.split('=', 1)
+                    if k == 'ID':
+                        self.os_name = v.strip('"\n')
+                    elif k == 'VERSION_ID':
+                        self.os_version = v.strip('"\n')
 
     def run(self, zbx):
         pids = []
@@ -69,10 +74,8 @@ class MemoryLeakDiagnostic(Plugin):
         print(int(self.os_release.split('.')[1]))
         print(self.os_name)
         print(self.os_version)
-        if int(self.os_release.split('.')[0]) <= 4 and \
-                int(self.os_release.split('.')[1]) < 5 and \
-                self.os_name != 'centos' and \
-                self.os_version != '7':
+        if LooseVersion(self.os_release) < LooseVersion("4.5") and \
+                not (self.os_name == 'centos' and self.os_version == '7'):
             print('point 1')
             for pid in pids:
                 try:
