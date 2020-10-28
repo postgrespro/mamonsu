@@ -1,10 +1,10 @@
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 import os
 from .pool import Pooler
-import logging
 import re
 from distutils.version import LooseVersion
 import mamonsu.lib.platform as platform
+from mamonsu.lib.plugin import PluginDisableException
 
 class MemoryLeakDiagnostic(Plugin):
     DEFAULT_CONFIG = {'enabled': 'False',
@@ -22,8 +22,8 @@ class MemoryLeakDiagnostic(Plugin):
     def __init__(self, config):
         super(Plugin, self).__init__(config)
         if not platform.LINUX:
-            logging.info('Plugin {name} work only on Linux. '.format(name=self.__class__.__name__))
             self.disable()
+            raise PluginDisableException('Plugin {name} work only on Linux. '.format(name=self.__class__.__name__))
 
         if self.is_enabled():
             self.page_size = os.sysconf('SC_PAGE_SIZE')
@@ -40,10 +40,10 @@ class MemoryLeakDiagnostic(Plugin):
             elif prefix == 'TB':
                 ratio = 1024 * 1024 * 1024 * 1024
             else:
-                logging.error('Error in config, section [{section}], parameter private_anon_mem_threshold. '
+                self.disable()
+                raise PluginDisableException('Error in config, section [{section}], parameter private_anon_mem_threshold. '
                               'Possible values MB, GB, TB. For example 1GB.'
                               .format(section=self.__class__.__name__.lower()))
-                self.disable()
             self.diff = ratio * int(private_anon_mem_threshold)
 
             self.os_release = os.uname().release
@@ -51,17 +51,16 @@ class MemoryLeakDiagnostic(Plugin):
             try:
                 release_file = open(os_release_file, 'r').readlines()
             except Exception as e:
-                logging.error(f'Cannot read file {os_release_file} : {e}')
-                release_file = None
                 self.disable()
-            if release_file:
-                for line in release_file:
-                    if line.strip('"\n') != '':
-                        k, v = line.split('=', 1)
-                        if k == 'ID':
-                            self.os_name = v.strip('"\n')
-                        elif k == 'VERSION_ID':
-                            self.os_version = v.strip('"\n')
+                raise PluginDisableException(f'Cannot read file {os_release_file} : {e}')
+
+            for line in release_file:
+                if line.strip('"\n') != '':
+                    k, v = line.split('=', 1)
+                    if k == 'ID':
+                        self.os_name = v.strip('"\n')
+                    elif k == 'VERSION_ID':
+                        self.os_version = v.strip('"\n')
 
     def run(self, zbx):
         pids = []
