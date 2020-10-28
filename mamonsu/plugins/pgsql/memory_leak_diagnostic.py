@@ -52,15 +52,16 @@ class MemoryLeakDiagnostic(Plugin):
                 release_file = open(os_release_file, 'r').readlines()
             except Exception as e:
                 logging.error(f'Cannot read file {os_release_file} : {e}')
+                release_file = None
                 self.disable()
-
-            for line in release_file:
-                if line.strip('"\n') != '':
-                    k, v = line.split('=', 1)
-                    if k == 'ID':
-                        self.os_name = v.strip('"\n')
-                    elif k == 'VERSION_ID':
-                        self.os_version = v.strip('"\n')
+            if release_file:
+                for line in release_file:
+                    if line.strip('"\n') != '':
+                        k, v = line.split('=', 1)
+                        if k == 'ID':
+                            self.os_name = v.strip('"\n')
+                        elif k == 'VERSION_ID':
+                            self.os_version = v.strip('"\n')
 
     def run(self, zbx):
         pids = []
