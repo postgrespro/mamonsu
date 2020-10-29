@@ -7,12 +7,36 @@ from .pool import Pooler
 
 class Xlog(Plugin):
     DEFAULT_CONFIG = {'lag_more_than_in_sec': str(60 * 5)}
-    query_wal_lsn_diff = " select pg_catalog.pg_wal_lsn_diff " \
+
+    # get amount of WAL since '0/00000000'
+    query_wal_lsn_diff = " SELECT  pg_catalog.pg_wal_lsn_diff " \
                          "(pg_catalog.pg_current_wal_lsn(), '0/00000000');"
-    query_xlog_lsn_diff = "select pg_catalog.pg_xlog_location_diff " \
+
+    query_xlog_lsn_diff = "SELECT  pg_catalog.pg_xlog_location_diff " \
                           "(pg_catalog.pg_current_xlog_location(), '0/00000000');"
+
+    # get time of replication lag
     query_agent_replication_lag = "SELECT CASE WHEN extract(epoch from now()-pg_last_xact_replay_timestamp()) " \
                                   "IS NULL THEN 0 ELSE extract(epoch from now()-pg_last_xact_replay_timestamp()) END"
+
+    # get diff in lsn for replica (for version 10 and higher also write, flush and replay
+
+    query_wal_lag_lsn = "SELECT application_name, " \
+                        " flush_lag, replay_lag, write_lag, " \
+                        " pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn) AS total_lag " \
+                        " FROM pg_stat_replication;"
+    query_xlog_lag_lsn = "SELECT application_name, " \
+                        "pg_xlog_location_diff(pg_current_xlog_location(), replay_location) AS total_lag  " \
+                        "FROM pg_stat_replication;"
+
+    # for discovery rule for name of each replica
+    key_lsn_replication_discovery = "pgsql.replication.discovery{0}"
+    key_total_lag = 'pgsql.replication.total_lag{0}'
+    #  for PG 10 and higher
+    key_flush = 'pgsql.replication.flush_lag{0}'
+    key_replay = 'pgsql.replication.replay_lag{0}'
+    key_write = 'pgsql.replication.write_lag{0}'
+
     key_wall = 'pgsql.wal.write{0}'
     key_count_wall = "pgsql.wal.count{0}"
     key_replication = "pgsql.replication_lag{0}"
@@ -27,12 +51,39 @@ class Xlog(Plugin):
                 zbx.send('pgsql.replication_lag[sec]', float(lag[0][0]))
         else:
             Pooler.run_sql_type('replication_lag_master_query')
-            # xlog location
+
             if Pooler.server_version_greater('10.0'):
                 result = Pooler.query(self.query_wal_lsn_diff)
+                result_lags = Pooler.query(self.query_wal_lag_lsn)
+                if result_lags:
+                    lags = []
+                    for info in result_lags:
+                        lags.append({'{#APPLICATION_NAME}': info[0]})
+                        zbx.send('pgsql.replication.flush_lag[{0}]'.format(
+                            info[0]), info[1])
+                        zbx.send('pgsql.replication.replay_lag[{0}]'.format(
+                            info[0]), info[2])
+                        zbx.send('pgsql.replication.write_lag[{0}]'.format(
+                            info[0]), info[3])
+                        zbx.send('pgsql.replication.total_lag[{0}]'.format(
+                            info[0]), float(info[4]), self.DELTA_SPEED)
+                    zbx.send('pgsql.replication.discovery[]', zbx.json({'data': lags}))
+                    del lags
             else:
                 result = Pooler.query(self.query_xlog_lsn_diff)
+                result_lags = Pooler.query(self.query_xlog_lag_lsn)
+                if result_lags:
+                    lags = []
+                    for info in result_lags:
+                        lags.append({'{#APPLICATION_NAME}': info[0]})
+
+                        zbx.send('pgsql.replication.total_lag[{0}]'.format(
+                            info[0]), float(info[1]), self.DELTA_SPEED)
+                    zbx.send('pgsql.replication.discovery[]', zbx.json({'data': lags}))
+                    del lags
+
             zbx.send(self.key_wall.format("[]"), float(result[0][0]), self.DELTA_SPEED)
+
         # count of xlog files
         if Pooler.server_version_greater('10.0'):
             result = Pooler.run_sql_type('count_wal_files')
@@ -88,6 +139,59 @@ class Xlog(Plugin):
             'expression': '{#TEMPLATE:' + self.right_type(self.key_replication, "sec") + '.last()}&gt;' +
             self.plugin_config('lag_more_than_in_sec')
         })
+
+    def discovery_rules(self, template):
+        rule = {
+            'name': 'Replication lag discovery',
+            'key': self.key_lsn_replication_discovery.format('[{0}]'.format(self.Macros[self.Type])),
+
+        }
+        if Plugin.old_zabbix:
+            conditions = []
+            rule['filter'] = '{#APPLICATION_NAME}:.*'
+        else:
+            conditions = [
+                {
+                    'condition': [
+                        {'macro': '{#APPLICATION_NAME}',
+                         'value': '.*',
+                         'operator': None,
+                         'formulaid': 'A'}
+                    ]
+                }
+
+            ]
+        items = [
+            {'key': self.right_type(self.key_flush, var_discovery="{#APPLICATION_NAME},"),
+             'name': 'Time elapsed between flushing recent WAL locally and receiving notification that '
+                     'this standby server {#APPLICATION_NAME} has written and flushed it',
+             'value_type': Plugin.VALUE_TYPE.text,
+             'delay': self.plugin_config('interval')},
+            {'key': self.right_type(self.key_replay, var_discovery="{#APPLICATION_NAME},"),
+             'name': 'Time elapsed between flushing recent WAL locally and receiving notification that '
+                     'this standby server {#APPLICATION_NAME} has written, flushed and applied',
+             'value_type': Plugin.VALUE_TYPE.text,
+             'delay': self.plugin_config('interval')},
+            {'key': self.right_type(self.key_write, var_discovery="{#APPLICATION_NAME},"),
+             'name': 'Time elapsed between flushing recent WAL locally and receiving notification that '
+                     'this standby server {#APPLICATION_NAME} has written it',
+             'value_type': Plugin.VALUE_TYPE.text,
+             'delay': self.plugin_config('interval')},
+            {'key': self.right_type(self.key_total_lag, var_discovery="{#APPLICATION_NAME},"),
+             'name': 'Delta of total lag for {#APPLICATION_NAME}',
+             'value_type': Plugin.VALUE_TYPE.numeric_float,
+             'delay': self.plugin_config('interval')}
+        ]
+        graphs = [
+            {
+                'name': 'Delta of total lag for {#APPLICATION_NAME}',
+                'items': [
+                    {'color': 'CC0000',
+                     'key': self.right_type(self.key_total_lag, var_discovery="{#APPLICATION_NAME},")},
+                  ]
+            }
+        ]
+        return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)
 
     def keys_and_queries(self, template_zabbix):
         result = []
