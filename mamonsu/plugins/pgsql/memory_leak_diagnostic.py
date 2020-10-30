@@ -154,7 +154,7 @@ class MemoryLeakDiagnostic(Plugin):
                 'items': [
                     {
                         'key': self.key_count_diff,
-                        'color': 'EEEEEE'
+                        'color': 'FF0000'
                     }
                 ]
             }
