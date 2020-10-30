@@ -179,6 +179,11 @@ enabled = True
 relations=postgres.pg_catalog.pg_class,postgres.pg_catalog.pg_user
 interval = 60
 
+[memoryleakdiagnostic]
+enabled = True
+interval = 60
+private_anon_mem_threshold = 1GB
+
 EOF
 mamonsu bootstrap -U postgres mamonsu -M mamonsu
 ##/etc/init.d/mamonsu start
@@ -199,6 +204,7 @@ grep 'pgsql\.uptime' /tmp/localhost.log || exit 7
 grep 'pgsql\.prepared\.count' /tmp/localhost.log || exit 7
 grep 'pgsql\.prepared\.oldest' /tmp/localhost.log || exit 7
 grep 'pgsql\.relation\.size' /tmp/localhost.log || exit 7
+grep 'pgsql\.memory_leak_diagnostic\.count_diff' /tmp/localhost.log || exit 7
 
 ## error in zabbix server
 (mamonsu zabbix item error $ZABBIX_CLIENT_HOST | grep ZBX_NOTSUPPORTED) && exit 8
