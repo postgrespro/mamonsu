@@ -4,7 +4,6 @@ from .pool import Pooler
 import re
 from distutils.version import LooseVersion
 import mamonsu.lib.platform as platform
-import logging
 
 
 class MemoryLeakDiagnostic(Plugin):
@@ -24,7 +23,7 @@ class MemoryLeakDiagnostic(Plugin):
         super(Plugin, self).__init__(config)
         if not platform.LINUX:
             self.disable()
-            logging.error('Plugin {name} work only on Linux. '.format(name=self.__class__.__name__))
+            self.log.error('Plugin {name} work only on Linux. '.format(name=self.__class__.__name__))
 
         if self.is_enabled():
             self.page_size = os.sysconf('SC_PAGE_SIZE')
@@ -42,9 +41,9 @@ class MemoryLeakDiagnostic(Plugin):
                 ratio = 1024 * 1024 * 1024 * 1024
             else:
                 self.disable()
-                logging.error('Error in config, section [{section}], parameter private_anon_mem_threshold. '
-                              'Possible values MB, GB, TB. For example 1GB.'
-                              .format(section=self.__class__.__name__.lower()))
+                self.log.error('Error in config, section [{section}], parameter private_anon_mem_threshold. '
+                               'Possible values MB, GB, TB. For example 1GB.'
+                               .format(section=self.__class__.__name__.lower()))
 
             self.diff = ratio * int(private_anon_mem_threshold)
 
@@ -53,7 +52,7 @@ class MemoryLeakDiagnostic(Plugin):
             try:
                 release_file = open(os_release_file, 'r').readlines()
             except Exception as e:
-                logging.info(f'Cannot read file {os_release_file} : {e}')
+                self.log.info(f'Cannot read file {os_release_file} : {e}')
                 release_file = None
 
             if release_file:
