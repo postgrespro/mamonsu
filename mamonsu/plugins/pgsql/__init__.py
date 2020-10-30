@@ -6,5 +6,6 @@ __all__ += ['cfs']
 __all__ += ['archive_command']
 __all__ += ['prepared_transaction']
 __all__ += ['relations_size']
+__all__ += ['memory_leak_diagnostic']
 
 from . import *
