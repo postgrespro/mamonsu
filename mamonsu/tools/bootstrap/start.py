@@ -46,7 +46,7 @@ class Args(DefaultConfig):
         group.add_option(
             '-W', '--password',
             dest='password',
-            default=self.default_user())
+            default='')
         bootstrap_group = optparse.OptionGroup(
             parser,
             'Bootstrap options')
