@@ -54,7 +54,7 @@ class Xlog(Plugin):
 
             if Pooler.server_version_greater('10.0'):
                 result = Pooler.query(self.query_wal_lsn_diff)
-                result_lags = Pooler.query(self.query_wal_lag_lsn)
+                result_lags = Pooler.run_sql_type('wal_lag_lsn')
                 if result_lags:
                     lags = []
                     for info in result_lags:
@@ -71,7 +71,7 @@ class Xlog(Plugin):
                     del lags
             else:
                 result = Pooler.query(self.query_xlog_lsn_diff)
-                result_lags = Pooler.query(self.query_xlog_lag_lsn)
+                result_lags = Pooler.run_sql_type('xlog_lag_lsn')
                 if result_lags:
                     lags = []
                     for info in result_lags:

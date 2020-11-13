@@ -36,6 +36,19 @@ class Pool(object):
             " from public.pg_buffercache",
             'select size, twice_used, dirty from public.mamonsu_buffer_cache()'
         ),
+        'wal_lag_lsn': (
+            "SELECT application_name, " \
+            " flush_lag, replay_lag, write_lag, " \
+            " pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn) AS total_lag " \
+            " FROM pg_stat_replication;",
+            'select public.mamonsu_count_wal_lag_lsn()'
+        ),
+        'xlog_lag_lsn': (
+            "SELECT application_name, " \
+            "pg_xlog_location_diff(pg_current_xlog_location(), replay_location) AS total_lag  " \
+            "FROM pg_stat_replication;",
+            'select public.mamonsu_count_xlog_lag_lsn()'
+        ),
     }
 
     def __init__(self, params=None):
@@ -66,7 +79,7 @@ class Pool(object):
         if db in self._cache['server_version']['storage']:
             return self._cache['server_version']['storage'][db]
         result = bytes(
-                self.query('show server_version', db)[0][0], 'utf-8')
+            self.query('show server_version', db)[0][0], 'utf-8')
         self._cache['server_version']['storage'][db] = '{0}'.format(
             result.decode('ascii'))
         return self._cache['server_version']['storage'][db]

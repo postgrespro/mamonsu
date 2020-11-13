@@ -123,6 +123,15 @@ RETURNS TABLE(count_prepared BIGINT, oldest_prepared BIGINT) AS $$
 SELECT COUNT(*) AS count_prepared,
 coalesce (ROUND(MAX(EXTRACT (EPOCH FROM (now() - prepared)))),0)::bigint AS oldest_prepared  
 FROM pg_catalog.pg_prepared_xacts$$ LANGUAGE SQL SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION public.mamonsu_count_{3}_lag_lsn()
+RETURNS TABLE(application_name TEXT, {8} total_lag NUMERIC ) AS $$
+SELECT 
+application_name,
+{6}
+pg_{7}_diff(pg_current_{7}(), replay_{9}) AS total_lag 
+FROM pg_stat_replication
+$$ LANGUAGE SQL SECURITY DEFINER;
 """
 
 GrantsOnSchemaSQL = """
@@ -153,4 +162,6 @@ GRANT EXECUTE ON FUNCTION public.mamonsu_get_sys_param(param text) TO {1};
 GRANT EXECUTE ON FUNCTION public.mamonsu_get_connections_states() TO {1};
 
 GRANT EXECUTE ON FUNCTION public.mamonsu_prepared_transaction() TO {1};
+
+GRANT EXECUTE ON FUNCTION public.mamonsu_count_{2}_lag_lsn() TO {1};
 """
