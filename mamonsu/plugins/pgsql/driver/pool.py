@@ -41,13 +41,16 @@ class Pool(object):
             " flush_lag, replay_lag, write_lag, " \
             " pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn) AS total_lag " \
             " FROM pg_stat_replication;",
-            'select public.mamonsu_count_wal_lag_lsn()'
+            " SELECT application_name, " \
+            " flush_lag, replay_lag, write_lag, total_lag " \
+            " FROM public.mamonsu_count_wal_lag_lsn()"
         ),
         'xlog_lag_lsn': (
             "SELECT application_name, " \
             "pg_xlog_location_diff(pg_current_xlog_location(), replay_location) AS total_lag  " \
             "FROM pg_stat_replication;",
-            'select public.mamonsu_count_xlog_lag_lsn()'
+            "SELECT application_name, total_lag "\
+            "FROM public.mamonsu_count_xlog_lag_lsn()"
         ),
     }
 

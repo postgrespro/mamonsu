@@ -19,16 +19,6 @@ class Xlog(Plugin):
     query_agent_replication_lag = "SELECT CASE WHEN extract(epoch from now()-pg_last_xact_replay_timestamp()) " \
                                   "IS NULL THEN 0 ELSE extract(epoch from now()-pg_last_xact_replay_timestamp()) END"
 
-    # get diff in lsn for replica (for version 10 and higher also write, flush and replay
-
-    query_wal_lag_lsn = "SELECT application_name, " \
-                        " flush_lag, replay_lag, write_lag, " \
-                        " pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn) AS total_lag " \
-                        " FROM pg_stat_replication;"
-    query_xlog_lag_lsn = "SELECT application_name, " \
-                        "pg_xlog_location_diff(pg_current_xlog_location(), replay_location) AS total_lag  " \
-                        "FROM pg_stat_replication;"
-
     # for discovery rule for name of each replica
     key_lsn_replication_discovery = "pgsql.replication.discovery{0}"
     key_total_lag = 'pgsql.replication.total_lag{0}'
@@ -51,7 +41,6 @@ class Xlog(Plugin):
                 zbx.send('pgsql.replication_lag[sec]', float(lag[0][0]))
         else:
             Pooler.run_sql_type('replication_lag_master_query')
-
             if Pooler.server_version_greater('10.0'):
                 result = Pooler.query(self.query_wal_lsn_diff)
                 result_lags = Pooler.run_sql_type('wal_lag_lsn')
