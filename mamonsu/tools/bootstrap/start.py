@@ -26,8 +26,8 @@ class Args(DefaultConfig):
         group.add_option(
             '-d', '--dbname',
             dest='dbname',
-            default=self.default_db(),
-            help='database name to connect to (default: %default)')
+            default=None,
+            help='database name to connect')
         group.add_option(
             '-h', '--host',
             dest='hostname',
@@ -75,6 +75,9 @@ class Args(DefaultConfig):
             sys.stderr.write("ERROR: Database non-privileged username for mamonsu is not specified\n")
             parser.print_help()
             sys.exit(1)
+
+        if not self.args.dbname:
+            self.args.dbname = self.args.username
 
         # apply env
         os.environ['PGUSER'] = self.args.username
@@ -145,6 +148,7 @@ class Args(DefaultConfig):
 
 def run_deploy():
     args = Args()
+
     if not args.try_configure_connect_to_pg():
         sys.exit(1)
 
