@@ -52,7 +52,7 @@ class MemoryLeakDiagnostic(Plugin):
             try:
                 release_file = open(os_release_file, 'r').readlines()
             except Exception as e:
-                self.log.info(f'Cannot read file {os_release_file} : {e}')
+                self.log.info('Cannot read file {os_release_file} : {e}'.format(os_release_file=os_release_file, e=e))
                 release_file = None
 
             if release_file:
@@ -81,7 +81,7 @@ class MemoryLeakDiagnostic(Plugin):
                 or (not self.os_name and not self.os_version):
             for pid in pids:
                 try:
-                    statm = open(f'/proc/{pid}/statm', 'r').read().split(' ')
+                    statm = open('/proc/{pid}/statm'.format(pid=pid), 'r').read().split(' ')
                 except FileNotFoundError:
                     continue
 
@@ -92,11 +92,14 @@ class MemoryLeakDiagnostic(Plugin):
                     diffs.append({'pid': pid, 'RES': RES, 'SHR': SHR, 'diff': self.diff})
             if diffs:
                 for diff in diffs:
-                    msg_text += 'pid: {pid},  RES {RES} - SHR {SHR} more then {diff}\n'.format_map(diff)
+                    msg_text += 'pid: {pid},  RES {RES} - SHR {SHR} more then {diff}\n'.format(pid=diff.get('pid'),
+                                                                                               RES=diff.get('RES'),
+                                                                                               SHR=diff.get('SHR'),
+                                                                                               diff=diff.get('diff'))
         else:
             for pid in pids:
                 try:
-                    statm = open(f'/proc/{pid}/status', 'r').readlines()
+                    statm = open('/proc/{pid}/status'.format(pid=pid), 'r').readlines()
                 except FileNotFoundError:
                     continue
 
@@ -123,7 +126,12 @@ class MemoryLeakDiagnostic(Plugin):
             if diffs:
                 for diff in diffs:
                     msg_text += 'pid: {pid},  RssAnon {RssAnon} more then {diff}, VmRSS {VmRSS}, ' \
-                                       'RssFile {RssFile}, RssShmem {RssShmem} \n'.format_map(diff)
+                                'RssFile {RssFile}, RssShmem {RssShmem} \n'.format(pid=diff.get('pid'),
+                                                                                   RssAnon=diff.get('RssAnon'),
+                                                                                   diff=diff.get('diff'),
+                                                                                   VmRSS=diff.get('VmRSS'),
+                                                                                   RssFile=diff.get('RssFile'),
+                                                                                   RssShmem=diff.get('RssShmem'))
 
         zbx.send(self.key_count_diff, int(count_diff))
         zbx.send(self.key_count_diff_error, msg_text)
