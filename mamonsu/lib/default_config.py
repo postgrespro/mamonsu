@@ -4,13 +4,22 @@ import os
 import logging
 import os
 import mamonsu.lib.platform as platform
+if platform.WINDOWS:
+    import win32api
+else:
+    import getpass
 
 
 class PgsqlConfig(object):
 
     @staticmethod
     def default_user():
-        user = os.environ.get('PGUSER') or os.getlogin() or 'postgres'
+        if platform.WINDOWS:
+            username = win32api.GetUserName()
+        else:
+            username = getpass.getuser()
+
+        user = os.environ.get('PGUSER') or username or 'postgres'
         return user
 
     @staticmethod
@@ -40,7 +49,12 @@ class PgsqlConfig(object):
 
     @staticmethod
     def default_db():
-        database = os.environ.get('PGDATABASE') or os.environ.get('PGUSER') or os.getlogin()
+        if platform.WINDOWS:
+            username = win32api.GetUserName()
+        else:
+            username = getpass.getuser()
+
+        database = os.environ.get('PGDATABASE') or os.environ.get('PGUSER') or username
         database = database or 'postgres'
         return database
 
