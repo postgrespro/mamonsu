@@ -59,7 +59,6 @@ class Args(DefaultConfig):
         bootstrap_group.add_option(
             '-M', '--mamonsu-username',
             dest='mamonsu_username',
-            default=self.default_user(),
             help='database non-privileged user for mamonsu')
         parser.add_option_group(group)
         parser.add_option_group(bootstrap_group)
@@ -73,7 +72,7 @@ class Args(DefaultConfig):
                 sys.exit(1)
         if self.args.mamonsu_username is None:
             sys.stderr.write("ERROR: Database non-privileged username for mamonsu is not specified\n")
-            parser.print_help()
+            parser.print_bootstrap_help()
             sys.exit(1)
 
         if not self.args.dbname:

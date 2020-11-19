@@ -37,7 +37,9 @@ Options:
     --old-zabbix
 HINT: By default, mamonsu exports the template for Zabbix 4.4 or higher.
 To export a template for older Zabbix versions, use the --old-zabbix option.
+"""
 
+usage_msg_bootstrap = """
 Bootstrap DDL for monitoring:
 Command: bootstrap
 Examples:
@@ -48,8 +50,12 @@ Options:
     -W <PGPASSWORD>
     -d, --dbname <DBNAME>
     -U, --username <USERNAME>
-    --host <PGHOST>
-   
+    -h, --host <PGHOST>
+"""
+
+usage_msg += usage_msg_bootstrap
+
+usage_msg += """
 Information about working mamonsu:
 Command: agent
 Examples:
@@ -218,6 +224,9 @@ Options:
 
 """)
         sys.exit(2)
+
+    def print_bootstrap_help(self, **kwargs):
+        print(usage_msg_bootstrap.format(prog=sys.argv[0]))
 
     def _process_long_opt(self, rargs, values):
         try:
