@@ -1,4 +1,9 @@
-mamonsu (2.6.0-1) stable; urgency=low
+mamonsu (2.6.1-1) stable; urgency=low
+  * update bootstrap option input parameters
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Fri, 20 November 2020 11:22:00 +0300
+
+ mamonsu (2.6.0-1) stable; urgency=low
   * update xlog plugin
   * add support for PostgreSQL 13
   * add plugin memory_leak_diagnostic

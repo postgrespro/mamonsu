@@ -2,7 +2,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mamonsu
-Version:        2.6.0
+Version:        2.6.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Fri Nov 20 2020 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.6.1-1
+- update bootstrap option input parameters
+
 * Tue Nov 17 2020 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.6.0-1
 - update xlog plugin
 - add support for PostgreSQL 13
