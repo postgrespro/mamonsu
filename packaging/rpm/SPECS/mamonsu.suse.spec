@@ -1,6 +1,6 @@
 %define _datarootdir %{_prefix}/share
 Name:           mamonsu
-Version:        2.5.1
+Version:        2.6.2
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -74,6 +74,19 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Tue Nov 24 2020 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.6.2-1
+- update bootstrap for 9.5, 9.6 versions
+- update packaging for Windows
+
+* Fri Nov 20 2020 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.6.1-1
+- update bootstrap option input parameters
+
+* Tue Nov 17 2020 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.6.0-1
+- update xlog plugin
+- add support for PostgreSQL 13
+- add plugin memory_leak_diagnostic
+- add plugin relations_size
+
 * Mon Aug 17 2020 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.5.1-1
 - update pg8000 driver
 - drop relations_size plugin

@@ -1,15 +1,21 @@
+mamonsu (2.6.2-1) stable; urgency=low
+  * update bootstrap for 9.5, 9.6 versions
+  * update packaging for Windows
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Tue, 24 Nov 2020 16:22:00 +0300
+
 mamonsu (2.6.1-1) stable; urgency=low
   * update bootstrap option input parameters
 
- -- PostgresPro DBA <dba@postgrespro.ru>  Fri, 20 November 2020 11:22:00 +0300
+ -- PostgresPro DBA <dba@postgrespro.ru>  Fri, 20 Nov 2020 11:22:00 +0300
 
- mamonsu (2.6.0-1) stable; urgency=low
+mamonsu (2.6.0-1) stable; urgency=low
   * update xlog plugin
   * add support for PostgreSQL 13
   * add plugin memory_leak_diagnostic
   * add plugin relations_size.py
 
- -- PostgresPro DBA <dba@postgrespro.ru>  Tue, 17 November 2020 13:22:00 +0300
+ -- PostgresPro DBA <dba@postgrespro.ru>  Tue, 17 Nov 2020 13:22:00 +0300
 
 mamonsu (2.5.1-1) stable; urgency=low
   * update pg8000 driver
@@ -17,7 +23,7 @@ mamonsu (2.5.1-1) stable; urgency=low
   * redirect log messages for mamonsu agent to log fle
   * fix pg_probackup trigger
 
- -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 17 August 2020 15:22:00 +0300
+ -- PostgresPro DBA <dba@postgrespro.ru>  Mon, 17 Aug 2020 15:22:00 +0300
 
 mamonsu (2.5.0-1) stable; urgency=low
   * drop python2 support
@@ -26,7 +32,7 @@ mamonsu (2.5.0-1) stable; urgency=low
   * add new plugin: relations_size
   * add new plugin: prepared_transaction
 
- -- PostgresPro DBA <dba@postgrespro.ru>  Fri, 31 July 2020 16:37:00 +0300
+ -- PostgresPro DBA <dba@postgrespro.ru>  Fri, 31 Jul 2020 16:37:00 +0300
 
 mamonsu (2.4.5-1) stable; urgency=low
 
