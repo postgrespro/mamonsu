@@ -47,7 +47,9 @@ a = Analysis(['mamonsu_win32.py'],
                 'mamonsu.tools.zabbix_cli',
                 'mamonsu.plugins.common.health',
                 'mamonsu.plugins.common',
-                'win32timezone'
+                'win32timezone',
+		'mamonsu.plugins.pgsql.memory_leak_diagnostic',
+		'mamonsu.plugins.pgsql.relations_size'
              ],
              hookspath=[],
              runtime_hooks=[],
