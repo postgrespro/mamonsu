@@ -128,8 +128,7 @@ CREATE OR REPLACE FUNCTION public.mamonsu_count_{3}_lag_lsn()
 RETURNS TABLE(application_name TEXT, {8} total_lag NUMERIC ) AS $$
 SELECT 
 CONCAT(application_name, ' ', pid) as application_name,
-{6}
-pg_{7}_diff(pg_current_{7}(), replay_{9}) AS total_lag 
+{6} pg_{7}_diff(pg_current_{7}(), replay_{9}) AS total_lag 
 FROM pg_stat_replication
 $$ LANGUAGE SQL SECURITY DEFINER;
 """
