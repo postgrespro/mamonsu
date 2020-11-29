@@ -6,3 +6,103 @@ run_builds:
 
 run_functional_tests:
 	docker run -v "$(WORKDIR)":/var/tmp centos:7 /bin/bash -ex "/var/tmp/tests/check.sh"
+
+local_test:run_local_test_pg9.5 run_local_test_pg9.6 run_local_test_pg10 run_local_test_pg11 run_local_test_pg12 run_local_test_pg13
+
+clean_local_tests: clean_local_test_pg9.5 clean_local_test_pg9.6 clean_local_test_pg10 clean_local_test_pg11 clean_local_test_pg12 clean_local_test_pg13
+
+run_local_test_pg9.5:
+	docker run -it -d \
+    --name pg9.5 \
+    -e POSTGRES_PASSWORD="111111" \
+    -e POSTGRES_HOST_AUTH_METHOD=trust \
+    -v "$(WORKDIR)":/var/tmp/mamonsu \
+    postgres:9.5 /bin/bash /docker-entrypoint.sh  postgres
+	sleep 2
+	docker exec -i pg9.5 bash -c '/var/tmp/mamonsu/tests/local_tests.sh'
+	docker stop pg9.5
+	docker rm pg9.5
+
+run_local_test_pg9.6:
+	docker run -it -d \
+    --name pg9.6 \
+    -e POSTGRES_PASSWORD="111111" \
+    -e POSTGRES_HOST_AUTH_METHOD=trust \
+    -v "$(WORKDIR)":/var/tmp/mamonsu \
+    postgres:9.6 /bin/bash /docker-entrypoint.sh  postgres
+	sleep 2
+	docker exec -i pg9.6 bash -c '/var/tmp/mamonsu/tests/local_tests.sh'
+	docker stop pg9.6
+	docker rm pg9.6
+
+run_local_test_pg10:
+	docker run -it -d \
+    --name pg10 \
+    -e POSTGRES_PASSWORD="111111" \
+    -e POSTGRES_HOST_AUTH_METHOD=trust \
+    -v "$(WORKDIR)":/var/tmp/mamonsu \
+    postgres:10 /bin/bash /docker-entrypoint.sh  postgres
+	sleep 2
+	docker exec -i pg10 bash -c '/var/tmp/mamonsu/tests/local_tests.sh'
+	docker stop pg10
+	docker rm pg10
+
+run_local_test_pg11:
+	docker run -it -d \
+    --name pg11 \
+    -e POSTGRES_PASSWORD="111111" \
+    -e POSTGRES_HOST_AUTH_METHOD=trust \
+    -v "$(WORKDIR)":/var/tmp/mamonsu \
+    postgres:11 /bin/bash /docker-entrypoint.sh  postgres
+	sleep 2
+	docker exec -i pg11 bash -c '/var/tmp/mamonsu/tests/local_tests.sh'
+	docker stop pg11
+	docker rm pg11
+
+run_local_test_pg12:
+	docker run -it -d \
+    --name pg12 \
+    -e POSTGRES_PASSWORD="111111" \
+    -e POSTGRES_HOST_AUTH_METHOD=trust \
+    -v "$(WORKDIR)":/var/tmp/mamonsu \
+    postgres:12 /bin/bash /docker-entrypoint.sh  postgres
+	sleep 2
+	docker exec -i pg12 bash -c '/var/tmp/mamonsu/tests/local_tests.sh'
+	docker stop pg12
+	docker rm pg12
+
+run_local_test_pg13:
+	docker run -it -d \
+    --name pg13 \
+    -e POSTGRES_PASSWORD="111111" \
+    -e POSTGRES_HOST_AUTH_METHOD=trust \
+    -v "$(WORKDIR)":/var/tmp/mamonsu \
+    postgres:13 /bin/bash /docker-entrypoint.sh  postgres
+	sleep 2
+	docker exec -i pg13 bash -c '/var/tmp/mamonsu/tests/local_tests.sh'
+	docker stop pg13
+	docker rm pg13
+
+clean_local_test_pg9.5:
+	docker stop pg9.5 | true
+	docker rm pg9.5 | true
+
+clean_local_test_pg9.6:
+	docker stop pg9.6 | true
+	docker rm pg9.6 | true
+
+clean_local_test_pg10:
+	docker stop pg10 | true
+	docker rm pg10 | true
+
+clean_local_test_pg11:
+	docker stop pg11 | true
+	docker rm pg11 | true
+
+clean_local_test_pg12:
+	docker stop pg12 | true
+	docker rm pg12 | true
+
+clean_local_test_pg13:
+	docker stop pg13 | true
+	docker rm pg13 | true
