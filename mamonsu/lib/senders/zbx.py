@@ -27,6 +27,7 @@ class ZbxSender(Plugin):
         self.port = config.fetch('zabbix', 'port', int)
         self.max_queue_size = config.fetch('sender', 'queue', int)
         self.fqdn = config.fetch('zabbix', 'client')
+        self.re_send = config.fetch('zabbix', 're_send', bool)
         self.queue = Queue()
         self.log = logging.getLogger(
             'ZBX-{0}:{1}'.format(self.host, self.port))
@@ -55,13 +56,22 @@ class ZbxSender(Plugin):
         metrics = self.queue.flush()
         if len(metrics) == 0:
             return
+        clock = int(time.time())
         data = json.dumps({
             'request': 'sender data',
             'data': metrics,
-            'clock': int(time.time())
+            'clock': clock
         })
-        self._send_data(data)
-
+        sent_all = self._send_data(data)
+        if not sent_all and self.re_send:
+            for metric in metrics:
+                data = json.dumps({
+                    'request': 'sender data',
+                    'data': [metric],
+                    'clock': clock
+                })
+                self._send_data(data)
+                
     def send_file_to_zabbix(self, path):
         zabbix_client = self.config.fetch('zabbix', 'client')
         self.log.setLevel((self.config.fetch('log', 'level')).upper())
@@ -82,7 +92,8 @@ class ZbxSender(Plugin):
                             metrics.append(metric)
                         else:
                             self.log.error(
-                                'Can\'t load metric in line: "{0}". The line must have the format: time <tab> value <tab> metric\'s name.'.format(
+                                'Can\'t load metric in line: "{0}". The line must have the format: '
+                                'time <tab> value <tab> metric\'s name.'.format(
                                     line.rstrip('\n')))
                     except Exception as e:
                         self.log.error('Can\'t load metric in line: "{0}". Error : {1} '.format(line.rstrip('\n'), e, ))
@@ -99,6 +110,7 @@ class ZbxSender(Plugin):
                     break
 
     def _send_data(self, data):
+        sent_all = True
         data_len = struct.pack('<Q', len(data))
         packet = b'ZBXD\x01' + data_len + str.encode(data)
         try:
@@ -111,6 +123,7 @@ class ZbxSender(Plugin):
             resp_body = self._receive(sock, resp_body_len)
             self.log.debug('response: {0}'.format(resp_body))
             if 'failed: 0' not in str(resp_body):
+                sent_all = False
                 self.log.error(
                     'On request:\n{0}\nget response'
                     ' with failed items:\n{1}'.format(
@@ -118,6 +131,7 @@ class ZbxSender(Plugin):
                         resp_body))
         finally:
             sock.close()
+        return sent_all
 
     def _receive(self, sock, count):
         buf = str.encode('')
