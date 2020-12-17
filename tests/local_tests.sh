@@ -6,7 +6,7 @@
 ###### test mamonsu zabbix *
 mkdir /etc/mamonsu/
 cp /var/tmp/mamonsu/packaging/conf/example.conf /etc/mamonsu/agent.conf
-ZABBIX_DOCKER_VERSIONS="5.2 5.0 4.4 4.2"
+ZABBIX_DOCKER_VERSIONS="5.2 5.0 4.4 4.2 4.0 3.4 3.2 3.0"
 for VER in $ZABBIX_DOCKER_VERSIONS
 do
   IFS='.' read -ra VER_ARRAY <<<$VER
@@ -14,7 +14,7 @@ do
   VER_MINOR=${VER_ARRAY[1]}
 
   Z_PORT=":8080"
-  if [[ "$VER" == "4.2" ]]
+  if [[ "$VER" == "4.2" || "$VER" == "3.4" || "$VER" == "3.2"  ]]
   then
     Z_PORT=":80"
   fi
