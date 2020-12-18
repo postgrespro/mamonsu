@@ -58,7 +58,7 @@ mamonsu zabbix template show PostgresPro-Linux $OPTIONS | grep PostgresPro-Linux
 mamonsu zabbix template id PostgresPro-Linux $OPTIONS | grep -x -E "[[:digit:]]+" || exit 11
 TEMPLATE_ID=`mamonsu zabbix template id PostgresPro-Linux $OPTIONS`
 mamonsu zabbix template delete $TEMPLATE_ID $OPTIONS | grep "templateids.*$TEMPLATE_ID" || exit 11
-
+mamonsu zabbix version  $OPTIONS
 # test 2 mamonsu zabbix - Environment variables
 
 export ZABBIX_URL=$Z_URL
@@ -73,5 +73,6 @@ mamonsu zabbix template show PostgresPro-Linux  | grep PostgresPro-Linux || exit
 mamonsu zabbix template id PostgresPro-Linux  | grep -x -E "[[:digit:]]+" || exit 11
 TEMPLATE_ID=`mamonsu zabbix template id PostgresPro-Linux`
 mamonsu zabbix template delete $TEMPLATE_ID | grep "templateids.*$TEMPLATE_ID" || exit 11
+mamonsu zabbix version
 
 exit 0

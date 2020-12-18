@@ -149,11 +149,13 @@ def run_deploy():
     args = Args()
 
     if not args.try_configure_connect_to_pg():
+        sys.stderr.write(str(args.args) + '\n')
         sys.exit(1)
 
     if not Pooler.is_superuser():
         sys.stderr.write(
             "ERROR: Bootstrap must be run by PostgreSQL superuser\n")
+        sys.stderr.write(str(args.args) + '\n')
         sys.exit(1)
 
     try:

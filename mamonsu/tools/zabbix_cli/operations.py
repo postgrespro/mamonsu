@@ -4,45 +4,19 @@ from __future__ import print_function
 import sys
 import json
 from mamonsu.tools.zabbix_cli.request import Request
+from mamonsu.lib.parser import zabbix_msg
 
 
 class Operations(object):
 
-    _help_msg = """
-Arguments must be:
-
-mamonsu zabbix template list
-mamonsu zabbix template show <template name>
-mamonsu zabbix template id <template name>
-mamonsu zabbix template delete <template id>
-mamonsu zabbix template export <file>
-
-mamonsu zabbix host list
-mamonsu zabbix host show <host name>
-mamonsu zabbix host id <host name>
-mamonsu zabbix host delete <host id>
-mamonsu zabbix host create <host name> <hostgroup id> <template id> <ip>
-mamonsu zabbix host info templates <host id>
-mamonsu zabbix host info hostgroups <host id>
-mamonsu zabbix host info graphs <host id>
-mamonsu zabbix host info items <host id>
-
-mamonsu zabbix hostgroup list
-mamonsu zabbix hostgroup show <hostgroup name>
-mamonsu zabbix hostgroup id <hostgroup name>
-mamonsu zabbix hostgroup delete <hostgroup id>
-mamonsu zabbix hostgroup create <hostgroup name>
-
-mamonsu zabbix item error <host name>
-mamonsu zabbix item lastvalue <host name>
-mamonsu zabbix item lastclock <host name>
-"""
+    _help_msg = zabbix_msg
 
     def __init__(self, arg):
-
         self.arg = arg
+
         if len(self.arg.commands) < 2:
-            self._print_help()
+            if len(self.arg.commands) ==0 or self.arg.commands[0] != 'version':
+                self._print_help()
 
         self.req = Request(
             url='{0}/api_jsonrpc.php'.format(arg.zabbix_url),
@@ -57,6 +31,8 @@ mamonsu zabbix item lastclock <host name>
             return self.host(self.arg.commands[1:])
         elif self.arg.commands[0] == 'item':
             return self.item(self.arg.commands[1:])
+        elif self.arg.commands[0] == 'version':
+            return self.version(self.arg.commands[1:])
         else:
             self._print_help()
 
@@ -310,6 +286,19 @@ mamonsu zabbix item lastclock <host name>
                 print('{0}\t{1}'.format(
                     item['key_'],
                     item[typ]))
+        except Exception as e:
+            sys.stderr.write('Error find: {0}\n'.format(e))
+            sys.exit(3)
+    
+    def version(self, args):
+        if len(args) != 0:
+            return self._print_help()
+        try:
+            self.req.set_user(None)
+            self.req.set_passwd(None)
+
+            version = self.req.post(method='apiinfo.version', params=[])
+            print(str(version))
         except Exception as e:
             sys.stderr.write('Error find: {0}\n'.format(e))
             sys.exit(3)

@@ -64,10 +64,12 @@ Examples:
     {prog} agent metric-get <metric key>
 Options:
     -c, --config <file>
+"""
 
+zabbix_msg= """
 Zabbix API toolbox:
-Command: zabbix
-Usage:
+Command: %prog zabbix [--url] [--user] [--password] [--log-level] commands
+commands:
     {prog} zabbix template list
     {prog} zabbix template show <template name>
     {prog} zabbix template id <template name>
@@ -90,11 +92,16 @@ Usage:
     {prog} zabbix item error <host name>
     {prog} zabbix item lastvalue <host name>
     {prog} zabbix item lastclock <host name>
+    {prog} zabbix version
+
 Options:
     --url=http://zabbix/web/face
     --user=WebUser
-    --password=WebPassword
-    
+    --password=WebPassword"""
+
+usage_msg += zabbix_msg + '\n'
+
+usage_msg += """
 Export metrics to zabbix server
 Command: upload
 Example:

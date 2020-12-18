@@ -101,7 +101,6 @@ run_local_test_pg13: clean_local_test_pg13
 	docker rm pg13
 
 run_zabbix: clean_zabbix
-	docker network create --driver=bridge --subnet=172.18.0.0/16 network-local-tests
 	$(WORKDIR)/tests/local_start_zabbix.sh
 
 clean_local_test_pg9.5:

@@ -7,6 +7,7 @@ import optparse
 from mamonsu import __version__
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.tools.zabbix_cli.operations import Operations
+from mamonsu.lib.parser import zabbix_msg
 
 
 class Args(DefaultConfig):
@@ -14,8 +15,8 @@ class Args(DefaultConfig):
     def __init__(self):
 
         parser = optparse.OptionParser(
-            usage='%prog zabbix [--url] [--user] '
-            '[--password] [--log-level] commands',
+            #usage='%prog zabbix [--url] [--user] [--password] [--log-level] commands',
+            usage = zabbix_msg,
             version='%prog zabbix cli tools {0}'.format(__version__),
             description='Zabbix CLI tools')
         group = optparse.OptionGroup(

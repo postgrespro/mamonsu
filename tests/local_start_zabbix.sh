@@ -2,7 +2,8 @@
 
 if [ ! -v ZABBIX_DOCKER_VERSIONS ];
 then
-    export ZABBIX_DOCKER_VERSIONS="5.2 5.0 4.4 4.2 4.0 3.4 3.2 3.0"
+    #export ZABBIX_DOCKER_VERSIONS="5.2 5.0 4.4 4.2 4.0 3.4 3.2 3.0"
+    export ZABBIX_DOCKER_VERSIONS="5.2 5.0 4.4 4.2 4.0 3.2 3.0"
 fi
 # !!!! zabbix 4.4 имеет порт 80, остальные 8080
 #ZABBIX_DOCKER_VERSIONS="4.4"
