@@ -61,7 +61,11 @@ class Connection(ConnectionInfo):
             self.connected = True
         except ProgrammingError as e:
             error_text = '{0}'.format(e)
-            if error_text == 'no result set':
+            # unpack_from error can happen if pg8000 was waiting for the response
+            # from PostgreSQL on the socket but instead got nothing.
+            # This error happens either due to an unstable network or if
+            # PostgreSQL fails to send the results for the last queries while restarting
+            if error_text == 'no result set' or 'unpack_from' in error_text:
                 return None
             else:
                 raise ProgrammingError(error_text)
