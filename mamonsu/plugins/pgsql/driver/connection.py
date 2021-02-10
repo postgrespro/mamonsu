@@ -2,9 +2,11 @@
 import os
 import threading
 import logging
+import struct
 
 from mamonsu.plugins.pgsql.driver.pg8000 import connect
-from mamonsu.plugins.pgsql.driver.pg8000.core import ProgrammingError
+from mamonsu.plugins.pgsql.driver.pg8000.core import ProgrammingError, InterfaceError,InternalError,NotSupportedError,Error
+
 
 
 class ConnectionInfo(object):
@@ -61,11 +63,7 @@ class Connection(ConnectionInfo):
             self.connected = True
         except ProgrammingError as e:
             error_text = '{0}'.format(e)
-            # unpack_from error can happen if pg8000 was waiting for the response
-            # from PostgreSQL on the socket but instead got nothing.
-            # This error happens either due to an unstable network or if
-            # PostgreSQL fails to send the results for the last queries while restarting
-            if error_text == 'no result set' or 'unpack_from' in error_text:
+            if error_text == 'no result set':
                 return None
             else:
                 raise ProgrammingError(error_text)

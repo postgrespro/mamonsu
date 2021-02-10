@@ -173,7 +173,12 @@ class Plugin(object):
                 return
             except Exception as e:
                 trace = traceback.format_exc()
-                self._log_exception(e, trace)
+                # unpack_from error can happen if pg8000 was waiting for the response
+                # from PostgreSQL on the socket but instead got nothing.
+                # This error happens either due to an unstable network or if
+                # PostgreSQL fails to send the results for the last queries while restarting
+                if "unpack_from requires a buffer" not in trace:
+                    self._log_exception(e, trace)
                 return
             # time interval btw sending metrics
             sleep_time = int(self.plugin_config('interval')) - int(time.time() - last_start)
