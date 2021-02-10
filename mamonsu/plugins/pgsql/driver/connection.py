@@ -5,7 +5,7 @@ import logging
 import struct
 
 from mamonsu.plugins.pgsql.driver.pg8000 import connect
-from mamonsu.plugins.pgsql.driver.pg8000.core import ProgrammingError, InterfaceError,InternalError,NotSupportedError,Error
+from mamonsu.plugins.pgsql.driver.pg8000.core import ProgrammingError
 
 
 
