@@ -36,7 +36,7 @@ class Connections(Plugin):
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
             result = Pooler.query(
                 'select state, count(*) '
-                'from mamonsu_get_connections_states() where state is not null group by state')
+                'from public.mamonsu_get_connections_states() where state is not null group by state')
         else:
             result = Pooler.query(
                 'select state, count(*) '
