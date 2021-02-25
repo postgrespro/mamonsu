@@ -193,8 +193,6 @@ def run_deploy():
     try:
         bootstrap_queries = fill_query_params(CreateSchemaDefaultSQL)
         Pooler.query(bootstrap_queries)
-        #  if args.args.verbose:
-        #     sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
     except Exception as e:
         sys.stderr.write("Bootstrap execution have exited with an error: {0}\n".format(e))
         sys.exit(2)
@@ -202,8 +200,6 @@ def run_deploy():
     try:
         bootstrap_extension_queries = fill_query_params(CreateSchemaExtensionSQL)
         Pooler.query(bootstrap_extension_queries)
-        #  if args.args.verbose:
-        #     sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
     except Exception as e:
         sys.stderr.write(
             "Bootstrap failed to create the function which required pg_buffercache extension.\n"
@@ -217,7 +213,7 @@ def run_deploy():
 
     except Exception as e:
         sys.stderr.write("Error: \n {0}\n".format(e))
-        sys.stderr.write("Please check user rights and rerun bootstrap: \n {0}\n".format(e))
+        sys.stderr.write("Please check mamonsu user permissions and rerun bootstrap.\n")
         sys.exit(2)
 
     try:
@@ -225,7 +221,7 @@ def run_deploy():
         Pooler.query(bootstrap_grant_extension_queries)
 
     except Exception as e:
-        sys.stderr.write("Bootstrap failed to grant execution command to "
+        sys.stderr.write("Bootstrap failed to grant execution permission to "
                          "the function which required pg_buffercache extension.\n")
         sys.stderr.write("Error: \n {0}\n".format(e))
 
