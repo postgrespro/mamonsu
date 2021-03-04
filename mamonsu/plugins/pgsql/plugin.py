@@ -49,8 +49,9 @@ PostgresPro Enterprise Edition is not detected [instance: '{0}']
 
     def disable_and_exit_if_archive_mode_is_not_on(self, db=None):
         param = Pooler.get_sys_param('archive_mode', db=db)
-        if param != 'on':
+        if param != 'on' and param != 'always':
             self.disable()
             raise PluginDisableException("""Disable plugin and exit, because '{0}' \
-parameter is not 'ON'. Enable it "{1}" in PostgreSQL instance, \
-if needed and restart.""".format('archive_mode', 'alter system set archive_mode = on;'))
+parameter is neither 'on' nor 'always'. Enable it "{1}" or "{2}" in PostgreSQL instance, \
+if needed and restart.""".format('archive_mode', 'alter system set archive_mode = on;',
+                                 'alter system set archive_mode = always;'))
