@@ -10,7 +10,8 @@ from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.pool import Pooler
-from mamonsu.tools.bootstrap.sql import CreateSchemaSQL, GrantsOnSchemaSQL, QuerySplit
+from mamonsu.tools.bootstrap.sql import CreateSchemaExtensionSQL, CreateSchemaDefaultSQL, \
+    GrantsOnDefaultSchemaSQL, GrantsOnExtensionSchemaSQL, QuerySplit
 
 
 class Args(DefaultConfig):
@@ -145,6 +146,37 @@ class Args(DefaultConfig):
         return True
 
 
+def fill_query_params(queries):
+    formatted_queries = ""
+    for sql in queries.format(
+            mamonsu_version,
+            mamonsu_version.replace('.', '_'),
+            '[0-9A-F]{24}',
+            'wal' if Pooler.server_version_greater('10.0') else 'xlog',
+            'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
+            'waiting' if Pooler.server_version_less('9.6.0') else 'case when wait_event_type is null then false '
+                                                                  ' else true end  as waiting',
+            'flush_lag, replay_lag, write_lag,' if Pooler.server_version_greater('10.0') else '',
+            'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
+            'flush_lag INTERVAL, replay_lag INTERVAL, write_lag INTERVAL,' if Pooler.server_version_greater('10.0')
+            else '',
+            'lsn' if Pooler.server_version_greater('10.0') else 'location'
+    ).split(QuerySplit):
+        formatted_queries += sql
+    return formatted_queries
+
+
+def fill_grant_params(queries, args):
+    formatted_grants_queries = ""
+    for sql in queries.format(
+            mamonsu_version.replace('.', '_'),
+            args.args.mamonsu_username,
+            'wal' if Pooler.server_version_greater('10.0') else 'xlog'
+    ).split(QuerySplit):
+        formatted_grants_queries += sql
+    return formatted_grants_queries
+
+
 def run_deploy():
     args = Args()
 
@@ -159,37 +191,38 @@ def run_deploy():
         sys.exit(1)
 
     try:
-        for sql in CreateSchemaSQL.format(
-                mamonsu_version,
-                mamonsu_version.replace('.', '_'),
-                '[0-9A-F]{24}',
-                'wal' if Pooler.server_version_greater('10.0') else 'xlog',
-                'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
-                'waiting' if Pooler.server_version_less('9.6.0') else 'case when wait_event_type is null then false '
-                                                                      ' else true end  as waiting',
-                'flush_lag, replay_lag, write_lag,' if Pooler.server_version_greater('10.0') else '',
-                'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
-                'flush_lag INTERVAL, replay_lag INTERVAL, write_lag INTERVAL,' if Pooler.server_version_greater('10.0')
-                else '',
-                'lsn' if Pooler.server_version_greater('10.0') else 'location'
-        ).split(QuerySplit):
-            if args.args.verbose:
-                sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
-            Pooler.query(sql)
+        bootstrap_queries = fill_query_params(CreateSchemaDefaultSQL)
+        Pooler.query(bootstrap_queries)
     except Exception as e:
-        sys.stderr.write("Query:\n{0}\nerror: {1}\n".format(sql, e))
+        sys.stderr.write("Bootstrap execution have exited with an error: {0}\n".format(e))
         sys.exit(2)
+
     try:
-        for sql in GrantsOnSchemaSQL.format(
-                mamonsu_version.replace('.', '_'),
-                args.args.mamonsu_username,
-                'wal' if Pooler.server_version_greater('10.0') else 'xlog'
-        ).split(QuerySplit):
-            if args.args.verbose:
-                sys.stdout.write("\nExecuting query:\n{0}\n".format(sql))
-            Pooler.query(sql)
+        bootstrap_extension_queries = fill_query_params(CreateSchemaExtensionSQL)
+        Pooler.query(bootstrap_extension_queries)
     except Exception as e:
-        sys.stderr.write("Query:\n{0}\nerror: {1}\n".format(sql, e))
+        sys.stderr.write(
+            "Bootstrap failed to create the function which required pg_buffercache extension.\n"
+            "Error: {0}\n".format(e))
+        sys.stderr.write("Please install pg_buffercache extension and rerun bootstrap "
+                         "if you want to get metrics from pg_buffercache view. \n")
+
+    try:
+        bootstrap_grant_queries = fill_grant_params(GrantsOnDefaultSchemaSQL, args)
+        Pooler.query(bootstrap_grant_queries)
+
+    except Exception as e:
+        sys.stderr.write("Error: \n {0}\n".format(e))
+        sys.stderr.write("Please check mamonsu user permissions and rerun bootstrap.\n")
         sys.exit(2)
+
+    try:
+        bootstrap_grant_extension_queries = fill_grant_params(GrantsOnExtensionSchemaSQL, args)
+        Pooler.query(bootstrap_grant_extension_queries)
+
+    except Exception as e:
+        sys.stderr.write("Bootstrap failed to grant execution permission to "
+                         "the function which required pg_buffercache extension.\n")
+        sys.stderr.write("Error: \n {0}\n".format(e))
 
     sys.stdout.write("Bootstrap successfully completed\n")

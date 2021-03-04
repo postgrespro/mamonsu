@@ -4,7 +4,7 @@ QuerySplit = """
 
 """
 
-CreateSchemaSQL = """
+CreateSchemaDefaultSQL = """
 CREATE TABLE IF NOT EXISTS public.mamonsu_config (
   version text,
   inserted_at timestamp DEFAULT NOW()
@@ -90,17 +90,6 @@ FROM
 WHERE filename similar to '{2}'
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE EXTENSION IF NOT EXISTS pg_buffercache;
-
-CREATE OR REPLACE FUNCTION public.mamonsu_buffer_cache()
-RETURNS TABLE(SIZE BIGINT, TWICE_USED BIGINT, DIRTY BIGINT) AS $$
-SELECT
-   SUM(1) * (current_setting('block_size')::int8),
-   SUM(CASE WHEN usagecount > 1 THEN 1 ELSE 0 END) * (current_setting('block_size')::int8),
-   SUM(CASE isdirty WHEN true THEN 1 ELSE 0 END) * (current_setting('block_size')::int8)
-FROM public.pg_buffercache
-$$ LANGUAGE SQL SECURITY DEFINER;
-
 CREATE OR REPLACE FUNCTION public.mamonsu_archive_command_files()
 RETURNS TABLE(COUNT_FILES BIGINT, SIZE_FILES NUMERIC) AS $$
 SELECT count(name) AS COUNT_FILES ,
@@ -133,7 +122,18 @@ FROM pg_stat_replication
 $$ LANGUAGE SQL SECURITY DEFINER;
 """
 
-GrantsOnSchemaSQL = """
+CreateSchemaExtensionSQL = """
+CREATE OR REPLACE FUNCTION public.mamonsu_buffer_cache()
+RETURNS TABLE(SIZE BIGINT, TWICE_USED BIGINT, DIRTY BIGINT) AS $$
+SELECT
+   SUM(1) * (current_setting('block_size')::int8),
+   SUM(CASE WHEN usagecount > 1 THEN 1 ELSE 0 END) * (current_setting('block_size')::int8),
+   SUM(CASE isdirty WHEN true THEN 1 ELSE 0 END) * (current_setting('block_size')::int8)
+FROM public.pg_buffercache
+$$ LANGUAGE SQL SECURITY DEFINER;
+"""
+
+GrantsOnDefaultSchemaSQL = """
 ALTER TABLE public.mamonsu_config OWNER TO {1};
 
 ALTER TABLE public.mamonsu_timestamp_master_{0} OWNER TO {1};
@@ -150,8 +150,6 @@ GRANT EXECUTE ON FUNCTION public.mamonsu_get_oldest_transaction() TO {1};
 
 GRANT EXECUTE ON FUNCTION public.mamonsu_count_{2}_files() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_buffer_cache() TO {1};
-
 GRANT EXECUTE ON FUNCTION public.mamonsu_archive_command_files() TO {1};
 
 GRANT EXECUTE ON FUNCTION public.mamonsu_archive_stat() TO {1};
@@ -163,4 +161,8 @@ GRANT EXECUTE ON FUNCTION public.mamonsu_get_connections_states() TO {1};
 GRANT EXECUTE ON FUNCTION public.mamonsu_prepared_transaction() TO {1};
 
 GRANT EXECUTE ON FUNCTION public.mamonsu_count_{2}_lag_lsn() TO {1};
+"""
+
+GrantsOnExtensionSchemaSQL = """
+GRANT EXECUTE ON FUNCTION public.mamonsu_buffer_cache() TO {1};
 """
