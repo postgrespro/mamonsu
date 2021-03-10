@@ -83,6 +83,7 @@ class Args(DefaultConfig):
         os.environ['PGUSER'] = self.args.username
         os.environ['PGPASSWORD'] = self.args.password
         os.environ['PGHOST'] = self.args.hostname
+        os.environ['PGPORT'] = self.args.port
         os.environ['PGDATABASE'] = self.args.dbname
         os.environ['PGAPPNAME'] = 'mamonsu deploy'
 
