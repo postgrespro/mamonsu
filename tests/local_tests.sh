@@ -1,10 +1,18 @@
 #!/bin/bash -ex
 
 /var/tmp/mamonsu/tests/local_install_mamonsu.sh
-/var/tmp/mamonsu/tests/bootstrap.sh
+
+###### test mamonsu report *
+/var/tmp/mamonsu/tests/tests/report.sh
+
+###### test mamonsu agent *
+/var/tmp/mamonsu/tests/tests/agent.sh
+
+###### test mamonsu bootstrap *
+/var/tmp/mamonsu/tests/tests/bootstrap.sh
 
 ###### test mamonsu zabbix *
-mkdir /etc/mamonsu/
+mkdir -p /etc/mamonsu/
 cp /var/tmp/mamonsu/packaging/conf/example.conf /etc/mamonsu/agent.conf
 #ZABBIX_DOCKER_VERSIONS="5.2 5.0 4.4 4.2 4.0 3.4 3.2 3.0"
 ZABBIX_DOCKER_VERSIONS="5.2 5.0 4.4 4.2 4.0 3.2 3.0"
@@ -27,7 +35,7 @@ do
   Z_USER=$Z_USER
   Z_PASSWORD=$Z_PASSWORD
   Z_VERSION=$Z_VERSION"
-  /var/tmp/mamonsu/tests/zabbix.sh
+  /var/tmp/mamonsu/tests/tests/zabbix.sh
 done
 
 exit 0

@@ -1,6 +1,7 @@
 #!/bin/bash -ex
 
-# bootstrap test
+# тест команд mamonsu bootstrap *
+
 # Требования:
 # запуск psql от пользователя postgres psql -U postgres
 # в pg_hba долвны быть разрешения для всех пользователей trust
@@ -56,7 +57,7 @@ function check_db_objects() {
   $PSQL $DB -c "\df mamonsu_get_oldest_transaction" | grep  "mamonsu_get_oldest_transaction"  || exit 11
   echo "WALXLOG $WALXLOG"
   $PSQL $DB -c "\df mamonsu_count_"$WALXLOG"_files" | grep  "mamonsu_count_"$WALXLOG"_files"  || exit 11
-  $PSQL $DB -c "\df mamonsu_buffer_cache" | grep  "mamonsu_buffer_cache"  || exit 11
+  #$PSQL $DB -c "\df mamonsu_buffer_cache" | grep  "mamonsu_buffer_cache"  || exit 11
   $PSQL $DB -c "\df mamonsu_archive_command_files" | grep  "mamonsu_archive_command_files"  || exit 11
   $PSQL $DB -c "\df mamonsu_archive_stat" | grep  "mamonsu_archive_stat"  || exit 11
   $PSQL $DB -c "\df mamonsu_get_sys_param" | grep  "mamonsu_get_sys_param"  || exit 11

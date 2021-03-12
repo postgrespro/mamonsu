@@ -7,9 +7,9 @@ run_builds:
 run_functional_tests:
 	docker run -v "$(WORKDIR)":/var/tmp centos:7 /bin/bash -ex "/var/tmp/tests/check.sh"
 
-local_test:local_test_prepare run_local_test_pg9.5 run_local_test_pg9.6 run_local_test_pg10 run_local_test_pg11 run_local_test_pg12 run_local_test_pg13
+local_test:clean_local_tests local_test_prepare run_local_test_pg9.5 run_local_test_pg9.6 run_local_test_pg10 run_local_test_pg11 run_local_test_pg12 run_local_test_pg13
 
-clean_local_tests: clean_zabbix clean_local_test_pg9.5 clean_local_test_pg9.6 clean_local_test_pg10 clean_local_test_pg11 clean_local_test_pg12 clean_local_test_pg13
+clean_local_tests: clean_local_test_pg9.5 clean_local_test_pg9.6 clean_local_test_pg10 clean_local_test_pg11 clean_local_test_pg12 clean_local_test_pg13 clean_zabbix
 
 local_test_prepare: clean_zabbix
 	docker network create --driver=bridge --subnet=172.18.0.0/16 network-local-tests

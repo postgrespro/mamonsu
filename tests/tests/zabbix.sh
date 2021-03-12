@@ -1,6 +1,7 @@
 #!/bin/bash -ex
 
-# тест команд /mamonsu zabbix *
+# тест команд mamonsu zabbix *
+
 # Требования:
 # наличие запущенного zabbix сервера и прописанные переменные окружения: Z_URL Z_USER Z_PASSWORD, Z_MAJOR_VERSION
 # todo change and remove
