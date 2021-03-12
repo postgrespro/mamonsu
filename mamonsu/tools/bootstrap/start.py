@@ -83,7 +83,7 @@ class Args(DefaultConfig):
         os.environ['PGUSER'] = self.args.username
         os.environ['PGPASSWORD'] = self.args.password
         os.environ['PGHOST'] = self.args.hostname
-        os.environ['PGPORT'] = self.args.port
+        os.environ['PGPORT'] = str(self.args.port)
         os.environ['PGDATABASE'] = self.args.dbname
         os.environ['PGAPPNAME'] = 'mamonsu deploy'
 
@@ -164,6 +164,7 @@ def fill_query_params(queries):
             'lsn' if Pooler.server_version_greater('10.0') else 'location'
     ).split(QuerySplit):
         formatted_queries += sql
+        print(formatted_queries)
     return formatted_queries
 
 
@@ -175,6 +176,8 @@ def fill_grant_params(queries, args):
             'wal' if Pooler.server_version_greater('10.0') else 'xlog'
     ).split(QuerySplit):
         formatted_grants_queries += sql
+        print(formatted_grants_queries)
+
     return formatted_grants_queries
 
 
