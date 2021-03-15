@@ -8,7 +8,7 @@
 
 mkdir -p /etc/mamonsu
 
-cat <<EOF > /etc/mamonsu/agent.conf
+cat <<EOF  > sudo /etc/mamonsu/agent.conf
 [postgres]
 host = 127.0.0.1
 user = mamonsu_agent
@@ -17,7 +17,6 @@ password = supersecret
 
 [zabbix]
 enabled = False
-
 
 [agent]
 enabled = True
@@ -45,5 +44,5 @@ mamonsu agent metric-list
 mamonsu agent -c /etc/mamonsu/agent.conf version
 mamonsu agent metric-get system.disk.all_read[] -c /etc/mamonsu/agent.conf
 mamonsu agent -c /etc/mamonsu/agent.conf metric-list
-
+kill `jobs -p`
 exit 0

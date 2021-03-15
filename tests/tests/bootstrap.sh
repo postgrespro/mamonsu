@@ -15,8 +15,8 @@ export PSQL="psql -U $PGSUPERUSER"
 WHOAMI=`whoami`
 if [[ "$WHOAMI" != "postgres" ]]
 then
-  $PSQL -U postgres -c "create user $WHOAMI superuser"
-  $PSQL -U postgres -c "create database $WHOAMI owner $WHOAMI"
+  $PSQL -U postgres -c "create user $WHOAMI superuser" | true
+  $PSQL -U postgres -c "create database $WHOAMI owner $WHOAMI" | true
   export PGSUPERUSER=$WHOAMI
   export PSQL="psql -U $PGSUPERUSER"
 fi
