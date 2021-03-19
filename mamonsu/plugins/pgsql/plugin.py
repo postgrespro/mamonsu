@@ -1,3 +1,4 @@
+import psutil
 from mamonsu.lib.plugin import Plugin, PluginDisableException
 from .pool import Pooler
 
@@ -32,6 +33,22 @@ class PgsqlPlugin(Plugin):
         self._ext_check_count += 1
 
         return self._ext_installed
+
+    @staticmethod
+    def get_num_of_children_pids():
+        result = Pooler.query("SELECT pg_backend_pid();")
+        pid = result[0][0]
+        with open('/proc/{pid}/status'.format(pid=int(pid)), 'r') as f:
+            for line in f:
+                data = line.split()
+                if data[0] == "PPid:":
+                    ppid = data[1]
+        try:
+            parent = psutil.Process(int(ppid))
+        except psutil.NoSuchProcess:
+            raise PluginDisableException("Unable to get parent process using psutil lib.")
+        children = parent.children(recursive=True)
+        return len(children)
 
     def disable_and_exit_if_extension_is_not_installed(self, ext, db=None):
         if not self.extension_installed(ext, db=db, silent=True):
