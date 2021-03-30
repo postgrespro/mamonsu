@@ -83,7 +83,7 @@ class Xlog(Plugin):
             result = Pooler.run_sql_type('count_xlog_files')
         zbx.send(self.key_count_wall.format("[]"), int(result[0][0]))
 
-        non_active_slots = Pooler.run_sql_type("""SELECT count(*) FROM pg_replication_slots WHERE active = 'false';""")
+        non_active_slots = Pooler.query("""SELECT count(*) FROM pg_replication_slots WHERE active = 'false';""")
         zbx.send(self.key_non_active_slots.format("[]"), int(non_active_slots[0][0]))
 
     def items(self, template):
