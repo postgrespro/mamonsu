@@ -83,7 +83,7 @@ class Xlog(Plugin):
             result = Pooler.run_sql_type('count_xlog_files')
         zbx.send(self.key_count_wall.format("[]"), int(result[0][0]))
 
-        non_active_slots = Pooler.run_sql_type("select count(*) from pg_replication_slots where active = false;")
+        non_active_slots = Pooler.run_sql_type("""SELECT count(*) FROM pg_replication_slots WHERE active = 'false';""")
         zbx.send(self.key_non_active_slots.format("[]"), int(non_active_slots[0][0]))
 
     def items(self, template):
@@ -137,11 +137,10 @@ class Xlog(Plugin):
                     'on {HOSTNAME} (value={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:' + self.right_type(self.key_replication, "sec") + '.last()}&gt;' +
             self.plugin_config('lag_more_than_in_sec')
-        })
-        triggers += template.trigger({
+        }) + template.trigger({
             'name': 'PostgreSQL number of non-active replication slots '
                     'on {HOSTNAME} (value={ITEM.LASTVALUE})',
-            'expression': '{#TEMPLATE:' + self.right_type(self.key_non_active_slots) + '.last()}&ne;' +
+            'expression': '{#TEMPLATE:' + self.right_type(self.key_non_active_slots) + '.last()}#' +
             str(NUMBER_NON_ACTIVE_SLOTS)
         })
         return triggers
