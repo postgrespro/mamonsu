@@ -6,6 +6,7 @@ from .pool import Pooler
 
 NUMBER_NON_ACTIVE_SLOTS = 0
 
+
 class Xlog(Plugin):
     DEFAULT_CONFIG = {'lag_more_than_in_sec': str(60 * 5)}
 
@@ -31,7 +32,7 @@ class Xlog(Plugin):
     key_wall = 'pgsql.wal.write{0}'
     key_count_wall = "pgsql.wal.count{0}"
     key_replication = "pgsql.replication_lag{0}"
-    key_non_active_slots = "pgsql.replication.non_active_slots"
+    key_non_active_slots = "pgsql.replication.non_active_slots{0}"
     AgentPluginType = 'pg'
 
     def run(self, zbx):
@@ -136,10 +137,11 @@ class Xlog(Plugin):
                     'on {HOSTNAME} (value={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:' + self.right_type(self.key_replication, "sec") + '.last()}&gt;' +
             self.plugin_config('lag_more_than_in_sec')
-        }) + template.trigger({
+        })
+        triggers += template.trigger({
             'name': 'PostgreSQL number of non-active replication slots '
                     'on {HOSTNAME} (value={ITEM.LASTVALUE})',
-            'expression': '{#TEMPLATE:' + self.right_type(self.key_replication, "sec") + '.last()}&ne;' +
+            'expression': '{#TEMPLATE:' + self.right_type(self.key_non_active_slots) + '.last()}&ne;' +
             str(NUMBER_NON_ACTIVE_SLOTS)
         })
         return triggers
