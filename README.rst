@@ -57,7 +57,7 @@ For AltLinux, AltlLinux-spt:
    $ apt-get update
    $ apt-get install mamonsu
 
-Pre-Build packages for Windows: `Windows installers <https://oc.postgrespro.ru/index.php/s/qu7YsFvOE55LdXo>`_
+Pre-Build packages for Windows: `Windows installer <https://repo.postgrespro.ru/mamonsu/win/>`_
 
 Install via pip:
 
@@ -93,7 +93,6 @@ Build repository, `./packaging/repo/gnupg` and `./packaging/repo/rpmmacros` must
 
 Build win32 exe: (worked with python v3.{4,5}: py2exe v0.9.2.2 and pywin32 v220 or python v2.7: py2exe v0.6.9 and pywin32 v220):
 
-NOTE: only mamonsu 2.3.4 builds for Windows.
 
 .. code-block:: bash
 
