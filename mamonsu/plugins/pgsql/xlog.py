@@ -4,6 +4,8 @@ from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from distutils.version import LooseVersion
 from .pool import Pooler
 
+NUMBER_NON_ACTIVE_SLOTS = 0
+
 
 class Xlog(Plugin):
     DEFAULT_CONFIG = {'lag_more_than_in_sec': str(60 * 5)}
@@ -30,6 +32,7 @@ class Xlog(Plugin):
     key_wall = 'pgsql.wal.write{0}'
     key_count_wall = "pgsql.wal.count{0}"
     key_replication = "pgsql.replication_lag{0}"
+    key_non_active_slots = "pgsql.replication.non_active_slots{0}"
     AgentPluginType = 'pg'
 
     def run(self, zbx):
@@ -80,6 +83,9 @@ class Xlog(Plugin):
             result = Pooler.run_sql_type('count_xlog_files')
         zbx.send(self.key_count_wall.format("[]"), int(result[0][0]))
 
+        non_active_slots = Pooler.query("""SELECT count(*) FROM pg_replication_slots WHERE active = 'false';""")
+        zbx.send(self.key_non_active_slots.format("[]"), int(non_active_slots[0][0]))
+
     def items(self, template):
         result = ''
         if self.Type == "mamonsu":
@@ -100,6 +106,10 @@ class Xlog(Plugin):
             'name': 'PostgreSQL: count of xlog files',
             'key': self.right_type(self.key_count_wall),
             'delay': self.plugin_config('interval')
+        }) + template.item({
+            'name': 'PostgreSQL: count non-active replication slots',
+            'key': self.right_type(self.key_non_active_slots),
+            'value_type': self.VALUE_TYPE.numeric_unsigned,
         })
         return result
 
@@ -122,12 +132,18 @@ class Xlog(Plugin):
         return result
 
     def triggers(self, template):
-        return template.trigger({
+        triggers = template.trigger({
             'name': 'PostgreSQL streaming lag too high '
                     'on {HOSTNAME} (value={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:' + self.right_type(self.key_replication, "sec") + '.last()}&gt;' +
             self.plugin_config('lag_more_than_in_sec')
+        }) + template.trigger({
+            'name': 'PostgreSQL number of non-active replication slots '
+                    'on {HOSTNAME} (value={ITEM.LASTVALUE})',
+            'expression': '{#TEMPLATE:' + self.right_type(self.key_non_active_slots) + '.last()}#' +
+            str(NUMBER_NON_ACTIVE_SLOTS)
         })
+        return triggers
 
     def discovery_rules(self, template):
         rule = {
