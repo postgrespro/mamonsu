@@ -2,6 +2,7 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from distutils.version import LooseVersion
+import mamonsu.lib.platform as platform
 from .pool import Pooler
 
 
@@ -82,9 +83,10 @@ class Connections(Plugin):
         zbx.send('pgsql.connections[max_connections]', int(self.Max_connections))
 
         # get number of child pids of ppid
-        num_of_children_pids = self.get_num_of_children_pids()
-        key = self.Item_ppid_children[0][0].format('[]')
-        zbx.send(key, num_of_children_pids+1)
+        if platform.LINUX:
+            num_of_children_pids = self.get_num_of_children_pids()
+            key = self.Item_ppid_children[0][0].format('[]')
+            zbx.send(key, num_of_children_pids+1)
 
     def items(self, template):
         result = template.item({
