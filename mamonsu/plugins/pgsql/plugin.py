@@ -1,5 +1,6 @@
 from mamonsu.lib.plugin import Plugin, PluginDisableException
 from .pool import Pooler
+import subprocess
 
 
 class PgsqlPlugin(Plugin):
@@ -36,19 +37,24 @@ class PgsqlPlugin(Plugin):
     @staticmethod
     def get_num_of_children_pids():
         result = Pooler.query("SELECT pg_backend_pid();")
-        pid = result[0][0]
-        with open('/proc/{pid}/status'.format(pid=int(pid)), 'r') as f:
-            for line in f:
-                data = line.split()
-                if data[0] == "PPid:":
-                    ppid = data[1]
-        import psutil
+        child_pid = result[0][0]
         try:
-            parent = psutil.Process(int(ppid))
-        except psutil.NoSuchProcess:
-            raise PluginDisableException("Unable to get parent process using psutil lib.")
-        children = parent.children(recursive=True)
-        return len(children)
+            parent_pid = subprocess.check_output(['ps', '-oppid', '--no-headers', '--pid', str(child_pid)],
+                                                 stderr=subprocess.PIPE, encoding='utf8')
+        except subprocess.CalledProcessError:
+            raise PluginDisableException("Unable to get parent process for {0} pid.".format(child_pid))
+
+        parent_pid = int(parent_pid.split("\n")[0])
+        try:
+            child_pids = subprocess.check_output(['ps', '-opid', '--no-headers', '--ppid', str(parent_pid)],
+                                           stderr=subprocess.PIPE, encoding='utf8')
+        except subprocess.CalledProcessError:
+            raise PluginDisableException("Unable to get children processes for {0} pid.".format(child_pid))
+        # we want to return number of ALL PostgreSQL processes meaning parent pid + count(children pids)
+        # len of the splitted result has extra blank line in the end so we return just the length of
+        # splitted child pids output
+        count_child_pids = len(child_pids.split("\n"))
+        return count_child_pids
 
     def disable_and_exit_if_extension_is_not_installed(self, ext, db=None):
         if not self.extension_installed(ext, db=db, silent=True):
