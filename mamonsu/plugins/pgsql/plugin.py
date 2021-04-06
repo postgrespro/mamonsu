@@ -1,4 +1,3 @@
-import psutil
 from mamonsu.lib.plugin import Plugin, PluginDisableException
 from .pool import Pooler
 
@@ -43,6 +42,7 @@ class PgsqlPlugin(Plugin):
                 data = line.split()
                 if data[0] == "PPid:":
                     ppid = data[1]
+        import psutil
         try:
             parent = psutil.Process(int(ppid))
         except psutil.NoSuchProcess:
