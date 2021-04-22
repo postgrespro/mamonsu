@@ -70,7 +70,7 @@ class Args(DefaultConfig):
         group.add_option(
             '-d', '--dbname',
             dest='dbname',
-            default=self.default_db(),
+            default=None,
             help='database name to connect to (default: %default)')
         group.add_option(
             '--host',
@@ -102,7 +102,7 @@ class Args(DefaultConfig):
         os.environ['PGUSER'] = self.args.username
         os.environ['PGPASSWORD'] = self.args.password
         os.environ['PGHOST'] = self.args.hostname
-        os.environ['PGDATABASE'] = self.args.dbname
+        os.environ['PGDATABASE'] = self.args.username if self.args.dbname is None else self.args.dbname
         os.environ['PGAPPNAME'] = 'mamonsu first look'
 
     def try_configure_connect_to_pg(self):

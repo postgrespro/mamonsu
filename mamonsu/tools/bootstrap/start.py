@@ -84,7 +84,7 @@ class Args(DefaultConfig):
         os.environ['PGPASSWORD'] = self.args.password
         os.environ['PGHOST'] = self.args.hostname
         os.environ['PGPORT'] = str(self.args.port)
-        os.environ['PGDATABASE'] = self.args.dbname
+        os.environ['PGDATABASE'] = self.args.username if self.args.dbname is None else self.args.dbname
         os.environ['PGAPPNAME'] = 'mamonsu deploy'
 
     def try_configure_connect_to_pg(self):
