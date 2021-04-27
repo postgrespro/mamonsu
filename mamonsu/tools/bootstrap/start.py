@@ -164,7 +164,6 @@ def fill_query_params(queries):
             'lsn' if Pooler.server_version_greater('10.0') else 'location'
     ).split(QuerySplit):
         formatted_queries += sql
-        print(formatted_queries)
     return formatted_queries
 
 
@@ -176,8 +175,6 @@ def fill_grant_params(queries, args):
             'wal' if Pooler.server_version_greater('10.0') else 'xlog'
     ).split(QuerySplit):
         formatted_grants_queries += sql
-        print(formatted_grants_queries)
-
     return formatted_grants_queries
 
 
