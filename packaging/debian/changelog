@@ -1,3 +1,11 @@
+mamonsu (2.7.0-1) stable; urgency=low
+  * update bootstrap
+  * fix ArchiveCommand plugin
+  * add metric and trigger to count non-active replication slots
+  * add metric to count children of PostgreSQL parent pid
+
+ -- PostgresPro DBA <dba@postgrespro.ru>  Tue, 24 Nov 2020 16:22:00 +0300
+
 mamonsu (2.6.2-1) stable; urgency=low
   * update bootstrap for 9.5, 9.6 versions
   * update packaging for Windows

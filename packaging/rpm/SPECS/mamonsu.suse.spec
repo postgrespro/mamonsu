@@ -1,6 +1,6 @@
 %define _datarootdir %{_prefix}/share
 Name:           mamonsu
-Version:        2.6.2
+Version:        2.7.0
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -74,6 +74,12 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Apr 26 2021 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.7.0-1
+- update bootstrap
+- fix ArchiveCommand plugin
+- add metric and trigger to count non-active replication slots
+- add metric to count children of PostgreSQL parent pid
+
 * Tue Nov 24 2020 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.6.2-1
 - update bootstrap for 9.5, 9.6 versions
 - update packaging for Windows
