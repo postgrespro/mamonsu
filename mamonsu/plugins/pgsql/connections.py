@@ -2,7 +2,6 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from distutils.version import LooseVersion
-import mamonsu.lib.platform as platform
 from .pool import Pooler
 
 
@@ -23,12 +22,6 @@ class Connections(Plugin):
         ('disabled', 'disabled',
          'number of disabled',
          '00CCCC')
-    ]
-    # ( key, name, graph)
-    Item_ppid_children = [
-        ('pgsql.count_all_pids{0}',
-         'Number of PostgreSQL parent pid children',
-         ('PostgreSQL: count children of PostgreSQL parent pid', 'BBB000', 0)),
     ]
     Max_connections = None
 
@@ -82,12 +75,6 @@ class Connections(Plugin):
             self.Max_connections = result[0][0]
         zbx.send('pgsql.connections[max_connections]', int(self.Max_connections))
 
-        # get number of child pids of ppid
-        if platform.LINUX:
-            num_of_children_pids = self.get_num_of_children_pids()
-            key = self.Item_ppid_children[0][0].format('[]')
-            zbx.send(key, num_of_children_pids+1)
-
     def items(self, template):
         result = template.item({
             'name': 'PostgreSQL: number of total connections',
@@ -111,11 +98,6 @@ class Connections(Plugin):
                 'key': self.right_type(self.key, item[1]),
                 'delay': self.plugin_config('interval')
             })
-        result += template.item({
-            'name': 'PostgreSQL: number of child pids',
-            'key': self.right_type(self.Item_ppid_children[0][0]),
-            'delay': self.plugin_config('interval')
-        })
         return result
 
     def graphs(self, template):
@@ -136,10 +118,6 @@ class Connections(Plugin):
         items.append({
             'key': self.right_type(self.key, "max_connections"),
             'color': '00BB00'
-        })
-        items.append({
-            'key': self.right_type(self.Item_ppid_children[0][0]),
-            'color': '0BB000'
         })
         graph = {'name': 'PostgreSQL connections', 'items': items}
         return template.graph(graph)
