@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        2.7.0
+Version:        2.7.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Wed May 19 2021 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.7.1-1
+- rm metric to count children of PostgreSQL parent pid
+
 * Mon Apr 26 2021 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.7.0-1
 - update bootstrap
 - fix ArchiveCommand plugin
