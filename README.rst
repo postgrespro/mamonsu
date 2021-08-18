@@ -347,22 +347,25 @@ Metrics:  PostgreSQL
     'PostgreSQL: number of prepared transactions': 'pgsql.prepared.count'
     'PostgreSQL: oldest prepared transaction running time in sec': 'pgsql.prepared.oldest'
     'PostgreSQL: number of PostgreSQL parent pid children': pgsql.count_all_pids[]
-    'PostgreSQL: number of pids which private anonymous memory exceeds private_anon_mem_threshold':
-    pgsql.memory_leak_diagnostic.count_diff[]
-    'PostgreSQL: number of pids which private anonymous memory exceeds exceeds private_anon_mem_threshold,
-    text of message': pgsql.memory_leak_diagnostic.msg_text[]
-    'PostgreSQL: time elapsed between flushing recent WAL locally and receiving notification that this standby server
-    has written and flushed it': pgsql.replication.flush_lag
-    'PostgreSQL: time elapsed between flushing recent WAL locally and receiving notification that this standby server
-    has written, flushed and applied': pgsql.replication.replay_lag
-    'PostgreSQL: time elapsed between flushing recent WAL locally and receiving notification that this standby server
-    has written it': pgsql.replication.write_lag
+    'PostgreSQL: number of pids which private anonymous memory exceeds private_anon_mem_threshold': pgsql.memory_leak_diagnostic.count_diff[]
+    'PostgreSQL: number of pids which private anonymous memory exceeds exceeds private_anon_mem_threshold, text of message': pgsql.memory_leak_diagnostic.msg_text[]
+    'PostgreSQL: time elapsed between flushing recent WAL locally and receiving notification that this standby server has written and flushed it': pgsql.replication.flush_lag
+    'PostgreSQL: time elapsed between flushing recent WAL locally and receiving notification that this standby server has written, flushed and applied': pgsql.replication.replay_lag
+    'PostgreSQL: time elapsed between flushing recent WAL locally and receiving notification that this standby server has written it': pgsql.replication.write_lag
     'PostgreSQL: delta of total lag for {#APPLICATION_NAME}': pgsql.replication.total_lag
     'PostgreSQL: count non-active replication slots': pgsql.replication.non_active_slots
 
-    'Pg_probackup catalog {#BACKUPDIR}: size':  pg_probackup.dir.size[{#BACKUPDIR}]
-    'Pg_probackup catalog {#BACKUPDIR}: error': 'pg_probackup.dir.error[{#BACKUPDIR}]
-    'Relation size: {#RELATIONNAME}':  'pgsql.relation.size[{#RELATIONNAME}]'
+    'Pg_probackup dir {#BACKUPDIR}: size': pg_probackup.dir.size[{#BACKUPDIR}]
+    'Pg_probackup dir {#BACKUPDIR}/backups: size': pg_probackup.dir.size[{#BACKUPDIR}/backups]
+    'Pg_probackup dir {#BACKUPDIR}/wal: size': pg_probackup.dir.size[{#BACKUPDIR}/wal]
+    'Pg_probackup dir {#BACKUPDIR}: duration full backup': pg_probackup.dir.duration_full[{#BACKUPDIR}]
+    'Pg_probackup dir {#BACKUPDIR}: duration incremental backup': pg_probackup.dir.duration_inc[{#BACKUPDIR}]
+    'Pg_probackup dir {#BACKUPDIR}: start time backup': pg_probackup.dir.start_time_backup[{#BACKUPDIR}]
+    'Pg_probackup dir {#BACKUPDIR}: end time backup': pg_probackup.dir.end_time_backup[{#BACKUPDIR}]
+    'Pg_probackup dir {#BACKUPDIR}: mode': pg_probackup.dir.mode_backup[{#BACKUPDIR}]
+    'Pg_probackup dir {#BACKUPDIR}: status': pg_probackup.dir.status_backup[{#BACKUPDIR}]
+    'Pg_probackup dir {#BACKUPDIR}: error': pg_probackup.dir.error[{#BACKUPDIR}]
+    'Relation size: {#RELATIONNAME}':  pgsql.relation.size[{#RELATIONNAME}]
     'Database {#DATABASE}: size': pgsql.database.size[{#DATABASE}]
     'Count of bloating tables in database: {#DATABASE}': pgsql.database.bloating_tables[{#DATABASE}]
     'Max age (datfrozenxid) in: {#DATABASE}': pgsql.database.bloating_tables[{#DATABASE}]
