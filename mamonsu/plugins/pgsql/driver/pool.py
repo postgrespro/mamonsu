@@ -9,32 +9,32 @@ class Pool(object):
         # query type: ( 'if_not_installed', 'if_installed' )
         'replication_lag_master_query': (
             'select 1 as replication_lag_master_query',
-            'select public.mamonsu_timestamp_master_update()'
+            'select mamonsu.timestamp_master_update()'
         ),
         'replication_lag_slave_query': (
             'select extract(epoch from now()-pg_last_xact_replay_timestamp())',
-            'select public.mamonsu_timestamp_get()'
+            'select mamonsu.timestamp_get()'
         ),
         'count_xlog_files': (
             "WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_xlog')) SELECT COUNT(*)::BIGINT FROM list WHERE filename similar to '[0-9A-F]{24}'",
-            'select public.mamonsu_count_xlog_files()'
+            'select mamonsu.count_xlog_files()'
         ),
         'count_wal_files': (
             "WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_wal')) SELECT COUNT(*)::BIGINT FROM list WHERE filename similar to '[0-9A-F]{24}'",
-            'select public.mamonsu_count_wal_files()'
+            'select mamonsu.count_wal_files()'
         ),
         'count_autovacuum': (
             "select count(*) from pg_catalog.pg_stat_activity where "
             "query like '%%autovacuum%%' and state <> 'idle' "
             "and pid <> pg_catalog.pg_backend_pid() ",
-            'select public.mamonsu_count_autovacuum()'
+            'select mamonsu.count_autovacuum()'
         ),
         'buffer_cache': (
             "select sum(1) * (current_setting('block_size')::int8) as size, "
             " sum(case when usagecount > 1 then 1 else 0 end) * (current_setting('block_size')::int8) as twice_used, "
             " sum(case isdirty when true then 1 else 0 end) * (current_setting('block_size')::int8) as dirty "
-            " from public.pg_buffercache",
-            'select size, twice_used, dirty from public.mamonsu_buffer_cache()'
+            " from mamonsu.pg_buffercache",
+            'select size, twice_used, dirty from mamonsu.buffer_cache()'
         ),
         'wal_lag_lsn': (
             "SELECT CONCAT(application_name, ' ', pid) as application_name, " \
@@ -43,14 +43,14 @@ class Pool(object):
             " FROM pg_stat_replication;",
             " SELECT application_name, " \
             " flush_lag, replay_lag, write_lag, total_lag " \
-            " FROM public.mamonsu_count_wal_lag_lsn()"
+            " FROM mamonsu.count_wal_lag_lsn()"
         ),
         'xlog_lag_lsn': (
             "SELECT CONCAT(application_name, ' ', pid) as application_name, " \
             "pg_xlog_location_diff(pg_current_xlog_location(), replay_location) AS total_lag  " \
             "FROM pg_stat_replication;",
             "SELECT application_name, total_lag "\
-            "FROM public.mamonsu_count_xlog_lag_lsn()"
+            "FROM mamonsu.count_xlog_lag_lsn()"
         ),
     }
 
@@ -122,12 +122,12 @@ class Pool(object):
                 return self._cache['bootstrap']['storage'][db]
         self._cache['bootstrap']['counter'] = 0
         sql = """select count(*) from pg_catalog.pg_class
-            where relname = 'mamonsu_config'"""
+            where relname = 'config'"""
         result = int(self.query(sql, db)[0][0])
         self._cache['bootstrap']['storage'][db] = (result == 1)
         if self._cache['bootstrap']['storage'][db]:
             self._connections[db].log.info('Found mamonsu bootstrap')
-            sql = 'select max(version) from public.mamonsu_config'
+            sql = 'select max(version) from mamonsu.config'
             self._cache['bootstrap']['version'] = self.query(sql, db)[0][0]
         else:
             self._connections[db].log.info('Mamonsu bootstrap is not found')
@@ -227,7 +227,7 @@ class Pool(object):
             pass
         db = self._normalize_db(db)
         if self.is_bootstraped() and self.bootstrap_version_greater('2.3.4'):
-            result = self.query("""select * from mamonsu_get_sys_param(\'{0}\')""".format(param))[0][0]
+            result = self.query("""select * from mamonsu.get_sys_param(\'{0}\')""".format(param))[0][0]
         else:
             result = self.query(
                 'select setting from pg_catalog.pg_settings where name = \'{0}\''.format(param), db)[0][0]

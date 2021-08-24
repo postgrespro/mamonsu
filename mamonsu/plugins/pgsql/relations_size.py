@@ -86,7 +86,7 @@ class RelationsSize(Plugin):
 
         zbx.send('pgsql.relation.size[]', zbx.json({'data': rels}))
 
-    def discovery_rules(self, template):
+    def discovery_rules(self, template, dashboard=False):
         rule = {
             'name': 'Relation size discovery',
             'key': self.key_rel_size_discovery.format('[{0}]'.format(self.Macros[self.Type])),
@@ -100,7 +100,7 @@ class RelationsSize(Plugin):
                     'condition': [
                         {'macro': '{#RELATIONNAME}',
                          'value': '.*',
-                         'operator': None,
+                         'operator': 8,
                          'formulaid': 'A'}
                     ]
                 }

@@ -31,7 +31,7 @@ class Net(Plugin):
                 devices.append({'{#NETDEVICE}': iface})
         zbx.send('system.net.discovery[]', zbx.json({'data': devices}))
 
-    def discovery_rules(self, template):
+    def discovery_rules(self, template, dashboard=False):
         items = []
         if self.Type == "mamonsu":
             delta = Plugin.DELTA.as_is
@@ -61,7 +61,7 @@ class Net(Plugin):
                     'condition': [
                         {'macro': '{#NETDEVICE}',
                          'value': '.*',
-                         'operator': None,
+                         'operator': 8,
                          'formulaid': 'A'}
                     ]
                 }

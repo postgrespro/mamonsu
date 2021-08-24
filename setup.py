@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 def long_description():
     filespath = path.dirname(path.realpath(__file__))
-    with codecs.open(path.join(filespath, 'README.rst'), encoding='utf8') as f:
+    with codecs.open(path.join(filespath, 'README.md'), encoding='utf8') as f:
         return f.read()
 
 

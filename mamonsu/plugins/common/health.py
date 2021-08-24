@@ -22,7 +22,7 @@ class Health(Plugin):
             self.log.info('=== Keep alive ===')
             self.counter = 0
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         # see supervisor.py:
         if self.Type == "mamonsu":
             result = template.item({
@@ -44,9 +44,12 @@ class Health(Plugin):
                 'name': 'Mamonsu: plugin keep alive',
                 'key': self.right_type("mamonsu.plugin.keepalive{0}")
             })
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
-    def triggers(self, template):
+    def triggers(self, template, dashboard=False):
         if self.Type == "mamonsu":
             result = template.trigger({
                 'name': 'Mamonsu plugin errors '

@@ -1,6 +1,6 @@
 %define _datarootdir %{_prefix}/share
 Name:           mamonsu
-Version:        2.7.1
+Version:        3.0.0
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -74,6 +74,19 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Aug 16 2021 Alexandra Kuznetsova <@a.kuznetsova>  - 3.0.0-1
+  - change template name to 'Mamonsu PostgreSQL [PLATFORM]'
+  - change metric name 'PostgreSQL transactions: total' to 'PostgreSQL transactions: committed'
+  - fix Cache Hit Ratio metric calculating
+  - fix ArchiveCommand plugin metrics calculating
+  - fix Zabbix API support
+  - add PostgreSQL 14 support (pg_stat_statements_info, pg_stat_wal metrics)
+  - add new graphs: PostgreSQL bgwriter buffers, PostgreSQL bgwriter write/sync, PostgreSQL checkpoints count, PostgreSQL checkpoints write/sync
+  - add Zabbix screens (Overview, PostgreSQL Locks, PostgreSQL WAL, PostgreSQL Instance, PostgreSQL Transactions, System)
+  - add new mamonsu boostrap option: '-x/--create-extensions' for optional extensions creation
+  - add new mamonsu bootstrap features: boostrap by default creates mamonsu user mamonsu/mamonsu, bootstrap by default creates mamonsu own schema 'mamonsu'
+  - rm graphs with only one metric
+
 * Wed May 19 2021 Daria Vilkova <d.vilkova@postgrespro.ru>  - 2.7.1-1
 - rm metric to count children of PostgreSQL parent pid
 

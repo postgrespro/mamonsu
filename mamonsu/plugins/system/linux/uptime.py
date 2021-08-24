@@ -12,21 +12,19 @@ class SystemUptime(Plugin):
         uptime = open('/proc/uptime', 'r').read().split(' ')[0]
         zbx.send('system.up_time[]', int(float(uptime)))
 
-    def items(self, template):
-        return template.item({
-            'name': 'System up_time',
-            'key': self.right_type(self.key),
-            'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
-            'delay': self.plugin_config('interval'),
-            'units': Plugin.UNITS.uptime
-        })
+    def items(self, template, dashboard=False):
+        if not dashboard:
+            return template.item({
+                'name': 'System up_time',
+                'key': self.right_type(self.key),
+                'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
+                'delay': self.plugin_config('interval'),
+                'units': Plugin.UNITS.uptime
+            })
+        else:
+            return []
 
-    def graphs(self, template):
-        items = [{'key': self.right_type(self.key)}]
-        graph = {'name': 'System up_time', 'items': items}
-        return template.graph(graph)
-
-    def triggers(self, template):
+    def triggers(self, template, dashboard=False):
         return template.trigger({
             'name': 'System was restarted on '
                     '{HOSTNAME} (up_time={ITEM.LASTVALUE})',

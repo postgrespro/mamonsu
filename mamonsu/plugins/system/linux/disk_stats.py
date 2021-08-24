@@ -1,5 +1,6 @@
 import re
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class DiskStats(Plugin):
@@ -71,34 +72,37 @@ class DiskStats(Plugin):
             zbx.send('system.disk.all_write_b[]', all_write_b, self.DELTA_SPEED)
             zbx.send('system.disk.discovery[]', zbx.json({'data': devices}))
 
-    def items(self, template):  # TODO delta speed for zabbix agent
+    def items(self, template, dashboard=False):  # TODO delta speed for zabbix agent
         if Plugin.Type == "mamonsu":
             delta = Plugin.DELTA.as_is
         else:
             delta = Plugin.DELTA_SPEED
-        return template.item({
-            'name': 'Block devices: read requests',
-            'key': self.right_type(self.key + '.all_read{0}'),
-            'delay': self.plugin_config('interval'),
-            'delta': delta
-        }) + template.item({
-            'name': 'Block devices: write requests',
-            'key': self.right_type(self.key + '.all_write{0}'),
-            'delay': self.plugin_config('interval'),
-            'delta': delta
-        }) + template.item({
-            'name': 'Block devices: read byte/s',
-            'key': self.right_type(self.key + '.all_read_b{0}'),
-            'delay': self.plugin_config('interval'),
-            'delta': delta
-        }) + template.item({
-            'name': 'Block devices: write byte/s',
-            'key': self.right_type(self.key + '.all_write_b{0}'),
-            'delay': self.plugin_config('interval'),
-            'delta': delta
-        })
+        if not dashboard:
+            return template.item({
+                'name': 'Block devices: read requests',
+                'key': self.right_type(self.key + '.all_read{0}'),
+                'delay': self.plugin_config('interval'),
+                'delta': delta
+            }) + template.item({
+                'name': 'Block devices: write requests',
+                'key': self.right_type(self.key + '.all_write{0}'),
+                'delay': self.plugin_config('interval'),
+                'delta': delta
+            }) + template.item({
+                'name': 'Block devices: read byte/s',
+                'key': self.right_type(self.key + '.all_read_b{0}'),
+                'delay': self.plugin_config('interval'),
+                'delta': delta
+            }) + template.item({
+                'name': 'Block devices: write byte/s',
+                'key': self.right_type(self.key + '.all_write_b{0}'),
+                'delay': self.plugin_config('interval'),
+                'delta': delta
+            })
+        else:
+            return []
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         graph = {
             'name': 'Block devices: read/write operations',
             'items': [
@@ -112,9 +116,19 @@ class DiskStats(Plugin):
                 {'key': self.right_type(self.key + '.all_read_b{0}'), 'color': 'CC0000'},
                 {'key': self.right_type(self.key + '.all_write_b{0}'), 'color': '0000CC'}]
         }
-        return result + template.graph(graph)
+        if not dashboard:
+            return result + template.graph(graph)
+        else:
+            return [{'dashboard': {'name': 'Block devices: read/write bytes',
+                                   'page': ZbxTemplate.dashboard_page_system['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 1}},
+                    {'dashboard': {'name': 'Block devices: read/write operations',
+                                   'page': ZbxTemplate.dashboard_page_system['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 2}}]
 
-    def discovery_rules(self, template):
+    def discovery_rules(self, template, dashboard=False):
         if Plugin.Type == 'mamonsu':
             key_discovery = 'system.disk.discovery[]'
             delta = Plugin.DELTA.as_is
@@ -134,7 +148,7 @@ class DiskStats(Plugin):
                     'condition': [
                         {'macro': '{#BLOCKDEVICE}',
                          'value': '.*',
-                         'operator': None,
+                         'operator': 8,
                          'formulaid': 'A'}
                     ]
                 }

@@ -1,6 +1,7 @@
 import re
 
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class ProcStat(Plugin):
@@ -73,7 +74,7 @@ class ProcStat(Plugin):
                         zbx.send(
                             'system.{0}'.format(item[1]), int(value), item[3])
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = ''
         delta = Plugin.DELTA.as_is
         for i, item in enumerate(self.ProcessItems):
@@ -100,9 +101,12 @@ class ProcStat(Plugin):
                 'delay': self.plugin_config('interval'),
                 'delta': delta
             })
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         items = []
         for item in self.ProcessItems:
             # split each item to get values for keys of both agent type and mamonsu type
@@ -125,9 +129,19 @@ class ProcStat(Plugin):
         graphs += template.graph({
             'name': 'CPU time spent',
             'items': items, 'type': self.GRAPH_TYPE.stacked})
-        return graphs
+        if not dashboard:
+            return graphs
+        else:
+            return [{'dashboard': {'name': 'CPU time spent',
+                                   'page': ZbxTemplate.dashboard_page_overview['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 3}},
+                    {'dashboard': {'name': 'Processes overview',
+                                   'page': ZbxTemplate.dashboard_page_system['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 3}}]
 
-    def triggers(self, template):
+    def triggers(self, template, dashboard=False):
         return template.trigger({
             'name': 'Process fork-rate to '
                     'frequently on {HOSTNAME}',

@@ -10,8 +10,8 @@ from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.pool import Pooler
-from mamonsu.tools.bootstrap.sql import CreateSchemaExtensionSQL, CreateSchemaDefaultSQL, \
-    GrantsOnDefaultSchemaSQL, GrantsOnExtensionSchemaSQL, QuerySplit
+from mamonsu.tools.bootstrap.sql import CreateMamonsuUserSQL, CreateSchemaExtensionSQL, CreateExtensionFunctionsSQL, \
+CreateSchemaDefaultSQL,GrantsOnDefaultSchemaSQL, GrantsOnExtensionSchemaSQL, QuerySplit
 
 
 class Args(DefaultConfig):
@@ -60,7 +60,13 @@ class Args(DefaultConfig):
         bootstrap_group.add_option(
             '-M', '--mamonsu-username',
             dest='mamonsu_username',
+            default='mamonsu',
             help='database non-privileged user for mamonsu')
+        bootstrap_group.add_option(
+            '-x', '--create-extensions',
+            action='store_true',
+            dest='create_extensions',
+            help='create pg_buffercache extension in mamonsu schema')
         parser.add_option_group(group)
         parser.add_option_group(bootstrap_group)
 
@@ -178,6 +184,15 @@ def fill_grant_params(queries, args):
     return formatted_grants_queries
 
 
+def fill_user_params(queries, args):
+    formatted_user_queries = ""
+    for sql in queries.format(
+            args.args.mamonsu_username
+    ).split(QuerySplit):
+        formatted_user_queries += sql
+    return formatted_user_queries
+
+
 def run_deploy():
     args = Args()
 
@@ -192,21 +207,38 @@ def run_deploy():
         sys.exit(1)
 
     try:
-        bootstrap_queries = fill_query_params(CreateSchemaDefaultSQL)
+        bootstrap_queries = fill_user_params(CreateMamonsuUserSQL, args)
         Pooler.query(bootstrap_queries)
     except Exception as e:
         sys.stderr.write("Bootstrap execution have exited with an error: {0}\n".format(e))
         sys.exit(2)
 
     try:
-        bootstrap_extension_queries = fill_query_params(CreateSchemaExtensionSQL)
-        Pooler.query(bootstrap_extension_queries)
+        bootstrap_queries = fill_query_params(CreateSchemaDefaultSQL)
+        Pooler.query(bootstrap_queries)
     except Exception as e:
-        sys.stderr.write(
-            "Bootstrap failed to create the function which required pg_buffercache extension.\n"
-            "Error: {0}\n".format(e))
-        sys.stderr.write("Please install pg_buffercache extension and rerun bootstrap "
-                         "if you want to get metrics from pg_buffercache view. \n")
+        sys.stderr.write("Bootstrap execution have exited with an error: {0}\n".format(e))
+        sys.exit(2)
+
+    if args.args.create_extensions:
+        try:
+            bootstrap_extension_queries = fill_query_params(CreateSchemaExtensionSQL)
+            Pooler.query(bootstrap_extension_queries)
+        except Exception as e:
+            sys.stderr.write(
+                "Bootstrap failed to create pg_buffercache extension.\n"
+                "Error: {0}\n".format(e))
+            sys.stderr.write("Please install pg_buffercache extension and rerun bootstrap "
+                             "if you want to get metrics from pg_buffercache view. \n")
+        try:
+            bootstrap_extension_queries = fill_query_params(CreateExtensionFunctionsSQL)
+            Pooler.query(bootstrap_extension_queries)
+        except Exception as e:
+            sys.stderr.write(
+                "Bootstrap failed to create the function which required pg_buffercache extension.\n"
+                "Error: {0}\n".format(e))
+            sys.stderr.write("Please install pg_buffercache extension and rerun bootstrap "
+                             "if you want to get metrics from pg_buffercache view. \n")
 
     try:
         bootstrap_grant_queries = fill_grant_params(GrantsOnDefaultSchemaSQL, args)
@@ -217,13 +249,14 @@ def run_deploy():
         sys.stderr.write("Please check mamonsu user permissions and rerun bootstrap.\n")
         sys.exit(2)
 
-    try:
-        bootstrap_grant_extension_queries = fill_grant_params(GrantsOnExtensionSchemaSQL, args)
-        Pooler.query(bootstrap_grant_extension_queries)
+    if args.args.create_extensions:
+        try:
+            bootstrap_grant_extension_queries = fill_grant_params(GrantsOnExtensionSchemaSQL, args)
+            Pooler.query(bootstrap_grant_extension_queries)
 
-    except Exception as e:
-        sys.stderr.write("Bootstrap failed to grant execution permission to "
-                         "the function which required pg_buffercache extension.\n")
-        sys.stderr.write("Error: \n {0}\n".format(e))
+        except Exception as e:
+            sys.stderr.write("Bootstrap failed to grant execution permission to "
+                             "the function which required pg_buffercache extension.\n")
+            sys.stderr.write("Error: \n {0}\n".format(e))
 
     sys.stdout.write("Bootstrap successfully completed\n")

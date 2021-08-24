@@ -7,6 +7,7 @@ from .pool import Pooler
 
 class PgStatStatement(Plugin):
     query = "select {0} from public.pg_stat_statements;"
+    query_info = "select {0} from public.pg_stat_statements_info;"
     AgentPluginType = 'pg'
     key = "pgsql."
     # zbx_key, sql, desc, unit, delta, (Graph, color, side)
@@ -56,10 +57,38 @@ class PgStatStatement(Plugin):
          ('PostgreSQL statements: wal statistics', '00CCCC', 0))
     ]
 
+    Items_pg_14 = [
+
+        ('stat_info[dealloc]',
+         'dealloc',
+         'the number of times the pg_stat_statements.max was exceeded',
+         Plugin.UNITS.none,
+         Plugin.DELTA.simple_change,
+         ('PostgreSQL statements info: the number of times the pg_stat_statements.max was exceeded', '0000CC', 0)),
+        ('stat_info[stats_reset]',
+         'ceil(extract(epoch from stats_reset))',
+         'last statistics reset',
+         Plugin.UNITS.unixtime,
+         Plugin.DELTA.as_is,
+         ('PostgreSQL statements info: last statistics reset', '0000CC', 0))
+    ]
+
     def run(self, zbx):
         if not self.extension_installed('pg_stat_statements'):
             return
-        if Pooler.server_version_greater('13'):
+        if Pooler.server_version_greater('14'):
+            self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
+            all_items = self.Items + self.Items_pg_13
+            params = [x[1] for x in all_items]
+            info_items = self.Items_pg_14
+            info_params = [x[1] for x in info_items]
+            info_result = Pooler.query(self.query_info.format(
+            ', '.join(info_params)))
+            for idx, val in enumerate(info_result[0]):
+                key, val = 'pgsql.{0}'.format(
+                    info_items[idx][0]), int(val)
+                zbx.send(key, val, info_items[idx][4])
+        elif Pooler.server_version_greater('13'):
             self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
             all_items = self.Items + self.Items_pg_13
             params = [x[1] for x in all_items]
@@ -74,13 +103,13 @@ class PgStatStatement(Plugin):
                 all_items[idx][0]), int(val)
             zbx.send(key, val, all_items[idx][4])
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = ''
         if self.Type == "mamonsu":
             delta = Plugin.DELTA.as_is
         else:
             delta = Plugin.DELTA.speed_per_second
-        for item in self.Items + self.Items_pg_13:
+        for item in self.Items + self.Items_pg_13 + self.Items_pg_14:
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[0].split('[')
             result += template.item({
@@ -90,9 +119,12 @@ class PgStatStatement(Plugin):
                 'units': item[3],
                 'delay': self.plugin_config('interval'),
                 'delta': delta})
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         all_graphs = [
             ('PostgreSQL statements: bytes', None),
             ('PostgreSQL statements: spend time', 1),
@@ -112,7 +144,10 @@ class PgStatStatement(Plugin):
             if graph_item[1] is not None:
                 graph['type'] = graph_item[1]
             result += template.graph(graph)
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
     def keys_and_queries(self, template_zabbix):
         result = []
@@ -127,4 +162,12 @@ class PgStatStatement(Plugin):
             keys = item[0].split('[')
             result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
                                                          self.query.format(item[1])))
+
+        if LooseVersion(self.VersionPG) >= LooseVersion('14'):
+            all_items = self.Items_pg_14
+            for i, item in enumerate(all_items):
+                keys = item[0].split('[')
+                result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
+                                                             self.query_info.format(item[1])))
+
         return template_zabbix.key_and_query(result)

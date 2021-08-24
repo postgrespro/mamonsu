@@ -2,6 +2,7 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Oldest(Plugin):
@@ -9,7 +10,7 @@ class Oldest(Plugin):
     AgentPluginType = 'pg'
     OldestXidSql = "SELECT greatest(max(age(backend_xmin)), max(age(backend_xid))) FROM pg_catalog.pg_stat_activity;"
 
-    OldestXidSql_bootstrap = "select public.mamonsu_get_oldest_xid();"
+    OldestXidSql_bootstrap = "select mamonsu.get_oldest_xid();"
 
     OldestTransactionSql = "SELECT " \
                            "CASE WHEN extract(epoch from max(now() - xact_start)) IS NOT NULL " \
@@ -21,7 +22,7 @@ class Oldest(Plugin):
                            "AND pid <> pg_backend_pid(); "
 
     OldestTransactionSql_bootstrap = """
-select public.mamonsu_get_oldest_transaction();
+select mamonsu.get_oldest_transaction();
 """
     ParallelQueries = "SELECT count(*) FROM pg_stat_activity WHERE leader_pid is not NULL;"
 
@@ -43,49 +44,35 @@ select public.mamonsu_get_oldest_transaction();
         zbx.send('pgsql.oldest[xid_age]', xid)
         zbx.send('pgsql.oldest[transaction_time]', query)
 
-    def graphs(self, template):
-        result = template.graph({
-            'name': 'PostgreSQL oldest transaction running time',
-            'items': [{
-                'key': self.right_type(self.key, 'transaction_time'),
-                'color': '00CC00'
-            }]
-        })
-        result += template.graph({
-            'name': 'PostgreSQL age of oldest xid',
-            'items': [{
+    def items(self, template, dashboard=False):
+        if not dashboard:
+            return template.item({
                 'key': self.right_type(self.key, 'xid_age'),
-                'color': '00CC00'
-            }]
-        })
-        result += template.graph({
-            'name': 'PostgreSQL number of parallel queries being executed now',
-            'items': [{
+                'name': 'PostgreSQL: age of oldest xid',
+                'delay': self.plugin_config('interval'),
+                'value_type': Plugin.VALUE_TYPE.numeric_unsigned
+            }) + template.item({
+                'key': self.right_type(self.key, 'transaction_time'),
+                'name': 'PostgreSQL: oldest transaction running time in sec',
+                'delay': self.plugin_config('interval'),
+                'units': Plugin.UNITS.s
+            }) + template.item({
                 'key': self.right_type("pgsql.parallel{0}", 'queries'),
-                'color': '0000CC'
-            }]
-        })
-        return result
+                'name': 'PostgreSQL: number of parallel queries being executed now',
+                'delay': self.plugin_config('interval'),
+                'value_type': Plugin.VALUE_TYPE.numeric_unsigned
+            })
+        else:
+            return [{'dashboard': {'name': self.right_type(self.key, 'xid_age'),
+                                   'page': ZbxTemplate.dashboard_page_transactions['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 1}},
+                    {'dashboard': {'name': self.right_type(self.key, 'transaction_time'),
+                                   'page': ZbxTemplate.dashboard_page_transactions['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 2}}]
 
-    def items(self, template):
-        return template.item({
-            'key': self.right_type(self.key, 'xid_age'),
-            'name': 'PostgreSQL: age of oldest xid',
-            'delay': self.plugin_config('interval'),
-            'value_type': Plugin.VALUE_TYPE.numeric_unsigned
-        }) + template.item({
-            'key': self.right_type(self.key, 'transaction_time'),
-            'name': 'PostgreSQL: oldest transaction running time in sec',
-            'delay': self.plugin_config('interval'),
-            'units': Plugin.UNITS.s
-        }) + template.item({
-            'key': self.right_type("pgsql.parallel{0}", 'queries'),
-            'name': 'PostgreSQL: number of parallel queries being executed now',
-            'delay': self.plugin_config('interval'),
-            'value_type': Plugin.VALUE_TYPE.numeric_unsigned
-        })
-
-    def triggers(self, template):
+    def triggers(self, template, dashboard=False):
         return template.trigger({
             'name': 'PostgreSQL oldest xid is too big on {HOSTNAME}',
             'expression': '{#TEMPLATE:' + self.right_type(self.key, 'xid_age') +

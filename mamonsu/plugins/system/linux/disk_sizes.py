@@ -62,7 +62,7 @@ class DiskSizes(Plugin):
 
             zbx.send('system.vfs.discovery[]', zbx.json({'data': points}))
 
-    def discovery_rules(self, template):
+    def discovery_rules(self, template, dashboard=False):
         if Plugin.Type == 'mamonsu':
             key_discovery = 'system.vfs.discovery[]'
         else:
@@ -80,7 +80,7 @@ class DiskSizes(Plugin):
                     'condition': [
                         {'macro': '{#MOUNTPOINT}',
                          'value': '.*',
-                         'operator': None,
+                         'operator': 8,
                          'formulaid': 'A'}
                     ]
                 }

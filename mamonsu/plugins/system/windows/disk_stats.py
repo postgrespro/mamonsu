@@ -23,7 +23,7 @@ class DiskStats(Plugin):
         zbx.send('system.disk.discovery[]', zbx.json({'data': devices}))
         del devices
 
-    def discovery_rules(self, template):
+    def discovery_rules(self, template, dashboard=False):
         rule = {
             'name': 'Logical disks discovery',
             'key': 'system.disk.discovery[]',

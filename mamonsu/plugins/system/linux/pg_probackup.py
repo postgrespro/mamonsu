@@ -104,7 +104,7 @@ class PgProbackup(Plugin):
         zbx.send(self.key_main.format('[]'), zbx.json({'data': dirs}))
         del dirs
 
-    def discovery_rules(self, template):
+    def discovery_rules(self, template, dashboard=False):
         rule = {
             'name': 'Pg_probackup discovery',
             'key': self.key_main.format('[{0}]'.format(self.Macros[self.Type])),
@@ -118,7 +118,7 @@ class PgProbackup(Plugin):
                     'condition': [
                         {'macro': '{#BACKUPDIR}',
                          'value': '.*',
-                         'operator': None,
+                         'operator': 8,
                          'formulaid': 'A'}
                     ]
                 }

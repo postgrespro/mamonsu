@@ -1,3 +1,16 @@
+mamonsu (3.0.0-1) stable; urgency=low
+  * change template name to 'Mamonsu PostgreSQL [PLATFORM]'
+  * change metric name 'PostgreSQL transactions: total' to 'PostgreSQL transactions: committed'
+  * fix Cache Hit Ratio metric calculating
+  * fix ArchiveCommand plugin metrics calculating
+  * fix Zabbix API support
+  * add PostgreSQL 14 support (pg_stat_statements_info, pg_stat_wal metrics)
+  * add new graphs: PostgreSQL bgwriter buffers, PostgreSQL bgwriter write/sync, PostgreSQL checkpoints count, PostgreSQL checkpoints write/sync
+  * add Zabbix screens (Overview, PostgreSQL Locks, PostgreSQL WAL, PostgreSQL Instance, PostgreSQL Transactions, System)
+  * add new mamonsu boostrap option: '-x/--create-extensions' for optional extensions creation
+  * add new mamonsu bootstrap features: boostrap by default creates mamonsu user mamonsu/mamonsu, bootstrap by default creates mamonsu own schema 'mamonsu'
+  * rm graphs with only one metric
+
 mamonsu (2.7.1-1) stable; urgency=low
   * rm metric to count children of PostgreSQL parent pid
 

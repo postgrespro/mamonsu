@@ -51,6 +51,7 @@ class Plugin(object):
     GRAPH_TYPE = Template.GRAPH_TYPE
     VALUE_TYPE = Template.VALUE_TYPE
     UNITS = Template.UNITS
+    TYPE = Template.TYPE
 
     DELTA_SPEED = Template.DELTA.speed_per_second
     DELTA_CHANGE = Template.DELTA.simple_change
@@ -141,16 +142,16 @@ class Plugin(object):
     def set_sender(self, sender):
         self.sender = sender
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         return None
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         return None
 
-    def triggers(self, template):
+    def triggers(self, template, dashboard=False):
         return None
 
-    def discovery_rules(self, template):
+    def discovery_rules(self, template, dashboard=False):
         return None
 
     def keys_and_queries(self, template_zabbix):

@@ -2,6 +2,7 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Databases(Plugin):
@@ -54,14 +55,20 @@ class Databases(Plugin):
         result = Pooler.run_sql_type('count_autovacuum')
         zbx.send('pgsql.autovacumm.count[]', int(result[0][0]))
 
-    def items(self, template):
-        return template.item({
-            'name': 'PostgreSQL: count of autovacuum workers',
-            'key': self.right_type(self.key_autovacumm),
-            'delay': self.plugin_config('interval')
-        })
+    def items(self, template, dashboard=False):
+        if not dashboard:
+            return template.item({
+                'name': 'PostgreSQL: count of autovacuum workers',
+                'key': self.right_type(self.key_autovacumm),
+                'delay': self.plugin_config('interval')
+            })
+        else:
+            return [{'dashboard': {'name': self.right_type(self.key_autovacumm),
+                                   'page': ZbxTemplate.dashboard_page_overview['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 5}}]
 
-    def discovery_rules(self, template):
+    def discovery_rules(self, template, dashboard=False):
         rule = {
             'name': 'Database discovery',
             'key': self.key_db_discovery.format('[{0}]'.format(self.Macros[self.Type])),
@@ -76,7 +83,7 @@ class Databases(Plugin):
                     'condition': [
                         {'macro': '{#DATABASE}',
                          'value': '.*',
-                         'operator': None,
+                         'operator': 8,
                          'formulaid': 'A'}
                     ]
                 }

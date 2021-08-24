@@ -4,42 +4,59 @@ QuerySplit = """
 
 """
 
+CreateMamonsuUserSQL = """
+DO
+$do$
+BEGIN
+   IF NOT EXISTS (
+      SELECT FROM pg_catalog.pg_roles 
+      WHERE rolname = '{0}') THEN
+      CREATE ROLE {0} LOGIN PASSWORD '{0}';
+   END IF;
+END
+$do$;
+
+CREATE SCHEMA IF NOT EXISTS mamonsu;
+ALTER SCHEMA mamonsu OWNER TO {0};
+GRANT ALL PRIVILEGES ON SCHEMA mamonsu TO {0};
+"""
+
 CreateSchemaDefaultSQL = """
-CREATE TABLE IF NOT EXISTS public.mamonsu_config (
+CREATE TABLE IF NOT EXISTS mamonsu.config (
   version text,
   inserted_at timestamp DEFAULT NOW()
 );
 
-INSERT INTO public.mamonsu_config(version) VALUES('{0}');
+INSERT INTO mamonsu.config(version) VALUES('{0}');
 
-DROP TABLE IF EXISTS public.mamonsu_timestamp_master_{1};
+DROP TABLE IF EXISTS mamonsu.timestamp_master_{1};
 
-CREATE TABLE public.mamonsu_timestamp_master_{1}(
+CREATE TABLE mamonsu.timestamp_master_{1}(
     id int primary key,
     ts double precision,
     lsn pg_lsn
 );
 
-INSERT INTO public.mamonsu_timestamp_master_{1} (id) values (1);
+INSERT INTO mamonsu.timestamp_master_{1} (id) values (1);
 
-CREATE OR REPLACE FUNCTION public.mamonsu_timestamp_master_update()
+CREATE OR REPLACE FUNCTION mamonsu.timestamp_master_update()
 RETURNS void AS $$
-  UPDATE public.mamonsu_timestamp_master_{1} SET
+  UPDATE mamonsu.timestamp_master_{1} SET
     ts = extract(epoch from now() at time zone 'utc')::double precision,
     lsn = pg_catalog.pg_current_{4}()
   WHERE
     id = 1;
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION public.mamonsu_timestamp_get()
+CREATE OR REPLACE FUNCTION mamonsu.timestamp_get()
 RETURNS double precision AS $$
   SELECT
     (extract(epoch from now() at time zone 'utc') - ts)::double precision
-  FROM public.mamonsu_timestamp_master_{1}
+  FROM mamonsu.timestamp_master_{1}
   WHERE id = 1 LIMIT 1;
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION public.mamonsu_count_autovacuum()
+CREATE OR REPLACE FUNCTION mamonsu.count_autovacuum()
 RETURNS BIGINT AS $$
     SELECT
         count(*)::BIGINT
@@ -50,7 +67,7 @@ RETURNS BIGINT AS $$
         and pid <> pg_catalog.pg_backend_pid()
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION public.mamonsu_get_connections_states()
+CREATE OR REPLACE FUNCTION mamonsu.get_connections_states()
 RETURNS TABLE(state text, waiting boolean) AS $$
     SELECT
         state,
@@ -58,7 +75,7 @@ RETURNS TABLE(state text, waiting boolean) AS $$
     FROM pg_catalog.pg_stat_activity
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE or REPLACE FUNCTION public.mamonsu_get_oldest_xid()
+CREATE or REPLACE FUNCTION mamonsu.get_oldest_xid()
 RETURNS BIGINT AS $$
     SELECT
         greatest(max(age(backend_xmin)),
@@ -66,7 +83,7 @@ RETURNS BIGINT AS $$
     FROM pg_catalog.pg_stat_activity
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE or REPLACE FUNCTION public.mamonsu_get_oldest_transaction()
+CREATE or REPLACE FUNCTION mamonsu.get_oldest_transaction()
 RETURNS DOUBLE PRECISION AS $$
     SELECT 
         CASE WHEN extract(epoch from max(now() - xact_start)) IS NOT null 
@@ -80,7 +97,7 @@ RETURNS DOUBLE PRECISION AS $$
         pid <> pg_backend_pid()
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION public.mamonsu_count_{3}_files()
+CREATE OR REPLACE FUNCTION mamonsu.count_{3}_files()
 RETURNS BIGINT AS $$
 WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_{3}'))
 SELECT
@@ -90,79 +107,99 @@ FROM
 WHERE filename similar to '{2}'
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION public.mamonsu_archive_command_files()
-RETURNS TABLE(COUNT_FILES BIGINT, SIZE_FILES NUMERIC) AS $$
-SELECT count(name) AS COUNT_FILES ,
-       coalesce(sum((pg_stat_file('./pg_{3}/' ||  rtrim(ready.name,'.ready'))).size),0) AS SIZE_FILES
-  FROM (SELECT name FROM pg_ls_dir('./pg_{3}/archive_status') name WHERE right( name,6)= '.ready'  ) ready
+CREATE OR REPLACE FUNCTION mamonsu.archive_command_files()
+RETURNS TABLE(COUNT_FILES BIGINT, SIZE_FILES BIGINT) AS $$
+WITH segment_parts_count AS
+(SELECT 4096/(setting::bigint/1024/1024) AS value FROM pg_settings
+WHERE name = 'wal_segment_size'),
+segment_size AS
+(SELECT setting::bigint AS value FROM pg_settings
+WHERE name = 'wal_segment_size'),
+last_wal_div AS
+(SELECT ('x' || substring(last_archived_wal from 9 for 8))::bit(32)::int AS value
+FROM pg_stat_archiver),
+last_wal_mod AS
+(SELECT ('x' || substring(last_archived_wal from 17 for 8))::bit(32)::int AS value
+FROM pg_stat_archiver),
+current_wal_div AS
+(SELECT ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int AS value),
+current_wal_mod AS
+(SELECT ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int AS value)
+SELECT greatest(coalesce((segment_parts_count.value - last_wal_mod.value) + ((current_wal_div.value - last_wal_div.value - 1) * segment_parts_count.value) + current_wal_mod.value - 1, 0), 0) AS count_files,
+greatest(coalesce(((segment_parts_count.value - last_wal_mod.value) + ((current_wal_div.value - last_wal_div.value - 1) * segment_parts_count.value) + current_wal_mod.value - 1) * segment_size.value, 0), 0) AS size_files
+FROM segment_parts_count, segment_size, last_wal_div, last_wal_mod, current_wal_div, current_wal_mod
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION public.mamonsu_archive_stat()
+CREATE OR REPLACE FUNCTION mamonsu.archive_stat()
 RETURNS TABLE(ARCHIVED_COUNT BIGINT, FAILED_COUNT BIGINT) AS $$
 SELECT archived_count, failed_count from pg_stat_archiver
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION public.mamonsu_get_sys_param(param text)
+CREATE OR REPLACE FUNCTION mamonsu.get_sys_param(param text)
 RETURNS TABLE(SETTING TEXT) AS $$
 select setting from pg_catalog.pg_settings where name = param
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION public.mamonsu_prepared_transaction()
+CREATE OR REPLACE FUNCTION mamonsu.prepared_transaction()
 RETURNS TABLE(count_prepared BIGINT, oldest_prepared BIGINT) AS $$
 SELECT COUNT(*) AS count_prepared,
 coalesce (ROUND(MAX(EXTRACT (EPOCH FROM (now() - prepared)))),0)::bigint AS oldest_prepared  
 FROM pg_catalog.pg_prepared_xacts$$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION public.mamonsu_count_{3}_lag_lsn()
+CREATE OR REPLACE FUNCTION mamonsu.count_{3}_lag_lsn()
 RETURNS TABLE(application_name TEXT, {8} total_lag NUMERIC ) AS $$
 SELECT 
 CONCAT(application_name, ' ', pid) as application_name,
-{6} pg_{7}_diff(pg_current_{7}(), replay_{9}) AS total_lag 
+{6} coalesce(pg_{7}_diff(pg_current_{7}(), replay_{9}), 0) AS total_lag 
 FROM pg_stat_replication
 $$ LANGUAGE SQL SECURITY DEFINER;
 """
 
 CreateSchemaExtensionSQL = """
-CREATE OR REPLACE FUNCTION public.mamonsu_buffer_cache()
+CREATE EXTENSION pg_buffercache WITH SCHEMA mamonsu;
+"""
+
+CreateExtensionFunctionsSQL = """
+CREATE OR REPLACE FUNCTION mamonsu.buffer_cache()
 RETURNS TABLE(SIZE BIGINT, TWICE_USED BIGINT, DIRTY BIGINT) AS $$
 SELECT
    SUM(1) * (current_setting('block_size')::int8),
    SUM(CASE WHEN usagecount > 1 THEN 1 ELSE 0 END) * (current_setting('block_size')::int8),
    SUM(CASE isdirty WHEN true THEN 1 ELSE 0 END) * (current_setting('block_size')::int8)
-FROM public.pg_buffercache
+FROM mamonsu.pg_buffercache
 $$ LANGUAGE SQL SECURITY DEFINER;
 """
 
 GrantsOnDefaultSchemaSQL = """
-ALTER TABLE public.mamonsu_config OWNER TO {1};
+ALTER TABLE mamonsu.config OWNER TO {1};
 
-ALTER TABLE public.mamonsu_timestamp_master_{0} OWNER TO {1};
+ALTER TABLE mamonsu.timestamp_master_{0} OWNER TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_timestamp_master_update() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.timestamp_master_update() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_timestamp_get() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.timestamp_get() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_count_autovacuum() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.count_autovacuum() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_get_oldest_xid() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.get_oldest_xid() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_get_oldest_transaction() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.get_oldest_transaction() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_count_{2}_files() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.count_{2}_files() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_archive_command_files() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.archive_command_files() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_archive_stat() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.archive_stat() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_get_sys_param(param text) TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.get_sys_param(param text) TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_get_connections_states() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.get_connections_states() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_prepared_transaction() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.prepared_transaction() TO {1};
 
-GRANT EXECUTE ON FUNCTION public.mamonsu_count_{2}_lag_lsn() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.count_{2}_lag_lsn() TO {1};
 """
 
 GrantsOnExtensionSchemaSQL = """
-GRANT EXECUTE ON FUNCTION public.mamonsu_buffer_cache() TO {1};
+GRANT EXECUTE ON FUNCTION mamonsu.buffer_cache() TO {1};
 """

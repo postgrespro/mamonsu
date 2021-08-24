@@ -2,6 +2,7 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class PgLocks(Plugin):
@@ -49,7 +50,7 @@ class PgLocks(Plugin):
             if not found:
                 zbx.send('pgsql.pg_locks[{0}]'.format(item[0]), 0)
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = ''
         for item in self.Items:
             result += template.item({
@@ -58,16 +59,28 @@ class PgLocks(Plugin):
                 'delay': self.plugin_config('interval'),
                 'value_type': self.VALUE_TYPE.numeric_unsigned
             })
-        return result
+        if not dashboard:
+            return result
+        else:
+            lock_graphs = []
+            for index, item in enumerate(self.Items):
+                lock_graphs.append({'dashboard': {'name': self.right_type(self.key, item[0]),
+                                                  'page': ZbxTemplate.dashboard_page_locks['name'],
+                                                  'size': ZbxTemplate.dashboard_widget_size_small,
+                                                  'position': index+2}})
+            return lock_graphs
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         name, items = 'PostgreSQL locks sampling', []
         for item in self.Items:
             items.append({
                 'key': self.right_type(self.key, item[0]),
                 'color': item[2]
             })
-        return template.graph({'name': name, 'items': items})
+        if not dashboard:
+            return template.graph({'name': name, 'items': items})
+        else:
+            return []
 
     def keys_and_queries(self, template_zabbix):
         result = []

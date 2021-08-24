@@ -34,7 +34,7 @@ class Request(object):
         return self._id
 
     def _get_json(self, method, params):
-        if method == 'user.login':
+        if method == 'user.login' or method == 'apiinfo.version':
             data = OrderedDict([
                 ('jsonrpc', '2.0'),
                 ('method', method),

@@ -10,18 +10,16 @@ class OpenFiles(Plugin):
         open_files = open('/proc/sys/fs/file-nr', 'r').read().split("\t")[0]
         zbx.send('system.open_files[]', int(open_files))
 
-    def items(self, template):
-        return template.item({
-            'name': 'Opened files',
-            'key': self.right_type(self.key),
-            'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
-            'delay': self.plugin_config('interval')
-        })
-
-    def graphs(self, template):
-        items = [{'key': self.right_type(self.key)}]
-        graph = {'name': 'System: count of opened files', 'items': items}
-        return template.graph(graph)
+    def items(self, template, dashboard=False):
+        if not dashboard:
+            return template.item({
+                'name': 'Opened files',
+                'key': self.right_type(self.key),
+                'value_type': Plugin.VALUE_TYPE.numeric_unsigned,
+                'delay': self.plugin_config('interval')
+            })
+        else:
+            return []
 
     def keys_and_queries(self, template_zabbix):
         result = ['{0},{1}'.format("system.open_files", self.query_agent)]

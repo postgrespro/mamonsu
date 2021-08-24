@@ -1,4 +1,5 @@
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Memory(Plugin):
@@ -83,7 +84,7 @@ class Memory(Plugin):
 
         del result, meminfo
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = ''
         for item in self.Items:
             result += template.item({
@@ -93,9 +94,12 @@ class Memory(Plugin):
                 'delay': self.plugin_config('interval'),
                 'value_type': Plugin.VALUE_TYPE.numeric_unsigned
             })
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         items = []
         for item in self.Items:
             items.append({
@@ -105,7 +109,13 @@ class Memory(Plugin):
         graph = {
             'name': 'Memory overview', 'height': 400,
             'type': 1, 'items': items}
-        return template.graph(graph)
+        if not dashboard:
+            return template.graph(graph)
+        else:
+            return [{'dashboard': {'name': 'Memory overview',
+                                   'page': ZbxTemplate.dashboard_page_overview['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 4}}]
 
     def keys_and_queries(self, template_zabbix):
         result = []

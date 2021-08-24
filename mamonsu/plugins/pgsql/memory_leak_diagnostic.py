@@ -137,7 +137,7 @@ class MemoryLeakDiagnostic(Plugin):
         zbx.send(self.key_count_diff, int(count_diff))
         zbx.send(self.key_count_diff_error, msg_text)
     
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = template.item(
             {
                 'name': self.name_count_diff,
@@ -153,23 +153,12 @@ class MemoryLeakDiagnostic(Plugin):
                 'value_type': Plugin.VALUE_TYPE.text
             }
         )
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
     
-    def graphs(self, template):
-        result = template.graph(
-            {
-                'name': self.name_count_diff,
-                'items': [
-                    {
-                        'key': self.key_count_diff,
-                        'color': 'FF0000'
-                    }
-                ]
-            }
-        )
-        return result
-    
-    def triggers(self, template):
+    def triggers(self, template, dashboard=False):
         result = template.trigger(
             {
                 'name': self.name_count_diff + ' on {HOSTNAME}. {ITEM.LASTVALUE}',

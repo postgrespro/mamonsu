@@ -10,17 +10,15 @@ class La(Plugin):
         la_1 = open('/proc/loadavg', 'r').read().split(' ')[0]
         zbx.send('system.la[1]', float(la_1))
 
-    def items(self, template):
-        return template.item({
-            'name': 'System load average over 1 minute',
-            'key': self.right_type(self.key, var='1'),
-            'delay': self.plugin_config('interval')
-        })
-
-    def graphs(self, template):
-        items = [{'key': self.right_type(self.key, '1')}]
-        graph = {'name': 'System load average', 'items': items}
-        return template.graph(graph)
+    def items(self, template, dashboard=False):
+        if not dashboard:
+            return template.item({
+                'name': 'System load average over 1 minute',
+                'key': self.right_type(self.key, var='1'),
+                'delay': self.plugin_config('interval')
+            })
+        else:
+            return []
 
     def keys_and_queries(self, template_zabbix):
         result = ['system.la.1,{0}'.format(self.query_agent)]

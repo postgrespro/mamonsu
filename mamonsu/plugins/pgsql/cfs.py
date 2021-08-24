@@ -72,7 +72,7 @@ select
                     'pgsql.cfs.activity[total_compress_ratio]',
                     0.0)
 
-            del(relations, compressed_size, non_compressed_size)
+            del (relations, compressed_size, non_compressed_size)
             self.ratioCounter = 0
         self.ratioCounter += 1
 
@@ -89,74 +89,48 @@ select
         self.prev['scanned_bytes'] = info[1]
 
         # information about files
-        zbx.send('pgsql.cfs.activity[compressed_files]', info[2] * self.Interval, delta=self.DELTA_SPEED, only_positive_speed=True)
-        zbx.send('pgsql.cfs.activity[scanned_files]', info[3] * self.Interval, delta=self.DELTA_SPEED, only_positive_speed=True)
+        zbx.send('pgsql.cfs.activity[compressed_files]', info[2] * self.Interval, delta=self.DELTA_SPEED,
+                 only_positive_speed=True)
+        zbx.send('pgsql.cfs.activity[scanned_files]', info[3] * self.Interval, delta=self.DELTA_SPEED,
+                 only_positive_speed=True)
 
-    def items(self, template):
-        return template.item({
-            'name': 'PostgreSQL cfs compression: written byte/s',
-            'key': 'pgsql.cfs.activity[written_bytes]',
-            'units': self.UNITS.bytes,
-            'delay': self.Interval
-        }) + template.item({
-            'name': 'PostgreSQL cfs compression: scanned byte/s',
-            'key': 'pgsql.cfs.activity[scanned_bytes]',
-            'units': self.UNITS.bytes,
-            'delay': self.Interval
-        }) + template.item({
-            'name': 'PostgreSQL cfs compression: compressed files',
-            'key': 'pgsql.cfs.activity[compressed_files]',
-            'units': self.UNITS.none,
-            'delay': self.Interval
-        }) + template.item({
-            'name': 'PostgreSQL cfs compression: scanned files',
-            'key': 'pgsql.cfs.activity[scanned_files]',
-            'units': self.UNITS.none,
-            'delay': self.Interval
-        }) + template.item({
-            'name': 'PostgreSQL cfs compression: current ratio',
-            'key': 'pgsql.cfs.activity[current_compress_ratio]',
-            'units': self.UNITS.none,
-            'delay': self.Interval
-        }) + template.item({
-            'name': 'PostgreSQL cfs compression: total ratio',
-            'key': 'pgsql.cfs.activity[total_compress_ratio]',
-            'units': self.UNITS.none,
-            'delay': self.Interval
-        })
-
-    def graphs(self, template):
-        result = template.graph({
-            'name': 'PostgreSQL cfs compression: current ratio',
-            'items': [{
-                'key': 'pgsql.cfs.activity[current_compress_ratio]',
-                'color': '00CC00'
-            }]
-        })
-        result += template.graph({
-            'name': 'PostgreSQL cfs compression: compressed files',
-            'items': [{
-                'key': 'pgsql.cfs.activity[compressed_files]',
-                'color': '00CC00'
-            }]
-        })
-        result += template.graph({
-            'name': 'PostgreSQL cfs compression: written bytes',
-            'items': [{
+    def items(self, template, dashboard=False):
+        if not dashboard:
+            return template.item({
+                'name': 'PostgreSQL cfs compression: written byte/s',
                 'key': 'pgsql.cfs.activity[written_bytes]',
-                'color': '00CC00'
-            }]
-        })
-        result += template.graph({
-            'name': 'PostgreSQL cfs compression: total ratio',
-            'items': [{
+                'units': self.UNITS.bytes,
+                'delay': self.Interval
+            }) + template.item({
+                'name': 'PostgreSQL cfs compression: scanned byte/s',
+                'key': 'pgsql.cfs.activity[scanned_bytes]',
+                'units': self.UNITS.bytes,
+                'delay': self.Interval
+            }) + template.item({
+                'name': 'PostgreSQL cfs compression: compressed files',
+                'key': 'pgsql.cfs.activity[compressed_files]',
+                'units': self.UNITS.none,
+                'delay': self.Interval
+            }) + template.item({
+                'name': 'PostgreSQL cfs compression: scanned files',
+                'key': 'pgsql.cfs.activity[scanned_files]',
+                'units': self.UNITS.none,
+                'delay': self.Interval
+            }) + template.item({
+                'name': 'PostgreSQL cfs compression: current ratio',
+                'key': 'pgsql.cfs.activity[current_compress_ratio]',
+                'units': self.UNITS.none,
+                'delay': self.Interval
+            }) + template.item({
+                'name': 'PostgreSQL cfs compression: total ratio',
                 'key': 'pgsql.cfs.activity[total_compress_ratio]',
-                'color': '00CC00'
-            }]
-        })
-        return result
+                'units': self.UNITS.none,
+                'delay': self.Interval
+            })
+        else:
+            return []
 
-    def discovery_rules(self, template):
+    def discovery_rules(self, template, dashboard=False):
         rule = {
             'name': 'Compressed relations discovery',
             'key': 'pgsql.cfs.discovery_compressed_relations[]'
@@ -170,7 +144,7 @@ select
                     'condition': [
                         {'macro': '{#COMPRESSED_RELATION}',
                          'value': '.*',
-                         'operator': None,
+                         'operator': 8,
                          'formulaid': 'A'}
                     ]
                 }

@@ -223,7 +223,7 @@ def is_any_equal(array):
 #  extract pg version from input
 def define_pg_version(version_args):
     if len(version_args) < 4:
-        if version_args == "11" or version_args == "12" or version_args == "13" or version_args == "10" \
+        if version_args == "14" or version_args == "11" or version_args == "12" or version_args == "13" or version_args == "10" \
                 or version_args == "9.6" or version_args == "9.5":
             version_number = version_args[0].split('.')
             for num in version_number:

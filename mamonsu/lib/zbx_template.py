@@ -8,7 +8,7 @@ class ZbxTemplate(object):
     plg_type = 'all'
     mainTemplate = """<?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-<version>2.0</version>
+    <version>2.0</version>
     <groups>
         <group>
             <name>Templates</name>
@@ -30,6 +30,7 @@ class ZbxTemplate(object):
             </applications>
             <items>{items}</items>
             <discovery_rules>{discovery_rules}</discovery_rules>
+            <screens>{screens}</screens>
             <macros>{macros}</macros>
         </template>
     </templates>
@@ -108,6 +109,42 @@ class ZbxTemplate(object):
         ('description', None), ('key', None)
     ]
 
+    dashboard_defaults = [
+        ('display_period', 60)
+    ]
+
+    screen_graph_defaults = [
+        ('colspan', 1),
+        ('rowspan', 1),
+        ('elements', 0),
+        ('valign', 1),
+        ('halign', 0),
+        ('style', 0),
+        ('dynamic', 0),
+        ('sort_triggers', 0),
+        ('max_columns', 3),
+        ('url', ''),
+        ('application', ''),
+    ]
+
+    dashboard_page_overview = {'name': 'Overview', 'hsize': 2, 'vsize': 5}
+    dashboard_page_instance = {'name': 'PostgreSQL Instance', 'hsize': 2, 'vsize': 5}
+    dashboard_page_wal = {'name': 'PostgreSQL WAL', 'hsize': 2, 'vsize': 5}
+    dashboard_page_locks = {'name': 'PostgreSQL Locks', 'hsize': 3, 'vsize': 5}
+    dashboard_page_transactions = {'name': 'PostgreSQL Transactions', 'hsize': 2, 'vsize': 5}
+    dashboard_page_system = {'name': 'System', 'hsize': 2, 'vsize': 5}
+
+    dashboard_pages = [dashboard_page_overview,
+                       dashboard_page_instance,
+                       dashboard_page_wal,
+                       dashboard_page_locks,
+                       dashboard_page_transactions,
+                       dashboard_page_system]
+
+    dashboard_widget_size_large = {'width': 500, 'height': 250}
+    dashboard_widget_size_medium = {'width': 500, 'height': 150}
+    dashboard_widget_size_small = {'width': 330, 'height': 100}
+
     def __init__(self, name, app):
         self.Application = app
         self.Template = name
@@ -133,21 +170,124 @@ class ZbxTemplate(object):
         template_data['items'] = self._get_all('items', plugins)
         template_data['graphs'] = self._get_all('graphs', plugins)
         template_data['discovery_rules'] = self._get_all('discovery_rules', plugins)
+        template_data['screens'] = self.screen(plugins)
         output_xml = self.mainTemplate.format(**template_data)
         if Plugin.Type == 'agent':
             output_xml = ZbxTemplate.turn_agent_type(self, output_xml)
         return output_xml
 
-    def _get_all(self, items='items', plugins=None):
+    def _get_all(self, items='items', plugins=None, dashboard=False):
         if plugins is None:
             plugins = []
         result = ''
-        for plugin in plugins:
-            if plugin.AgentPluginType == self.plg_type or self.plg_type == 'all':
-                row = getattr(plugin, items)(self)  # get Items of this particular plugin
-                if row is None:
-                    continue
-                result += row
+        dashboard_widgets = []
+        if not dashboard:
+            for plugin in plugins:
+                if plugin.AgentPluginType == self.plg_type or self.plg_type == 'all':
+                    row = getattr(plugin, items)(self, dashboard=False)  # get Items of this particular plugin
+                    if row is None:
+                        continue
+                    result += row
+            return result
+        else:
+            for plugin in plugins:
+                if plugin.AgentPluginType == self.plg_type or self.plg_type == 'all':
+                    row = getattr(plugin, items)(self, dashboard=True)  # get Items of this particular plugin
+                    if row is None:
+                        continue
+                    dashboard_widgets.append(row)
+            return dashboard_widgets
+
+    # methods for Dashboard creating
+    # Dashboards replaced screens and slideshows in Zabbix 5.4+, but since 5.4 there is one tricky required parameter - element uuid
+    # def widgets(self, page=None, plugins=None, xml_key='widget'):
+    #     if page is None:
+    #         page = ''
+    #     if plugins is None:
+    #         plugins = []
+    #     graphs = self._get_all('graphs', plugins, dashboard=True)
+    #     result_graphs = ''
+    #     for graph in graphs:
+    #         if 'dashboard' in graph and graph['dashboard']['page'] == page:
+    #             result_graphs += '<{3}><type>GRAPH_CLASSIC</type><name>{0}</name><width>{1}</width>' \
+    #                              '<height>{2}</height><fields><field><type>GRAPH</type><value>' \
+    #                              '<name>{0}</name></value></field></fields></{3}>'.format(graph['dashboard']['name'],
+    #                                                                                       graph['dashboard']['size']['width'],
+    #                                                                                       graph['dashboard']['size']['height'],
+    #                                                                                       xml_key)
+    #     return '<{1}s>{0}</{1}s>'.format(result_graphs,
+    #                                      xml_key)
+    #
+    # def pages(self, args=None, plugins=None, xml_key='page'):
+    #     if args is None:
+    #         args = {}
+    #     if plugins is None:
+    #         plugins = []
+    #     result = ''
+    #     for page in args['pages']:
+    #         result += '<{2}><name>{0}</name>{1}</{2}>'.format(page,
+    #                                                           self.widgets(page, plugins),
+    #                                                           xml_key)
+    #     return '<{1}s>{0}</{1}s>'.format(result,
+    #                                      xml_key)
+    #
+    # def dashboard(self, plugins=None, xml_key='dashboard'):
+    #     if plugins is None:
+    #         plugins = []
+    #     return '<{3}><name>{0}</name>{1}{2}</{3}>'.format(self.Template + ' Dashboard',
+    #                                                       self._format_args(self.dashboard_defaults, {}),
+    #                                                       self.pages(self.dashboard_pages, plugins),
+    #                                                       xml_key)
+
+    def screen_items(self, page, plugins=None, xml_key='screen_item'):
+        if plugins is None:
+            plugins = []
+        # indices = zabbix screen item type
+        # 0 = graph
+        # 1 = simple graph (from item)
+        dashboard_widgets = sorted([(0, widget) for sublist in self._get_all('graphs', plugins, dashboard=True)
+                                    for widget in sublist] +
+                                   [(1, widget) for sublist in self._get_all('items', plugins, dashboard=True)
+                                    for widget in sublist], key=lambda k: k[1]['dashboard']['position'])
+        # page contains amount of columns (hsize) and rows (vsize)
+        # 'x', 'y' are screen tags designated screen element left upper corner location
+        # to generate proper grid it is necessary to shift x up to hsize with a step=1, then zeroes it and starts again
+        # and shift y with step=1 every time when x was zeroed
+        x = 0
+        y = 0
+        result = ''
+        for resourcetype, graph in dashboard_widgets:
+            if 'dashboard' in graph and graph['dashboard']['page'] == page['name']:
+                result += '<{5}><resourcetype>{8}</resourcetype>' \
+                          '<width>{2}</width><height>{3}</height><x>{6}</x><y>{7}</y>{0}' \
+                          '<resource><{9}>{1}</{9}><host>{4}</host></resource>' \
+                          '</{5}>'.format(self._format_args(self.screen_graph_defaults, {}),
+                                          graph['dashboard']['name'],
+                                          graph['dashboard']['size']['width'],
+                                          graph['dashboard']['size']['height'],
+                                          self.Template,
+                                          xml_key,
+                                          x,
+                                          y,
+                                          resourcetype,
+                                          'name' if resourcetype == 0 else 'key')
+                x = (x + 1) % page['hsize']
+                if x == 0:
+                    y += 1
+        return '<{1}s>{0}</{1}s>'.format(result,
+                                         xml_key)
+
+    def screen(self, plugins=None, xml_key='screen'):
+        if plugins is None:
+            plugins = []
+        result = ''
+        for page in self.dashboard_pages:
+            result += '<{4}><name>{0}</name><hsize>{1}</hsize><vsize>' \
+                      '{2}</vsize>{3}</{4}>'.format('Mamonsu ' + page['name'],
+                                                    page['hsize'],
+                                                    page['vsize'],
+                                                    self.screen_items(page, plugins),
+                                                    xml_key)
         return result
 
     def _macro(self, xml_key='macro'):

@@ -3,6 +3,7 @@
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from distutils.version import LooseVersion
 from .pool import Pooler
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Instance(Plugin):
@@ -13,7 +14,7 @@ class Instance(Plugin):
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta
 
-        ('xact_commit', 'transactions[total]', 'transactions: total',
+        ('xact_commit', 'transactions[committed]', 'transactions: committed',
             ('PostgreSQL instance: rate', '0000CC', 1),
             Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ('blks_hit', 'blocks[hit]', 'blocks: hit',
@@ -80,7 +81,7 @@ class Instance(Plugin):
             zbx.send(key, val, all_items[idx][5], only_positive_speed=True)
         del params, result
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = ''
         for num, item in enumerate(self.Items + self.Items_pg_12):
             if self.Type == "mamonsu":
@@ -97,9 +98,23 @@ class Instance(Plugin):
                     'delay': self.plugin_config('interval'),
                     'delta': delta
             })
-        return result
+        if not dashboard:
+            return result
+        else:
+            return [{'dashboard': {'name': self.right_type(self.key + self.Items[6][1].split('[')[0] + '{0}', self.Items[6][1].split('[')[1][:-1]),
+                                   'page': ZbxTemplate.dashboard_page_instance['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 5}},
+                    {'dashboard': {'name': self.right_type(self.key + self.Items[7][1].split('[')[0] + '{0}', self.Items[7][1].split('[')[1][:-1]),
+                                   'page': ZbxTemplate.dashboard_page_instance['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 6}},
+                    {'dashboard': {'name': self.right_type(self.key + self.Items[4][1].split('[')[0] + '{0}', self.Items[4][1].split('[')[1][:-1]),
+                                   'page': ZbxTemplate.dashboard_page_locks['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_small,
+                                   'position': 1}}]
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         graphs_name = [
             'PostgreSQL instance: rate',
             'PostgreSQL instance: events',
@@ -120,7 +135,17 @@ class Instance(Plugin):
             graph = {'name': name, 'items': items}
             result += template.graph(graph)
 
-        return result
+        if not dashboard:
+            return result
+        else:
+            return [{'dashboard': {'name': 'PostgreSQL instance: tuples',
+                                   'page': ZbxTemplate.dashboard_page_overview['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 6}},
+                    {'dashboard': {'name': 'PostgreSQL instance: events',
+                                   'page': ZbxTemplate.dashboard_page_instance['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 4}}]
 
     def keys_and_queries(self, template_zabbix):
         result = []

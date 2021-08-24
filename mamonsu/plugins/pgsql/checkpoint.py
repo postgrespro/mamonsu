@@ -2,6 +2,7 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Checkpoint(Plugin):
@@ -50,7 +51,7 @@ class Checkpoint(Plugin):
             zbx.send(key, val * self.Items[idx][6], self.Items[idx][5])
         del params, result
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = ''
         if self.Type == "mamonsu":
             delta = Plugin.DELTA.as_is
@@ -65,20 +66,42 @@ class Checkpoint(Plugin):
                 'delay': self.plugin_config('interval'),
                 'delta': delta
             })
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
-    def graphs(self, template):
-        name, items = 'PostgreSQL checkpoints', []
+    def graphs(self, template, dashboard=False):
+        items_checkpoints, items_checkpoints_write_sync = [], []
         for item in self.Items:
-            items.append({
-                'key': self.right_type(self.key, item[1]),
-                'color': item[3][1],
-                'yaxisside': item[3][2],
-                'delay': self.Interval
-            })
-        return template.graph({'name': name, 'items': items})
+            if item[3][2] == 0:
+                items_checkpoints.append({
+                    'key': self.right_type(self.key, item[1]),
+                    'color': item[3][1],
+                    'delay': self.Interval
+                })
+            if item[3][2] == 1:
+                items_checkpoints_write_sync.append({
+                    'key': self.right_type(self.key, item[1]),
+                    'color': item[3][1],
+                    'delay': self.Interval
+                })
+        result = template.graph({'name': 'PostgreSQL checkpoints count', 'items': items_checkpoints}) + \
+                 template.graph({'name': 'PostgreSQL checkpoints write/sync', 'items': items_checkpoints_write_sync})
+        if not dashboard:
+            return result
+        else:
+            return [{'dashboard': {'name': 'PostgreSQL checkpoints count',
+                                   'page': ZbxTemplate.dashboard_page_overview['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 9}},
+                    {'dashboard': {'name': 'PostgreSQL checkpoints write/sync',
+                                   'page': ZbxTemplate.dashboard_page_overview['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 10}}
+                    ]
 
-    def triggers(self, template):
+    def triggers(self, template, dashboard=False):
         return template.trigger({
             'name': 'PostgreSQL required checkpoints occurs to '
             'frequently on {HOSTNAME}',

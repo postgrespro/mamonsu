@@ -124,7 +124,7 @@ order by count desc;"""
         find_and_send(Pooler.query(self.HWLockQuery), self.HWLockItems, zbx)
         find_and_send(Pooler.query(self.LWLockQuery), self.LWLockItems, zbx)
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = ''
         for item in (self.AllLockItems + self.LWLockItems + self.HWLockItems):
             result += template.item({
@@ -132,9 +132,12 @@ order by count desc;"""
                 'name': 'PostgreSQL waits: {0}'.format(item[2]),
                 'delay': self.plugin_config('interval'),
                 'value_type': self.VALUE_TYPE.numeric_float})
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         result = ''
         for graph_name, graph_items in [
             ('PostgreSQL waits: Locks by type', self.AllLockItems),
@@ -147,4 +150,7 @@ order by count desc;"""
                     'color': item[3]})
             result += template.graph({
                 'name': graph_name, 'type': 1, 'items': items})
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []

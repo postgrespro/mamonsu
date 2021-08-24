@@ -3,6 +3,7 @@
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from distutils.version import LooseVersion
 from .pool import Pooler
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Connections(Plugin):
@@ -37,7 +38,7 @@ class Connections(Plugin):
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
             result = Pooler.query(
                 'select state, count(*) '
-                'from public.mamonsu_get_connections_states() where state is not null group by state')
+                'from mamonsu.get_connections_states() where state is not null group by state')
         else:
             result = Pooler.query(
                 'select state, count(*) '
@@ -59,7 +60,7 @@ class Connections(Plugin):
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
             result = Pooler.query(
                 'select count(*) '
-                'from mamonsu_get_connections_states() '
+                'from mamonsu.get_connections_states() '
                 'where waiting and state is not null')
         else:
             if Pooler.server_version_less('9.5.0'):
@@ -75,7 +76,7 @@ class Connections(Plugin):
             self.Max_connections = result[0][0]
         zbx.send('pgsql.connections[max_connections]', int(self.Max_connections))
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = template.item({
             'name': 'PostgreSQL: number of total connections',
             'key': self.right_type(self.key, "total"),
@@ -98,9 +99,12 @@ class Connections(Plugin):
                 'key': self.right_type(self.key, item[1]),
                 'delay': self.plugin_config('interval')
             })
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         items = []
         for item in self.Items:
             items.append({
@@ -120,9 +124,15 @@ class Connections(Plugin):
             'color': '00BB00'
         })
         graph = {'name': 'PostgreSQL connections', 'items': items}
-        return template.graph(graph)
+        if not dashboard:
+            return template.graph(graph)
+        else:
+            return [{'dashboard': {'name': graph['name'],
+                                   'page': ZbxTemplate.dashboard_page_overview['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 1}}]
 
-    def triggers(self, template):
+    def triggers(self, template, dashboard=False):
         return template.trigger({
             'name': 'PostgreSQL many connections on {HOSTNAME} (total connections more than ' + self.plugin_config(
                 'percent_connections_tr') + '% max connections)',

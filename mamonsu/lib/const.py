@@ -20,8 +20,14 @@ class _template(object):
     VALUE_TYPE = _value_type(0, 1, 2, 3, 4)
     # item unit
     _item_type = namedtuple(
-        'item_type', ['none', 'bytes', 's', 'ms', 'uptime', 'percent'])
-    UNITS = _item_type(None, 'b', 's', 'ms', 'uptime', '%')
+        'item_type', ['none', 'bytes', 's', 'ms', 'uptime', 'unixtime', 'percent'])
+    UNITS = _item_type(None, 'b', 's', 'ms', 'uptime', 'unixtime', '%')
+    # type of information
+    _type = namedtuple(
+        'type', ['ZABBIX_PASSIVE', 'TRAP', 'SIMPLE', 'INTERNAL', 'ZABBIX_ACTIVE',
+                 'EXTERNAL', 'ODBC', 'IPMI', 'SSH', 'TELNET', 'CALCULATED', 'JMX',
+                 'SNMP_TRAP', 'DEPENDENT', 'HTTP_AGENT', 'SNMP_AGENT', 'ITEM_TYPE_SCRIPT'])
+    TYPE = _type(0, 2, 3, 5, 7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21)
 
 
 class _api(object):

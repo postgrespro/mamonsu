@@ -28,7 +28,7 @@ class Cpu(Plugin):
         for idx, item in enumerate(self.Items):
             zbx.send('system.cpu{0}'.format(item[1]), float(data[idx]))
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = ''
         for item in self.Items:
             result += template.item({
@@ -36,9 +36,12 @@ class Cpu(Plugin):
                 'key': 'system.cpu{0}'.format(item[1]),
                 'units': item[3]
             })
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         items = []
         for item in self.Items:
             if item[4] is not None:
@@ -47,9 +50,12 @@ class Cpu(Plugin):
                     'color': item[4]
                 })
         graph = {'name': 'CPU overview', 'items': items, 'type': 1}
-        return template.graph(graph)
+        if not dashboard:
+            return template.graph(graph)
+        else:
+            return []
 
-    def triggers(self, template):
+    def triggers(self, template, dashboard=False):
         return template.trigger({
             'name': 'CPU privileged time'
             'is too big on {HOSTNAME}',

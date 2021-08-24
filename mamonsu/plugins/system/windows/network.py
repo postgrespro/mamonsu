@@ -25,7 +25,7 @@ class Network(Plugin):
         for idx, item in enumerate(self.Items):
             zbx.send('system.network{0}'.format(item[1]), float(data[idx]))
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = ''
         for item in self.Items:
             result += template.item({
@@ -33,9 +33,12 @@ class Network(Plugin):
                 'key': 'system.network{0}'.format(item[1]),
                 'units': item[3]
             })
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         items = []
         for item in self.Items:
             if item[4] is not None:
@@ -46,4 +49,7 @@ class Network(Plugin):
                 })
         graph = {
             'name': 'Network overview', 'items': items, 'type': 1}
-        return template.graph(graph)
+        if not dashboard:
+            return template.graph(graph)
+        else:
+            return []

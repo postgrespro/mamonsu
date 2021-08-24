@@ -5,17 +5,17 @@ import sys
 import json
 from mamonsu.tools.zabbix_cli.request import Request
 from mamonsu.lib.parser import zabbix_msg
+from distutils.version import LooseVersion
 
 
 class Operations(object):
-
     _help_msg = zabbix_msg
 
     def __init__(self, arg):
         self.arg = arg
 
         if len(self.arg.commands) < 2:
-            if len(self.arg.commands) ==0 or self.arg.commands[0] != 'version':
+            if len(self.arg.commands) == 0 or self.arg.commands[0] != 'version':
                 self._print_help()
 
         self.req = Request(
@@ -70,9 +70,9 @@ class Operations(object):
             sys.exit(4)
         try:
             for x in self.req.post(
-                method='{0}.get'.format(typ),
-                params={
-                    'filter': {fltr: []}}):
+                    method='{0}.get'.format(typ),
+                    params={
+                        'filter': {fltr: []}}):
                 print(x[name])
         except Exception as e:
             sys.stderr.write('List error: {0}\n'.format(e))
@@ -138,31 +138,47 @@ class Operations(object):
             if not len(args) == 2:
                 return self._print_help()
             file = args[1]
+            zabbix_version = str(self.req.post(method='apiinfo.version', params=[]))
+            params = {
+                'format': 'xml',
+                'rules': {
+                    'templates': {
+                        'createMissing': True,
+                        'updateExisting': True
+                    },
+                    'discoveryRules': {
+                        'createMissing': True,
+                        'updateExisting': True,
+                        'deleteMissing': True
+                    },
+                    'graphs': {
+                        'createMissing': True,
+                        'updateExisting': True,
+                        'deleteMissing': True
+                    },
+                    'items': {
+                        'createMissing': True,
+                        'updateExisting': True,
+                        'deleteMissing': True
+                    },
+                    'triggers': {
+                        'createMissing': True,
+                        'updateExisting': True,
+                        'deleteMissing': True
+                    }
+                },
+                'source': open(file).read()}
+            if LooseVersion(zabbix_version) < LooseVersion('5.4'):
+                params['rules']['applications'] = {'createMissing': True,
+                                                   'deleteMissing': True}
+            if LooseVersion(zabbix_version) < LooseVersion('5.2'):
+                params['rules']['templateScreens'] = {'createMissing': True,
+                                                      'deleteMissing': True}
+            else:
+                params['rules']['templateDashboards'] = {'createMissing': True,
+                                                         'deleteMissing': True}
             try:
-                if not self.req.post(
-                    method='configuration.import',
-                    params={
-                        'format': 'xml',
-                        'rules': {
-                        'templates': {
-                            'createMissing': True,
-                            'updateExisting': True},
-                        'applications': {
-                            'createMissing': True},
-                        'discoveryRules': {
-                            'createMissing': True,
-                            'updateExisting': True},
-                        'graphs': {
-                            'createMissing': True,
-                            'updateExisting': True},
-                        'items': {
-                            'createMissing': True,
-                            'updateExisting': True},
-                        'triggers': {
-                            'createMissing': True,
-                            'updateExisting': True},
-                        },
-                        'source': open(file).read()}):
+                if not self.req.post(method='configuration.import', params=params):
                     raise Exception('Export template error')
             except Exception as e:
                 sys.stderr.write('Template export error: {0}\n'.format(e))
@@ -227,7 +243,7 @@ class Operations(object):
                 elif args[1] == 'items':
                     return _extented_info(
                         self, args[2],
-                        'selectItems', ['_key'])
+                        'selectItems', ['name', 'key_'])
                 elif args[1] == 'graphs':
                     return _extented_info(
                         self, args[2],
@@ -289,7 +305,7 @@ class Operations(object):
         except Exception as e:
             sys.stderr.write('Error find: {0}\n'.format(e))
             sys.exit(3)
-    
+
     def version(self, args):
         if len(args) != 0:
             return self._print_help()

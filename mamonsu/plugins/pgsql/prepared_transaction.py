@@ -2,6 +2,7 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class PreparedTransaction(Plugin):
@@ -23,7 +24,7 @@ class PreparedTransaction(Plugin):
     query_prepared = "SELECT COUNT(*) as count_prepared, " \
                      "coalesce (ROUND(MAX(EXTRACT (EPOCH FROM (now() - prepared)))),0)::bigint " \
                      "AS oldest_prepared  FROM pg_catalog.pg_prepared_xacts"
-    query_prepared_bootstraped = "SELECT * FROM public.mamonsu_prepared_transaction()"
+    query_prepared_bootstraped = "SELECT * FROM mamonsu.prepared_transaction()"
 
     DEFAULT_CONFIG = {
         'max_prepared_transaction_time': str(5 * 60 * 60)
@@ -39,7 +40,7 @@ class PreparedTransaction(Plugin):
             zbx.send(self.key_count['key'], count_prepared)
             zbx.send(self.key_prepared['key'], oldest_prepared)
 
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = template.item({
             'name': self.key_count['name'],
             'key': self.key_count['key'],
@@ -49,10 +50,19 @@ class PreparedTransaction(Plugin):
             'key': self.key_prepared['key'],
             'delay': self.plugin_config('interval')
         })
+        if not dashboard:
+            return result
+        else:
+            return [{'dashboard': {'name': self.key_count['key'],
+                                   'page': ZbxTemplate.dashboard_page_transactions['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 3}},
+                    {'dashboard': {'name': self.key_prepared['key'],
+                                   'page': ZbxTemplate.dashboard_page_transactions['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 4}}]
 
-        return result
-
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         result = template.graph({
             'name': 'PostgreSQL prepared transaction',
             'items': [{
@@ -67,9 +77,12 @@ class PreparedTransaction(Plugin):
                 },
             ]
         })
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
-    def triggers(self, template):
+    def triggers(self, template, dashboard=False):
         result = template.trigger({
             'name': 'PostgreSQL prepared transaction is too old on {HOSTNAME}',
             'expression': '{#TEMPLATE:' + self.key_prepared['key'] +
