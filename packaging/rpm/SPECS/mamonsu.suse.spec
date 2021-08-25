@@ -39,7 +39,7 @@ export PYTHONPATH=%{buildroot}%{python_sitelib}
 %{__install} -m 0644 -p %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 %files
-%doc README.rst
+%doc README.md
 %defattr(644,root,root,755)
 %config(noreplace) %{_sysconfdir}/%{name}/agent.conf
 %{python_sitelib}/%{name}/
