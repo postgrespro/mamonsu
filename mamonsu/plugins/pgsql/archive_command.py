@@ -7,42 +7,39 @@ class ArchiveCommand(Plugin):
     AgentPluginType = 'pg'
     DEFAULT_CONFIG = {'max_count_files': str(2)}
     Interval = 60
+
+    # if streaming replication is on, archive queue length and size will always be 0 for replicas
     query_agent_count_files = """
-    WITH segment_parts_count AS
-    (SELECT 4096/(setting::bigint/1024/1024) AS value FROM pg_settings
-    WHERE name = 'wal_segment_size'),
-    last_wal_div AS
-    (SELECT ('x' || substring(last_archived_wal from 9 for 8))::bit(32)::int AS value
-    FROM pg_stat_archiver),
-    last_wal_mod AS
-    (SELECT ('x' || substring(last_archived_wal from 17 for 8))::bit(32)::int AS value
-    FROM pg_stat_archiver),
-    current_wal_div AS
-    (SELECT ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int AS value),
-    current_wal_mod AS
-    (SELECT ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int AS value)
-    SELECT greatest(coalesce((segment_parts_count.value - last_wal_mod.value) + ((current_wal_div.value - last_wal_div.value - 1) * segment_parts_count.value) + current_wal_mod.value - 1, 0), 0)
-    FROM segment_parts_count, last_wal_div, last_wal_mod, current_wal_div, current_wal_mod;
+    WITH values AS (
+    SELECT
+    4096/(pg_settings.setting::bigint/1024/1024) AS segment_parts_count,
+    setting::bigint AS segment_size,
+    ('x' || substring(pg_stat_archiver.last_archived_wal from 9 for 8))::bit(32)::int AS last_wal_div,
+    ('x' || substring(pg_stat_archiver.last_archived_wal from 17 for 8))::bit(32)::int AS last_wal_mod,
+    CASE WHEN pg_is_in_recovery() THEN NULL ELSE
+    ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int END AS current_wal_div,
+    CASE WHEN pg_is_in_recovery() THEN NULL ELSE
+    ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int END AS current_wal_mod
+    FROM pg_settings, pg_stat_archiver
+    WHERE pg_settings.name = 'wal_segment_size')
+    SELECT greatest(coalesce((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1, 0), 0) AS count_files
+    FROM values;
     """
     query_agent_size_files = """
-    WITH segment_parts_count AS
-    (SELECT 4096/(setting::bigint/1024/1024) AS value FROM pg_settings
-    WHERE name = 'wal_segment_size'),
-    segment_size AS
-    (SELECT setting::bigint AS value FROM pg_settings
-    WHERE name = 'wal_segment_size'),
-    last_wal_div AS
-    (SELECT ('x' || substring(last_archived_wal from 9 for 8))::bit(32)::int AS value
-    FROM pg_stat_archiver),
-    last_wal_mod AS
-    (SELECT ('x' || substring(last_archived_wal from 17 for 8))::bit(32)::int AS value
-    FROM pg_stat_archiver),
-    current_wal_div AS
-    (SELECT ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int AS value),
-    current_wal_mod AS
-    (SELECT ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int AS value)
-    SELECT greatest(coalesce(((segment_parts_count.value - last_wal_mod.value) + ((current_wal_div.value - last_wal_div.value - 1) * segment_parts_count.value) + current_wal_mod.value - 1) * segment_size.value, 0), 0)
-    FROM segment_parts_count, segment_size, last_wal_div, last_wal_mod, current_wal_div, current_wal_mod;
+    WITH values AS (
+    SELECT
+    4096/(pg_settings.setting::bigint/1024/1024) AS segment_parts_count,
+    setting::bigint AS segment_size,
+    ('x' || substring(pg_stat_archiver.last_archived_wal from 9 for 8))::bit(32)::int AS last_wal_div,
+    ('x' || substring(pg_stat_archiver.last_archived_wal from 17 for 8))::bit(32)::int AS last_wal_mod,
+    CASE WHEN pg_is_in_recovery() THEN NULL ELSE
+    ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int END AS current_wal_div,
+    CASE WHEN pg_is_in_recovery() THEN NULL ELSE
+    ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int END AS current_wal_mod
+    FROM pg_settings, pg_stat_archiver
+    WHERE pg_settings.name = 'wal_segment_size')
+    SELECT greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1) * segment_size, 0), 0) AS size_files
+    FROM values;
     """
 
     query_agent_archived_count = "SELECT archived_count from pg_stat_archiver;"
@@ -52,9 +49,9 @@ class ArchiveCommand(Plugin):
     Items = [
         # key, desc, color, side, graph
         ('count_files_to_archive', 'count files in archive_status need to archive', 'FFD700', 0, 1),
-        ('size_files_to_archive', 'size of files need to archive', '00FF00', 1, 0),
+        ('size_files_to_archive', 'size of files need to archive', '00FF00', 0, 0),
         ('archived_files', 'count archived files', '00F000', 0, 1),
-        ('failed_trying_to_archive', 'count attempts to archive files', 'FF0000', 1, 1),
+        ('failed_trying_to_archive', 'count attempts to archive files', 'FF0000', 0, 1),
     ]
     old_archived_count = None
     old_failed_count = None
@@ -66,25 +63,21 @@ class ArchiveCommand(Plugin):
             result1 = Pooler.query("""select * from mamonsu.archive_command_files()""")
         else:
             result1 = Pooler.query("""
-            WITH segment_parts_count AS
-            (SELECT 4096/(setting::bigint/1024/1024) AS value FROM pg_settings
-            WHERE name = 'wal_segment_size'),
-            segment_size AS
-            (SELECT setting::bigint AS value FROM pg_settings
-            WHERE name = 'wal_segment_size'),
-            last_wal_div AS
-            (SELECT ('x' || substring(last_archived_wal from 9 for 8))::bit(32)::int AS value
-            FROM pg_stat_archiver),
-            last_wal_mod AS
-            (SELECT ('x' || substring(last_archived_wal from 17 for 8))::bit(32)::int AS value
-            FROM pg_stat_archiver),
-            current_wal_div AS
-            (SELECT ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int AS value),
-            current_wal_mod AS
-            (SELECT ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int AS value)
-            SELECT greatest(coalesce((segment_parts_count.value - last_wal_mod.value) + ((current_wal_div.value - last_wal_div.value - 1) * segment_parts_count.value) + current_wal_mod.value - 1, 0), 0) AS count_files,
-            greatest(coalesce(((segment_parts_count.value - last_wal_mod.value) + ((current_wal_div.value - last_wal_div.value - 1) * segment_parts_count.value) + current_wal_mod.value - 1) * segment_size.value, 0), 0) AS size_files
-            FROM segment_parts_count, segment_size, last_wal_div, last_wal_mod, current_wal_div, current_wal_mod;
+            WITH values AS (
+            SELECT
+            4096/(pg_settings.setting::bigint/1024/1024) AS segment_parts_count,
+            setting::bigint AS segment_size,
+            ('x' || substring(pg_stat_archiver.last_archived_wal from 9 for 8))::bit(32)::int AS last_wal_div,
+            ('x' || substring(pg_stat_archiver.last_archived_wal from 17 for 8))::bit(32)::int AS last_wal_mod,
+            CASE WHEN pg_is_in_recovery() THEN NULL ELSE
+            ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int END AS current_wal_div,
+            CASE WHEN pg_is_in_recovery() THEN NULL ELSE
+            ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int END AS current_wal_mod
+            FROM pg_settings, pg_stat_archiver
+            WHERE pg_settings.name = 'wal_segment_size')
+            SELECT greatest(coalesce((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1, 0), 0) AS count_files,
+            greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1) * segment_size, 0), 0) AS size_files
+            FROM values;
                         """)
             result2 = Pooler.query("""SELECT archived_count, failed_count from pg_stat_archiver;""")
 

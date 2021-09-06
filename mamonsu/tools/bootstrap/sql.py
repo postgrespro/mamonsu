@@ -156,18 +156,27 @@ $$ LANGUAGE SQL SECURITY DEFINER;
 """
 
 CreateSchemaExtensionSQL = """
-CREATE EXTENSION pg_buffercache WITH SCHEMA mamonsu;
-"""
-
-CreateExtensionFunctionsSQL = """
-CREATE OR REPLACE FUNCTION mamonsu.buffer_cache()
+DO
+$do$
+DECLARE
+	pg_buffercache_schema text;
+BEGIN
+    CREATE EXTENSION IF NOT EXISTS pg_buffercache WITH SCHEMA mamonsu;
+    SELECT n.nspname INTO pg_buffercache_schema
+    FROM pg_extension e
+    JOIN pg_namespace n
+    ON e.extnamespace = n.oid
+    WHERE e.extname = 'pg_buffercache';
+    EXECUTE 'CREATE OR REPLACE FUNCTION mamonsu.buffer_cache()
 RETURNS TABLE(SIZE BIGINT, TWICE_USED BIGINT, DIRTY BIGINT) AS $$
 SELECT
-   SUM(1) * (current_setting('block_size')::int8),
-   SUM(CASE WHEN usagecount > 1 THEN 1 ELSE 0 END) * (current_setting('block_size')::int8),
-   SUM(CASE isdirty WHEN true THEN 1 ELSE 0 END) * (current_setting('block_size')::int8)
-FROM mamonsu.pg_buffercache
-$$ LANGUAGE SQL SECURITY DEFINER;
+   SUM(1) * (current_setting(''block_size'')::int8),
+   SUM(CASE WHEN usagecount > 1 THEN 1 ELSE 0 END) * (current_setting(''block_size'')::int8),
+   SUM(CASE isdirty WHEN true THEN 1 ELSE 0 END) * (current_setting(''block_size'')::int8)
+FROM ' || pg_buffercache_schema || '.pg_buffercache
+$$ LANGUAGE SQL SECURITY DEFINER;';
+END
+$do$;
 """
 
 GrantsOnDefaultSchemaSQL = """

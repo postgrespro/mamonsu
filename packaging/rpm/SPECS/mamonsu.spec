@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.0.0
+Version:        3.0.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,7 +70,13 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
-* Mon Aug 16 2021 Alexandra Kuznetsova <@a.kuznetsova>  - 3.0.0-1
+* Mon Sep 6 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.0.1-1
+  - fixed 'PostgreSQL: Archive Command archive status' graph y axis
+  - fixed bootstrap -x option: now it checks installed extensions
+  - fixed 'pgsql.count_files_to_archive' and 'pgsql.size_files_to_archive' items: now their evaluation depending on type of server (master or replica)
+
+%changelog
+* Mon Aug 16 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.0.0-1
   - change template name to 'Mamonsu PostgreSQL [PLATFORM]'
   - change metric name 'PostgreSQL transactions: total' to 'PostgreSQL transactions: committed'
   - fix Cache Hit Ratio metric calculating

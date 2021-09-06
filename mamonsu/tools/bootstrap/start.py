@@ -10,7 +10,7 @@ from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.pool import Pooler
-from mamonsu.tools.bootstrap.sql import CreateMamonsuUserSQL, CreateSchemaExtensionSQL, CreateExtensionFunctionsSQL, \
+from mamonsu.tools.bootstrap.sql import CreateMamonsuUserSQL, CreateSchemaExtensionSQL, \
 CreateSchemaDefaultSQL,GrantsOnDefaultSchemaSQL, GrantsOnExtensionSchemaSQL, QuerySplit
 
 
@@ -226,18 +226,9 @@ def run_deploy():
             Pooler.query(bootstrap_extension_queries)
         except Exception as e:
             sys.stderr.write(
-                "Bootstrap failed to create pg_buffercache extension.\n"
+                "Bootstrap failed to create pg_buffercache extension and functions.\n"
                 "Error: {0}\n".format(e))
-            sys.stderr.write("Please install pg_buffercache extension and rerun bootstrap "
-                             "if you want to get metrics from pg_buffercache view. \n")
-        try:
-            bootstrap_extension_queries = fill_query_params(CreateExtensionFunctionsSQL)
-            Pooler.query(bootstrap_extension_queries)
-        except Exception as e:
-            sys.stderr.write(
-                "Bootstrap failed to create the function which required pg_buffercache extension.\n"
-                "Error: {0}\n".format(e))
-            sys.stderr.write("Please install pg_buffercache extension and rerun bootstrap "
+            sys.stderr.write("Please install pg_buffercache extension manually and rerun bootstrap "
                              "if you want to get metrics from pg_buffercache view. \n")
 
     try:
