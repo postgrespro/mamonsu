@@ -190,9 +190,11 @@ interval = 60
 
 [pgprobackup]
 enabled = false
-interval = 300
+interval = 900
 backup_dirs = /backup_dir1,/backup_dir2
-pg_probackup_path = /usr/bin/pg_probackup-11
+pg_probackup_path = /usr/bin/pg_probackup-13
+max_time_run_backup2alert_in_sec = 21600
+max_time_lack_backup2alert_in_sec = 100800
 ```
 
 **[preparedtransaction]**  
@@ -219,6 +221,10 @@ The *interval* parameter allows you to change the metrics collection interval.
 
 By default this plugin is disabled. To enable it set the enabled parameter to True.
 
-This plugin collects two metrics: *pg_probackup.dir.size[#backup_directory]* (the size of the target directory) and *pg_probackup.dir.error[#backup_directory]* (backup errors) for each specified *backup_directory*.
+This plugin collects several metrics: 
+- *pg_probackup.dir.size[#backup_directory]* (the size of the target directory) 
+- *pg_probackup.dir.error[#backup_directory]* (backup errors) 
+- other metrics for each specified *backup_directory*. 
+See file metrics.md
 
 If any generated backup has bad status, like ERROR, CORRUPT, ORPHAN, а trigger is fired.

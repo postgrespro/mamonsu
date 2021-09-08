@@ -1,20 +1,21 @@
 # Mamonsu: metrics
 
 **Metrics:**
-- [Mamonsu health metrics](#mamonsu-health-metrics)
-  - [Items](#items)
-  - [Triggers](#triggers)
-- [System metrics](#system-metrics)
-  - [*nix](#nix)
+- [Mamonsu: metrics](#mamonsu-metrics)
+  - [Mamonsu Health metrics](#mamonsu-health-metrics)
+    - [Items](#items)
+    - [Triggers](#triggers)
+  - [System metrics](#system-metrics)
+    - [*nix](#nix)
     - [Items](#items-1)
     - [Discovery Rules](#discovery-rules)
     - [Graphs](#graphs)
     - [Triggers](#triggers-1)
-  - [Windows](#windows)
+    - [Windows](#windows)
     - [Items](#items-2)
     - [Discovery Rules](#discovery-rules-1)
-- [PostgreSQL metrics](#postgresql-metrics)
-  - [Archiving](#archiving)
+  - [PostgreSQL metrics](#postgresql-metrics)
+    - [Archiving](#archiving)
     - [Items](#items-3)
     - [Graphs](#graphs-1)
     - [Triggers](#triggers-2)
@@ -23,63 +24,63 @@
   - [Background Writer](#background-writer)
     - [Items](#items-5)
     - [Graphs](#graphs-2)
-  - [Blocks](#blocks)
+    - [Blocks](#blocks)
     - [Items](#items-6)
     - [Graphs](#graphs-3)
-  - [Checkpoints](#checkpoints)
+    - [Checkpoints](#checkpoints)
     - [Items](#items-7)
     - [Graphs](#graphs-4)
     - [Triggers](#triggers-3)
-  - [Connections](#connections)
+    - [Connections](#connections)
     - [Items](#items-8)
     - [Graphs](#graphs-5)
     - [Triggers](#triggers-4)
-  - [Databases](#databases)
+    - [Databases](#databases)
     - [Discovery Rules](#discovery-rules-2)
-  - [Events](#events)
+    - [Events](#events)
     - [Items](#items-9)
     - [Graphs](#graphs-6)
-  - [Health](#health)
+    - [Health](#health)
     - [Items](#items-10)
     - [Triggers](#triggers-5)
-  - [Memory Leak](#memory-leak)
+    - [Memory Leak](#memory-leak)
     - [Items](#items-11)
     - [Triggers](#triggers-6)
-  - [pg_buffercache](#pg_buffercache)
+    - [pg_buffercache](#pg_buffercache)
     - [Items](#items-12)
     - [Graphs](#graphs-7)
-  - [pg_locks](#pg_locks)
+    - [pg_locks](#pg_locks)
     - [Items](#items-13)
     - [Graphs](#graphs-8)
-  - [pg_stat_statements](#pg_stat_statements)
+    - [pg_stat_statements](#pg_stat_statements)
     - [Items](#items-14)
     - [Graphs](#graphs-9)
-  - [Prepared Transactions](#prepared-transactions)
+    - [Prepared Transactions](#prepared-transactions)
     - [Items](#items-15)
     - [Graphs](#graphs-10)
     - [Triggers](#triggers-7)
-  - [Relations](#relations)
+    - [Relations](#relations)
     - [Discovery Rules](#discovery-rules-3)
-  - [Replication](#replication)
+    - [Replication](#replication)
     - [Items](#items-16)
     - [Discovery Rules](#discovery-rules-4)
     - [Triggers](#triggers-8)
-  - [Temp Files](#temp-files)
+    - [Temp Files](#temp-files)
     - [Items](#items-17)
     - [Graphs](#graphs-11)
-  - [Transactions](#transactions)
+    - [Transactions](#transactions)
     - [Items](#items-18)
     - [Triggers](#triggers-9)
-  - [Tuples](#tuples)
+    - [Tuples](#tuples)
     - [Items](#items-19)
     - [Graphs](#graphs-12)
-  - [WAL](#wal)
+    - [WAL](#wal)
     - [Items](#items-20)
-- [Postgres Pro metrics](#postgres-pro-metrics)
-  - [Compressed File System](#compressed-file-system)
+  - [Postgres Pro metrics](#postgres-pro-metrics)
+    - [Compressed File System](#compressed-file-system)
     - [Items](#items-21)
     - [Discovery Rules](#discovery-rules-5)
-  - [pg_wait_sampling](#pg_wait_sampling)
+    - [pg_wait_sampling](#pg_wait_sampling)
     - [Items](#items-22)
     - [Graphs](#graphs-13)
     
@@ -1203,57 +1204,68 @@ Default config:
 4. **pg_probackup Discovery**
 
     Items:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>Pg_probackup dir {#BACKUPDIR}: error</td>
-        <td>Pg_probackup dir {#BACKUPDIR}: size</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pg_probackup.dir.error[{#BACKUPDIR}]</td>
-        <td>pg_probackup.dir.size[{#BACKUPDIR}]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Text</td>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-        <td>Bytes</td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-        <td>As Is</td>
-      </tr>
-    </table>
+
+| Name                                                       | Key                                              | Storage | Description                                                |
+| ---------------------------------------------------------- | ------------------------------------------------ | ------- | ---------------------------------------------------------- |
+| Pg_probackup dir {#BACKUPDIR}: size                        | pg_probackup.dir.size[{#BACKUPDIR}]              | 31d     | Total catalog size: /backups + /wal                        |
+| Pg_probackup dir {#BACKUPDIR}/backups: size                | pg_probackup.dir.size[{#BACKUPDIR}/backups]      | 31d     | Subdirectory Size /backups                                 |
+| Pg_probackup dir {#BACKUPDIR}/wal: size                    | pg_probackup.dir.size[{#BACKUPDIR}/wal]          | 31d     | Subdirectory Size /wal                                     |
+| Pg_probackup dir {#BACKUPDIR}: duration full backup        | pg_probackup.dir.duration_full[{#BACKUPDIR}]     | 31d     | Duration in seconds of creating a complete backup          |
+| Pg_probackup dir {#BACKUPDIR}: duration incremental backup | pg_probackup.dir.duration_inc[{#BACKUPDIR}]      | 31d     | Duration in seconds of creating an incremental backup      |
+| Pg_probackup dir {#BACKUPDIR}: start time backup           | pg_probackup.dir.start_time_backup[{#BACKUPDIR}] |         | Time (unixtime) start creating backup                      |
+| Pg_probackup dir {#BACKUPDIR}: end time backup             | pg_probackup.dir.end_time_backup[{#BACKUPDIR}]   |         | Time (UnixTime) Completion of Bacup Creation               |
+| Pg_probackup dir {#BACKUPDIR}: mode                        | pg_probackup.dir.mode_backup[{#BACKUPDIR}]       |         | Current backup mode                                        |
+| Pg_probackup dir {#BACKUPDIR}: status                      | pg_probackup.dir.status_backup[{#BACKUPDIR}]     |         | Current backup status                                      |
+| Pg_probackup dir {#BACKUPDIR}: error                       | pg_probackup.dir.error[{#BACKUPDIR}]             |         | A sign of an erroneous state or "ok" if everything is fine |
 
     Graphs:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>Pg_probackup: backup dir: {#BACKUPDIR} size</td>
-      </tr>
-      <tr>
-        <th>Metrics</th>
-        <td>Pg_probackup dir {#BACKUPDIR}: size</td>
-      </tr>
-    </table>
+
+1. Pg_probackup: backup dir: {#BACKUPDIR} size
+
+Shows 3 metrics with information about the size of directories with archival copies:
+
+| Key                                         | Side graphs  | Description                          |
+| ------------------------------------------- | ------------ | ------------------------------------ |
+| pg_probackup.dir.size[{#BACKUPDIR}]         | (Left Side)  | Total Directory Size /backups + /wal |
+| pg_probackup.dir.size[{#BACKUPDIR}/backups] | (Left Side)  | Subdirectory size /backups           |
+| pg_probackup.dir.size[{#BACKUPDIR}/wal]     | (Right Side) | Subdirectory size /wal               |
+
+2. Pg_probackup: backup dir: {#BACKUPDIR} duration
+
+Shows 2 metrics with a duration of creating archive copies:
+
+| Key                                          | Side graphs  | Description                                           |
+| -------------------------------------------- | ------------ | ----------------------------------------------------- |
+| pg_probackup.dir.duration_full[{#BACKUPDIR}] | (Left Side)  | Duration in seconds of creating a complete backup     |
+| pg_probackup.dir.duration_inc[{#BACKUPDIR}]  | (Right Side) | Duration in seconds of creating an incremental backup |
 
     Triggers:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>Error in pg_probackup dir {#BACKUPDIR} (hostname={HOSTNAME} value={ITEM.LASTVALUE})</td>
-      </tr>
-      <tr>
-        <th>Expression</th>
-        <td>Triggers if pg_probackup status is not OK.</td>
-      </tr>
-    </table>
+    
+The following alerts have been created that allow you to monitor the status of archive directories:
+
+* The alert triggers if the creation of a backup is performed more than indicated in the configuration parameter `max_time_run_backup2alert_in_sec`. Time is specified in seconds and default value = 21600 (6 hours). The current state is monitored in which the process of creating a backfill. 
+
+| Category    | Details                                                                                                                                                                                                                                                                            |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Importance: | Warning                                                                                                                                                                                                                                                                            |
+| Name:       | Backup runs too long on {HOSTNAME} in pg_probackup dir {#BACKUPDIR} (RUNNING)                                                                                                                                                                                                      |
+| Expression: | {PostgresPro-Linux:pg_probackup.dir.status_backup[{#BACKUPDIR}].last()}="RUNNING" and ( {PostgresPro-Linux:pg_probackup.dir.start_time_backup[{#BACKUPDIR}].now()}-{PostgresPro-Linux:pg_probackup.dir.start_time_backup[{#BACKUPDIR}].last()}) > max_time_run_backup2alert_in_sec |
+
+* The alert triggers if it does not create a new backup longer than indicated in the configuration parameter `max_time_lack_backupup2alert_in_sec`. Time is specified in seconds and default value = 100800 (28 hours). It is monitored that the next backup (the type of backup of any) will be created no later than indicated in the parameter.
+
+| Category    | Details                                                                                                                                                                                    |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Importance: | Warning                                                                                                                                                                                    |
+| Name:       | Long time no backups on {HOSTNAME} in pg_probackup dir {#BACKUPDIR}                                                                                                                        |
+| Expression: | ( {PostgresPro-Linux:pg_probackup.dir.end_time_backup[{#BACKUPDIR}].now()} -{PostgresPro-Linux:pg_probackup.dir.end_time_backup[{#BACKUPDIR}].last()}) > max_time_lack_backup2alert_in_sec |
+
+* Alert triggers if an error occurred when creating a backup - 'error', 'corrupt', 'orphan'. Controls the state of any archive copy, not only the latter. Active all the time has any historical copy with an erroneous state.
+
+| Category    | Details                                                                             |
+| ----------- | ----------------------------------------------------------------------------------- |
+| Importance: | Average                                                                             |
+| Name:       | Error in pg_probackup dir {#BACKUPDIR} (hostname={HOSTNAME} value={ITEM.LASTVALUE}) |
+| Expression: | {PostgresPro-Linux:pg_probackup.dir.error[{#BACKUPDIR}].str(ok)}<>1                 |
 
 ### Graphs
 
