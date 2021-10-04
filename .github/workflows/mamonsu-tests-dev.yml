@@ -1,0 +1,81 @@
+name: Mamonsu tests
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  mamonsu-tests:
+    runs-on: ubuntu-20.04
+    env:
+      DOCKER_COMPOSE_VERSION: '1.29.2'
+      MAMONSU_PATH: '/home/runner/work/mamonsu/mamonsu/'
+    strategy:
+      matrix:
+        docker_os: ['centos:7']
+        zabbix_version: ['5.4']
+        pg_version: ['9.6', '10', '11', '12', '13']
+
+    steps:
+      - name: Checkout Mamonsu repo
+        uses: actions/checkout@v1
+
+      - name: Install docker-compose
+        run: sudo apt-get update
+      - run: sudo rm /usr/local/bin/docker-compose
+      - run: curl -L https://github.com/docker/compose/releases/download/${{ env.DOCKER_COMPOSE_VERSION }}/docker-compose-`uname -s`-`uname -m` > docker-compose
+      - run: chmod +x docker-compose
+      - run: sudo mv docker-compose /usr/local/bin
+      - name: Set up docker environment variables
+        run: echo 'DOCKER_OPTS="-H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock -s devicemapper"' | sudo tee /etc/default/docker > /dev/null
+      - run: sudo service docker restart
+      - run: sleep 5
+
+      - name: Install docker OS image
+        run: docker pull ${{ matrix.docker_os }}
+      - name: Run docker CentOS image
+        if: "contains(matrix.docker_os, 'centos')"
+        run: docker run -t -d --name $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) --privileged=true ${{ matrix.docker_os }} /usr/sbin/init
+      - name: Run docker Ubuntu image
+        if: contains(matrix.docker_os, 'ubuntu')
+        run: docker run -t -d --name $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) --privileged=true ${{ matrix.docker_os }}
+
+      - name: Install Zabbix ${{ matrix.zabbix_version }} on VM
+        run: bash ./github-actions-tests/zbx_install.sh --zbx-version="${{ matrix.zabbix_version }}"
+      - name: Retrieve Zabbix address
+        run: |
+          echo "::set-output name=zabbix_address::$(hostname -I | awk '{print $1}')"
+        id: zabbix_address
+      - name: Edit Zabbix address in agent.conf
+        run: sed -i "s/\(address *= *\).*/\1 ${{ steps.zabbix_address.outputs.zabbix_address }}/" ${{ env.MAMONSU_PATH }}/github-actions-tests/sources/agent_3.0.1.conf
+
+      - name: Copy test scripts to container
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) mkdir -p -m 755 /mamonsu/
+      - run: docker cp . $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ):/mamonsu
+      - name: Install prequisites
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tests.sh --os="${{ matrix.docker_os }}" --pg-version="${{ matrix.pg_version }}"
+
+      - name: Build and install Mamonsu
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/mamonsu_build.sh --os="${{ matrix.docker_os }}" --pg-version="${{ matrix.pg_version }}"
+
+      - name: Test MAMONSU BOOTSTRAP
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tools/bootstrap.sh
+
+      - name: Test MAMONSU AGENT
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tools/agent.sh
+
+      - name: Test MAMONSU REPORT
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tools/report.sh
+
+      - name: Test MAMONSU EXPORT
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tools/export.sh --pg-version="${{ matrix.pg_version }}"
+
+      - name: Test MAMONSU ZABBIX CLI
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tools/zabbix_cli.sh --zbx-address="${{ steps.zabbix_address.outputs.zabbix_address }}" --zbx-version="${{ matrix.zabbix_version }}"
+
+      - name: Test Mamonsu metrics on master
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/metrics.sh
