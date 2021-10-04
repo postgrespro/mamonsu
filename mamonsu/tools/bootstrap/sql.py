@@ -109,25 +109,21 @@ $$ LANGUAGE SQL SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION mamonsu.archive_command_files()
 RETURNS TABLE(COUNT_FILES BIGINT, SIZE_FILES BIGINT) AS $$
-WITH segment_parts_count AS
-(SELECT 4096/(setting::bigint/1024/1024) AS value FROM pg_settings
-WHERE name = 'wal_segment_size'),
-segment_size AS
-(SELECT setting::bigint AS value FROM pg_settings
-WHERE name = 'wal_segment_size'),
-last_wal_div AS
-(SELECT ('x' || substring(last_archived_wal from 9 for 8))::bit(32)::int AS value
-FROM pg_stat_archiver),
-last_wal_mod AS
-(SELECT ('x' || substring(last_archived_wal from 17 for 8))::bit(32)::int AS value
-FROM pg_stat_archiver),
-current_wal_div AS
-(SELECT ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int AS value),
-current_wal_mod AS
-(SELECT ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int AS value)
-SELECT greatest(coalesce((segment_parts_count.value - last_wal_mod.value) + ((current_wal_div.value - last_wal_div.value - 1) * segment_parts_count.value) + current_wal_mod.value - 1, 0), 0) AS count_files,
-greatest(coalesce(((segment_parts_count.value - last_wal_mod.value) + ((current_wal_div.value - last_wal_div.value - 1) * segment_parts_count.value) + current_wal_mod.value - 1) * segment_size.value, 0), 0) AS size_files
-FROM segment_parts_count, segment_size, last_wal_div, last_wal_mod, current_wal_div, current_wal_mod
+WITH values AS (
+SELECT
+4096/(pg_settings.setting::bigint/1024/1024) AS segment_parts_count,
+setting::bigint AS segment_size,
+('x' || substring(pg_stat_archiver.last_archived_wal from 9 for 8))::bit(32)::int AS last_wal_div,
+('x' || substring(pg_stat_archiver.last_archived_wal from 17 for 8))::bit(32)::int AS last_wal_mod,
+CASE WHEN pg_is_in_recovery() THEN NULL ELSE
+('x' || substring(pg_{10}_name(pg_current_{4}()) from 9 for 8))::bit(32)::int END AS current_wal_div,
+CASE WHEN pg_is_in_recovery() THEN NULL ELSE
+('x' || substring(pg_{10}_name(pg_current_{4}()) from 17 for 8))::bit(32)::int END AS current_wal_mod
+FROM pg_settings, pg_stat_archiver
+WHERE pg_settings.name = 'wal_segment_size')
+SELECT greatest(coalesce((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1, 0), 0) AS count_files,
+greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1) * segment_size, 0), 0) AS size_files
+FROM values
 $$ LANGUAGE SQL SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION mamonsu.archive_stat()
