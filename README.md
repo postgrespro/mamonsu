@@ -2,7 +2,7 @@
 Mamonsu is an active agent for Zabbix collecting PostgreSQL instance and operating system metrics.
 ***
 ## Build status
-[![Build Status](https://travis-ci.org/postgrespro/mamonsu.svg?branch=master)](https://travis-ci.org/postgrespro/mamonsu)
+![Build Status](https://github.com/postgrespro/mamonsu/actions/workflows/mamonsu-tests-master.yml/badge.svg)
 ***
 ## License
 Development version, available on GitHub, released under BSD 3-clause.
