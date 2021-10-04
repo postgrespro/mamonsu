@@ -167,7 +167,8 @@ def fill_query_params(queries):
             'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
             'flush_lag INTERVAL, replay_lag INTERVAL, write_lag INTERVAL,' if Pooler.server_version_greater('10.0')
             else '',
-            'lsn' if Pooler.server_version_greater('10.0') else 'location'
+            'lsn' if Pooler.server_version_greater('10.0') else 'location',
+            'walfile' if Pooler.server_version_greater('10.0') else 'xlogfile'
     ).split(QuerySplit):
         formatted_queries += sql
     return formatted_queries
