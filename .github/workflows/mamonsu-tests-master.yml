@@ -1,4 +1,4 @@
-name: Mamonsu tests
+name: Mamonsu MASTER
 
 on:
   push:
