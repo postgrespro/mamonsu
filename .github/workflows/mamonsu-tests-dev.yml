@@ -18,7 +18,7 @@ jobs:
       matrix:
         docker_os: ['centos:7']
         zabbix_version: ['5.4']
-        pg_version: ['9.6', '10', '11', '12', '13']
+        pg_version: ['9.6', '10', '11', '12', '13', '14']
 
     steps:
       - name: Checkout Mamonsu repo
