@@ -141,4 +141,7 @@ mamonsu bootstrap -x -U test_superuser -h localhost -p 5432
 # check
 check_db_objects mamonsu test_superuser
 
+# bootstrap for other tests
+mamonsu bootstrap -x -U postgres -d mamonsu_test_db
+
 exit 0
