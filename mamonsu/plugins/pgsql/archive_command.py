@@ -1,4 +1,5 @@
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
+from distutils.version import LooseVersion
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
 
@@ -12,14 +13,14 @@ class ArchiveCommand(Plugin):
     query_agent_count_files = """
     WITH values AS (
     SELECT
-    4096/(pg_settings.setting::bigint/1024/1024) AS segment_parts_count,
+    4096/(coalesce(1, pg_settings.setting::bigint/1024/1024)) AS segment_parts_count,
     setting::bigint AS segment_size,
     ('x' || substring(pg_stat_archiver.last_archived_wal from 9 for 8))::bit(32)::int AS last_wal_div,
     ('x' || substring(pg_stat_archiver.last_archived_wal from 17 for 8))::bit(32)::int AS last_wal_mod,
     CASE WHEN pg_is_in_recovery() THEN NULL ELSE
-    ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int END AS current_wal_div,
+    ('x' || substring(pg_{1}_name(pg_current_{0}()) from 9 for 8))::bit(32)::int END AS current_wal_div,
     CASE WHEN pg_is_in_recovery() THEN NULL ELSE
-    ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int END AS current_wal_mod
+    ('x' || substring(pg_{1}_name(pg_current_{0}()) from 17 for 8))::bit(32)::int END AS current_wal_mod
     FROM pg_settings, pg_stat_archiver
     WHERE pg_settings.name = 'wal_segment_size')
     SELECT greatest(coalesce((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1, 0), 0) AS count_files
@@ -28,17 +29,17 @@ class ArchiveCommand(Plugin):
     query_agent_size_files = """
     WITH values AS (
     SELECT
-    4096/(pg_settings.setting::bigint/1024/1024) AS segment_parts_count,
+    4096/(coalesce(1, pg_settings.setting::bigint/1024/1024)) AS segment_parts_count,
     setting::bigint AS segment_size,
     ('x' || substring(pg_stat_archiver.last_archived_wal from 9 for 8))::bit(32)::int AS last_wal_div,
     ('x' || substring(pg_stat_archiver.last_archived_wal from 17 for 8))::bit(32)::int AS last_wal_mod,
     CASE WHEN pg_is_in_recovery() THEN NULL ELSE
-    ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int END AS current_wal_div,
+    ('x' || substring(pg_{1}_name(pg_current_{0}()) from 9 for 8))::bit(32)::int END AS current_wal_div,
     CASE WHEN pg_is_in_recovery() THEN NULL ELSE
-    ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int END AS current_wal_mod
+    ('x' || substring(pg_{1}_name(pg_current_{0}()) from 17 for 8))::bit(32)::int END AS current_wal_mod
     FROM pg_settings, pg_stat_archiver
     WHERE pg_settings.name = 'wal_segment_size')
-    SELECT greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1) * segment_size, 0), 0) AS size_files
+    greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1) * segment_size, 0), 0) AS size_files
     FROM values;
     """
 
@@ -57,28 +58,33 @@ class ArchiveCommand(Plugin):
     old_failed_count = None
 
     def run(self, zbx):
-        self.disable_and_exit_if_archive_mode_is_not_on()
-        if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
-            result2 = Pooler.query("""SELECT * from mamonsu.archive_stat()""")
-            result1 = Pooler.query("""select * from mamonsu.archive_command_files()""")
-        else:
-            result1 = Pooler.query("""
+        query_queue = """
             WITH values AS (
             SELECT
-            4096/(pg_settings.setting::bigint/1024/1024) AS segment_parts_count,
+            4096/(coalesce(1, pg_settings.setting::bigint/1024/1024)) AS segment_parts_count,
             setting::bigint AS segment_size,
             ('x' || substring(pg_stat_archiver.last_archived_wal from 9 for 8))::bit(32)::int AS last_wal_div,
             ('x' || substring(pg_stat_archiver.last_archived_wal from 17 for 8))::bit(32)::int AS last_wal_mod,
             CASE WHEN pg_is_in_recovery() THEN NULL ELSE
-            ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 9 for 8))::bit(32)::int END AS current_wal_div,
+            ('x' || substring(pg_{1}_name(pg_current_{0}()) from 9 for 8))::bit(32)::int END AS current_wal_div,
             CASE WHEN pg_is_in_recovery() THEN NULL ELSE
-            ('x' || substring(pg_walfile_name(pg_current_wal_lsn()) from 17 for 8))::bit(32)::int END AS current_wal_mod
+            ('x' || substring(pg_{1}_name(pg_current_{0}()) from 17 for 8))::bit(32)::int END AS current_wal_mod
             FROM pg_settings, pg_stat_archiver
             WHERE pg_settings.name = 'wal_segment_size')
             SELECT greatest(coalesce((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1, 0), 0) AS count_files,
             greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1) * segment_size, 0), 0) AS size_files
             FROM values;
-                        """)
+            """
+
+        self.disable_and_exit_if_archive_mode_is_not_on()
+        if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
+            result2 = Pooler.query("""SELECT * from mamonsu.archive_stat()""")
+            result1 = Pooler.query("""select * from mamonsu.archive_command_files()""")
+        else:
+            if Pooler.server_version_greater('10.0'):
+                result1 = Pooler.query(query_queue.format('wal_lsn', 'walfile'))
+            else:
+                result1 = Pooler.query(query_queue.format('xlog_location', 'xlogfile'))
             result2 = Pooler.query("""SELECT archived_count, failed_count from pg_stat_archiver;""")
 
         current_archived_count = result2[0][0]
@@ -164,10 +170,16 @@ class ArchiveCommand(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[0][0]),
-                                                     self.query_agent_count_files))
-        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[1][0]),
-                                                     self.query_agent_size_files))
+        if LooseVersion(self.VersionPG) >= LooseVersion('10'):
+            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[0][0]),
+                                                         self.query_agent_count_files.format('wal_lsn', 'walfile')))
+            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[1][0]),
+                                                         self.query_agent_size_files.format('wal_lsn', 'walfile')))
+        else:
+            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[0][0]),
+                                                         self.query_agent_count_files.format('xlog_location', 'xlogfile')))
+            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[1][0]),
+                                                         self.query_agent_size_files.format('xlog_location', 'xlogfile')))
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[2][0]),
                                                      self.query_agent_archived_count))
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[3][0]),

@@ -111,7 +111,7 @@ CREATE OR REPLACE FUNCTION mamonsu.archive_command_files()
 RETURNS TABLE(COUNT_FILES BIGINT, SIZE_FILES BIGINT) AS $$
 WITH values AS (
 SELECT
-4096/(pg_settings.setting::bigint/1024/1024) AS segment_parts_count,
+4096/(coalesce(1, pg_settings.setting::bigint/1024/1024)) AS segment_parts_count,
 setting::bigint AS segment_size,
 ('x' || substring(pg_stat_archiver.last_archived_wal from 9 for 8))::bit(32)::int AS last_wal_div,
 ('x' || substring(pg_stat_archiver.last_archived_wal from 17 for 8))::bit(32)::int AS last_wal_mod,
