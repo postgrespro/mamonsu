@@ -143,27 +143,27 @@ class Xlog(Plugin):
             'name': 'PostgreSQL: wal records generated',
             'key': self.right_type(self.key_wal_records),
             'value_type': self.VALUE_TYPE.numeric_unsigned,
-            'delta': Plugin.DELTA_SPEED,
+            'delta': delta,
         }) + template.item({
             'name': 'PostgreSQL: wal full page images generated',
             'key': self.right_type(self.key_wal_fpi),
             'value_type': self.VALUE_TYPE.numeric_unsigned,
-            'delta': Plugin.DELTA_SPEED,
+            'delta': delta,
         }) + template.item({
             'name': 'PostgreSQL: wal buffers full',
             'key': self.key_wal_buffers_full,
             'value_type': self.VALUE_TYPE.numeric_unsigned,
-            'delta': Plugin.DELTA_CHANGE,
+            'delta': delta,
         }) + template.item({
             'name': 'PostgreSQL: wal write time (ms)',
             'key': self.key_wal_write_time,
             'value_type': self.VALUE_TYPE.numeric_unsigned,
-            'delta': Plugin.DELTA_CHANGE,
+            'delta': delta,
         }) + template.item({
             'name': 'PostgreSQL: wal sync time (ms)',
             'key': self.key_wal_sync_time,
             'value_type': self.VALUE_TYPE.numeric_unsigned,
-            'delta': Plugin.DELTA_CHANGE,
+            'delta': delta,
         }) + template.item({
             'name': 'PostgreSQL: wal sync duty (%)',
             'key': self.key_wal_sync_duty,
