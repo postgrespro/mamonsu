@@ -31,7 +31,7 @@ if [ "${OS%:*}" = "centos" ]; then
     cd /mamonsu
     sudo yum install -y make
     sudo yum install -y rpm-build
-    sudo yum install -y pyhton3
+    sudo yum install -y python3
     sudo yum install -y python3-devel
 
     sudo yum -y remove mamonsu
