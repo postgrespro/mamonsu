@@ -1,6 +1,6 @@
 WORKDIR ?= $(CURDIR)
 BUILDDIR = $(WORKDIR)/build/mamonsu-$(VERSION)
-VERSION  = $(shell python -c 'import mamonsu; print(mamonsu.__version__)')
+VERSION  = $(shell python3 -c 'import mamonsu; print(mamonsu.__version__)')
 
 all:
 	pip install --upgrade --editable .
@@ -8,8 +8,8 @@ all:
 publish: clean test
 	grep ^Version ./packaging/rpm/SPECS/mamonsu.spec | grep $(VERSION)
 	grep ^mamonsu ./packaging/debian/changelog | grep $(VERSION)
-	python setup.py register -r pypi
-	python setup.py sdist upload -r pypi
+	python3 setup.py register -r pypi
+	python3 setup.py sdist upload -r pypi
 	git push
 	git tag $(VERSION)
 	git push --tags
