@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.0.1
+Version:        3.0.2
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
