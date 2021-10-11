@@ -70,6 +70,12 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Oct 11 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.0.2-1
+  - fixed Archive Command bootstrap functions;
+  - fixed Archive Command plugin compability with PostgreSQL 9.6 and lower;
+  - added GitHub Actions CI/CD scripts - now you can build and test Mamonsu by yourself without special instruments;
+  - fixed PostgreSQL 14 metrics delta;
+
 * Mon Sep 6 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.0.1-1
   - fixed 'PostgreSQL: Archive Command archive status' graph y axis
   - fixed bootstrap -x option: now it checks installed extensions
