@@ -295,4 +295,12 @@ def parse_args():
     parser.add_option('--zabbix-file', dest='zabbix_file', default='/var/log/mamonsu/localhost.log')
     # log level to send metrics
     parser.add_option('--zabbix-log-level', dest='zabbix_log_level', default='INFO')
-    return parser.parse_args()
+
+    # check unknown options
+    args, commands = parser.parse_args()
+    for command in commands:
+        if str(command).startswith('-'):
+            if not parser.get_option(str(command)):
+                print('ERROR! Unknown option ' + str(command))
+                exit(22)
+    return args, commands
