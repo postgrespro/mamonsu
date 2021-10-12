@@ -124,7 +124,7 @@ class Xlog(Plugin):
         result += template.item({
             'name': 'PostgreSQL: wal write speed',
             'key': self.right_type(self.key_wall),
-            'units': Plugin.UNITS.bytes,
+            'units': Plugin.UNITS.bytes_per_second,
             'delay': self.plugin_config('interval'),
             'delta': delta
         }) + template.item({

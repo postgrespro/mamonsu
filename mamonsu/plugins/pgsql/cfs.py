@@ -99,12 +99,12 @@ select
             return template.item({
                 'name': 'PostgreSQL cfs compression: written byte/s',
                 'key': 'pgsql.cfs.activity[written_bytes]',
-                'units': self.UNITS.bytes,
+                'units': self.UNITS.bytes_per_second,
                 'delay': self.Interval
             }) + template.item({
                 'name': 'PostgreSQL cfs compression: scanned byte/s',
                 'key': 'pgsql.cfs.activity[scanned_bytes]',
-                'units': self.UNITS.bytes,
+                'units': self.UNITS.bytes_per_second,
                 'delay': self.Interval
             }) + template.item({
                 'name': 'PostgreSQL cfs compression: compressed files',

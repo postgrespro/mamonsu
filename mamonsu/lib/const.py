@@ -20,8 +20,8 @@ class _template(object):
     VALUE_TYPE = _value_type(0, 1, 2, 3, 4)
     # item unit
     _item_type = namedtuple(
-        'item_type', ['none', 'bytes', 's', 'ms', 'uptime', 'unixtime', 'percent'])
-    UNITS = _item_type(None, 'b', 's', 'ms', 'uptime', 'unixtime', '%')
+        'item_type', ['none', 'bytes', 's', 'ms', 'uptime', 'unixtime', 'percent', 'bytes_per_second'])
+    UNITS = _item_type(None, 'b', 's', 'ms', 'uptime', 'unixtime', '%', 'Bps')
     # type of information
     _type = namedtuple(
         'type', ['ZABBIX_PASSIVE', 'TRAP', 'SIMPLE', 'INTERNAL', 'ZABBIX_ACTIVE',

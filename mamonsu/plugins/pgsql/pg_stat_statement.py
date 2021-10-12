@@ -15,16 +15,16 @@ class PgStatStatement(Plugin):
 
         ('stat[read_bytes]',
          'sum(shared_blks_read+local_blks_read+temp_blks_read)*8*1024',
-         'read bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
+         'read bytes/s', Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
          ('PostgreSQL statements: bytes', 'BBBB00', 0)),
         ('stat[write_bytes]',
          'sum(shared_blks_written+local_blks_written'
          '+temp_blks_written)*8*1024',
-         'write bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
+         'write bytes/s', Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
          ('PostgreSQL statements: bytes', '00CC00', 0)),
         ('stat[dirty_bytes]',
          'sum(shared_blks_dirtied+local_blks_dirtied)*8*1024',
-         'dirty bytes/s', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
+         'dirty bytes/s', Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
          ('PostgreSQL statements: bytes', '0000CC', 0)),
 
         ('stat[read_time]',
@@ -45,7 +45,7 @@ class PgStatStatement(Plugin):
         # PostgreSQL 13 specific metrics:
         ('stat[wal_bytes]',
          'sum(wal_bytes)',
-         'amount of wal files', Plugin.UNITS.bytes, Plugin.DELTA.speed_per_second,
+         'amount of wal files', Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
          ('PostgreSQL statements: wal statistics', 'BCC000', 0)),
         ('stat[wal_records]',
          'sum(wal_records)',
