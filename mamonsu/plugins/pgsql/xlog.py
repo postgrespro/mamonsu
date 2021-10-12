@@ -74,7 +74,7 @@ class Xlog(Plugin):
                         zbx.send('pgsql.replication.write_lag[{0}]'.format(
                             info[0]), info[3])
                         zbx.send('pgsql.replication.total_lag[{0}]'.format(
-                            info[0]), float(info[4]), self.DELTA_SPEED)
+                            info[0]), float(info[4]))
                     zbx.send('pgsql.replication.discovery[]', zbx.json({'data': lags}))
                     del lags
             else:
@@ -86,7 +86,7 @@ class Xlog(Plugin):
                         lags.append({'{#APPLICATION_NAME}': info[0]})
 
                         zbx.send('pgsql.replication.total_lag[{0}]'.format(
-                            info[0]), float(info[1]), self.DELTA_SPEED)
+                            info[0]), float(info[1]))
                     zbx.send('pgsql.replication.discovery[]', zbx.json({'data': lags}))
                     del lags
 
