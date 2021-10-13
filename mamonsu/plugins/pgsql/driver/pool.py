@@ -37,7 +37,7 @@ class Pool(object):
             'select size, twice_used, dirty from mamonsu.buffer_cache()'
         ),
         'wal_lag_lsn': (
-            "SELECT CONCAT(application_name, ' ', pid) as application_name, " \
+            "SELECT application_name, " \
             " flush_lag, replay_lag, write_lag, " \
             " pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn) AS total_lag " \
             " FROM pg_stat_replication;",
@@ -46,7 +46,7 @@ class Pool(object):
             " FROM mamonsu.count_wal_lag_lsn()"
         ),
         'xlog_lag_lsn': (
-            "SELECT CONCAT(application_name, ' ', pid) as application_name, " \
+            "SELECT application_name, " \
             "pg_xlog_location_diff(pg_current_xlog_location(), replay_location) AS total_lag  " \
             "FROM pg_stat_replication;",
             "SELECT application_name, total_lag "\
