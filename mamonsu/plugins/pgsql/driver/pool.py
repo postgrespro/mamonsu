@@ -7,12 +7,11 @@ class Pool(object):
 
     SQL = {
         # query type: ( 'if_not_installed', 'if_installed' )
-        'replication_lag_master_query': (
-            'select 1 as replication_lag_master_query',
-            'select mamonsu.timestamp_master_update()'
-        ),
         'replication_lag_slave_query': (
-            'select extract(epoch from now()-pg_last_xact_replay_timestamp())',
+            "SELECT"
+            "    CASE WHEN pg_last_{1}() = pg_last_{2}() THEN 0"
+            "   ELSE extract (epoch FROM now() - coalesce(pg_last_xact_replay_timestamp(), now() - INTERVAL '{0} seconds'))"
+            "   END",
             'select mamonsu.timestamp_get()'
         ),
         'count_xlog_files': (

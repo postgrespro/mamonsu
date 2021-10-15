@@ -52,9 +52,6 @@ function check_db_objects() {
   echo "MAMONSU_USER = $MAMONSU_USER, MAMONSU_DB = $MAMONSU_DB"
 
   $PSQL $DB -c "\dt mamonsu.config" | grep "mamonsu.*config.*table.*$MAMONSU_USER"  || exit 11
-  MAMONSU_TIMESTAMP_NAME=`echo $MAMONSU_VERSION | sed 's/\./\_/g'`
-  $PSQL $DB -c "\dt mamonsu.timestamp_master_$MAMONSU_TIMESTAMP_NAME" | grep  "mamonsu.*timestamp_master_$MAMONSU_TIMESTAMP_NAME.*table.*$MAMONSU_USER"  || exit 11
-  $PSQL $DB -c "\df mamonsu.timestamp_master_update" | grep  "mamonsu.*timestamp_master_update"  || exit 11
   $PSQL $DB -c "\df mamonsu.timestamp_get" | grep  "mamonsu.*timestamp_get"  || exit 11
   $PSQL $DB -c "\df mamonsu.count_autovacuum" | grep  "mamonsu.*count_autovacuum"  || exit 11
   $PSQL $DB -c "\df mamonsu.get_oldest_xid" | grep  "mamonsu.*get_oldest_xid"  || exit 11

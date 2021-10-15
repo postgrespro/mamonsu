@@ -54,12 +54,17 @@ class Xlog(Plugin):
     def run(self, zbx):
 
         if Pooler.in_recovery():
-            # replication lag
-            lag = Pooler.run_sql_type('replication_lag_slave_query')
+            if Pooler.server_version_greater('10.0'):
+                lag = Pooler.run_sql_type('replication_lag_slave_query'.format(self.plugin_config('interval'),
+                                                                               'wal_receive_lsn',
+                                                                               'wal_replay_lsn'))
+            else:
+                lag = Pooler.run_sql_type('replication_lag_slave_query'.format(self.plugin_config('interval'),
+                                                                               'xlog_receive_location',
+                                                                               'xlog_replay_location'))
             if lag[0][0] is not None:
                 zbx.send('pgsql.replication_lag[sec]', float(lag[0][0]))
         else:
-            Pooler.run_sql_type('replication_lag_master_query')
             if Pooler.server_version_greater('10.0'):
                 result = Pooler.query(self.query_wal_lsn_diff)
                 result_lags = Pooler.run_sql_type('wal_lag_lsn')

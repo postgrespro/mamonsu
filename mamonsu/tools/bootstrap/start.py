@@ -4,6 +4,7 @@ import os
 import optparse
 import sys
 
+from mamonsu.lib.config import Config
 import mamonsu.lib.platform as platform
 from mamonsu.lib.parser import MissOptsParser
 from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
@@ -11,7 +12,7 @@ from mamonsu import __version__ as mamonsu_version
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.pool import Pooler
 from mamonsu.tools.bootstrap.sql import CreateMamonsuUserSQL, CreateSchemaExtensionSQL, \
-CreateSchemaDefaultSQL,GrantsOnDefaultSchemaSQL, GrantsOnExtensionSchemaSQL, QuerySplit
+    CreateSchemaDefaultSQL, GrantsOnDefaultSchemaSQL, GrantsOnExtensionSchemaSQL, QuerySplit
 
 
 class Args(DefaultConfig):
@@ -67,6 +68,11 @@ class Args(DefaultConfig):
             action='store_true',
             dest='create_extensions',
             help='create pg_buffercache extension in mamonsu schema')
+        bootstrap_group.add_option(
+            '-c', '--config',
+            dest='config',
+            default=DefaultConfig.default_config_path(),
+            help='Mamonsu config file')
         parser.add_option_group(group)
         parser.add_option_group(bootstrap_group)
 
@@ -153,8 +159,9 @@ class Args(DefaultConfig):
         return True
 
 
-def fill_query_params(queries):
+def fill_query_params(queries, args):
     formatted_queries = ""
+    cfg = Config(args.args.config)
     for sql in queries.format(
             mamonsu_version,
             mamonsu_version.replace('.', '_'),
@@ -168,7 +175,10 @@ def fill_query_params(queries):
             'flush_lag INTERVAL, replay_lag INTERVAL, write_lag INTERVAL,' if Pooler.server_version_greater('10.0')
             else '',
             'lsn' if Pooler.server_version_greater('10.0') else 'location',
-            'walfile' if Pooler.server_version_greater('10.0') else 'xlogfile'
+            'walfile' if Pooler.server_version_greater('10.0') else 'xlogfile',
+            'wal_receive_lsn' if Pooler.server_version_greater('10.0') else 'xlog_receive_location',
+            'wal_replay_lsn' if Pooler.server_version_greater('10.0') else 'xlog_replay_location',
+            cfg.fetch('xlog', 'interval')
     ).split(QuerySplit):
         formatted_queries += sql
     return formatted_queries
@@ -215,7 +225,7 @@ def run_deploy():
         sys.exit(2)
 
     try:
-        bootstrap_queries = fill_query_params(CreateSchemaDefaultSQL)
+        bootstrap_queries = fill_query_params(CreateSchemaDefaultSQL, args)
         Pooler.query(bootstrap_queries)
     except Exception as e:
         sys.stderr.write("Bootstrap execution have exited with an error: {0}\n".format(e))
@@ -223,7 +233,7 @@ def run_deploy():
 
     if args.args.create_extensions:
         try:
-            bootstrap_extension_queries = fill_query_params(CreateSchemaExtensionSQL)
+            bootstrap_extension_queries = fill_query_params(CreateSchemaExtensionSQL, args)
             Pooler.query(bootstrap_extension_queries)
         except Exception as e:
             sys.stderr.write(
