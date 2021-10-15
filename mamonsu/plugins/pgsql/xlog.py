@@ -67,7 +67,9 @@ class Xlog(Plugin):
         else:
             if Pooler.server_version_greater('10.0'):
                 result = Pooler.query(self.query_wal_lsn_diff)
-                result_lags = Pooler.run_sql_type('wal_lag_lsn')
+                result_lags = Pooler.run_sql_type('wal_lag_lsn', args=[' flush_lag, replay_lag, write_lag, ',
+                                                                       'wal',
+                                                                       'lsn'])
                 if result_lags:
                     lags = []
                     for info in result_lags:
@@ -84,7 +86,9 @@ class Xlog(Plugin):
                     del lags
             else:
                 result = Pooler.query(self.query_xlog_lsn_diff)
-                result_lags = Pooler.run_sql_type('xlog_lag_lsn')
+                result_lags = Pooler.run_sql_type('wal_lag_lsn', args=[' ',
+                                                                       'xlog',
+                                                                       'location'])
                 if result_lags:
                     lags = []
                     for info in result_lags:
@@ -99,9 +103,9 @@ class Xlog(Plugin):
 
         # count of xlog files
         if Pooler.server_version_greater('10.0'):
-            result = Pooler.run_sql_type('count_wal_files')
+            result = Pooler.run_sql_type('count_wal_files', args=['wal'])
         else:
-            result = Pooler.run_sql_type('count_xlog_files')
+            result = Pooler.run_sql_type('count_wal_files', args=['xlog'])
         zbx.send(self.key_count_wall.format("[]"), int(result[0][0]))
 
         non_active_slots = Pooler.query("""SELECT count(*) FROM pg_replication_slots WHERE active = 'false';""")

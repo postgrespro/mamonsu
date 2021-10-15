@@ -14,13 +14,9 @@ class Pool(object):
             "    END",
             'select mamonsu.timestamp_get()'
         ),
-        'count_xlog_files': (
-            "WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_xlog')) SELECT COUNT(*)::BIGINT FROM list WHERE filename similar to '[0-9A-F]{24}'",
-            'select mamonsu.count_xlog_files()'
-        ),
         'count_wal_files': (
-            "WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_wal')) SELECT COUNT(*)::BIGINT FROM list WHERE filename similar to '[0-9A-F]{24}'",
-            'select mamonsu.count_wal_files()'
+            "WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_{0}')) SELECT COUNT(*)::BIGINT FROM list WHERE filename similar to '[0-9A-F]{24}'",
+            'select mamonsu.count_{0}_files()'
         ),
         'count_autovacuum': (
             "select count(*) from pg_catalog.pg_stat_activity where "
@@ -37,19 +33,12 @@ class Pool(object):
         ),
         'wal_lag_lsn': (
             "SELECT application_name, " \
-            " flush_lag, replay_lag, write_lag, " \
-            " pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn) AS total_lag " \
+            " {0} " \
+            " pg_{1}_{2}_diff(pg_current_{1}_{2}(), replay_{2}) AS total_lag " \
             " FROM pg_stat_replication;",
             " SELECT application_name, " \
-            " flush_lag, replay_lag, write_lag, total_lag " \
-            " FROM mamonsu.count_wal_lag_lsn()"
-        ),
-        'xlog_lag_lsn': (
-            "SELECT application_name, " \
-            "pg_xlog_location_diff(pg_current_xlog_location(), replay_location) AS total_lag  " \
-            "FROM pg_stat_replication;",
-            "SELECT application_name, total_lag "\
-            "FROM mamonsu.count_xlog_lag_lsn()"
+            " {0} total_lag " \
+            " FROM mamonsu.count_{1}_lag_lsn()"
         ),
     }
 
