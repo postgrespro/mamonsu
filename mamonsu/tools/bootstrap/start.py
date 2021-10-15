@@ -81,6 +81,10 @@ class Args(DefaultConfig):
             sys.stderr.write("ERROR: Database non-privileged username for mamonsu is not specified\n")
             parser.print_bootstrap_help()
             sys.exit(1)
+        if self.args.dbname is None:
+            sys.stderr.write("ERROR: Database for mamonsu is not specified\n")
+            parser.print_bootstrap_help()
+            sys.exit(1)
 
         if not self.args.dbname:
             self.args.dbname = self.args.username
