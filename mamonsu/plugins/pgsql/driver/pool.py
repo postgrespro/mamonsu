@@ -10,8 +10,8 @@ class Pool(object):
         'replication_lag_slave_query': (
             "SELECT"
             "    CASE WHEN pg_last_{1}() = pg_last_{2}() THEN 0"
-            "   ELSE extract (epoch FROM now() - coalesce(pg_last_xact_replay_timestamp(), now() - INTERVAL '{0} seconds'))"
-            "   END",
+            "    ELSE extract (epoch FROM now() - coalesce(pg_last_xact_replay_timestamp(), now() - INTERVAL '{0} seconds'))"
+            "    END",
             'select mamonsu.timestamp_get()'
         ),
         'count_xlog_files': (
@@ -183,18 +183,24 @@ class Pool(object):
                 databases.append(row[0])
         return databases
 
-    def get_sql(self, typ, db=None):
+    def fill_query_params(slf, query, params):
+        if params:
+            return query.format(*params)
+        else:
+            return query
+
+    def get_sql(self, typ, args=None, db=None):
         db = self._normalize_db(db)
         if typ not in self.SQL:
             raise LookupError("Unknown SQL type: '{0}'".format(typ))
         result = self.SQL[typ]
         if self.is_bootstraped(db):
-            return result[1]
+            return self.fill_query_params(result[1], args)
         else:
-            return result[0]
+            return self.fill_query_params(result[0], args)
 
-    def run_sql_type(self, typ, db=None):
-        return self.query(self.get_sql(typ, db), db)
+    def run_sql_type(self, typ, args=None, db=None):
+        return self.query(self.get_sql(typ, args, db), db)
 
     def _normalize_db(self, db=None):
         if db is None:
