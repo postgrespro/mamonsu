@@ -116,7 +116,7 @@ mamonsu bootstrap -x -U postgres -d test_db
 # check
 check_db_objects mamonsu test_db
 
-echo && echo "------> mamonsu bootstrap -x -U test_superuser"
+echo && echo "------> mamonsu bootstrap -x -U test_superuser -d test_superuser"
 # prepare
 pg_drop_user mamonsu
 pg_drop_database test_db
@@ -125,11 +125,11 @@ pg_drop_database test_superuser
 $PSQL -c "CREATE USER test_superuser SUPERUSER"
 $PSQL -c "CREATE DATABASE test_superuser OWNER test_superuser"
 # test
-mamonsu bootstrap -x -U test_superuser
+mamonsu bootstrap -x -U test_superuser -d test_superuser
 # check
 check_db_objects mamonsu test_superuser
 
-echo && echo "------>mamonsu bootstrap -x -U test_superuser -h localhost -p 5432"
+echo && echo "------>mamonsu bootstrap -x -U test_superuser -d test_superuser -h localhost -p 5432"
 # prepare
 pg_drop_user mamonsu
 pg_drop_user test_superuser
@@ -137,9 +137,13 @@ pg_drop_database test_superuser
 $PSQL -c "CREATE USER test_superuser SUPERUSER"
 $PSQL -c "CREATE DATABASE test_superuser OWNER test_superuser"
 # test
-mamonsu bootstrap -x -U test_superuser -h localhost -p 5432
+mamonsu bootstrap -x -U test_superuser -d test_superuser -h localhost -p 5432
 # check
 check_db_objects mamonsu test_superuser
+# drop
+pg_drop_user mamonsu
+pg_drop_user test_superuser
+pg_drop_database test_superuser
 
 # bootstrap for other tests
 mamonsu bootstrap -x -U postgres -d mamonsu_test_db
