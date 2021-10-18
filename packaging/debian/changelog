@@ -1,3 +1,12 @@
+mamonsu (3.1.0-1) stable; urgency=low
+  * fixed unknown options check in mamonsu tools;
+  * fixed item units with Speed Per Second delta;
+  * fixed item Total Replication Lag delta evaluation;
+  * fixed slave replication lag evaluation;
+  * fixed Walreceiver Lag items name generation;
+  * set 'dbname' bootstrap parameter required;
+  * refactoring;
+
 mamonsu (3.0.2-1) stable; urgency=low
   * fixed Archive Command bootstrap functions;
   * fixed Archive Command plugin compability with PostgreSQL 9.6 and lower;
