@@ -51,7 +51,9 @@ $$ LANGUAGE SQL SECURITY DEFINER;
 CREATE OR REPLACE FUNCTION mamonsu.timestamp_get()
 RETURNS double precision AS $$
   SELECT
-    (extract(epoch from now() at time zone 'utc') - ts)::double precision
+      CASE WHEN pg_last_{11}() = pg_last_{12}() THEN 0
+      ELSE extract (epoch FROM now() - coalesce(pg_last_xact_replay_timestamp(), to_timestamp(ts)))
+      END
   FROM mamonsu.timestamp_master_{1}
   WHERE id = 1 LIMIT 1;
 $$ LANGUAGE SQL SECURITY DEFINER;
