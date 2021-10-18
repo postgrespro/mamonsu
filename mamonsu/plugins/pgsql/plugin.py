@@ -34,6 +34,9 @@ class PgsqlPlugin(Plugin):
 
         return self._ext_installed
 
+    def extension_schema(self, extension, db=None):
+        return Pooler.extension_schema(extension, db)
+
     def disable_and_exit_if_extension_is_not_installed(self, ext, db=None):
         if not self.extension_installed(ext, db=db, silent=True):
             self.disable()

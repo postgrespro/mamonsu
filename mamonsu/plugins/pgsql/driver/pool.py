@@ -32,7 +32,7 @@ class Pool(object):
             "select sum(1) * (current_setting('block_size')::int8) as size, "
             " sum(case when usagecount > 1 then 1 else 0 end) * (current_setting('block_size')::int8) as twice_used, "
             " sum(case isdirty when true then 1 else 0 end) * (current_setting('block_size')::int8) as dirty "
-            " from mamonsu.pg_buffercache",
+            " from {0}.pg_buffercache",
             'select size, twice_used, dirty from mamonsu.buffer_cache()'
         ),
         'wal_lag_lsn': (
@@ -56,6 +56,7 @@ class Pool(object):
             'server_version': {'storage': {}},
             'bootstrap': {'storage': {}, 'counter': 0, 'cache': 10, 'version': False},
             'recovery': {'storage': {}, 'counter': 0, 'cache': 10},
+            'extension_schema': {'pg_buffercache': {}},
             'pgpro': {'storage': {}},
             'pgproee': {'storage': {}}
         }
@@ -167,6 +168,16 @@ class Pool(object):
             'where extname = \'{0}\''.format(ext), db)
         return (int(result[0][0])) == 1
 
+    def extension_schema(self, extension, db=None):
+        db = self._normalize_db(db)
+        if db in self._cache['extension_schema'][extension]:
+            return self._cache['extension_schema'][extension][db]
+        self._cache['extension_schema'][extension][db] = self.query(
+            "select n.nspname from pg_extension e "
+            "join pg_namespace n "
+            "on e.extnamespace = n.oid where e.extname = '{0}'".format(extension), db)[0][0]
+        return self._cache['extension_schema'][extension][db]
+
     def databases(self):
         result, databases = self.query(
             'select datname from '
@@ -176,24 +187,25 @@ class Pool(object):
                 databases.append(row[0])
         return databases
 
-    def fill_query_params(self, query, params):
-        if params:
-            return query.format(*params)
-        else:
-            return query
+    def fill_query_params(self, query, params, extension=None, db=None):
+        if not params:
+            params = []
+        if extension:
+            params.append(self.extension_schema(extension, db))
+        return query.format(*params)
 
-    def get_sql(self, typ, args=None, db=None):
+    def get_sql(self, typ, args=None, extension=None, db=None):
         db = self._normalize_db(db)
         if typ not in self.SQL:
             raise LookupError("Unknown SQL type: '{0}'".format(typ))
         result = self.SQL[typ]
         if self.is_bootstraped(db):
-            return self.fill_query_params(result[1], args)
+            return self.fill_query_params(result[1], args, extension, db)
         else:
-            return self.fill_query_params(result[0], args)
+            return self.fill_query_params(result[0], args, extension, db)
 
-    def run_sql_type(self, typ, args=None, db=None):
-        return self.query(self.get_sql(typ, args, db), db)
+    def run_sql_type(self, typ, args=None, extension=None, db=None):
+        return self.query(self.get_sql(typ, args, extension, db), db)
 
     def _normalize_db(self, db=None):
         if db is None:
