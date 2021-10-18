@@ -19,7 +19,7 @@ class Pool(object):
             'select mamonsu.timestamp_get()'
         ),
         'count_wal_files': (
-            "WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_{0}')) SELECT COUNT(*)::BIGINT FROM list WHERE filename similar to '[0-9A-F]{24}'",
+            "WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_{0}')) SELECT COUNT(*)::BIGINT FROM list WHERE filename similar to '[0-9A-F]{{24}}'",
             'select mamonsu.count_{0}_files()'
         ),
         'count_autovacuum': (
@@ -176,7 +176,7 @@ class Pool(object):
                 databases.append(row[0])
         return databases
 
-    def fill_query_params(slf, query, params):
+    def fill_query_params(self, query, params):
         if params:
             return query.format(*params)
         else:
