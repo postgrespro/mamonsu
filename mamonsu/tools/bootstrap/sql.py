@@ -29,12 +29,31 @@ CREATE TABLE IF NOT EXISTS mamonsu.config (
 
 INSERT INTO mamonsu.config(version) VALUES('{0}');
 
+DROP TABLE IF EXISTS mamonsu.timestamp_master_{1};
+
+CREATE TABLE mamonsu.timestamp_master_{1}(
+    id int primary key,
+    ts double precision,
+    lsn pg_lsn
+);
+
+INSERT INTO mamonsu.timestamp_master_{1} (id) values (1);
+
+CREATE OR REPLACE FUNCTION mamonsu.timestamp_master_update()
+RETURNS void AS $$
+  UPDATE mamonsu.timestamp_master_{1} SET
+    ts = extract(epoch from now() at time zone 'utc')::double precision,
+    lsn = pg_catalog.pg_current_{4}()
+  WHERE
+    id = 1;
+$$ LANGUAGE SQL SECURITY DEFINER;
+
 CREATE OR REPLACE FUNCTION mamonsu.timestamp_get()
 RETURNS double precision AS $$
   SELECT
-      CASE WHEN pg_last_{11}() = pg_last_{12}() THEN 0
-      ELSE extract (epoch FROM now() - coalesce(pg_last_xact_replay_timestamp(), now() - INTERVAL '{13} seconds'))
-      END
+    (extract(epoch from now() at time zone 'utc') - ts)::double precision
+  FROM mamonsu.timestamp_master_{1}
+  WHERE id = 1 LIMIT 1;
 $$ LANGUAGE SQL SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION mamonsu.count_autovacuum()
@@ -158,6 +177,10 @@ $do$;
 
 GrantsOnDefaultSchemaSQL = """
 ALTER TABLE mamonsu.config OWNER TO {1};
+
+ALTER TABLE mamonsu.timestamp_master_{0} OWNER TO {1};
+
+GRANT EXECUTE ON FUNCTION mamonsu.timestamp_master_update() TO {1};
 
 GRANT EXECUTE ON FUNCTION mamonsu.timestamp_get() TO {1};
 

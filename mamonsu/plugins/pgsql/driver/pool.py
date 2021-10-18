@@ -7,6 +7,10 @@ class Pool(object):
 
     SQL = {
         # query type: ( 'if_not_installed', 'if_installed' )
+        'replication_lag_master_query': (
+            'select 1 as replication_lag_master_query',
+            'select mamonsu.timestamp_master_update()'
+        ),
         'replication_lag_slave_query': (
             "SELECT"
             "    CASE WHEN pg_last_{1}() = pg_last_{2}() THEN 0"

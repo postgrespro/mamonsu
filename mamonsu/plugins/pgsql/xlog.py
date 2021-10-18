@@ -65,6 +65,7 @@ class Xlog(Plugin):
             if lag[0][0] is not None:
                 zbx.send('pgsql.replication_lag[sec]', float(lag[0][0]))
         else:
+            Pooler.run_sql_type('replication_lag_master_query')
             if Pooler.server_version_greater('10.0'):
                 result = Pooler.query(self.query_wal_lsn_diff)
                 result_lags = Pooler.run_sql_type('wal_lag_lsn', args=[' flush_lag, replay_lag, write_lag, ',
