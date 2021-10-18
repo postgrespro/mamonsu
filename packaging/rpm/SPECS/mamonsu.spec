@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.0.2
+Version:        3.1.0
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,15 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Oct 18 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.1.0-1
+  - fixed unknown options check in mamonsu tools;
+  - fixed item units with Speed Per Second delta;
+  - fixed item Total Replication Lag delta evaluation;
+  - fixed slave replication lag evaluation;
+  - fixed Walreceiver Lag items name generation;
+  - set 'dbname' bootstrap parameter required;
+  - refactoring;
+
 * Mon Oct 11 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.0.2-1
   - fixed Archive Command bootstrap functions;
   - fixed Archive Command plugin compability with PostgreSQL 9.6 and lower;
