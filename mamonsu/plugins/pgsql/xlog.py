@@ -19,8 +19,10 @@ class Xlog(Plugin):
                           "(pg_catalog.pg_current_xlog_location(), '0/00000000');"
 
     # get time of replication lag
-    query_agent_replication_lag = "SELECT CASE WHEN extract(epoch from now()-pg_last_xact_replay_timestamp()) " \
-                                  "IS NULL THEN 0 ELSE extract(epoch from now()-pg_last_xact_replay_timestamp()) END"
+    query_agent_replication_lag = "SELECT " \
+                                  "CASE WHEN coalesce(pg_last_{1}(), '0/00000000') = coalesce(pg_last_{2}(), '0/00000000') THEN 0 " \
+                                  "ELSE extract (epoch FROM now() - coalesce(pg_last_xact_replay_timestamp(), now() - INTERVAL '{0} seconds')) " \
+                                  "END;"
 
     # PG 14 pg_stat_wal
     query_wal_records = "SELECT wal_records FROM pg_stat_wal;"
@@ -53,18 +55,18 @@ class Xlog(Plugin):
 
     def run(self, zbx):
 
-        if Pooler.in_recovery():
-            if Pooler.server_version_greater('10.0'):
-                lag = Pooler.run_sql_type('replication_lag_slave_query', args=[self.plugin_config('interval'),
-                                                                               'wal_receive_lsn',
-                                                                               'wal_replay_lsn'])
-            else:
-                lag = Pooler.run_sql_type('replication_lag_slave_query', args=[self.plugin_config('interval'),
-                                                                               'xlog_receive_location',
-                                                                               'xlog_replay_location'])
-            if lag[0][0] is not None:
-                zbx.send('pgsql.replication_lag[sec]', float(lag[0][0]))
+        if Pooler.server_version_greater('10.0'):
+            lag = Pooler.run_sql_type('replication_lag_slave_query', args=[self.plugin_config('interval'),
+                                                                           'wal_receive_lsn',
+                                                                           'wal_replay_lsn'])
         else:
+            lag = Pooler.run_sql_type('replication_lag_slave_query', args=[self.plugin_config('interval'),
+                                                                           'xlog_receive_location',
+                                                                           'xlog_replay_location'])
+        if lag[0][0] is not None:
+            zbx.send('pgsql.replication_lag[sec]', float(lag[0][0]))
+
+        if not Pooler.in_recovery():
             Pooler.run_sql_type('replication_lag_master_query')
             if Pooler.server_version_greater('10.0'):
                 result = Pooler.query(self.query_wal_lsn_diff)
@@ -263,12 +265,18 @@ class Xlog(Plugin):
             result.append(
                 '{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_xlog_files'][0]))
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_xlog_lsn_diff))
+            result.append(
+                '{0},$2 $1 -c "{1}"'.format("pgsql.replication_lag.sec[*]", self.query_agent_replication_lag.format(self.plugin_config('interval'),
+                                                                                                                    'xlog_receive_location',
+                                                                                                                    'xlog_replay_location')))
         else:
             result.append(
                 '{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_wal_files'][0]))
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_wal_lsn_diff))
-        result.append(
-            '{0},$2 $1 -c "{1}"'.format("pgsql.replication_lag.sec[*]", self.query_agent_replication_lag))
+            result.append(
+                '{0},$2 $1 -c "{1}"'.format("pgsql.replication_lag.sec[*]", self.query_agent_replication_lag.format(self.plugin_config('interval'),
+                                                                                                                    'wal_receive_lsn',
+                                                                                                                    'wal_replay_lsn')))
         if LooseVersion(self.VersionPG) >= LooseVersion('14'):
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wal_records.format('[*]'), self.query_wal_records))
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wal_fpi.format('[*]'), self.query_wal_fpi))

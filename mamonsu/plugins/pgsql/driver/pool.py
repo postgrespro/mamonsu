@@ -12,10 +12,10 @@ class Pool(object):
             'select mamonsu.timestamp_master_update()'
         ),
         'replication_lag_slave_query': (
-            "SELECT"
-            "    CASE WHEN pg_last_{1}() = pg_last_{2}() THEN 0"
-            "    ELSE extract (epoch FROM now() - coalesce(pg_last_xact_replay_timestamp(), now() - INTERVAL '{0} seconds'))"
-            "    END",
+            "SELECT "
+            "CASE WHEN coalesce(pg_last_{1}(), '0/00000000') = coalesce(pg_last_{2}(), '0/00000000') THEN 0 "
+            "ELSE extract (epoch FROM now() - coalesce(pg_last_xact_replay_timestamp(), now() - INTERVAL '{0} seconds')) "
+            "END",
             'select mamonsu.timestamp_get()'
         ),
         'count_wal_files': (
