@@ -82,8 +82,8 @@ Since Mamonsu **3.0** template contains screens:
 ### Tools
 Mamonsu provides the command-line interface for updating some Zabbix server settings, as well as getting an overview of the monitored system configuration and tuning PostgreSQL and system settings on the fly. Also it provides tool to generate a detailed report on the hardware, operating system, memory usage and other parameters of the monitored system. List of Mamonsu commands and options:  
 
-    mamonsu agent [agent_action]  
-    mamonsu bootstrap [-M mamonsu_user] [-x | --create-extensions] [connection_options]  
+    mamonsu agent [agent_action] [-c | --config]  
+    mamonsu bootstrap [-M mamonsu_user] [-x | --create-extensions] [-c | --config] [connection_options]  
     mamonsu export {template | config} filename [export_options]  
     mamonsu report [report_options] [connection_options]  
     mamonsu tune [tuning_options] [connection_options]  
@@ -196,7 +196,7 @@ If you omit this step, metrics can only be collected on behalf of a superuser, w
    ```  
    - Run the following command to bootstrap Mamonsu:
     ```shell
-    mamonsu bootstrap [-M mamonsu_user] [-x | --create-extensions] [connection_options]
+    mamonsu bootstrap [-M mamonsu_user] [-x | --create-extensions] [-c | --config] [connection_options]
     ```
     For details of usage, see “[Tools](documentation/tools.md#bootstrap)".  
 As the result of this operation, monitoring functions are created in the mamonsu_database in *mamonsu* schema, and the right to execute them is granted to the mamonsu_user. Thus, a superuser connection is no longer required. Mamonsu also creates several tables in the specified database. Do not delete these tables as they are required for Mamonsu to work.  

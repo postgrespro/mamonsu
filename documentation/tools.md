@@ -2,8 +2,8 @@
 
 List of Mamonsu commands and options:  
 
-    mamonsu agent [agent_action]  
-    mamonsu bootstrap [-M mamonsu_user] [-x | --create-extensions] [connection_options]  
+    mamonsu agent [agent_action] [-c | --config]  
+    mamonsu bootstrap [-M mamonsu_user] [-x | --create-extensions] [-c | --config] [connection_options]  
     mamonsu export {template | config} filename [export_options]  
     mamonsu report [report_options] [connection_options]  
     mamonsu tune [tuning_options] [connection_options]  
@@ -42,7 +42,7 @@ List of Mamonsu commands and options:
 ## agent
 Syntax:
 ```shell
-mamonsu agent { metric-list | metric-get metric_name | version }
+mamonsu agent { metric-list | metric-get metric_name | version } [-c | --config]
 ```
 Provides information on the collected metrics from the command line. You can specify one of the following parameters:  
 
@@ -53,20 +53,32 @@ Provides information on the collected metrics from the command line. You can spe
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check the latest value for the specified metric. You can get the list of available metrics using the metric-list option.
 
 **version**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Display Mamonsu version.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Display Mamonsu version.
+
+**-c/--config**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify mamonsu config file.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default = '/etc/mamonsu/agent.conf'  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*mamonsu agent* gets info about default host and port from config file. 
 
 
 ## bootstrap
 Syntax:
 ```shell
-mamonsu bootstrap [-M mamonsu_user] [-x | --create-extensions] [connection_options]
+mamonsu bootstrap [-M mamonsu_user] [-x | --create-extensions] [-c | --config] [connection_options]
 ```
-Bootstrap Mamonsu. This command can take the following options:  
+Bootstrap Mamonsu. This command can take the following options:
+
 **-M**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mandatory.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify a non-privileged user that will own all Mamonsu processes.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify a non-privileged user that will own all Mamonsu processes.
+
 **-x/--create-extensions**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates additional extensions (currently, pg_buffercache).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates additional extensions (currently, pg_buffercache).
+
+**-c/--config**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify mamonsu config file.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default = '/etc/mamonsu/agent.conf'  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*mamonsu bootstrap* gets info about mamonsu default database from config file.  
+
 **connection_options**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provide optional command-line connection parameters.  
 
