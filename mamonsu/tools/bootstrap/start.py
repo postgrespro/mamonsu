@@ -76,17 +76,15 @@ class Args(DefaultConfig):
         parser.add_option_group(group)
         parser.add_option_group(bootstrap_group)
         self.args, commands = parser.parse_args()
-        if len(commands) > 0:
-            if len(commands) == 1:
-                self.args.dbname = commands[0]
-            else:
-                parser.print_help()
-                sys.exit(1)
         if self.args.dbname is None:
             try:
                 cfg = Config(self.args.config)
                 self.args.dbname = cfg.fetch('postgres', 'database')
+                # apply dbname env
+                os.environ['PGDATABASE'] = self.args.dbname
             except Exception as e:
+                # apply dbname env
+                os.environ['PGDATABASE'] = self.args.username
                 sys.stderr.write("ERROR: Database for mamonsu is not specified\n")
                 sys.stderr.write("{0}\n".format(e))
                 parser.print_bootstrap_help()
@@ -97,7 +95,6 @@ class Args(DefaultConfig):
         os.environ['PGPASSWORD'] = self.args.password
         os.environ['PGHOST'] = self.args.hostname
         os.environ['PGPORT'] = str(self.args.port)
-        os.environ['PGDATABASE'] = self.args.username if self.args.dbname is None else self.args.dbname
         os.environ['PGAPPNAME'] = 'mamonsu deploy'
 
     def try_configure_connect_to_pg(self):
