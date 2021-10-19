@@ -6,12 +6,13 @@ import sys
 
 import mamonsu.lib.platform as platform
 from mamonsu.lib.parser import MissOptsParser
+from mamonsu.lib.config import Config
 from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.pool import Pooler
 from mamonsu.tools.bootstrap.sql import CreateMamonsuUserSQL, CreateSchemaExtensionSQL, \
-CreateSchemaDefaultSQL,GrantsOnDefaultSchemaSQL, GrantsOnExtensionSchemaSQL, QuerySplit
+    CreateSchemaDefaultSQL, GrantsOnDefaultSchemaSQL, GrantsOnExtensionSchemaSQL, QuerySplit
 
 
 class Args(DefaultConfig):
@@ -67,9 +68,13 @@ class Args(DefaultConfig):
             action='store_true',
             dest='create_extensions',
             help='create pg_buffercache extension in mamonsu schema')
+        bootstrap_group.add_option(
+            '-c', '--config',
+            dest='config',
+            default=DefaultConfig.default_config_path(),
+            help=optparse.SUPPRESS_HELP)
         parser.add_option_group(group)
         parser.add_option_group(bootstrap_group)
-
         self.args, commands = parser.parse_args()
         if len(commands) > 0:
             if len(commands) == 1:
@@ -78,12 +83,14 @@ class Args(DefaultConfig):
                 parser.print_help()
                 sys.exit(1)
         if self.args.dbname is None:
-            sys.stderr.write("ERROR: Database for mamonsu is not specified\n")
-            parser.print_bootstrap_help()
-            sys.exit(1)
-
-        if not self.args.dbname:
-            self.args.dbname = self.args.username
+            try:
+                cfg = Config(self.args.config)
+                self.args.dbname = cfg.fetch('postgres', 'database')
+            except Exception as e:
+                sys.stderr.write("ERROR: Database for mamonsu is not specified\n")
+                sys.stderr.write("{0}\n".format(e))
+                parser.print_bootstrap_help()
+                sys.exit(1)
 
         # apply env
         os.environ['PGUSER'] = self.args.username
