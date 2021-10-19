@@ -70,13 +70,14 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
-* Mon Oct 18 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.1.0-1
+* Tue Oct 19 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.1.0-1
   - fixed unknown options check in mamonsu tools;
   - fixed item units with Speed Per Second delta;
+  - fixed Walreceiver Lag items name generation;
   - fixed item Total Replication Lag delta evaluation;
   - fixed slave replication lag evaluation;
-  - fixed Walreceiver Lag items name generation;
-  - set 'dbname' bootstrap parameter required;
+  - set 'dbname' bootstrap parameter required, added default value from config file;
+  - fixed extension functions calling without special mamonsu user and schema;
   - refactoring;
 
 * Mon Oct 11 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.0.2-1
