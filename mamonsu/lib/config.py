@@ -74,6 +74,9 @@ class Config(DefaultConfig):
             sys.stderr.write('Can\'t found file: {0}\n'.format(cfg_file))
             sys.exit(1)
         else:
+            if os.path.getsize(cfg_file) == 0:
+                sys.stderr.write('Config file is empty: {0}\n'.format(cfg_file))
+                sys.exit(1)
             if cfg_file is not None:
                 self.config.read_file(open(cfg_file))
 
