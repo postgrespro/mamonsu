@@ -359,6 +359,153 @@ Or through the Zabbix web interface:
     re_send = False
     ```
    
+**Major update**  
+If you want to upgrade mamonsu to a version that is not compatible with the previous one, what you must do to continue using the application depends on whether you need to retain the metrics data collected.  
+If you do not need to retain the collected data, just unlink old template and link a new one.  
+
+If you need to retain the collected data, do the following:
+
+1. Install the new version of mamonsu.
+2. Generate a new template for the Zabbix server.
+3. If you performed a bootstrap using the previous version of mamonsu, run the bootstrap command again.
+4. Upload the new template to the Zabbix server.
+5. Rename the host for which you want to retain the collected data and leave the old template linked to that host.
+6. Create a new host for the same system and link the new template to it.
+7. Restart mamonsu. It will collect data for the new host. The old host will no longer be used, but the data collected will be available.  
+
+The difficulty is that Zabbix cannot massively rename nodes.  
+We offer the following recommendations:
+1. If you have access to the Zabbix database:  
+Mass rename hosts via SQL:
+    ```shell
+    zabbix=# SELECT host, name FROM hosts
+    zabbix-# WHERE host LIKE '%local-pg%';
+    -[ RECORD 1 ]----
+    host | local-pg-2
+    name | local-pg-2
+    -[ RECORD 2 ]----
+    host | local-pg-3
+    name | local-pg-3
+    
+    zabbix=# UPDATE hosts
+    zabbix=# SET host = host || ' OLD-MAMONSU',
+    zabbix=#     name = name || ' OLD-MAMONSU'
+    zabbix=# WHERE host LIKE '%local-pg%';
+    UPDATE 2
+    zabbix=# SELECT host, name FROM hosts
+    zabbix=# WHERE host LIKE '%local-pg%';
+    -[ RECORD 1 ]----------------
+    host | local-pg-2 OLD-MAMONSU
+    name | local-pg-2 OLD-MAMONSU
+    -[ RECORD 2 ]----------------
+    host | local-pg-3 OLD-MAMONSU
+    name | local-pg-3 OLD-MAMONSU
+    ```
+2. Using Zabbix API:  
+API query:
+    ```shell
+    curl -H "Content-type: application/json-rpc" -X POST http://zabbix/api_jsonrpc.php -d'
+    {
+        "jsonrpc": "2.0",
+        "method": "host.update",
+        "params": {
+            "hostid": "HOST_ID",
+            "host": "local-pg-3 OLD-MAMONSU",
+            "name": "local-pg-3 OLD-MAMONSU"
+        },
+        "auth": "AUTH_TOKEN",
+        "id": 1
+    }'
+    ```
+   <details>
+   <summary>Script</summary>
+   
+    ```shell
+    #!/bin/bash
+     
+    ZABBIX_URL="http://zabbix/"
+    ZABBIX_USER="Admin"
+    ZABBIX_PASSWORD="zabbix"
+    ZABBIX_PATTERN=""
+    ZABBIX_SUFFIX="OLD"
+     
+    for parameter in "$@"
+    do
+    case $parameter in
+        -u=*|--url=*) # zabbix url
+        ZABBIX_URL="${parameter#*=}"
+        shift
+        ;;
+        -U=*|--user=*) # zabbix user
+        ZABBIX_USER="${parameter#*=}"
+        shift
+        ;;
+        -P=*|--password=*) # zabbix password
+        ZABBIX_PASSWORD="${parameter#*=}"
+        shift
+        ;;
+        -p=*|--pattern=*) # zabbix host pattern
+        ZABBIX_PATTERN="${parameter#*=}"
+        shift
+        ;;
+        -s=*|--suffix=*) # zabbix host suffix
+        ZABBIX_SUFFIX="${parameter#*=}"
+        shift
+        ;;
+        *)
+              # unknown option
+        ;;
+    esac
+    done
+     
+    # get zabbix auth token
+    auth_token=$(curl -H "Content-type: application/json-rpc" -X POST ${ZABBIX_URL}api_jsonrpc.php -d'
+    {
+        "jsonrpc": "2.0",
+        "method": "user.login",
+        "params": {
+        "user": "'${ZABBIX_USER}'",
+        "password": "'${ZABBIX_PASSWORD}'"
+        },
+        "id": 1
+    }' | python3 -c "import sys, json; print(json.load(sys.stdin)['result'])")
+     
+    # get array of zabbix hosts to rename
+    readarray -t hosts < <(mamonsu zabbix --url=${ZABBIX_URL} --user=${ZABBIX_USER} --password=${ZABBIX_PASSWORD} host list | awk '{ print "\""$0"\""}' | grep ${ZABBIX_PATTERN})
+    hosts=("${hosts[@]//\"/}")
+     
+    hosts_dict={}
+    # create dict from array (id:name)
+    for host in "${hosts[@]}"
+    do
+        hosts_dict[$(mamonsu zabbix --url=${ZABBIX_URL} --user=${ZABBIX_USER} --password=${ZABBIX_PASSWORD} host id "${host}")]=$host
+    done
+     
+    for key in "${!hosts_dict[@]}"; do
+        if [ ${key} -ne 0 ]; then
+        eval 'curl -H "Content-type: application/json-rpc" -X POST ${ZABBIX_URL}api_jsonrpc.php -d '\''
+    {
+        "jsonrpc": "2.0",
+        "method": "host.update",
+        "params": {
+            "hostid": "'${key}'",
+            "host": "'${hosts_dict[$key]}' '${ZABBIX_SUFFIX}'",
+            "name": "'${hosts_dict[$key]}' '${ZABBIX_SUFFIX}'"
+        },
+        "auth": "'${auth_token}'",
+        "id": 1
+    }'\'''
+        fi
+    done
+    ```
+   
+   </details>
+
+    Script usage example:
+    ```shell
+    ./rename_zabbix_hosts.sh --url=http://localzabbix/ --pattern="local-pg" --suffix="OLD-MAMONSU"
+    ```
+   
 ## Additional chapters
 - [**Adding custom plugins**](documentation/adding_custom_plugins.md)
 - [**Configuration file**](documentation/configuration_file.md)
