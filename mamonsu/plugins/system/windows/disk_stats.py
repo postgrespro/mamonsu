@@ -24,11 +24,29 @@ class DiskStats(Plugin):
         del devices
 
     def discovery_rules(self, template, dashboard=False):
+        if Plugin.Type == 'mamonsu':
+            key_discovery = 'system.disk.discovery[]'
+        else:
+            key_discovery = 'system.disk.discovery'
         rule = {
             'name': 'Logical disks discovery',
-            'key': 'system.disk.discovery[]',
-            'filter': '{#LOGICALDEVICE}:.*'
+            'key': key_discovery
         }
+        if Plugin.old_zabbix:
+            rule['filter'] = '{#LOGICALDEVICE}:.*'
+            conditions = []
+        else:
+            conditions = [
+                {
+                    'condition': [
+                        {'macro': '{#LOGICALDEVICE}',
+                         'value': '.*',
+                         'operator': 8,
+                         'formulaid': 'A'}
+                    ]
+                }
+
+            ]
         items = [
             {
                 'key': 'system.disk.read[{#LOGICALDEVICE}]',
@@ -58,4 +76,4 @@ class DiskStats(Plugin):
                     'name': 'Logical device {#LOGICALDEVICE}: queue',
                     'yaxisside': 1}]
         }]
-        return template.discovery_rule(rule=rule, items=items, graphs=graphs)
+        return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)
