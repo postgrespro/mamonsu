@@ -112,8 +112,9 @@ $ make -j2 build/all && make -j1 repo/all
 ```
 **Build win32 exe:**  
 ```shell
-$ git clone ... && cd mamonsu && python setup_win32.py py2exe
-$ cp dist\{mamonsu, service_win32}.exe c:\mamonsu
+$ git clone ... && cd mamonsu && py setup_win32.py py2exe
+$ copy dist\mamonsu.exe c:\mamonsu
+$ copy dist\service_win32.exe c:\mamonsu
 $ c:\mamonsu\mamonsu.exe -w c:\mamonsu\agent.conf
 $ c:\mamonsu\service_win32.exe -install
 $ net start mamonsu
@@ -123,10 +124,10 @@ or
 $ pyinstaller --onefile mamonsu_win32.spec
 $ pyinstaller --onefile service_win32.spec
 ```  
-**Build nsis installer:**  
+**Build NSIS installer:**  
 ```shell
-$ git clone ... && cd mamonsu && python setup_win32.py py2exe
-$ nsis packaging/win/mamonsu.nsis
+$ git clone ... && cd mamonsu && py setup_win32.py py2exe
+$ makensis packaging/win/mamonsu.nsis
 ```
 
 ## Installation
