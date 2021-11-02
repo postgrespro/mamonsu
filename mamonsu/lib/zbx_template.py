@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+import re
+import mamonsu.lib.platform as platform
 from mamonsu.lib.const import Template
 from mamonsu.lib.plugin import Plugin
-import re
 
 
 class ZbxTemplate(object):
@@ -138,8 +139,9 @@ class ZbxTemplate(object):
                        dashboard_page_instance,
                        dashboard_page_wal,
                        dashboard_page_locks,
-                       dashboard_page_transactions,
-                       dashboard_page_system]
+                       dashboard_page_transactions]
+    if platform.UNIX:
+        dashboard_pages.append(dashboard_page_system)
 
     dashboard_widget_size_large = {'width': 500, 'height': 250}
     dashboard_widget_size_medium = {'width': 500, 'height': 150}
