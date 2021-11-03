@@ -1,3 +1,7 @@
+mamonsu (3.1.1-1) stable; urgency=low
+  * fixed template generation for Windows platform;
+  * added System screen for Windows platform;
+
 mamonsu (3.1.0-1) stable; urgency=low
   * fixed unknown options check in mamonsu tools;
   * fixed item units with Speed Per Second delta;

@@ -70,6 +70,10 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Wed Nov 3 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.1.1-1
+  - fixed template generation for Windows platform;
+  - added System screen for Windows platform;
+
 * Tue Oct 19 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.1.0-1
   - fixed unknown options check in mamonsu tools;
   - fixed item units with Speed Per Second delta;
