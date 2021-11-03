@@ -133,7 +133,8 @@ class ZbxTemplate(object):
     dashboard_page_wal = {'name': 'PostgreSQL WAL', 'hsize': 2, 'vsize': 5}
     dashboard_page_locks = {'name': 'PostgreSQL Locks', 'hsize': 3, 'vsize': 5}
     dashboard_page_transactions = {'name': 'PostgreSQL Transactions', 'hsize': 2, 'vsize': 5}
-    dashboard_page_system = {'name': 'System', 'hsize': 2, 'vsize': 5}
+    dashboard_page_system_linux = {'name': 'System (Linux)', 'hsize': 2, 'vsize': 5}
+    dashboard_page_system_windows = {'name': 'System (Windows)', 'hsize': 2, 'vsize': 5}
 
     dashboard_pages = [dashboard_page_overview,
                        dashboard_page_instance,
@@ -141,7 +142,9 @@ class ZbxTemplate(object):
                        dashboard_page_locks,
                        dashboard_page_transactions]
     if platform.UNIX:
-        dashboard_pages.append(dashboard_page_system)
+        dashboard_pages.append(dashboard_page_system_linux)
+    if platform.WINDOWS:
+        dashboard_pages.append(dashboard_page_system_windows)
 
     dashboard_widget_size_large = {'width': 500, 'height': 250}
     dashboard_widget_size_medium = {'width': 500, 'height': 150}

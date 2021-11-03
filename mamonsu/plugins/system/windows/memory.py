@@ -1,5 +1,6 @@
 from mamonsu.plugins.system.plugin import Plugin
 from .helpers import PerfData
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Memory(Plugin):
@@ -51,4 +52,7 @@ class Memory(Plugin):
         if not dashboard:
             return template.graph(graph)
         else:
-            return []
+            return [{'dashboard': {'name': 'Memory overview',
+                                   'page': ZbxTemplate.dashboard_page_system_windows['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 1}}]

@@ -1,5 +1,6 @@
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 from .helpers import PerfData
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Network(Plugin):
@@ -52,4 +53,7 @@ class Network(Plugin):
         if not dashboard:
             return template.graph(graph)
         else:
-            return []
+            return [{'dashboard': {'name': 'Network overview',
+                                   'page': ZbxTemplate.dashboard_page_system_windows['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 2}}]

@@ -120,11 +120,11 @@ class DiskStats(Plugin):
             return result + template.graph(graph)
         else:
             return [{'dashboard': {'name': 'Block devices: read/write bytes',
-                                   'page': ZbxTemplate.dashboard_page_system['name'],
+                                   'page': ZbxTemplate.dashboard_page_system_linux['name'],
                                    'size': ZbxTemplate.dashboard_widget_size_medium,
                                    'position': 1}},
                     {'dashboard': {'name': 'Block devices: read/write operations',
-                                   'page': ZbxTemplate.dashboard_page_system['name'],
+                                   'page': ZbxTemplate.dashboard_page_system_linux['name'],
                                    'size': ZbxTemplate.dashboard_widget_size_medium,
                                    'position': 2}}]
 

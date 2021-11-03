@@ -137,7 +137,7 @@ class ProcStat(Plugin):
                                    'size': ZbxTemplate.dashboard_widget_size_medium,
                                    'position': 3}},
                     {'dashboard': {'name': 'Processes overview',
-                                   'page': ZbxTemplate.dashboard_page_system['name'],
+                                   'page': ZbxTemplate.dashboard_page_system_linux['name'],
                                    'size': ZbxTemplate.dashboard_widget_size_medium,
                                    'position': 3}}]
 

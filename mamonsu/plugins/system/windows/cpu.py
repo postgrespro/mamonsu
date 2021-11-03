@@ -1,6 +1,7 @@
 from .helpers import PerfData
 
 from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
+from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Cpu(Plugin):
@@ -53,7 +54,10 @@ class Cpu(Plugin):
         if not dashboard:
             return template.graph(graph)
         else:
-            return []
+            return [{'dashboard': {'name': 'CPU overview',
+                                   'page': ZbxTemplate.dashboard_page_system_windows['name'],
+                                   'size': ZbxTemplate.dashboard_widget_size_medium,
+                                   'position': 0}}]
 
     def triggers(self, template, dashboard=False):
         return template.trigger({
