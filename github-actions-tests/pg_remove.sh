@@ -3,7 +3,7 @@
 # default parameters:
 OS="centos"
 PACKAGE_MANAGER_REMOVE="sudo yum -y remove"
-PG_VERSION="12"
+PG_VERSION="14"
 PG_PATH="/usr/lib/postgresql/9.6/bin/"
 
 for i in "$@"

@@ -4,7 +4,7 @@
 OS="centos:7"
 PACKAGE_MANAGER_INSTALL="sudo yum -y install"
 REPO=${PACKAGE_MANAGER_INSTALL}" https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
-PG_VERSION="12"
+PG_VERSION="14"
 
 for i in "$@"
 do

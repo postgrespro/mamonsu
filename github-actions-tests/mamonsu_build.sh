@@ -2,7 +2,7 @@
 
 # default parameters:
 OS="centos:7"
-PG_VERSION="12"
+PG_VERSION="14"
 
 for i in "$@"
 do
