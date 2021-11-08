@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.1.0
+Version:        3.1.2
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,9 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Nov 8 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.1.2-1
+  - fixed Files Need To Archivee and Size Of Files Need To Archive evaluation;
+
 * Wed Nov 3 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.1.1-1
   - fixed template generation for Windows platform;
   - added System screen for Windows platform;

@@ -1,3 +1,6 @@
+mamonsu (3.1.2-1) stable; urgency=low
+  * fixed Files Need To Archivee and Size Of Files Need To Archive evaluation;
+
 mamonsu (3.1.1-1) stable; urgency=low
   * fixed template generation for Windows platform;
   * added System screen for Windows platform;
