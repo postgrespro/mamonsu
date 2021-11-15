@@ -217,7 +217,7 @@ Default config:
       </tr>
       <tr>
         <th>Units</th>
-        <td></td>
+        <td>byte/s</td>
       </tr>
       <tr>
         <th>Delta</th>
@@ -269,7 +269,7 @@ Default config:
       </tr>
       <tr>
         <th>Units</th>
-        <td></td>
+        <td>byte/s</td>
       </tr>
       <tr>
         <th>Delta</th>
@@ -3427,7 +3427,7 @@ Default config:
       </tr>
       <tr>
         <th>Units</th>
-        <td>Bytes</td>
+        <td>byte/s</td>
       </tr>
       <tr>
         <th>Delta</th>
@@ -3592,7 +3592,7 @@ Default config:
       </tr>
       <tr>
         <th>Units</th>
-        <td>Bytes</td>
+        <td>byte/s</td>
       </tr>
       <tr>
         <th>Delta</th>
@@ -3625,7 +3625,7 @@ Default config:
       </tr>
       <tr>
         <th>Units</th>
-        <td>Bytes</td>
+        <td>byte/s</td>
       </tr>
       <tr>
         <th>Delta</th>
@@ -4468,7 +4468,7 @@ Default config:
       </tr>
       <tr>
         <th>Delta</th>
-        <td>Simple Change</td>
+        <td>Speed Per Second</td>
       </tr>
       <tr>
         <th>Supported Version</th>
@@ -4566,7 +4566,7 @@ Default config:
       </tr>
       <tr>
         <th>Delta</th>
-        <td>Simple Change</td>
+        <td>Speed Per Second</td>
       </tr>
       <tr>
         <th>Supported Version</th>
@@ -4599,7 +4599,7 @@ Default config:
       </tr>
       <tr>
         <th>Delta</th>
-        <td>Simple Change</td>
+        <td>Speed Per Second</td>
       </tr>
       <tr>
         <th>Supported Version</th>
@@ -4632,7 +4632,7 @@ Default config:
       </tr>
       <tr>
         <th>Delta</th>
-        <td>Simple Change</td>
+        <td>Speed Per Second</td>
       </tr>
       <tr>
         <th>Supported Version</th>
@@ -4797,7 +4797,7 @@ Default config:
       </tr>
       <tr>
         <th>Units</th>
-        <td></td>
+        <td>byte/s</td>
       </tr>
       <tr>
         <th>Delta</th>
@@ -4830,7 +4830,7 @@ Default config:
       </tr>
       <tr>
         <th>Units</th>
-        <td></td>
+        <td>byte/s</td>
       </tr>
       <tr>
         <th>Delta</th>
