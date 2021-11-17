@@ -158,7 +158,7 @@ class Databases(Plugin):
             }
         ]
         triggers = [{
-            'name': 'PostgreSQL corrupted indexes during REINDEX in database '
+            'name': 'PostgreSQL indexes corrupted during REINDEX in database '
                     '{#DATABASE} (hostname={HOSTNAME} value={ITEM.LASTVALUE})',
             'expression': '{#TEMPLATE:pgsql.database.invalid_rebuilt_indexes[{#DATABASE}].last()}&gt;0'},
             {
