@@ -21,7 +21,7 @@ class Databases(Plugin):
                             "FROM pg_catalog.pg_class, pg_catalog.pg_index " \
                             "WHERE pg_catalog.pg_index.indisvalid = false " \
                             "AND pg_catalog.pg_index.indexrelid = pg_catalog.pg_class.oid " \
-                            "AND pg_catalog.pg_index.indexrelid NOT IN (SELECT DISTINCT relation FROM pg_catalog.pg_locks);"
+                            "AND pg_catalog.pg_index.indexrelid NOT IN (SELECT DISTINCT relation FROM pg_catalog.pg_locks WHERE relation IS NOT NULL);"
 
     # queries for zabbix agent
     query_agent_discovery = "SELECT json_build_object ('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
