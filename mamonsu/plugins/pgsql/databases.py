@@ -38,8 +38,6 @@ class Databases(Plugin):
     def run(self, zbx):
         if Pooler.server_version_greater('12'):
             self.query_invalid_indexes = self.query_invalid_indexes[:-1] + " AND pg_catalog.pg_class.oid NOT IN (SELECT index_relid FROM pg_catalog.pg_stat_progress_create_index);"
-        else:
-            self.query_invalid_indexes = self.query_invalid_indexes[:-1] + " AND pg_catalog.pg_index.indisready = false;"
         result = Pooler.query('select \
             datname, pg_database_size(datname::text), age(datfrozenxid) \
             from pg_catalog.pg_database where datistemplate = false')
@@ -158,8 +156,6 @@ class Databases(Plugin):
     def keys_and_queries(self, template_zabbix):
         if LooseVersion(self.VersionPG) >= LooseVersion('12'):
             self.query_invalid_indexes = self.query_invalid_indexes[:-1] + " AND pg_catalog.pg_class.oid NOT IN (SELECT index_relid FROM pg_catalog.pg_stat_progress_create_index);"
-        else:
-            self.query_invalid_indexes = self.query_invalid_indexes[:-1] + " AND pg_catalog.pg_index.indisready = false;"
         result = ['{0},$2 $1 -c "{1}"'.format(self.key_autovacumm.format("[*]"), Pooler.SQL['count_autovacuum'][0]),
                   '{0},$2 $1 -c "{1}"'.format(self.key_db_discovery.format("[*]"), self.query_agent_discovery),
                   '{0},echo "{1}" | $3 $2 -v p1="$1"'.format(self.key_db_size.format("[*]"), self.query_size),
