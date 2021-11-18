@@ -20,7 +20,8 @@ class Databases(Plugin):
     query_invalid_indexes = "SELECT count(*) " \
                             "FROM pg_catalog.pg_class, pg_catalog.pg_index " \
                             "WHERE pg_catalog.pg_index.indisvalid = false " \
-                            "AND pg_catalog.pg_index.indexrelid = pg_catalog.pg_class.oid;" \
+                            "AND pg_catalog.pg_index.indexrelid = pg_catalog.pg_class.oid " \
+                            "AND pg_catalog.pg_index.indexrelid NOT IN (SELECT DISTINCT relation FROM pg_catalog.pg_locks);"
 
     # queries for zabbix agent
     query_agent_discovery = "SELECT json_build_object ('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
@@ -36,8 +37,6 @@ class Databases(Plugin):
     DEFAULT_CONFIG = {'min_rows': str(50), 'bloat_scale': str(0.2)}
 
     def run(self, zbx):
-        if Pooler.server_version_greater('12'):
-            self.query_invalid_indexes = self.query_invalid_indexes[:-1] + " AND pg_catalog.pg_class.oid NOT IN (SELECT index_relid FROM pg_catalog.pg_stat_progress_create_index);"
         result = Pooler.query('select \
             datname, pg_database_size(datname::text), age(datfrozenxid) \
             from pg_catalog.pg_database where datistemplate = false')
@@ -154,8 +153,6 @@ class Databases(Plugin):
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs, triggers=triggers)
 
     def keys_and_queries(self, template_zabbix):
-        if LooseVersion(self.VersionPG) >= LooseVersion('12'):
-            self.query_invalid_indexes = self.query_invalid_indexes[:-1] + " AND pg_catalog.pg_class.oid NOT IN (SELECT index_relid FROM pg_catalog.pg_stat_progress_create_index);"
         result = ['{0},$2 $1 -c "{1}"'.format(self.key_autovacumm.format("[*]"), Pooler.SQL['count_autovacuum'][0]),
                   '{0},$2 $1 -c "{1}"'.format(self.key_db_discovery.format("[*]"), self.query_agent_discovery),
                   '{0},echo "{1}" | $3 $2 -v p1="$1"'.format(self.key_db_size.format("[*]"), self.query_size),
