@@ -2601,6 +2601,11 @@ Default config:
       </tr>
     </table>
 
+#### Triggers
+
+1. **PostgreSQL invalid indexes in database {#DATABASE} (hostname={HOSTNAME} value={ITEM.LASTVALUE})**  
+    Triggers if *PostgreSQL: Count of invalid indexes in database: {#DATABASE}* > 0.
+
 ### Events
 
 ### Items
