@@ -2553,15 +2553,18 @@ Default config:
         <td>Count of bloating tables in database: {#DATABASE}</td>
         <td>Database {#DATABASE}: size</td>
         <td>Max age (datfrozenxid) in: {#DATABASE}</td>
+        <td>Count of invalid indexes in database: {#DATABASE}</td>
       </tr>
       <tr>
         <th>Key</th>
         <td>pgsql.database.bloating_tables[{#DATABASE}]</td>
         <td>pgsql.database.size[{#DATABASE}]</td>
         <td>pgsql.database.max_age[{#DATABASE}]</td>
+        <td>pgsql.database.invalid_indexes[{#DATABASE}]</td>
       </tr>
       <tr>
         <th>Type</th>
+        <td>Numeric (float)</td>
         <td>Numeric (float)</td>
         <td>Numeric (float)</td>
         <td>Numeric (float)</td>
@@ -2571,9 +2574,11 @@ Default config:
         <td></td>
         <td>Bytes</td>
         <td></td>
+        <td></td>
       </tr>
       <tr>
         <th>Delta</th>
+        <td>As Is</td>
         <td>As Is</td>
         <td>As Is</td>
         <td>As Is</td>
