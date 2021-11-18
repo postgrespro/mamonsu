@@ -18,9 +18,8 @@ class Databases(Plugin):
     query_age = "select age(datfrozenxid) from pg_catalog.pg_database where datistemplate = false " \
                 "and datname = :'p1';"
     query_invalid_indexes = "SELECT count(*) " \
-                            "FROM pg_catalog.pg_class, pg_catalog.pg_index " \
+                            "FROM pg_catalog.pg_index " \
                             "WHERE pg_catalog.pg_index.indisvalid = false " \
-                            "AND pg_catalog.pg_index.indexrelid = pg_catalog.pg_class.oid " \
                             "AND pg_catalog.pg_index.indexrelid NOT IN (SELECT DISTINCT relation FROM pg_catalog.pg_locks WHERE relation IS NOT NULL);"
 
     # queries for zabbix agent
