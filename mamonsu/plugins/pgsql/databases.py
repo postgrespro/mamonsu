@@ -20,7 +20,7 @@ class Databases(Plugin):
     query_invalid_indexes = "SELECT count (*) " \
                             "FROM pg_catalog.pg_index i LEFT JOIN pg_catalog.pg_locks l " \
                             "ON (i.indexrelid = l.relation) " \
-                            "WHERE i.indisvalid = false AND l.relation IS NULL;"
+                            "WHERE NOT (i.indisvalid AND i.indisready) AND l.relation IS NULL;"
 
     # queries for zabbix agent
     query_agent_discovery = "SELECT json_build_object ('data',json_agg(json_build_object('{#DATABASE}',d.datname)))" \
