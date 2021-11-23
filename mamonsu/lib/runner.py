@@ -6,6 +6,7 @@ import sys
 import codecs
 import os
 
+from mamonsu import __version__
 import mamonsu.lib.platform as platform
 from mamonsu.lib.parser import parse_args, print_total_help
 from mamonsu.lib.config import Config
@@ -208,7 +209,7 @@ def start():
     supervisor = Supervisor(cfg)
 
     try:
-        logging.info("Start mamonsu")
+        logging.info("Start mamonsu " + __version__)
         supervisor.start()
     except KeyboardInterrupt:
         quit_handler()
