@@ -18,7 +18,7 @@ jobs:
       matrix:
         docker_os: ['ubuntu:20.04', 'centos:7', 'centos:8']
         zabbix_version: ['4.0', '5.0', '5.4']
-        pg_version: ['10', '11', '12', '13', '14']
+        pg_version: ['9.6', '10', '11', '12', '13', '14']
 
     steps:
       - name: Checkout Mamonsu repo
@@ -41,7 +41,7 @@ jobs:
         if: "contains(matrix.docker_os, 'centos')"
         run: docker run -t -d --name $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) --privileged=true ${{ matrix.docker_os }} /usr/sbin/init
       - name: Run docker Ubuntu image
-        if: contains(matrix.docker_os, 'ubuntu')
+        if: "contains(matrix.docker_os, 'ubuntu')"
         run: docker run -t -d --name $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) --privileged=true ${{ matrix.docker_os }}
 
       - name: Install Zabbix ${{ matrix.zabbix_version }} on VM
@@ -57,6 +57,7 @@ jobs:
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) mkdir -p -m 755 /mamonsu/
       - run: docker cp . $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ):/mamonsu
       - name: Install prequisites
+        if: "(matrix.pg_version != '9.6' && (matrix.docker_os == 'centos:8')"
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tests.sh --os="${{ matrix.docker_os }}" --pg-version="${{ matrix.pg_version }}"
 
       - name: Build and install Mamonsu
