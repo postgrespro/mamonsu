@@ -182,7 +182,7 @@ class Xlog(Plugin):
             'value_type': Plugin.VALUE_TYPE.numeric_float,
             'units': Plugin.UNITS.percent,
             'type': Plugin.TYPE.CALCULATED,
-            'params': "last(//" + self.key_wal_sync_time + ")/10/" + self.plugin_config('interval')
+            'params': "last(" + self.key_wal_sync_time + ")/10/" + self.plugin_config('interval')
         })
         if not dashboard:
             return result
