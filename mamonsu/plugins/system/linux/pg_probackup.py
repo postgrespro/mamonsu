@@ -91,10 +91,10 @@ class PgProbackup(Plugin):
                 for backup in instance.get('backups', []):
                     status = backup['status']
                     if status in ['ERROR', 'CORRUPT', 'ORPHAN']:
-                        error = 'Backup with id: {backup_id} in instance: {instance_name} in pg_probackup dir: ' \
-                                '{backup_catalog}  has status: {status}.'.format(backup_id=backup['id'],
-                                                                                 instance_name=instance['instance'],
-                                                                                 status=status, backup_catalog=_dir)
+                        error = ('Backup with id: {backup_id} in instance: {instance_name} in pg_probackup dir: ' +
+                                 '{backup_catalog}  has status: {status}.').format(backup_id=backup['id'],
+                                                                                   instance_name=instance['instance'],
+                                                                                   status=status, backup_catalog=_dir)
                         self.log.info(error)
                         no_error = False
                         zbx.send(self.key_dir_error.format('[' + _dir + ']'), error)
