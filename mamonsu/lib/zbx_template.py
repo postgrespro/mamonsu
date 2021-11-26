@@ -214,9 +214,9 @@ class ZbxTemplate(object):
     #     result_graphs = ''
     #     for graph in graphs:
     #         if 'dashboard' in graph and graph['dashboard']['page'] == page:
-    #             result_graphs += '<{3}><type>GRAPH_CLASSIC</type><name>{0}</name><width>{1}</width>' \
-    #                              '<height>{2}</height><fields><field><type>GRAPH</type><value>' \
-    #                              '<name>{0}</name></value></field></fields></{3}>'.format(graph['dashboard']['name'],
+    #             result_graphs += ('<{3}><type>GRAPH_CLASSIC</type><name>{0}</name><width>{1}</width>' +
+    #                              '<height>{2}</height><fields><field><type>GRAPH</type><value>' +
+    #                              '<name>{0}</name></value></field></fields></{3}>').format(graph['dashboard']['name'],
     #                                                                                       graph['dashboard']['size']['width'],
     #                                                                                       graph['dashboard']['size']['height'],
     #                                                                                       xml_key)
@@ -263,19 +263,19 @@ class ZbxTemplate(object):
         result = ''
         for resourcetype, graph in dashboard_widgets:
             if 'dashboard' in graph and graph['dashboard']['page'] == page['name']:
-                result += '<{5}><resourcetype>{8}</resourcetype>' \
-                          '<width>{2}</width><height>{3}</height><x>{6}</x><y>{7}</y>{0}' \
-                          '<resource><{9}>{1}</{9}><host>{4}</host></resource>' \
-                          '</{5}>'.format(self._format_args(self.screen_graph_defaults, {}),
-                                          graph['dashboard']['name'],
-                                          graph['dashboard']['size']['width'],
-                                          graph['dashboard']['size']['height'],
-                                          self.Template,
-                                          xml_key,
-                                          x,
-                                          y,
-                                          resourcetype,
-                                          'name' if resourcetype == 0 else 'key')
+                result += ('<{5}><resourcetype>{8}</resourcetype>' +
+                           '<width>{2}</width><height>{3}</height><x>{6}</x><y>{7}</y>{0}' +
+                           '<resource><{9}>{1}</{9}><host>{4}</host></resource>' +
+                           '</{5}>').format(self._format_args(self.screen_graph_defaults, {}),
+                                            graph['dashboard']['name'],
+                                            graph['dashboard']['size']['width'],
+                                            graph['dashboard']['size']['height'],
+                                            self.Template,
+                                            xml_key,
+                                            x,
+                                            y,
+                                            resourcetype,
+                                            'name' if resourcetype == 0 else 'key')
                 x = (x + 1) % page['hsize']
                 if x == 0:
                     y += 1
@@ -287,8 +287,8 @@ class ZbxTemplate(object):
             plugins = []
         result = ''
         for page in self.dashboard_pages:
-            result += '<{4}><name>{0}</name><hsize>{1}</hsize><vsize>' \
-                      '{2}</vsize>{3}</{4}>'.format('Mamonsu ' + page['name'],
+            result += ('<{4}><name>{0}</name><hsize>{1}</hsize><vsize>' +
+                      '{2}</vsize>{3}</{4}>').format('Mamonsu ' + page['name'],
                                                     page['hsize'],
                                                     page['vsize'],
                                                     self.screen_items(page, plugins),
@@ -433,7 +433,7 @@ class ZbxTemplate(object):
             except KeyError:
                 val = pair[1]
             if val is None:
-                row = '<{0}/>'.format(key)
+                row = '<{0}>{1}</{0}>'.format(key, pair[1]) if pair[1] else '<{0}/>'.format(key)
             else:
                 row = '<{0}>{1}</{0}>'.format(key, val)
             result += row

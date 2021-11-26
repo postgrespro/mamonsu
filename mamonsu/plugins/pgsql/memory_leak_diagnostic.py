@@ -16,10 +16,10 @@ class MemoryLeakDiagnostic(Plugin):
     query = 'select pid from pg_stat_activity'
     key_count_diff = 'pgsql.memory_leak_diagnostic.count_diff[]'
     key_count_diff_error = 'pgsql.memory_leak_diagnostic.msg_text[]'
-    name_count_diff = 'PostgreSQL: number of pids which private anonymous memory exceeds ' \
-                      'private_anon_mem_threshold'
-    name_count_diff_error = 'PostgreSQL: number of pids which private anonymous memory ' \
-                            'exceeds private_anon_mem_threshold, text of message'
+    name_count_diff = ('PostgreSQL: number of pids which private anonymous memory exceeds ' +
+                       'private_anon_mem_threshold')
+    name_count_diff_error = ('PostgreSQL: number of pids which private anonymous memory ' +
+                             'exceeds private_anon_mem_threshold, text of message')
     
     def __init__(self, config):
         super(Plugin, self).__init__(config)
@@ -131,8 +131,8 @@ class MemoryLeakDiagnostic(Plugin):
                              'diff': self.diff})
             if diffs:
                 for diff in diffs:
-                    msg_text += 'pid: {pid},  RssAnon {RssAnon} more then {diff}, VmRSS {VmRSS}, ' \
-                                'RssFile {RssFile}, RssShmem {RssShmem} \n'.format_map(diff)
+                    msg_text += ('pid: {pid},  RssAnon {RssAnon} more then {diff}, VmRSS {VmRSS}, ' +
+                                 'RssFile {RssFile}, RssShmem {RssShmem} \n').format_map(diff)
         
         zbx.send(self.key_count_diff, int(count_diff))
         zbx.send(self.key_count_diff_error, msg_text)

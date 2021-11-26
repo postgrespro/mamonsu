@@ -304,8 +304,8 @@ class SysInfoLinux(object):
         result['_FLAGS_IMPORTANT'] = ', '.join(flags)
         result['speed'] = fetch_first(
             r'^cpu MHz\s+\:\s+(\d+\.\d+)$', info) + ' MHz'
-        result['_TOTAL'] = 'physical = {0}, cores = {1}, ' \
-                           'virtual = {2}, hyperthreading = {3}'.format(
+        result['_TOTAL'] = ('physical = {0}, cores = {1}, ' +
+                            'virtual = {2}, hyperthreading = {3}').format(
             result['physical'], result['cores'],
             result['virtual'], result['hyperthreading']
         )
