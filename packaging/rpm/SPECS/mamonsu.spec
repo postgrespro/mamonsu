@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.1.2
+Version:        3.2.0
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,13 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Fri Nov 26 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.2.0-1
+  - added new Invalid Indexes metric and trigger to Databases discovery rule;
+  - added version number output to log;
+  - fixed template syntax;
+  - fixed Archive plugin to fit PostgreSQL 10 or lower;
+  - fixed Cache Hit Ratio and Sync Duty Zabbix item formula;
+
 * Mon Nov 8 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.1.2-1
   - fixed Files Need To Archivee and Size Of Files Need To Archive evaluation;
 

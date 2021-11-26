@@ -41,10 +41,10 @@ class PgHealth(Plugin):
         }) + template.item({
             'name': 'PostgreSQL: cache hit ratio',
             'key': self.right_type(self.key_cache, "hit"),
-            'value_type': value_type,
+            'value_type': Plugin.VALUE_TYPE.numeric_float,
             'units': Plugin.UNITS.percent,
             'type': Plugin.TYPE.CALCULATED,
-            'params': "last(//pgsql.blocks[hit])*100/(last(//pgsql.blocks[hit])+last(//pgsql.blocks[read]))"
+            'params': "last(pgsql.blocks[hit])*100/(last(pgsql.blocks[hit])+last(pgsql.blocks[read]))"
         }) + template.item({
             'name': 'PostgreSQL: service uptime',
             'key': self.right_type(self.key_uptime),

@@ -40,14 +40,14 @@ class PgsqlPlugin(Plugin):
     def disable_and_exit_if_extension_is_not_installed(self, ext, db=None):
         if not self.extension_installed(ext, db=db, silent=True):
             self.disable()
-            raise PluginDisableException("""Disable plugin and exit, because '{0}'
+            raise PluginDisableException("""Disable plugin and exit, because '{0}' \
 extension is not installed. Enable it in PostgreSQL instance: '{1}',
 if needed and restart.""".format(ext, Pooler.connection_string(db)))
 
     def disable_and_exit_if_not_pgpro_ee(self, db=None):
         if not Pooler.is_pgpro_ee(db):
             self.disable()
-            raise PluginDisableException("""Disable plugin and exit, because
+            raise PluginDisableException("""Disable plugin and exit, because \
 PostgresPro Enterprise Edition is not detected [instance: '{0}']
 """.format(Pooler.connection_string(db)))
 
@@ -55,7 +55,7 @@ PostgresPro Enterprise Edition is not detected [instance: '{0}']
         param = Pooler.get_sys_param('archive_mode', db=db)
         if param != 'on' and param != 'always':
             self.disable()
-            raise PluginDisableException("""Disable plugin and exit, because '{0}'
-parameter is neither 'on' nor 'always'. Enable it "{1}" or "{2}" in PostgreSQL instance,
+            raise PluginDisableException("""Disable plugin and exit, because '{0}' \
+parameter is neither 'on' nor 'always'. Enable it "{1}" or "{2}" in PostgreSQL instance, \
 if needed and restart.""".format('archive_mode', 'alter system set archive_mode = on;',
                                  'alter system set archive_mode = always;'))
