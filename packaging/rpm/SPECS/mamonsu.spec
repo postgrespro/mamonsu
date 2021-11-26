@@ -75,6 +75,7 @@ chown mamonsu.mamonsu /var/log/mamonsu
   - added version number output to log;
   - fixed template syntax;
   - fixed Archive plugin to fit PostgreSQL 10 or lower;
+  - fixed Cache Hit Ratio and Sync Duty Zabbix item formula;
 
 * Mon Nov 8 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.1.2-1
   - fixed Files Need To Archivee and Size Of Files Need To Archive evaluation;

@@ -3,6 +3,7 @@ mamonsu (3.2.0-1) stable; urgency=low
   * added version number output to log;
   * fixed template syntax;
   * fixed Archive plugin to fit PostgreSQL 10 or lower;
+  * fixed Cache Hit Ratio and Sync Duty Zabbix item formula;
 
 mamonsu (3.1.2-1) stable; urgency=low
   * fixed Files Need To Archivee and Size Of Files Need To Archive evaluation;
