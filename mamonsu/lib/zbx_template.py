@@ -433,7 +433,7 @@ class ZbxTemplate(object):
             except KeyError:
                 val = pair[1]
             if val is None:
-                row = '<{0}/>'.format(key)
+                row = '<{0}>{1}</{0}>'.format(key, pair[1]) if pair[1] else '<{0}/>'.format(key)
             else:
                 row = '<{0}>{1}</{0}>'.format(key, val)
             result += row
