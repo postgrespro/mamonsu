@@ -19,6 +19,10 @@ jobs:
         docker_os: ['ubuntu:20.04', 'centos:7', 'centos:8']
         zabbix_version: ['4.0', '5.0', '5.4']
         pg_version: ['9.6', '10', '11', '12', '13', '14']
+        exclude:
+          # excludes PG 9.6 on CentOS 8
+          - docker_os: 'centos:8'
+            pg_version: '9.6'
 
     steps:
       - name: Checkout Mamonsu repo
@@ -57,7 +61,6 @@ jobs:
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) mkdir -p -m 755 /mamonsu/
       - run: docker cp . $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ):/mamonsu
       - name: Install prequisites
-        if: "(matrix.pg_version != '9.6') && (matrix.docker_os == 'centos:8')"
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tests.sh --os="${{ matrix.docker_os }}" --pg-version="${{ matrix.pg_version }}"
 
       - name: Build and install Mamonsu
