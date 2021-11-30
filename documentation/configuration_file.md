@@ -1,12 +1,12 @@
 # Mamonsu: configuration file
 
 ## Configuration Parameters
-The agent.conf configuration file is located in the /etc/mamonsu directory by default. It provides several groups of parameters that control which metrics to collect and how to log the collected data:  
+The *agent.conf* configuration file is located in the */etc/mamonsu* directory by default. It provides several groups of parameters that control which metrics to collect and how to log the collected data:  
 - [Connection Parameters](#connection-parameters);
 - [Logging parameters](#logging-parameters);
 - [Plugin Parameters](#plugin-parameters).
 
-All parameters must be specified in the parameter = value format.
+All parameters must be specified in the `parameter = value` format.
 
 ***
 
