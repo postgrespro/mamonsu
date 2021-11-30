@@ -38,7 +38,7 @@ Supported PostgreSQL versions: 9.5 - 14
 - [Additional chapters](#additional-chapters)
 
 ## Mamonsu: concepts
-Based by zabbix, Mamonsu provides an extensible cross-platform solution that can collect and visualize multiple PostgreSQL and system metrics. Mamonsu has about 100 PostgreSQL metrics and about 30 system metrics. Mamonsu collects [metrics](documentation/metrics.md) such as database availability, number of connections, locks, WAL problems, checkpoints, background writer activity, memory problems and many others. Unlike the native Zabbix Agent configured to collect PostgreSQL metrics, Mamonsu uses a single database connection, which minimizes performance impact on the monitored system. Mamonsu also contains a number of [tools](documentation/tools.md) for interacting with the Zabbix API, obtaining system information and information about collected metrics.    
+Based by Zabbix, Mamonsu provides an extensible cross-platform solution that can collect and visualize multiple PostgreSQL and system metrics. Mamonsu has about 100 PostgreSQL metrics and about 30 system metrics. Mamonsu collects [metrics](documentation/metrics.md) such as database availability, number of connections, locks, WAL problems, checkpoints, background writer activity, memory problems and many others. Unlike the native Zabbix Agent configured to collect PostgreSQL metrics, Mamonsu uses a single database connection, which minimizes performance impact on the monitored system. Mamonsu also contains a number of [tools](documentation/tools.md) for interacting with the Zabbix API, obtaining system information and information about collected metrics.    
 Mamonsu is written entirely in Python and has a plugin architecture. It is an active agent, which means that it sends the data to the Zabbix server once it is collected. Pre-configured to monitor multiple PostgreSQL and system metrics out of the box, Mamonsu can be extended with your own [custom plugins](documentation/adding_custom_plugins.md) to track other metrics critical for your system.  
 Mamonsu can be installed on the same server where the DBMS we are going to watch is located or on remote server, but:  
 > **_NOTE:_**  While Mamonsu can collect PostgreSQL metrics from a remote server, system metrics are only collected locally. If you choose to collect PostgreSQL metrics remotely, make sure to disable collection of system metrics to avoid confusion, as they will be displayed under the same host in Zabbix.
@@ -132,40 +132,7 @@ $ makensis packaging/win/mamonsu.nsis
 
 ## Installation
 To use Mamonsu, you must create a Zabbix account and set up a Zabbix server as explained in [Zabbix documentation](https://www.zabbix.com/documentation/current/). Naturally, you must also have a PostgreSQL instance up and running if you are going to monitor PostgreSQL metrics.  
-A pre-built Mamonsu package is provided in official Postgres Pro repository.  
-**For Debian, Ubuntu, Astra:**  
-```shell
-$ wget  https://repo.postgrespro.ru/mamonsu/keys/apt-repo-add.sh
-$ sudo chmod 700 ./apt-repo-add.sh
-$ sudo ./apt-repo-add.sh
-$ apt-get install mamonsu
-```   
-**For RPM-based distros such as Centos, RHEL, Oraclelinux, SLES, AltLinux, AltLinux-spt:**  
-Install rpm from https://repo.postgrespro.ru/mamonsu/keys adding name of specific distro such as:
-```shell
-$ rpm -i https://repo.postgrespro.ru/mamonsu/keys/centos.rpm
-```
-Install package   
-- for RH-like:  
-  ```shell
-  $ yum install mamonsu
-  ```  
-- for SLES:
-  ```shell
-  $ zypper install mamonsu
-  ```  
-- for AltLinux, AltlLinux-spt:
-  ```shell
-  $ apt-get update
-  $ apt-get install mamonsu
-  ```  
-**For Windows:**  
-Pre-Build packages for Windows: [Windows installer](https://repo.postgrespro.ru/mamonsu/win/)  
-
-**Build and install from source code:**
-```shell
-git clone ... && cd mamonsu && python3 setup.py build && python3 setup.py install
-```  
+A pre-built Mamonsu packages is provided in official Postgres Pro repository: [repo/mamonsu](https://repo.postgrespro.ru/mamonsu/)     
 
 ## Usage
 ### Screenshots
@@ -200,9 +167,9 @@ If you omit this step, metrics can only be collected on behalf of a superuser, w
     mamonsu bootstrap [-M mamonsu_user] [-x | --create-extensions] [-c | --config] [connection_options]
     ```
     For details of usage, see “[Tools](documentation/tools.md#bootstrap)".  
-As the result of this operation, monitoring functions are created in the mamonsu_database in *mamonsu* schema, and the right to execute them is granted to the mamonsu_user. Thus, a superuser connection is no longer required. Mamonsu also creates several tables in the specified database. Do not delete these tables as they are required for Mamonsu to work.  
+As the result of this operation, monitoring functions are created in the *mamonsu_database* in *mamonsu* schema, and the right to execute them is granted to the *mamonsu_user*. Thus, a superuser connection is no longer required. Mamonsu also creates several tables in the specified database. Do not delete these tables as they are required for Mamonsu to work.  
 2. **Configure Mamonsu**  
-    Edit the agent.conf configuration file.    
+    Edit the *agent.conf* configuration file.    
     Configure Zabbix-related settings. The address field must point to the running Zabbix server, while the client field must provide the name of the Zabbix host. You can find the list of hosts available for your account in the Zabbix web interface under Configuration > Hosts.    
     ```editorconfig
     [zabbix]
@@ -211,13 +178,13 @@ As the result of this operation, monitoring functions are created in the mamonsu
     client = zabbix_host_name
     address = zabbix_server
     ```  
-    By default, Mamonsu will collect both PostgreSQL and system metrics. If required, you can disable metrics collection of either type by setting the enabled parameter to False in the [postgres] or [system] section of the agent.conf file, respectively.  
+    By default, Mamonsu will collect both PostgreSQL and system metrics. If required, you can disable metrics collection of either type by setting the enabled parameter to False in the [postgres] or [system] section of the *agent.conf* file, respectively.  
     ```editorconfig
     [system]
     ; enabled by default
     enabled = True
     ```  
-    If you are going to collect PostgreSQL metrics, specify connection parameters for the PostgreSQL server you are going to monitor. In the user, password and database fields, you must specify the mamonsu_user, mamonsu_password and the mamonsu_database used for bootstrap, respectively. If you skipped the bootstrap, specify a superuser credentials and the database to connect to.  
+    If you are going to collect PostgreSQL metrics, specify connection parameters for the PostgreSQL server you are going to monitor. In the user, password and database fields, you must specify the *mamonsu_user*, *mamonsu_password* and the *mamonsu_database* used for `bootstrap`, respectively. If you skipped the `bootstrap`, specify a superuser credentials and the database to connect to.  
     > **_NOTE:_** Mamonsu stores passwords as plain text in its configuration file, so control access to this file.  
     ```editorconfig
     [postgres]
@@ -234,12 +201,12 @@ As the result of this operation, monitoring functions are created in the mamonsu
     ```shell
     mamonsu export template template.xml
     ```  
-    Mamonsu generates the template.xml file in your current directory. By default, the name of the template that will be displayed in the Zabbix account is *Mamonsu PostgreSQL OS*, where *OS* is the name of your operating system. To get a template with a different display name, you can run the above command with the *--template-name* option.    
+    Mamonsu generates the *template.xml* file in your current directory. By default, the name of the template that will be displayed in the Zabbix account is *Mamonsu PostgreSQL OS*, where *OS* is the name of your operating system. To get a template with a different display name, you can run the above command with the *--template-name* option.    
 2. **Optionally, specify your Zabbix account settings** in the following environment variables on your monitoring system:  
    - Set the ZABBIX_USER and ZABBIX_PASSWD variables to the login and password of your Zabbix account, respectively.
    - Set the ZABBIX_URL to http://zabbix/
    
-    If you skip this step, you will have to add the following options to all mamonsu zabbix commands that you run:  
+    If you skip this step, you will have to add the following options to all `mamonsu zabbix` commands that you run:  
     ```shell
     --url=http://zabbix/ --user=zabbix_login --password=zabbix_password
     ```  
@@ -250,7 +217,7 @@ As the result of this operation, monitoring functions are created in the mamonsu
     Alternatively, you can upload the template through the Zabbix web interface: log in to your Zabbix account and select Templates > Import.
 
 4. **Link the generated template to the host to be monitored**  
-In the Zabbix web interface, select your host, go to Templates > Add, select your template, and click Update. If you would like to link a template with a new Zabbix host, you can do it from the command line using mamonsu zabbix commands. See the section called "[Zabbix cli](documentation/tools.md#zabbix-cli)" for details.  
+In the Zabbix web interface, select your host, go to Templates > Add, select your template, and click Update. If you would like to link a template with a new Zabbix host, you can do it from the command line using `mamonsu zabbix` commands. See the section called "[Zabbix cli](documentation/tools.md#zabbix-cli)" for details.  
 ### Run
 On UNIX-like systems:
 ```shell
@@ -277,12 +244,12 @@ Or through the Zabbix web interface:
 
 ### Best practices
   
-**Zabbix host setup only with mamonsu zabbix cli**
+**Zabbix host setup only with `mamonsu zabbix` cli**
 1. Generate a template
     ```shell
     mamonsu export template template.xml
     ```
-2. Set zabbix variables
+2. Set Zabbix variables
     ```shell
     export ZABBIX_USER=Admin
     export ZABBIX_PASSWD=zabbix
@@ -296,7 +263,7 @@ Or through the Zabbix web interface:
     ```shell
     mamonsu zabbix host create "pg-host" $(mamonsu zabbix hostgroup id "Linux Servers") $(mamonsu zabbix template id "Mamonsu PostgreSQL Linux") "10.10.0.4"
     ```
-   This snippet shows how to create Zabbix host called "pg-host" with Mamonsu template in hostgroup "Linux Servers" with address 10.10.0.4.
+   This snippet shows how to create Zabbix host called *pg-host* with Mamonsu template in hostgroup *Linux Servers* with address *10.10.0.4*.
  
 **Mamonsu setup with remote PostgreSQL**
 1. Generate and upload template  
@@ -340,7 +307,7 @@ Or through the Zabbix web interface:
     ```shell
     ssh -L 63333:localhost:5432 user@45.45.200.5
     ```
-4. Setup agent.conf
+4. Setup *agent.conf*
    ```editorconfig
     [postgres]
     enabled = True
@@ -374,7 +341,7 @@ If you need to retain the collected data, do the following:
 6. Create a new host for the same system and link the new template to it.
 7. Restart mamonsu. It will collect data for the new host. The old host will no longer be used, but the data collected will be available.  
 
-The difficulty is that Zabbix cannot massively rename nodes.  
+The difficulty is that Zabbix cannot massively rename hosts.  
 We offer the following recommendations:
 1. If you have access to the Zabbix database:  
 Mass rename hosts via SQL:
@@ -459,7 +426,7 @@ API query:
     esac
     done
      
-    # get zabbix auth token
+    # get Zabbix auth token
     auth_token=$(curl -H "Content-type: application/json-rpc" -X POST ${ZABBIX_URL}api_jsonrpc.php -d'
     {
         "jsonrpc": "2.0",
@@ -471,7 +438,7 @@ API query:
         "id": 1
     }' | python3 -c "import sys, json; print(json.load(sys.stdin)['result'])")
      
-    # get array of zabbix hosts to rename
+    # get array of Zabbix hosts to rename
     readarray -t hosts < <(mamonsu zabbix --url=${ZABBIX_URL} --user=${ZABBIX_USER} --password=${ZABBIX_PASSWORD} host list | awk '{ print "\""$0"\""}' | grep ${ZABBIX_PATTERN})
     hosts=("${hosts[@]//\"/}")
      
