@@ -132,7 +132,41 @@ $ makensis packaging/win/mamonsu.nsis
 
 ## Installation
 To use Mamonsu, you must create a Zabbix account and set up a Zabbix server as explained in [Zabbix documentation](https://www.zabbix.com/documentation/current/). Naturally, you must also have a PostgreSQL instance up and running if you are going to monitor PostgreSQL metrics.  
-A pre-built Mamonsu packages is provided in official Postgres Pro repository: [repo/mamonsu](https://repo.postgrespro.ru/mamonsu/)     
+A pre-built Mamonsu packages is provided in official Postgres Pro repository: [repo/mamonsu](https://repo.postgrespro.ru/mamonsu/)  
+
+**For Debian, Ubuntu, Astra:**  
+```shell
+$ wget  https://repo.postgrespro.ru/mamonsu/keys/apt-repo-add.sh
+$ sudo chmod 700 ./apt-repo-add.sh
+$ sudo ./apt-repo-add.sh
+$ apt-get install mamonsu
+```   
+**For RPM-based distros such as Centos, RHEL, Oraclelinux, SLES, AltLinux, AltLinux-spt:**  
+Install rpm from repository adding name of the specific distro such as:
+```shell
+$ rpm -i https://repo.postgrespro.ru/mamonsu/keys/centos.rpm
+```
+Install package   
+- for RH-like:  
+  ```shell
+  $ yum install mamonsu
+  ```  
+- for SLES:
+  ```shell
+  $ zypper install mamonsu
+  ```  
+- for AltLinux, AltlLinux-spt:
+  ```shell
+  $ apt-get update
+  $ apt-get install mamonsu
+  ```  
+**For Windows:**  
+Pre-Build packages for Windows: [Windows installer](https://repo.postgrespro.ru/mamonsu/win/)  
+
+**Build and install from source code:**
+```shell
+git clone ... && cd mamonsu && python3 setup.py build && python3 setup.py install
+```  
 
 ## Usage
 ### Screenshots
