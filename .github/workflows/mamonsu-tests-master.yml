@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'README.md'
+      - 'documentation/**'
   pull_request:
     branches:
       - master
+    paths-ignore:
+      - 'README.md'
+      - 'documentation/**'
 
 jobs:
   mamonsu-tests:
