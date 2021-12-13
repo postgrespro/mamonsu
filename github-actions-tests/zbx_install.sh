@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # default parameters
-ZBX_VERSION='5.4'
+ZBX_VERSION='5.4.8'
 
 for parameter in "$@"
 do
@@ -19,7 +19,7 @@ done
 echo "================================================================================================================="
 sudo mkdir 775 -p /docker/zabbix-docker/
 cd /docker/zabbix-docker/ 2>&1 1>/dev/null
-sudo wget https://github.com/zabbix/zabbix-docker/archive/refs/heads/${ZBX_VERSION}.zip
+sudo wget https://github.com/zabbix/zabbix-docker/archive/refs/tags/${ZBX_VERSION}.zip
 sudo unzip ${ZBX_VERSION}.zip
 cd zabbix-docker-${ZBX_VERSION} 2>&1 1>/dev/null
 echo "---> Setting up docker with Zabbix ${ZBX_VERSION}..."

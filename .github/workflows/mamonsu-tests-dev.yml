@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         docker_os: ['centos:7']
-        zabbix_version: ['5.4']
+        zabbix_version: ['5.4.8']
         pg_version: ['9.6', '10', '11', '12', '13', '14']
 
     steps:
