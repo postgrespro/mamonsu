@@ -2,6 +2,7 @@ from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from distutils.version import LooseVersion
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
+import re
 
 
 class ArchiveCommand(Plugin):
@@ -77,32 +78,35 @@ class ArchiveCommand(Plugin):
             """
 
         self.disable_and_exit_if_archive_mode_is_not_on()
+
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
-            result2 = Pooler.query("""SELECT * from mamonsu.archive_stat()""")
-            result1 = Pooler.query("""select * from mamonsu.archive_command_files()""")
+            result_stats = Pooler.query("""SELECT * from mamonsu.archive_stat()""")
         else:
-            if Pooler.server_version_greater('10.0'):
-                result1 = Pooler.query(query_queue.format('wal_lsn', 'walfile'))
-            else:
-                result1 = Pooler.query(query_queue.format('xlog_location', 'xlogfile'))
-            result2 = Pooler.query("""SELECT archived_count, failed_count from pg_stat_archiver;""")
-
-        current_archived_count = result2[0][0]
-        current_failed_count = result2[0][1]
-
+            result_stats = Pooler.query("""SELECT archived_count, failed_count from pg_stat_archiver;""")
+        current_archived_count = result_stats[0][0]
+        current_failed_count = result_stats[0][1]
         if self.old_archived_count is not None:
             archived_count = current_archived_count - self.old_archived_count
             zbx.send('pgsql.archive_command[{0}]'.format(self.Items[2][0]), archived_count)
-
         if self.old_failed_count is not None:
             failed_count = current_failed_count - self.old_failed_count
             zbx.send('pgsql.archive_command[{0}]'.format(self.Items[3][0]), failed_count)
-
         self.old_archived_count = current_archived_count
         self.old_failed_count = current_failed_count
 
-        zbx.send('pgsql.archive_command[{0}]'.format(self.Items[0][0]), result1[0][0])
-        zbx.send('pgsql.archive_command[{0}]'.format(self.Items[1][0]), result1[0][1])
+        # check the last WAL file name to avoid XXX.history, XXX.partial, etc.
+        wal_exists = bool(re.search('^[0-9A-Z]{24}$', str(
+            Pooler.query("""SELECT pg_stat_archiver.last_archived_wal FROM pg_stat_archiver;""")[0][0])))
+        if wal_exists:
+            if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
+                result_queue = Pooler.query("""select * from mamonsu.archive_command_files()""")
+            else:
+                if Pooler.server_version_greater('10.0'):
+                    result_queue = Pooler.query(query_queue.format('wal_lsn', 'walfile'))
+                else:
+                    result_queue = Pooler.query(query_queue.format('xlog_location', 'xlogfile'))
+            zbx.send('pgsql.archive_command[{0}]'.format(self.Items[0][0]), result_queue[0][0])
+            zbx.send('pgsql.archive_command[{0}]'.format(self.Items[1][0]), result_queue[0][1])
 
     def items(self, template, dashboard=False):
         result = ''
