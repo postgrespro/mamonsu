@@ -24,7 +24,7 @@ sudo unzip ${ZBX_VERSION}.zip
 cd zabbix-docker-${ZBX_VERSION} 2>&1 1>/dev/null
 echo "---> Setting up docker with Zabbix ${ZBX_VERSION}..."
 # docker-compose dirty hack: it uses only file named 'docker-compose.yml'
-yes | sudo cp docker-compose_v3_centos_pgsql_latest.yaml docker-compose.yml
+yes | sudo cp docker-compose_v3_ubuntu_mysql_latest.yaml docker-compose.yml
 docker-compose -f ./docker-compose.yml up -d
 # wait for full set up
 sleep 1m
