@@ -9,7 +9,7 @@ class ZbxTemplate(object):
     plg_type = 'all'
     mainTemplate = """<?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-    <version>2.0</version>
+    <version>3.0</version>
     <groups>
         <group>
             <name>Templates</name>
@@ -19,6 +19,7 @@ class ZbxTemplate(object):
         <template>
             <template>{template}</template>
             <name>{template}</name>
+            <description/>
             <groups>
                 <group>
                     <name>Templates</name>
@@ -61,6 +62,10 @@ class ZbxTemplate(object):
         ('ipmi_sensor', None), ('data_type', 0), ('authtype', 0),
         ('username', None), ('password', None), ('publickey', None),
         ('privatekey', None), ('port', None), ('description', None)
+    ]
+
+    item_prototype_defaults = [
+        ('application_prototypes', None)
     ]
 
     trigger_defaults = [
@@ -107,7 +112,7 @@ class ZbxTemplate(object):
         ('ipmi_sensor', None), ('authtype', 0),
         ('username', None), ('password', None), ('publickey', None),
         ('privatekey', None), ('port', None), ('lifetime', 7),
-        ('description', None), ('key', None)
+        ('description', None), ('key', None), ('host_prototypes', None)
     ]
 
     dashboard_defaults = [
@@ -303,11 +308,11 @@ class ZbxTemplate(object):
         result += '<{1}>{0}</{1}>'.format(self._format_args(self.macro_defaults, value), xml_key)
         return result
 
-    def item(self, args=None, xml_key='item'):
+    def item(self, args=None, xml_key='item', prototype=False):
         if args is None:
             args = {}
         return '<{2}>{0}{1}</{2}>'.format(
-            self._format_args(self.item_defaults, args),
+            self._format_args(self.item_defaults if not prototype else self.item_defaults + self.item_prototype_defaults, args),
             self._application(), xml_key)
 
     def trigger(self, args=None, xml_key='trigger', defaults=None):
@@ -371,7 +376,6 @@ class ZbxTemplate(object):
         return res
 
     def discovery_rule(self, rule=None, conditions=None, items=None, triggers=None, graphs=None):
-
         if rule is None:
             rule = {}
         if conditions is None:
@@ -384,7 +388,7 @@ class ZbxTemplate(object):
             graphs = []
         result_items = '<item_prototypes>'
         for item in items:
-            result_items += self.item(item, xml_key='item_prototype')
+            result_items += self.item(item, xml_key='item_prototype', prototype=True)
         result_items += '</item_prototypes>'
 
         result_triggers = '<trigger_prototypes>'
@@ -437,4 +441,5 @@ class ZbxTemplate(object):
             else:
                 row = '<{0}>{1}</{0}>'.format(key, val)
             result += row
+
         return result

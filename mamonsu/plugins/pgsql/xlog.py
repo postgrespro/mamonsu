@@ -201,7 +201,7 @@ class Xlog(Plugin):
         }) + template.trigger({
             'name': 'PostgreSQL number of non-active replication slots '
                     'on {HOSTNAME} (value={ITEM.LASTVALUE})',
-            'expression': '{#TEMPLATE:' + self.right_type(self.key_non_active_slots) + '.last()}#' +
+            'expression': '{#TEMPLATE:' + self.right_type(self.key_non_active_slots) + '.last()}&gt;' +
             str(NUMBER_NON_ACTIVE_SLOTS)
         })
         return triggers
