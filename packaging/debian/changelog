@@ -1,3 +1,8 @@
+mamonsu (3.2.1-1) stable; urgency=low
+  * fixed Non-active Replication Slots trigger syntax;
+  * upgraded Archive Queue Size and Archive Queue Length metrics to ignore non-standard WAL files (e.g. XXX.history);
+  * upgraded template syntax to fit Zabbix 3.0+;
+
 mamonsu (3.2.0-1) stable; urgency=low
   * added new Invalid Indexes metric and trigger to Databases discovery rule;
   * added version number output to log;

@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.2.0
+Version:        3.2.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,11 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Dec 13 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.2.1-1
+  - fixed Non-active Replication Slots trigger syntax;
+  - upgraded Archive Queue Size and Archive Queue Length metrics to ignore non-standard WAL files (e.g. XXX.history);
+  - upgraded template syntax to fit Zabbix 3.0+;
+
 * Fri Nov 26 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.2.0-1
   - added new Invalid Indexes metric and trigger to Databases discovery rule;
   - added version number output to log;
