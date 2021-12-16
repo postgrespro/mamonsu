@@ -58,16 +58,26 @@ RETURNS double precision AS $$
   WHERE id = 1 LIMIT 1;
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION mamonsu.count_autovacuum()
-RETURNS BIGINT AS $$
-    SELECT
-        count(*)::BIGINT
-    FROM pg_catalog.pg_stat_activity
-    WHERE
-        query like '%%autovacuum%%'
-        and state <> 'idle'
-        and pid <> pg_catalog.pg_backend_pid()
-$$ LANGUAGE SQL SECURITY DEFINER;
+DO
+$do$
+BEGIN
+   IF (SELECT setting::integer FROM pg_settings WHERE name = 'server_version_num') >= 10000 THEN
+      CREATE OR REPLACE FUNCTION mamonsu.count_autovacuum()
+      RETURNS BIGINT AS $$
+         SELECT count(*)::bigint FROM pg_catalog.pg_stat_activity
+         WHERE backend_type = 'autovacuum worker'
+      $$ LANGUAGE SQL SECURITY DEFINER;
+   ELSE
+      CREATE OR REPLACE FUNCTION mamonsu.count_autovacuum()
+      RETURNS BIGINT AS $$
+         SELECT count(*)::bigint FROM pg_catalog.pg_stat_activity
+         WHERE query LIKE '%%autovacuum%%'
+         AND state <> 'idle'
+         AND pid <> pg_catalog.pg_backend_pid()
+      $$ LANGUAGE SQL SECURITY DEFINER;
+   END IF;
+END
+$do$;
 
 CREATE OR REPLACE FUNCTION mamonsu.get_connections_states()
 RETURNS TABLE(state text, waiting boolean) AS $$

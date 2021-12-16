@@ -64,7 +64,10 @@ class Databases(Plugin):
         zbx.send('pgsql.database.discovery[]', zbx.json({'data': dbs}))
         del dbs, bloat_count, invalid_indexes_count
 
-        result = Pooler.run_sql_type('count_autovacuum')
+        if Pooler.server_version_greater('10.0'):
+            result = Pooler.run_sql_type('count_autovacuum', args=["backend_type = 'autovacuum worker'"])
+        else:
+            result = Pooler.run_sql_type('count_autovacuum', args=["query LIKE '%%autovacuum%%' AND state <> 'idle' AND pid <> pg_catalog.pg_backend_pid()"])
         zbx.send('pgsql.autovacumm.count[]', int(result[0][0]))
 
     def items(self, template, dashboard=False):
@@ -152,8 +155,7 @@ class Databases(Plugin):
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs, triggers=triggers)
 
     def keys_and_queries(self, template_zabbix):
-        result = ['{0},$2 $1 -c "{1}"'.format(self.key_autovacumm.format("[*]"), Pooler.SQL['count_autovacuum'][0]),
-                  '{0},$2 $1 -c "{1}"'.format(self.key_db_discovery.format("[*]"), self.query_agent_discovery),
+        result = ['{0},$2 $1 -c "{1}"'.format(self.key_db_discovery.format("[*]"), self.query_agent_discovery),
                   '{0},echo "{1}" | $3 $2 -v p1="$1"'.format(self.key_db_size.format("[*]"), self.query_size),
                   '{0},echo "{1}" | $3 $2 -v p1="$1"'.format(self.key_db_age.format("[*]"), self.query_age),
                   '{0},$3 $2 -d "$1" -c "{1}"'.format(self.key_db_bloating_tables.format("[*]"),
@@ -162,4 +164,8 @@ class Databases(Plugin):
                                                           self.plugin_config('min_rows'))),
                   '{0},$3 $2 -d "$1" -c "{1}"'.format(self.key_invalid_indexes.format("[*]"),
                                                       self.query_invalid_indexes)]
+        if LooseVersion(self.VersionPG) >= LooseVersion('10'):
+            result.append('{0},$2 $1 -c "{1}"'.format(self.key_autovacumm.format("[*]"), Pooler.SQL['count_autovacuum'][0].format("backend_type = 'autovacuum worker'")))
+        else:
+            result.append('{0},$2 $1 -c "{1}"'.format(self.key_autovacumm.format("[*]"), Pooler.SQL['count_autovacuum'][0].format("query LIKE '%%autovacuum%%' AND state <> 'idle' AND pid <> pg_catalog.pg_backend_pid()")))
         return template_zabbix.key_and_query(result)
