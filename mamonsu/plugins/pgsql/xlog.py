@@ -263,7 +263,7 @@ class Xlog(Plugin):
         result = []
         if LooseVersion(self.VersionPG) < LooseVersion('10'):
             result.append(
-                '{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_xlog_files'][0]))
+                '{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_wal_files'][0].format('xlog')))
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_xlog_lsn_diff))
             result.append(
                 '{0},$2 $1 -c "{1}"'.format("pgsql.replication_lag.sec[*]", self.query_agent_replication_lag.format(self.plugin_config('interval'),
@@ -271,7 +271,7 @@ class Xlog(Plugin):
                                                                                                                     'xlog_replay_location')))
         else:
             result.append(
-                '{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_wal_files'][0]))
+                '{0},$2 $1 -c "{1}"'.format(self.key_count_wall.format('[*]'), Pooler.SQL['count_wal_files'][0].format('wal')))
             result.append('{0},$2 $1 -c "{1}"'.format(self.key_wall.format('[*]'), self.query_wal_lsn_diff))
             result.append(
                 '{0},$2 $1 -c "{1}"'.format("pgsql.replication_lag.sec[*]", self.query_agent_replication_lag.format(self.plugin_config('interval'),
