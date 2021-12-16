@@ -61,7 +61,7 @@ $$ LANGUAGE SQL SECURITY DEFINER;
 DO
 $do$
 BEGIN
-   IF (SELECT setting::integer FROM pg_settings WHERE name = 'server_version_num') >= 10000 THEN
+   IF (SELECT setting::integer FROM pg_settings WHERE name = 'server_version_num') >= 100000 THEN
       CREATE OR REPLACE FUNCTION mamonsu.count_autovacuum()
       RETURNS BIGINT AS $$
          SELECT count(*)::bigint FROM pg_catalog.pg_stat_activity
