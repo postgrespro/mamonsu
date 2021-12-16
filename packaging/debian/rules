@@ -27,7 +27,7 @@ install: build
 binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
-	install -m 0644 packaging/conf/example.conf debian/mamonsu/usr/share/mamonsu
+	install -m 0644 packaging/conf/example_linux.conf debian/mamonsu/usr/share/mamonsu
 	dh_installchangelogs -i
 	dh_installinit -i
 	dh_installdebconf -i

@@ -18,7 +18,7 @@ if [ "$1" = "configure" ]; then
 
     mkdir -p /etc/mamonsu/plugins
     touch /etc/mamonsu/plugins/__init__.py
-    [ -f /etc/mamonsu/agent.conf ] || cp /usr/share/mamonsu/example.conf /etc/mamonsu/agent.conf
+    [ -f /etc/mamonsu/agent.conf ] || cp /usr/share/mamonsu/example_linux.conf /etc/mamonsu/agent.conf
 
     chown mamonsu:mamonsu /var/log/mamonsu
     chown mamonsu:mamonsu /var/lib/mamonsu
