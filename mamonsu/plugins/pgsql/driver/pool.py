@@ -172,11 +172,15 @@ class Pool(object):
         db = self._normalize_db(db)
         if db in self._cache['extension_schema'][extension]:
             return self._cache['extension_schema'][extension][db]
-        self._cache['extension_schema'][extension][db] = self.query(
-            "select n.nspname from pg_extension e "
-            "join pg_namespace n "
-            "on e.extnamespace = n.oid where e.extname = '{0}'".format(extension), db)[0][0]
-        return self._cache['extension_schema'][extension][db]
+        try:
+            self._cache['extension_schema'][extension][db] = self.query(
+                "select n.nspname from pg_extension e "
+                "join pg_namespace n "
+                "on e.extnamespace = n.oid where e.extname = '{0}'".format(extension), db)[0][0]
+            return self._cache['extension_schema'][extension][db]
+        except:
+            self._connections[db].log.info('{0} is not installed'.format(extension))
+            self._cache['pgproee'][db] = False
 
     def databases(self):
         result, databases = self.query(

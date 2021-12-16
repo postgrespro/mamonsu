@@ -62,8 +62,11 @@ class PgBufferCache(Plugin):
                                    'position': 2}}]
 
     def keys_and_queries(self, template_zabbix):
-        result = []
-        for i, item in enumerate(self.Items):
-            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.' + item[0]),
-                                                         self.query[i].format(self.extension_schema(extension='pg_buffercache'))))
-        return template_zabbix.key_and_query(result)
+        if self.extension_installed('pg_buffercache'):
+            result = []
+            for i, item in enumerate(self.Items):
+                result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.' + item[0]),
+                                                             self.query[i].format(self.extension_schema(extension='pg_buffercache'))))
+            return template_zabbix.key_and_query(result)
+        else:
+            return

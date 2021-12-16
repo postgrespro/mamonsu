@@ -150,24 +150,26 @@ class PgStatStatement(Plugin):
             return []
 
     def keys_and_queries(self, template_zabbix):
-        result = []
-        if LooseVersion(self.VersionPG) < LooseVersion('13'):
-            self.Items[5][1] = self.Items[5][1].format("total_time")
-            all_items = self.Items
-        else:
-            self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
-            all_items = self.Items + self.Items_pg_13
+        if self.extension_installed('pg_stat_statements'):
+            result = []
+            if LooseVersion(self.VersionPG) < LooseVersion('13'):
+                self.Items[5][1] = self.Items[5][1].format("total_time")
+                all_items = self.Items
+            else:
+                self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
+                all_items = self.Items + self.Items_pg_13
 
-        for i, item in enumerate(all_items):
-            keys = item[0].split('[')
-            result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
-                                                         self.query.format(item[1])))
-
-        if LooseVersion(self.VersionPG) >= LooseVersion('14'):
-            all_items = self.Items_pg_14
             for i, item in enumerate(all_items):
                 keys = item[0].split('[')
                 result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
-                                                             self.query_info.format(item[1])))
+                                                             self.query.format(item[1])))
 
-        return template_zabbix.key_and_query(result)
+            if LooseVersion(self.VersionPG) >= LooseVersion('14'):
+                all_items = self.Items_pg_14
+                for i, item in enumerate(all_items):
+                    keys = item[0].split('[')
+                    result.append('{0}[*],$2 $1 -c "{1}"'.format('{0}{1}.{2}'.format(self.key, keys[0], keys[1][:-1]),
+                                                                 self.query_info.format(item[1])))
+            return template_zabbix.key_and_query(result)
+        else:
+            return
