@@ -1753,7 +1753,7 @@ Default config:
       </tr>
     </table>
 
-    *Autovacuum Workers* calculates as summa of avtovacuum queries with not idle state.
+    *Autovacuum Workers* evaluates as count of `pg_stat_activity.backend_type = 'autovacuum worker'` for PG 10+ and as summa of avtovacuum queries with not idle state for PG 9.6 and lower.
 
 ## Background Writer
 
