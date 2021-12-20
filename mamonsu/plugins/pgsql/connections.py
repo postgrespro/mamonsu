@@ -26,11 +26,11 @@ class Connections(Plugin):
     ]
     Max_connections = None
 
-    query_agent = "select count(*) from pg_catalog.pg_stat_activity where state = '{0}';"
-    query_agent_total = "select count(*) from pg_catalog.pg_stat_activity where state is not null ;"
-    query_agent_waiting_new_v = "select count(*) from pg_catalog.pg_stat_activity where state is not null and " \
+    query_agent = "select count(*) from pg_catalog.pg_stat_activity where state = '{0}' {1};"
+    query_agent_total = "select count(*) from pg_catalog.pg_stat_activity where {0};"
+    query_agent_waiting_new_v = "select count(*) from pg_catalog.pg_stat_activity where {0} and " \
                                 " wait_event_type is not null"
-    query_agent_waiting_old_v = "select count(*) from pg_catalog.pg_stat_activity where waiting and state is not null "
+    query_agent_waiting_old_v = "select count(*) from pg_catalog.pg_stat_activity where waiting and {0} "
     query_agent_max_conn = "select setting::INT from pg_settings where name = 'max_connections' "
     key = 'pgsql.connections{0}'
 
@@ -38,11 +38,13 @@ class Connections(Plugin):
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
             result = Pooler.query(
                 'select state, count(*) '
-                'from mamonsu.get_connections_states() where state is not null group by state')
+                'from mamonsu.get_connections_states() group by state')
         else:
             result = Pooler.query(
                 'select state, count(*) '
-                'from pg_catalog.pg_stat_activity where state is not null group by state')
+                'from pg_catalog.pg_stat_activity where {0} group by state'.format(
+                    "backend_type = 'client backend'" if Pooler.server_version_greater(
+                        '10.0') else "state IS NOT NULL"))
 
         for item in self.Items:
             state, key, val = item[0], item[1], 0
@@ -61,15 +63,17 @@ class Connections(Plugin):
             result = Pooler.query(
                 'select count(*) '
                 'from mamonsu.get_connections_states() '
-                'where waiting and state is not null')
+                'where waiting is not null')
         else:
             if Pooler.server_version_less('9.5.0'):
                 result = Pooler.query(
                     'select count(*) '
                     'from pg_catalog.pg_stat_activity where waiting and state is not null')
             else:
-                result = Pooler.query('select count(*) from pg_catalog.pg_stat_activity where state is not null and '
-                                      'wait_event_type is not null')
+                result = Pooler.query('select count(*) from pg_catalog.pg_stat_activity where {0} and '
+                                      'wait_event_type is not null'.format(
+                    "backend_type = 'client backend'" if Pooler.server_version_greater(
+                        '10.0') else "state IS NOT NULL"))
         zbx.send('pgsql.connections[waiting]', int(result[0][0]))
         if self.Max_connections is None:
             result = Pooler.query("select setting from pg_settings where name = 'max_connections'")
@@ -144,12 +148,26 @@ class Connections(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for item in self.Items:
-            result.append(
-                '{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[1]), self.query_agent.format(item[1])))
-        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.total'), self.query_agent_total))
+            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + item[1]),
+                                                         self.query_agent.format(item[1],
+                                                                                 "AND backend_type = 'client backend'" if LooseVersion(
+                                                                                     self.VersionPG) >= LooseVersion(
+                                                                                     '10') else "")))
+        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.total'), self.query_agent_total.format(
+            "backend_type = 'client backend'" if LooseVersion(
+                self.VersionPG) >= LooseVersion(
+                '10') else "state IS NOT NULL")))
         if LooseVersion(self.VersionPG) < LooseVersion('9.6'):
-            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting_old_v))
+            result.append(
+                '{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting_old_v.format(
+                    "backend_type = 'client backend'" if LooseVersion(
+                        self.VersionPG) >= LooseVersion(
+                        '10') else "state IS NOT NULL")))
         else:
-            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting_new_v))
+            result.append(
+                '{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.waiting'), self.query_agent_waiting_new_v.format(
+                    "backend_type = 'client backend'" if LooseVersion(
+                        self.VersionPG) >= LooseVersion(
+                        '10') else "state IS NOT NULL")))
         result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format('.max_connections'), self.query_agent_max_conn))
         return template_zabbix.key_and_query(result)

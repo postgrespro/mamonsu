@@ -79,13 +79,28 @@ BEGIN
 END
 $do$;
 
-CREATE OR REPLACE FUNCTION mamonsu.get_connections_states()
-RETURNS TABLE(state text, waiting boolean) AS $$
-    SELECT
-        state,
-        {5}
-    FROM pg_catalog.pg_stat_activity
-$$ LANGUAGE SQL SECURITY DEFINER;
+DO
+$do$
+BEGIN
+   IF (SELECT setting::integer FROM pg_settings WHERE name = 'server_version_num') >= 100000 THEN
+      CREATE OR REPLACE FUNCTION mamonsu.get_connections_states()
+      RETURNS TABLE(state text, waiting boolean) AS $$
+         SELECT state,
+                {5}
+         FROM pg_catalog.pg_stat_activity
+         WHERE backend_type = 'client backend'
+      $$ LANGUAGE SQL SECURITY DEFINER;
+   ELSE
+      CREATE OR REPLACE FUNCTION mamonsu.get_connections_states()
+      RETURNS TABLE(state text, waiting boolean) AS $$
+         SELECT state,
+                {5}
+         FROM pg_catalog.pg_stat_activity
+         WHERE state is not null
+      $$ LANGUAGE SQL SECURITY DEFINER;
+   END IF;
+END
+$do$;
 
 CREATE or REPLACE FUNCTION mamonsu.get_oldest_xid()
 RETURNS BIGINT AS $$
