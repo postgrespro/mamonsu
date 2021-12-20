@@ -86,7 +86,7 @@ BEGIN
          SELECT state,
                 {5}
          FROM pg_catalog.pg_stat_activity
-         WHERE backend_type = 'client backend'
+         WHERE (backend_type = 'client backend' OR backend_type = 'parallel worker')
       $$ LANGUAGE SQL SECURITY DEFINER;
    ELSE
       CREATE OR REPLACE FUNCTION mamonsu.get_connections_states()
