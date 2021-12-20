@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from distutils.version import LooseVersion
 from .pool import Pooler
@@ -6,8 +8,10 @@ import re
 
 
 class ArchiveCommand(Plugin):
-    AgentPluginType = 'pg'
-    DEFAULT_CONFIG = {'max_count_files': str(2)}
+    AgentPluginType = "pg"
+    DEFAULT_CONFIG = {
+        "max_count_files": str(2)
+    }
     Interval = 60
 
     # if streaming replication is on, archive queue length and size will always be 0 for replicas
@@ -44,16 +48,20 @@ class ArchiveCommand(Plugin):
     FROM values;
     """
 
-    query_agent_archived_count = "SELECT archived_count from pg_stat_archiver;"
-    query_agent_failed_count = "SELECT failed_count from pg_stat_archiver;"
-    key = 'pgsql.archive_command{0}'
-    name = 'PostgreSQL archive command {0}'
+    query_agent_archived_count = """
+    SELECT archived_count FROM pg_stat_archiver;
+    """
+    query_agent_failed_count = """
+    SELECT failed_count FROM pg_stat_archiver;
+    """
+    key = "pgsql.archive_command{0}"
+    name = "PostgreSQL archive command {0}"
     Items = [
         # key, desc, color, side, graph
-        ('count_files_to_archive', 'count files in archive_status need to archive', 'FFD700', 0, 1),
-        ('size_files_to_archive', 'size of files need to archive', '00FF00', 0, 0),
-        ('archived_files', 'count archived files', '00F000', 0, 1),
-        ('failed_trying_to_archive', 'count attempts to archive files', 'FF0000', 0, 1),
+        ("count_files_to_archive", "count files in archive_status need to archiv", "FFD700", 0, 1),
+        ("size_files_to_archive", "size of files need to archive", "00FF00", 0, 0),
+        ("archived_files", "count archived files", "00F000", 0, 1),
+        ("failed_trying_to_archive", "count attempts to archive files", "FF0000", 0, 1),
     ]
     old_archived_count = None
     old_failed_count = None
@@ -79,113 +87,138 @@ class ArchiveCommand(Plugin):
 
         self.disable_and_exit_if_archive_mode_is_not_on()
 
-        if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
-            result_stats = Pooler.query("""SELECT * from mamonsu.archive_stat()""")
+        if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater("2.3.4"):
+            result_stats = Pooler.query("""
+            SELECT *
+            FROM mamonsu.archive_stat();
+            """)
         else:
-            result_stats = Pooler.query("""SELECT archived_count, failed_count from pg_stat_archiver;""")
+            result_stats = Pooler.query("""
+            SELECT archived_count,
+                   failed_count
+            FROM pg_stat_archiver;
+            """)
         current_archived_count = result_stats[0][0]
         current_failed_count = result_stats[0][1]
         if self.old_archived_count is not None:
             archived_count = current_archived_count - self.old_archived_count
-            zbx.send('pgsql.archive_command[{0}]'.format(self.Items[2][0]), archived_count)
+            zbx.send("pgsql.archive_command[{0}]".format(self.Items[2][0]), archived_count)
         if self.old_failed_count is not None:
             failed_count = current_failed_count - self.old_failed_count
-            zbx.send('pgsql.archive_command[{0}]'.format(self.Items[3][0]), failed_count)
+            zbx.send("pgsql.archive_command[{0}]".format(self.Items[3][0]), failed_count)
         self.old_archived_count = current_archived_count
         self.old_failed_count = current_failed_count
 
         # check the last WAL file name to avoid XXX.history, XXX.partial, etc.
-        wal_exists = bool(re.search('^[0-9A-Z]{24}$', str(
-            Pooler.query("""SELECT pg_stat_archiver.last_archived_wal FROM pg_stat_archiver;""")[0][0])))
+        wal_exists = bool(re.search(r'^[0-9A-Z]{24}$', str(
+            Pooler.query("""
+            SELECT pg_stat_archiver.last_archived_wal
+            FROM pg_stat_archiver;
+            """)[0][0])))
         if wal_exists:
-            if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater('2.3.4'):
-                result_queue = Pooler.query("""select * from mamonsu.archive_command_files()""")
+            if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater("2.3.4"):
+                result_queue = Pooler.query("""
+                SELECT *
+                FROM mamonsu.archive_command_files();
+                """)
             else:
-                if Pooler.server_version_greater('10.0'):
-                    result_queue = Pooler.query(query_queue.format('wal_lsn', 'walfile'))
+                if Pooler.server_version_greater("10.0"):
+                    result_queue = Pooler.query(query_queue.format("wal_lsn", "walfile"))
                 else:
-                    result_queue = Pooler.query(query_queue.format('xlog_location', 'xlogfile'))
-            zbx.send('pgsql.archive_command[{0}]'.format(self.Items[0][0]), result_queue[0][0])
-            zbx.send('pgsql.archive_command[{0}]'.format(self.Items[1][0]), result_queue[0][1])
+                    result_queue = Pooler.query(query_queue.format("xlog_location", "xlogfile"))
+            zbx.send("pgsql.archive_command[{0}]".format(self.Items[0][0]), result_queue[0][0])
+            zbx.send("pgsql.archive_command[{0}]".format(self.Items[1][0]), result_queue[0][1])
 
     def items(self, template, dashboard=False):
-        result = ''
+        result = ""
         result += template.item({
-            'key': self.right_type(self.key, self.Items[0][0]),
-            'name': self.name.format(self.Items[0][1]),
-            'value_type': self.VALUE_TYPE.numeric_unsigned,
-            'delay': self.plugin_config('interval'),
-            'delta': Plugin.DELTA.as_is
+            "key": self.right_type(self.key, self.Items[0][0]),
+            "name": self.name.format(self.Items[0][1]),
+            "value_type": self.VALUE_TYPE.numeric_unsigned,
+            "delay": self.plugin_config("interval"),
+            "delta": Plugin.DELTA.as_is
         }) + template.item({
-            'key': self.right_type(self.key, self.Items[1][0]),
-            'name': self.name.format(self.Items[1][1]),
-            'value_type': self.VALUE_TYPE.numeric_unsigned,
-            'units': self.UNITS.bytes,
-            'delay': self.plugin_config('interval'),
-            'delta': Plugin.DELTA.as_is
+            "key": self.right_type(self.key, self.Items[1][0]),
+            "name": self.name.format(self.Items[1][1]),
+            "value_type": self.VALUE_TYPE.numeric_unsigned,
+            "units": self.UNITS.bytes,
+            "delay": self.plugin_config("interval"),
+            "delta": Plugin.DELTA.as_is
         }) + template.item({
-            'key': self.right_type(self.key, self.Items[2][0]),
-            'name': self.name.format(self.Items[2][1]),
-            'value_type': self.VALUE_TYPE.numeric_unsigned,
-            'delay': self.plugin_config('interval'),
-            'delta': Plugin.DELTA.simple_change
+            "key": self.right_type(self.key, self.Items[2][0]),
+            "name": self.name.format(self.Items[2][1]),
+            "value_type": self.VALUE_TYPE.numeric_unsigned,
+            "delay": self.plugin_config("interval"),
+            "delta": Plugin.DELTA.simple_change
         }) + template.item({
-            'key': self.right_type(self.key, self.Items[3][0]),
-            'name': self.name.format(self.Items[3][1]),
-            'value_type': self.VALUE_TYPE.numeric_unsigned,
-            'delay': self.plugin_config('interval'),
-            'delta': Plugin.DELTA.simple_change
+            "key": self.right_type(self.key, self.Items[3][0]),
+            "name": self.name.format(self.Items[3][1]),
+            "value_type": self.VALUE_TYPE.numeric_unsigned,
+            "delay": self.plugin_config("interval"),
+            "delta": Plugin.DELTA.simple_change
         })
         if not dashboard:
             return result
         else:
-            return [{'dashboard': {'name': self.right_type(self.key, self.Items[1][0]),
-                                   'page': ZbxTemplate.dashboard_page_wal['name'],
-                                   'size': ZbxTemplate.dashboard_widget_size_medium,
-                                   'position': 3}},
-                    {'dashboard': {'name': self.right_type(self.key, self.Items[2][0]),
-                                   'page': ZbxTemplate.dashboard_page_wal['name'],
-                                   'size': ZbxTemplate.dashboard_widget_size_medium,
-                                   'position': 4}}]
+            return [{
+                "dashboard": {"name": self.right_type(self.key, self.Items[1][0]),
+                              "page": ZbxTemplate.dashboard_page_wal["name"],
+                              "size": ZbxTemplate.dashboard_widget_size_medium,
+                              "position": 3}
+            },
+                {
+                    "dashboard": {"name": self.right_type(self.key, self.Items[2][0]),
+                                  "page": ZbxTemplate.dashboard_page_wal["name"],
+                                  "size": ZbxTemplate.dashboard_widget_size_medium,
+                                  "position": 4}
+                }]
 
     def graphs(self, template, dashboard=False):
         graph = []
-        result = ''
+        result = ""
         for item in self.Items:
             if item[4] == 1:
                 graph.append({
-                    'key': self.right_type(self.key, item[0]), 'color': item[2], 'yaxisside': item[3]
+                    "key": self.right_type(self.key, item[0]), "color": item[2], "yaxisside": item[3]
                 })
-        result += template.graph({'name': self.name.format("") + ' archive status ', 'items': graph})
+        result += template.graph({
+            "name": self.name.format("") + " archive status ",
+            "items": graph
+        })
         if not dashboard:
             return result
         else:
-            return [{'dashboard': {'name': self.name.format("") + ' archive status ',
-                                   'page': ZbxTemplate.dashboard_page_wal['name'],
-                                   'size': ZbxTemplate.dashboard_widget_size_medium,
-                                   'position': 1}}]
+            return [{
+                "dashboard": {"name": self.name.format("") + " archive status ",
+                              "page": ZbxTemplate.dashboard_page_wal["name"],
+                              "size": ZbxTemplate.dashboard_widget_size_medium,
+                              "position": 1}
+            }]
 
     def triggers(self, template, dashboard=False):
         return template.trigger({
-            'name': 'PostgreSQL count files in ./archive_status on {HOSTNAME} more than 2',
-            'expression': '{#TEMPLATE:' + self.right_type(self.key, self.Items[0][0]) +
-                          '.last()}&gt;' + self.plugin_config('max_count_files')
+            "name": "PostgreSQL count files in ./archive_status on {HOSTNAME} more than 2",
+            "expression": "{#TEMPLATE:" + self.right_type(self.key,
+                                                          self.Items[0][0]) + ".last()}&gt;" + self.plugin_config(
+                "max_count_files")
         })
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if LooseVersion(self.VersionPG) >= LooseVersion('10'):
-            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[0][0]),
-                                                         self.query_agent_count_files.format('wal_lsn', 'walfile')))
-            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[1][0]),
-                                                         self.query_agent_size_files.format('wal_lsn', 'walfile')))
+        if LooseVersion(self.VersionPG) >= LooseVersion("10"):
+            result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[0][0]),
+                                                           self.query_agent_count_files.format("wal_lsn", "walfile")))
+            result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[1][0]),
+                                                           self.query_agent_size_files.format("wal_lsn", "walfile")))
         else:
-            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[0][0]),
-                                                         self.query_agent_count_files.format('xlog_location', 'xlogfile')))
-            result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[1][0]),
-                                                         self.query_agent_size_files.format('xlog_location', 'xlogfile')))
-        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[2][0]),
-                                                     self.query_agent_archived_count))
-        result.append('{0}[*],$2 $1 -c "{1}"'.format(self.key.format("." + self.Items[3][0]),
-                                                     self.query_agent_failed_count))
+            result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[0][0]),
+                                                           self.query_agent_count_files.format("xlog_location",
+                                                                                               "xlogfile")))
+            result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[1][0]),
+                                                           self.query_agent_size_files.format("xlog_location",
+                                                                                              "xlogfile")))
+        result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[2][0]),
+                                                       self.query_agent_archived_count))
+        result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[3][0]),
+                                                       self.query_agent_failed_count))
         return template_zabbix.key_and_query(result)

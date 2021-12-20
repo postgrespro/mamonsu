@@ -2,7 +2,6 @@
 import os
 import threading
 import logging
-import struct
 
 from mamonsu.plugins.pgsql.driver.pg8000 import connect
 from mamonsu.plugins.pgsql.driver.pg8000.core import ProgrammingError
@@ -53,7 +52,7 @@ class Connection(ConnectionInfo):
     def query(self, query):
         self.lock.acquire()
         try:
-            self.log.debug('Run: "{0}"'.format(query))
+            self.log.debug('Run: "{0}"'.format(" ".join(query.lstrip().rstrip().replace("\n", " ").split())))
             self._check_connect()
             self.connected = False
             cursor = self.conn.cursor()

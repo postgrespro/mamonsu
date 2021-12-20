@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from mamonsu.lib.plugin import Plugin, PluginDisableException
 from .pool import Pooler
 import subprocess
