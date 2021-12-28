@@ -27,6 +27,7 @@ class ZbxSender(Plugin):
         self.port = config.fetch('zabbix', 'port', int)
         self.max_queue_size = config.fetch('sender', 'queue', int)
         self.fqdn = config.fetch('zabbix', 'client')
+        self.timeout = config.fetch('zabbix', 'timeout')
         self.re_send = config.fetch('zabbix', 're_send', bool)
         self.queue = Queue()
         self.log = logging.getLogger(
@@ -115,7 +116,9 @@ class ZbxSender(Plugin):
         packet = b'ZBXD\x01' + data_len + str.encode(data)
         try:
             sock = socket.socket()
+            sock.settimeout(int(self.timeout))
             sock.connect((self.host, self.port))
+            # time.sleep(100)
             self.log.debug('request: {0}'.format(data))
             sock.sendall(packet)
             resp_header = self._receive(sock, 13)
