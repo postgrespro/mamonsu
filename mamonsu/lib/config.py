@@ -52,6 +52,7 @@ class Config(DefaultConfig):
         config.set('zabbix', 'client', socket.gethostname())
         config.set('zabbix', 'address', '127.0.0.1')
         config.set('zabbix', 'port', str(10051))
+        config.set('zabbix', 'timeout', str(15))
         config.set('zabbix', 're_send', str(False))
 
         config.add_section('metric_log')
