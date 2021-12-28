@@ -158,7 +158,7 @@ class Plugin(object):
         return None
 
     def _log_exception(self, e, trace):
-        self.last_error_text = 'plugin {0} caught error: {1} {2}'.format(self.__class__.__name__.lower(), repr(e), e)
+        self.last_error_text = 'plugin {0} caught error: {1}'.format(self.__class__.__name__.lower(), e)
         self.log.error(self.last_error_text)
         self.log.info('hint: enable debug level to full exception trace')
         self.log.debug(trace)
