@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.2.1
+Version:        3.3.0
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,15 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Mon Jan 17 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.3.0-1
+  - fixed auxiliary extension schema search;
+  - fixed WAL metrics definition for native Zabbix agent;
+  - upgraded Autovacuum and Connection metrics for PG 10+: now it is evaluating using pg_stat_activity.backend_type which makes the calculation more accurate;
+  - added new Other Connections metric for PG 10+ to count metrics like auxiliary extension backends;
+  - added new configuration parameter to the [zabbix] section: timeout (in seconds);
+  - fixed Plugin Errors metric time interval to fit default '60 seconds' value;
+  - fixed Slave Replication Lag metric to exclude master server from calculation;
+
 * Mon Dec 13 2021 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.2.1-1
   - fixed Non-active Replication Slots trigger syntax;
   - upgraded Archive Queue Size and Archive Queue Length metrics to ignore non-standard WAL files (e.g. XXX.history);
