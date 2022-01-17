@@ -23,7 +23,7 @@ class Xlog(Plugin):
     """
     # get time of replication lag
     query_agent_replication_lag = """
-    SELECT CASE WHEN coalesce(pg_last_{1}(), '0/00000000') = coalesce(pg_last_{2}(), '0/00000000')
+    SELECT CASE WHEN NOT pg_is_in_recovery() OR coalesce(pg_last_{1}(), '0/00000000') = coalesce(pg_last_{2}(), '0/00000000')
                 THEN 0
                 ELSE extract (epoch FROM now() - coalesce(pg_last_xact_replay_timestamp(), now() - INTERVAL '{0} seconds'))
             END;

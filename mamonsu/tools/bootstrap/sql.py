@@ -49,7 +49,7 @@ $$ LANGUAGE SQL SECURITY DEFINER;
 CREATE OR REPLACE FUNCTION mamonsu.timestamp_get()
 RETURNS double precision AS $$
   SELECT
-      CASE WHEN pg_last_{11}() = pg_last_{12}() THEN 0
+      CASE WHEN NOT pg_is_in_recovery() OR pg_last_{11}() = pg_last_{12}() THEN 0
       ELSE extract (epoch FROM now() - coalesce(pg_last_xact_replay_timestamp(), to_timestamp(ts)))
       END
   FROM mamonsu.timestamp_master_{1}
