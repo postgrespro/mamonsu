@@ -53,7 +53,7 @@ class Supervisor(object):
                     plugin_errors += 1
             time.sleep(10)
             plugin_probes += 1
-            if plugin_probes >= 60:
+            if plugin_probes >= 6:
                 if plugin_errors > 0:
                     self._sender.send(
                         'mamonsu.plugin.errors[]',

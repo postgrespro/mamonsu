@@ -118,7 +118,6 @@ class ZbxSender(Plugin):
             sock = socket.socket()
             sock.settimeout(int(self.timeout))
             sock.connect((self.host, self.port))
-            # time.sleep(100)
             self.log.debug('request: {0}'.format(data))
             sock.sendall(packet)
             resp_header = self._receive(sock, 13)
