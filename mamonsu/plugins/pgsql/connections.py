@@ -12,20 +12,31 @@ class Connections(Plugin):
     DEFAULT_CONFIG = {
         "percent_connections_tr": str(90)
     }
-    # (state, key, name, graph)
+    # (state, key, name, graph item color)
     Items = [
-        ("active", "active", "number of active connections", "00BB00"),
-        ("idle", "idle", "number of idle connections", "0000BB"),
+        ("active", "active", "number of active user connections", "00BB00"),
+        ("idle", "idle", "number of idle user connections", "0000BB"),
         ("idle in transaction", "idle_in_transaction",
-         "number of idle in transaction connections", "CC00CC"),
+         "number of user idle in transaction connections", "CC00CC"),
         ("idle in transaction (aborted)", "idle_in_transaction_aborted",
-         "number of idle in transaction (aborted)", "CCCCCC"),
+         "number of user idle in transaction (aborted) connections", "CCCCCC"),
         ("fastpath function call", "fastpath_function_call",
-         "number of fastpath function call", "CCCC00"),
+         "number of user fastpath function call connections", "CCCC00"),
         ("disabled", "disabled",
-         "number of disabled",
+         "number of user disabled connections",
          "00CCCC")
     ]
+
+    # for PG 10+
+    default_backend_types = ["archiver", "autovacuum launcher", "autovacuum worker", "background worker",
+                             "background writer", "client backend", "checkpointer", "logical replication launcher",
+                             "logical replication worker", "parallel worker", "startup", "walreceiver", "walsender",
+                             "walwriter"]
+    query_other_connections = """
+    SELECT coalesce(count(*), 0)
+       FROM pg_catalog.pg_stat_activity
+       WHERE (backend_type NOT IN ('{0}'));
+    """.format("', '".join(default_backend_types))
 
     Max_connections = None
 
@@ -123,14 +134,18 @@ class Connections(Plugin):
             self.Max_connections = result[0][0]
         zbx.send("pgsql.connections[max_connections]", int(self.Max_connections))
 
+        if Pooler.server_version_greater("10.0"):
+            result = Pooler.query(self.query_other_connections)
+            zbx.send("pgsql.connections[other]", int(result[0][0]))
+
     def items(self, template, dashboard=False):
         result = template.item({
-            "name": "PostgreSQL: number of total connections",
+            "name": "PostgreSQL: number of user total connections",
             "key": self.right_type(self.key, "total"),
             "delay": self.plugin_config("interval")
         })
         result += template.item({
-            "name": "PostgreSQL: number of waiting connections",
+            "name": "PostgreSQL: number of user waiting connections",
             "key": self.right_type(self.key, "waiting"),
             "delay": self.plugin_config("interval")
         })
@@ -146,6 +161,14 @@ class Connections(Plugin):
                 "key": self.right_type(self.key, item[1]),
                 "delay": self.plugin_config("interval")
             })
+
+        if Pooler.server_version_greater("10.0"):
+            result += template.item({
+                "name": "PostgreSQL: number of other connections",
+                "key": self.right_type(self.key, "other"),
+                "delay": self.plugin_config("interval")
+            })
+
         if not dashboard:
             return result
         else:
@@ -160,20 +183,28 @@ class Connections(Plugin):
             })
         items.append({
             "key": self.right_type(self.key, "total"),
-            "color": "EEEEEE"
-        })
-        items.append({
-            "key": self.right_type(self.key, "waiting"),
             "color": "BB0000"
         })
         items.append({
-            "key": self.right_type(self.key, "max_connections"),
-            "color": "00BB00"
+            "key": self.right_type(self.key, "waiting"),
+            "color": "546E7A"
         })
+        items.append({
+            "key": self.right_type(self.key, "max_connections"),
+            "color": "067845"
+        })
+
+        if Pooler.server_version_greater("10.0"):
+            items.append({
+                "key": self.right_type(self.key, "other"),
+                "color": "8D6E63"
+            })
+
         graph = {
             "name": "PostgreSQL connections",
             "items": items
         }
+
         if not dashboard:
             return template.graph(graph)
         else:
@@ -218,5 +249,9 @@ class Connections(Plugin):
                     "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if LooseVersion(
                         self.VersionPG) >= LooseVersion(
                         "10") else "state IS NOT NULL")))
+            if LooseVersion(self.VersionPG) >= LooseVersion("10"):
+                result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".other"),
+                                                               self.query_other_connections.format(
+                                                                   "', '".join(self.default_backend_types))))
         result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".max_connections"), self.query_agent_max_conn))
         return template_zabbix.key_and_query(result)
