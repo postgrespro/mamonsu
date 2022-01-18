@@ -72,7 +72,8 @@ Bootstrap Mamonsu. This command can take the following options:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify a non-privileged user that will own all Mamonsu processes.
 
 **-x/--create-extensions**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates additional extensions (currently, pg_buffercache).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates additional extensions (currently, pg_buffercache).  
+ >**_NOTE:_**  *pg_buffercache* can sometimes generate overhead compared to the common behavior of other objects. To avoid this you can `SET work_mem` on *database* or *mamonsu user* level, but be careful not to affect other objects performance. 
 
 **-c/--config**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify mamonsu config file.  
@@ -80,7 +81,7 @@ Bootstrap Mamonsu. This command can take the following options:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*mamonsu bootstrap* gets info about mamonsu default database from config file.  
 
 **connection_options**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provide optional command-line connection parameters.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provide optional command-line connection parameters.
 
 ## export
 Syntax:
