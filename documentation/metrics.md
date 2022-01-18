@@ -2256,7 +2256,7 @@ Default config:
       </tr>
     </table>
 
-    *Max Connections* maps `pg_settings max_connections`.
+    *Max Connections* maps `pg_settings.max_connections`.
 
 
 2. **Active**  
@@ -2298,7 +2298,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL: number of disabled</td>
+        <td>PostgreSQL: number of user disabled connections</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -2331,7 +2331,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL: number of fastpath function call</td>
+        <td>PostgreSQL: number of user fastpath function call connections</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -2364,7 +2364,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL: number of idle connections</td>
+        <td>PostgreSQL: number of user idle connections</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -2397,7 +2397,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL: number of idle in transaction connections</td>
+        <td>PostgreSQL: number of user idle in transaction connections</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -2430,7 +2430,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL: number of idle in transaction (aborted)</td>
+        <td>PostgreSQL: number of user idle in transaction (aborted) connections</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -2463,7 +2463,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL: number of total connections</td>
+        <td>PostgreSQL: number of user total connections</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -2487,7 +2487,7 @@ Default config:
       </tr>
     </table>
 
-    *Total* calculates as summa of all connections from `pg_stat_activity` with not null state.
+    *Total* calculates as summa of all connections from `pg_stat_activity` with `backend_type` represents user connections (*client backend, parallel worker*).
 
 
 9. **Waiting**  
@@ -2496,7 +2496,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL: number of waiting connections</td>
+        <td>PostgreSQL: number of user waiting connections</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -2521,6 +2521,38 @@ Default config:
     </table>
 
     *Waiting* calculates as summa of all connections from `pg_stat_activity` with not null state and wait_event_type.
+
+10. **Other**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: number of other connections</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.connections[other]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>10+</td>
+      </tr>
+    </table>
+
+    *Waiting* calculates as summa of all connections from `pg_stat_activity` with additional `backend_type`.
 
 ### Graphs
 
