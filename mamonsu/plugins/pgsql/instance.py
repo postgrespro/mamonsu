@@ -69,6 +69,13 @@ class Instance(Plugin):
          Plugin.UNITS.none, Plugin.DELTA.simple_change)
     ]
 
+    key_server_mode = "pgsql.server_mode"
+    query_server_mode = """
+    SELECT CASE WHEN pg_is_in_recovery() THEN 'STANDBY'
+                ELSE 'MASTER'
+           END;
+    """
+
     def run(self, zbx):
         all_items = self.Items
         if Pooler.server_version_greater("12.0"):
@@ -82,7 +89,9 @@ class Instance(Plugin):
         for key, value in enumerate(result[0]):
             zbx_key, value = "pgsql.{0}".format(all_items[key][1]), int(value)
             zbx.send(zbx_key, value, all_items[key][5], only_positive_speed=True)
-        del columns, result
+        result_server_mode = Pooler.query(self.query_server_mode)[0][0]
+        zbx.send(self.key_server_mode, result_server_mode)
+        del columns, result, result_server_mode
 
     def items(self, template, dashboard=False):
         result = ""
@@ -100,6 +109,14 @@ class Instance(Plugin):
                 "units": item[4],
                 "delay": self.plugin_config("interval"),
                 "delta": delta
+            })
+            result += template.item({
+                "key": self.key_server_mode,
+                "name": "PostgreSQL server mode",
+                "value_type": self.VALUE_TYPE.text,
+                "units": self.UNITS.none,
+                "delay": self.plugin_config("interval"),
+                "delta": Plugin.DELTA.as_is
             })
         if not dashboard:
             return result
@@ -166,6 +183,13 @@ class Instance(Plugin):
                                   "position": 4}
                 }]
 
+    def triggers(self, template, dashboard=False):
+        return template.trigger({
+            "name": "PostgreSQL server mode changed on {HOSTNAME} to {ITEM.LASTVALUE}",
+            "expression": "{#TEMPLATE:" + self.key_server_mode + ".last()}&gt;" + self.plugin_config(
+                "max_xid_age")
+        })
+
     def keys_and_queries(self, template_zabbix):
         result = []
         if LooseVersion(self.VersionPG) < LooseVersion("12"):
@@ -177,4 +201,5 @@ class Instance(Plugin):
             keys = item[1].split("[")
             result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
                                                            self.query_agent.format(format(item[0]))))
+        result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key_server_mode, self.query_server_mode))
         return template_zabbix.key_and_query(result)
