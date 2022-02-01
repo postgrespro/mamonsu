@@ -186,8 +186,7 @@ class Instance(Plugin):
     def triggers(self, template, dashboard=False):
         return template.trigger({
             "name": "PostgreSQL server mode changed on {HOSTNAME} to {ITEM.LASTVALUE}",
-            "expression": "{#TEMPLATE:" + self.key_server_mode + ".last()}&gt;" + self.plugin_config(
-                "max_xid_age")
+            "expression": "{#TEMPLATE:" + self.key_server_mode + ".change()}>0"
         })
 
     def keys_and_queries(self, template_zabbix):
