@@ -3907,7 +3907,41 @@ Default config:
 
 *Replication metrics* use information from `pg_replication_slots`.
 
-1. **Non-active Replication Slots**  
+
+1. **Server Mode**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: server mode</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.server_mode</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Text</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Server Mode* shows server status as `MASTER` or `STANDBY`.
+
+
+2. **Non-active Replication Slots**  
    
     Zabbix item:  
     <table>
@@ -3940,7 +3974,7 @@ Default config:
     *Non-active Replication Slots* calculates as count of slots with `false` active status.
 
 
-2. **Streaming Replication Lag**  
+3. **Streaming Replication Lag**  
    
     Zabbix item:  
     <table>
@@ -4029,9 +4063,11 @@ Default config:
 
 ### Triggers
 
-1. **PostgreSQL number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})**  
+1. **PostgreSQL server mode changed on {HOSTNAME} to {ITEM.LASTVALUE}**
 
-2. **PostgreSQL streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})**  
+2. **PostgreSQL number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})**  
+
+3. **PostgreSQL streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})**  
     Triggers if *PostgreSQL: streaming replication lag* exceeds `lag_more_than_in_sec`.
 
 ### Temp Files
