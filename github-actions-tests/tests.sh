@@ -64,7 +64,7 @@ elif [ "${OS}" = "centos:8" ]; then
 
 elif [ "${OS%:*}" = "ubuntu" ]; then
     # install and set up components missing in docker image (sudo, wget, bc, unzip, lsb-release, gnupg, tzdata)
-    apt-get update && apt-get install -y sudo
+    apt-get clean && apt-get update && apt-get install -y sudo
     PACKAGE_MANAGER_INSTALL="sudo apt-get -y install"
     PACKAGE_MANAGER_REMOVE="sudo apt-get -y remove"
     eval "${PACKAGE_MANAGER_INSTALL} wget"
