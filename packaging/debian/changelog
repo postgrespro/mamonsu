@@ -1,3 +1,7 @@
+mamonsu (3.3.1-1) stable; urgency=low
+  * fixed logrotate script;
+  * added Server Mode metric and trigger;
+
 mamonsu (3.3.0-1) stable; urgency=low
   * fixed auxiliary extension schema search;
   * fixed WAL metrics definition for native Zabbix agent;
