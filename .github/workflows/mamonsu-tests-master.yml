@@ -22,7 +22,7 @@ jobs:
       MAMONSU_PATH: '/home/runner/work/mamonsu/mamonsu/'
     strategy:
       matrix:
-        docker_os: ['ubuntu:20.04', 'centos:7', 'centos:8']
+        docker_os: ['ubuntu:20.04', 'centos:7']
         zabbix_version: ['4.0.36', '4.4.10', '5.0.18', '5.4.8']
         pg_version: ['9.6', '10', '11', '12', '13', '14']
         exclude:
