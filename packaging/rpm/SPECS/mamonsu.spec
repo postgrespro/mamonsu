@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.3.0
+Version:        3.3.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -70,6 +70,10 @@ chown mamonsu.mamonsu /var/log/mamonsu
 /sbin/chkconfig --del mamonsu
 
 %changelog
+* Wed Feb 2 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.3.1-1
+  - fixed logrotate script;
+  - added Server Mode metric and trigger;
+
 * Mon Jan 17 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.3.0-1
   - fixed auxiliary extension schema search;
   - fixed WAL metrics definition for native Zabbix agent;
