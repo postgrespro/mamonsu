@@ -75,6 +75,11 @@ class PgStatStatement(Plugin):
          ("PostgreSQL statements info: last statistics reset", "0000CC", 0))
     ]
 
+    all_graphs = [
+        ("PostgreSQL statements: bytes", None),
+        ("PostgreSQL statements: spend time", 1),
+        ("PostgreSQL statements: wal statistics", None)]
+
     def run(self, zbx):
         if not self.extension_installed("pg_stat_statements"):
             return
@@ -124,12 +129,8 @@ class PgStatStatement(Plugin):
             return []
 
     def graphs(self, template, dashboard=False):
-        all_graphs = [
-            ("PostgreSQL statements: bytes", None),
-            ("PostgreSQL statements: spend time", 1),
-            ("PostgreSQL statements: wal statistics", None)]
         result = ""
-        for graph_item in all_graphs:
+        for graph_item in self.all_graphs:
             items = []
             for item in self.Items + self.Items_pg_13:
                 if item[5][0] == graph_item[0]:

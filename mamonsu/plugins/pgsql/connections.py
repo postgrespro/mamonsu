@@ -68,6 +68,7 @@ class Connections(Plugin):
     WHERE name = 'max_connections';
     """
     key = "pgsql.connections{0}"
+    graph_name = "PostgreSQL connections"
 
     def run(self, zbx):
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater("2.3.4"):
@@ -201,7 +202,7 @@ class Connections(Plugin):
             })
 
         graph = {
-            "name": "PostgreSQL connections",
+            "name": self.graph_name,
             "items": items
         }
 

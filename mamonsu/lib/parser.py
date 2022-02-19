@@ -92,6 +92,7 @@ commands:
     {prog} zabbix item error <host name>
     {prog} zabbix item lastvalue <host name>
     {prog} zabbix item lastclock <host name>
+    {prog} zabbix dashboard upload <template name>
     {prog} zabbix version
 
 Options:

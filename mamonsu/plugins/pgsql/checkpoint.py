@@ -48,6 +48,9 @@ class Checkpoint(Plugin):
          Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1)
     ]
 
+    graph_name_count = "PostgreSQL checkpoints count"
+    graph_name_ws = "PostgreSQL checkpoints write/sync"
+
     def run(self, zbx):
         columns = [x[0] for x in self.Items]
         result = Pooler.query(self.query.format(", ".join(columns)))
@@ -92,13 +95,12 @@ class Checkpoint(Plugin):
                     "delay": self.Interval
                 })
         result = template.graph({
-            "name": "PostgreSQL checkpoints count",
+            "name": self.graph_name_count,
             "items": items_checkpoints
-        }) + \
-                 template.graph({
-                     "name": "PostgreSQL checkpoints write/sync",
-                     "items": items_checkpoints_write_sync
-                 })
+        }) + template.graph({
+             "name": self.graph_name_ws,
+             "items": items_checkpoints_write_sync
+        })
         if not dashboard:
             return result
         else:

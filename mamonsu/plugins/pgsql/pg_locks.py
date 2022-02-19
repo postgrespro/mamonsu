@@ -47,6 +47,8 @@ class PgLocks(Plugin):
          "00CCCC")
     ]
 
+    graph_name = "PostgreSQL locks sampling"
+
     def run(self, zbx):
         result = Pooler.query(self.query)
         for item in self.Items:
@@ -81,7 +83,8 @@ class PgLocks(Plugin):
             return lock_graphs
 
     def graphs(self, template, dashboard=False):
-        name, items = "PostgreSQL locks sampling", []
+        name = self.graph_name
+        items = []
         for item in self.Items:
             items.append({
                 "key": self.right_type(self.key, item[0]),

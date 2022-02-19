@@ -47,6 +47,9 @@ class BgWriter(Plugin):
          Plugin.DELTA.simple_change)
     ]
 
+    graph_name_buffers = "PostgreSQL bgwriter buffers"
+    graph_name_ws = "PostgreSQL bgwriter write/sync"
+
     def run(self, zbx):
         columns = [x[0] for x in self.Items]
         result = Pooler.query(self.query.format(", ".join(columns)))
@@ -88,24 +91,23 @@ class BgWriter(Plugin):
                     "color": item[3][1]
                 })
         result = template.graph({
-            "name": "PostgreSQL bgwriter buffers",
+            "name": self.graph_name_buffers,
             "items": items_buffers
-        }) + \
-                 template.graph({
-                     "name": "PostgreSQL bgwriter write/sync",
-                     "items": items_write_sync
-                 })
+        }) + template.graph({
+            "name": self.graph_name_ws,
+            "items": items_write_sync
+        })
         if not dashboard:
             return result
         else:
             return [{
-                "dashboard": {"name": "PostgreSQL bgwriter buffers",
+                "dashboard": {"name": self.graph_name_buffers,
                               "page": ZbxTemplate.dashboard_page_overview["name"],
                               "size": ZbxTemplate.dashboard_widget_size_medium,
                               "position": 7}
             },
                 {
-                    "dashboard": {"name": "PostgreSQL bgwriter write/sync",
+                    "dashboard": {"name": self.graph_name_ws,
                                   "page": ZbxTemplate.dashboard_page_overview["name"],
                                   "size": ZbxTemplate.dashboard_widget_size_medium,
                                   "position": 8}
