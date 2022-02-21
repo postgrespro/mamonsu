@@ -64,7 +64,7 @@ while read metric; do
     GREP=$( mamonsu agent metric-get ${metric} | grep "pgsql\|sys\|mamonsu" )
     if [ -z "$GREP" ]; then
 	      echo "---> ERROR: Cannot found metric $metric"
-#        exit 11
+        exit 11
     fi
 done <"${METRICS_FILE}"
 
