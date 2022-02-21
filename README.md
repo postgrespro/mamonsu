@@ -128,6 +128,7 @@ Mamonsu provides the command-line interface for updating some Zabbix server sett
     mamonsu upload [upload_options]  
     mamonsu zabbix {template | host | hostgroup} server_action  
     mamonsu zabbix item {error | lastvalue | lastclock} host_id  
+    mamonsu zabbix dashboard upload [template_name]  
     mamonsu zabbix version  
     mamonsu --version  
     mamonsu --help
