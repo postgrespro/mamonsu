@@ -90,7 +90,6 @@ pgsql.wal.buffers_full
 pgsql.wal.count[]
 pgsql.wal.fpi.count[]
 pgsql.wal.records.count[]
-pgsql.wal.sync_duty
 pgsql.wal.sync_time
 pgsql.wal.write[]
 pgsql.wal.write_time
