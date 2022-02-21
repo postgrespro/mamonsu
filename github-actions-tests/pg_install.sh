@@ -67,6 +67,7 @@ sudo chmod 700 /pg${PG_VERSION}/data_slave_physical
 
 # create master-slave cluster
 sudo -u postgres ${PG_PATH}initdb -D /pg${PG_VERSION}/data_master/
+sudo -u postgres echo "shared_preload_libraries='pg_stat_statements'" >> /pg${PG_VERSION}/data_master/postgresql.conf
 sudo -u postgres echo "archive_mode=on" >> /pg${PG_VERSION}/data_master/postgresql.conf
 sudo -u postgres echo "archive_command='cp %p /pg"${PG_VERSION}"/wals/%f'" >> /pg${PG_VERSION}/data_master/postgresql.conf
 sudo -u postgres echo "wal_level=replica" >> /pg${PG_VERSION}/data_master/postgresql.conf
