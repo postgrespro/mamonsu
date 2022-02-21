@@ -111,6 +111,10 @@ echo && echo "------> mamonsu zabbix hostgroup delete"
 HOSTGROUP_ID=$( mamonsu zabbix $OPTIONS hostgroup id "Test servers" )
 mamonsu zabbix $OPTIONS hostgroup delete ${HOSTGROUP_ID} | grep "groupids.*${HOSTGROUP_ID}" || exit 11
 
+# test 'mamonsu dashboard'
+echo && echo "------> mamonsu zabbix dashboard upload"
+mamonsu zabbix $OPTIONS dashboard upload "Mamonsu PostgreSQL" | grep "True\|Mamonsu dashboard" || exit 11
+
 # test 'mamonsu template'
 echo && echo "------> mamonsu zabbix template list"
 mamonsu zabbix $OPTIONS template list | grep "Mamonsu PostgreSQL" || exit 11
@@ -127,9 +131,5 @@ echo && echo "------> mamonsu zabbix template delete"
 TEMPLATE_ID=$( mamonsu zabbix $OPTIONS template id "mamonsu-zabbix" )
 mamonsu zabbix $OPTIONS template delete ${TEMPLATE_ID} | grep "templateids.*${TEMPLATE_ID}" || exit 11
 rm -rf template.xml
-
-# test 'mamonsu dashboard'
-echo && echo "------> mamonsu zabbix dashboard upload"
-mamonsu zabbix $OPTIONS dashboard upload "Mamonsu PostgreSQL" | grep "True\|Mamonsu dashboard" || exit 11
 
 exit 0
