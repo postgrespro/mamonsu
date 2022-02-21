@@ -4,6 +4,7 @@
 
 # default parameters:
 PG_VERSION="14"
+OS="centos:7"
 
 for i in "$@"
 do
@@ -22,7 +23,7 @@ case $i in
 esac
 done
 
-METRICS_FILE = "/mamonsu/github-actions-tests/sources/metrics-linux-${PG_VERSION}.txt"
+METRICS_FILE="/mamonsu/github-actions-tests/sources/metrics-linux-${PG_VERSION}.txt"
 
 echo && echo
 echo "================================================================================================================="
@@ -62,6 +63,6 @@ while read metric; do
 	      echo "---> ERROR: Cannot found metric $metric"
 #        exit 11
     fi
-done <${METRICS_FILE}
+done <"${METRICS_FILE}"
 
 echo && echo
