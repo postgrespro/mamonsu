@@ -56,6 +56,9 @@ END
 # pg_stat_statements preps
 sudo -u postgres ${PG_PATH}psql -d mamonsu_test_db -c "CREATE EXTENSION pg_stat_statements;"
 
+# wait few intervals to get all possible metrics
+sleep 50
+
 # read metric for specific version
 while read metric; do
     GREP=$( mamonsu agent metric-get ${metric} | grep "pgsql\|sys\|mamonsu" )
