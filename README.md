@@ -64,21 +64,59 @@ See details in chapter called "[Metrics](documentation/metrics.md)".
 ### Zabbix Screens
 Since Mamonsu **3.0** template contains screens:
 - Overview  
-  Contains graphs representing general important metrics: PostgreSQL connections, shared buffers size and usage, autovacuum, tuples, checkpoint, background worker, system CPU and memory.  
-![Mamonsu Overview](examples/Mamonsu%20Overview.png)
+  Contains graphs representing general important metrics: PostgreSQL connections, shared buffers size and usage, autovacuum, tuples, checkpoint, background worker, system CPU and memory.
+    <details>
+        <summary>Click to view</summary>
+        <img src="examples/Mamonsu%20Overview.png" alt="Mamonsu Overview"/>
+    </details>
+
+
 - PostgreSQL Instance  
-  Contains information about Instance availability  
-![Mamonsu PostgreSQL Instance](examples/Mamonsu%20PostgreSQL%20Instance.png)
+  Contains information about Instance availability
+    <details>
+        <summary>Click to view</summary>
+        <img src="examples/Mamonsu%20PostgreSQL%20Instance.png" alt="Mamonsu PostgreSQL Instance"/>
+    </details>
+
+
 - PostgreSQL Locks
-![Mamonsu PostgreSQL Locks](examples/Mamonsu%20PostgreSQL%20Locks.png)
-- PostgreSQL Transactions   
-![Mamonsu PostgreSQL Transactions](examples/Mamonsu%20PostgreSQL%20Transactions.png)
+    <details>
+        <summary>Click to view</summary>
+        <img src="examples/Mamonsu%20PostgreSQL%20Locks.png" alt="Mamonsu PostgreSQL Locks"/>
+    </details>
+
+
+- PostgreSQL Transactions  
+    <details>
+        <summary>Click to view</summary>
+        <img src="examples/Mamonsu%20PostgreSQL%20Transactions.png" alt="Mamonsu PostgreSQL Transactions"/>
+    </details>
+
+
 - PostgreSQL WAL  
-  Contains information about WAL size, archiving  
-![Mamonsu PostgreSQL WAL](examples/Mamonsu%20PostgreSQL%20WAL.png)
+  Contains information about WAL size, archiving
+    <details>
+        <summary>Click to view</summary>
+        <img src="examples/Mamonsu%20PostgreSQL%20WAL.png" alt="Mamonsu PostgreSQL WAL"/>
+    </details>
+
+
 - System  
   Contains information about state of the system
-![Mamonsu System](examples/Mamonsu%20System.png)
+    <details>
+        <summary>Click to view</summary>
+        <img src="examples/Mamonsu%20System.png" alt="Mamonsu System"/>
+    </details>
+
+
+- Mamonsu Dashboard (*only for Zabbix 6.0+*)  
+  Pretty dashboard containing all necessary PostgreSQL and system information.
+    <details>
+        <summary>Click to view</summary>
+        <img src="examples/Mamonsu%20Dashboard.png" alt="Mamonsu Dashboard"/>
+    </details>
+
+
 ### Tools
 Mamonsu provides the command-line interface for updating some Zabbix server settings, as well as getting an overview of the monitored system configuration and tuning PostgreSQL and system settings on the fly. Also it provides tool to generate a detailed report on the hardware, operating system, memory usage and other parameters of the monitored system. List of Mamonsu commands and options:  
 
