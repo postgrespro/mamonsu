@@ -1,5 +1,23 @@
 #!/bin/sh
 
+# mamonsu metrics tests
+
+# default parameters:
+PG_VERSION="14"
+
+for i in "$@"
+do
+case $i in
+    --pg-version=*)
+    PG_VERSION="${i#*=}"
+    shift
+    ;;
+    *)
+          # unknown option
+    ;;
+esac
+done
+
 echo && echo
 echo "================================================================================================================="
 echo "---> Test MAMONSU metrics"
@@ -11,6 +29,6 @@ while read metric; do
 	      echo "---> ERROR: Cannot found metric $metric"
 #        exit 11
     fi
-done </mamonsu/github-actions-tests/sources/metrics-linux.txt
+done </mamonsu/github-actions-tests/sources/metrics-linux-${PG_VERSION}.txt
 
 echo && echo

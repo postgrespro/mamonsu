@@ -3,7 +3,7 @@
 # 'mamonsu export' tool testing
 
 # default parameters:
-PG_VERSION="12"
+PG_VERSION="14"
 
 for i in "$@"
 do

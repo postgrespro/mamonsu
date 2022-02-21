@@ -86,4 +86,4 @@ jobs:
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tools/zabbix_cli.sh --zbx-address="${{ steps.zabbix_address.outputs.zabbix_address }}" --zbx-version="${{ matrix.zabbix_version }}"
 
       - name: Test Mamonsu metrics on master
-        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/metrics.sh
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/metrics.sh --pg-version="${{ matrix.pg_version }}"
