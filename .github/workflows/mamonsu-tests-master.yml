@@ -7,12 +7,14 @@ on:
     paths-ignore:
       - 'README.md'
       - 'documentation/**'
+      - 'examples/**'
   pull_request:
     branches:
       - master
     paths-ignore:
       - 'README.md'
       - 'documentation/**'
+      - 'examples/**'
 
 jobs:
   mamonsu-tests:
@@ -23,7 +25,7 @@ jobs:
     strategy:
       matrix:
         docker_os: ['ubuntu:20.04', 'centos:7']
-        zabbix_version: ['4.0.36', '4.4.10', '5.0.18', '5.4.8']
+        zabbix_version: ['4.0.38', '5.0.20', '5.4.10', '6.0.0']
         pg_version: ['9.6', '10', '11', '12', '13', '14']
         exclude:
           # excludes PG 9.6 on CentOS 8
