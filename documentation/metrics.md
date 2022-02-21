@@ -494,7 +494,33 @@ Default config:
       </tr>
     </table>
 
-12. **Inactive Memory**
+12. **Available Memory**
+
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>Free: Available memory</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>system.memory[available]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td>Bytes</td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+    </table>
+
+13. **Inactive Memory**
 
     Zabbix item:  
     <table>
@@ -520,7 +546,7 @@ Default config:
       </tr>
     </table>
 
-13. **Mapped Memory**
+14. **Mapped Memory**
 
     Zabbix item:  
     <table>
@@ -546,7 +572,7 @@ Default config:
       </tr>
     </table>
 
-14. **PageTables Memory**
+15. **PageTables Memory**
 
     Zabbix item:  
     <table>
@@ -572,7 +598,7 @@ Default config:
       </tr>
     </table>
 
-15. **Slab Memory**
+16. **Slab Memory**
 
     Zabbix item:  
     <table>
@@ -598,7 +624,7 @@ Default config:
       </tr>
     </table>
 
-16. **Swap Memory**
+17. **Swap Memory**
 
     Zabbix item:  
     <table>
@@ -627,7 +653,7 @@ Default config:
     *Swap Memory* calculated as `SwapTotal - SwapCached`.
 
 
-17. **SwapCached Memory**
+18. **SwapCached Memory**
 
     Zabbix item:  
     <table>
@@ -653,7 +679,7 @@ Default config:
       </tr>
     </table>
 
-18. **VMallocUsed Memory**
+19. **VMallocUsed Memory**
 
     Zabbix item:  
     <table>
@@ -2799,7 +2825,40 @@ Default config:
 ### Items
 
 
-1. **Ping**  
+1. **Server Version**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: server version</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.version[]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Text</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+    *Server Version* shows PostgreSQL/PostgresPro server version number.
+
+
+2. **Ping**  
    
     Zabbix item:  
     <table>
@@ -2832,7 +2891,7 @@ Default config:
     *Ping* calculates as difference between *ping query* start time and time of receiving *ping query* result.
 
 
-2. **Cache Hit Ratio**  
+3. **Cache Hit Ratio**  
    
     Zabbix item:  
     <table>
@@ -2865,7 +2924,7 @@ Default config:
     *Cache Hit Ratio* calculates as ratio between last value of `Blocks hit` and summa of last values of `Blocks hit` and `Blocks read`.
 
 
-3. **Service Uptime**  
+4. **Service Uptime**  
    
     Zabbix item:  
     <table>
