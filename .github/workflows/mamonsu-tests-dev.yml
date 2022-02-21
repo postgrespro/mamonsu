@@ -7,12 +7,14 @@ on:
     paths-ignore:
       - 'README.md'
       - 'documentation/**'
+      - 'examples/**'
   pull_request:
     branches:
       - dev
     paths-ignore:
       - 'README.md'
       - 'documentation/**'
+      - 'examples/**'
 
 jobs:
   mamonsu-tests:
@@ -23,7 +25,7 @@ jobs:
     strategy:
       matrix:
         docker_os: ['centos:7']
-        zabbix_version: ['5.4.8']
+        zabbix_version: ['5.4.10']
         pg_version: ['9.6', '10', '11', '12', '13', '14']
 
     steps:
@@ -57,7 +59,7 @@ jobs:
           echo "::set-output name=zabbix_address::$(hostname -I | awk '{print $1}')"
         id: zabbix_address
       - name: Edit Zabbix address in agent.conf
-        run: sed -i "s/\(address *= *\).*/\1 ${{ steps.zabbix_address.outputs.zabbix_address }}/" ${{ env.MAMONSU_PATH }}/github-actions-tests/sources/agent_3.3.1.conf
+        run: sed -i "s/\(address *= *\).*/\1 ${{ steps.zabbix_address.outputs.zabbix_address }}/" ${{ env.MAMONSU_PATH }}/github-actions-tests/sources/agent_3.4.0.conf
 
       - name: Copy test scripts to container
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) mkdir -p -m 755 /mamonsu/

@@ -1,3 +1,9 @@
+mamonsu (3.4.0-1) stable; urgency=low
+  * added Server Version metric;
+  * added Available Memory metric;
+  * fixed native Zabbix Agent user parameters format;
+  * added new Mamonsu zabbix tool: 'mamonsu zabbix dashboard upload' for Zabbix 6.0+;
+
 mamonsu (3.3.1-1) stable; urgency=low
   * fixed logrotate script;
   * added Server Mode metric and trigger;

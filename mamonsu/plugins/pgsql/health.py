@@ -18,9 +18,15 @@ class PgHealth(Plugin):
     query_uptime = """
     SELECT ceil(extract(epoch FROM pg_postmaster_start_time()));
     """
+    query_version = """
+    SELECT div(setting::int, 10000) || '.' || mod(setting::int, 10000)
+    FROM pg_catalog.pg_settings WHERE name = 'server_version_num';
+    """
+
     key_ping = "pgsql.ping{0}"
     key_uptime = "pgsql.uptime{0}"
     key_cache = "pgsql.cache{0}"
+    key_version = "pgsql.version{0}"
 
     def run(self, zbx):
         start_time = time.time()
@@ -28,6 +34,8 @@ class PgHealth(Plugin):
         zbx.send(self.key_ping.format("[]"), (time.time() - start_time) * 1000)
         result = Pooler.query(self.query_uptime)
         zbx.send(self.key_uptime.format("[]"), int(result[0][0]))
+        result = Pooler.query(self.query_version)
+        zbx.send(self.key_version.format("[]"), result[0][0])
 
     def items(self, template, dashboard=False):
         result = ""
@@ -56,6 +64,12 @@ class PgHealth(Plugin):
             "value_type": value_type,
             "delay": delay,
             "units": Plugin.UNITS.unixtime
+        }) + template.item({
+            "name": "PostgreSQL: server version",
+            "key": self.right_type(self.key_version),
+            "value_type": Plugin.VALUE_TYPE.text,
+            "delay": delay,
+            "units": Plugin.UNITS.none
         })
         if not dashboard:
             return result
@@ -96,5 +110,6 @@ class PgHealth(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = ["{0}[*],$2 $1 -c \"{1}\"".format(self.key_ping.format(""), self.query_health),
-                  "{0}[*],$2 $1 -c \"{1}\"".format(self.key_uptime.format(""), self.query_uptime)]
+                  "{0}[*],$2 $1 -c \"{1}\"".format(self.key_uptime.format(""), self.query_uptime),
+                  "{0}[*],$2 $1 -c \"{1}\"".format(self.key_version.format(""), self.query_version)]
         return template_zabbix.key_and_query(result)

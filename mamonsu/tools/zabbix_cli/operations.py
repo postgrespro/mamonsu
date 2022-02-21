@@ -6,6 +6,7 @@ import json
 from mamonsu.tools.zabbix_cli.request import Request
 from mamonsu.lib.parser import zabbix_msg
 from distutils.version import LooseVersion
+from mamonsu.tools.zabbix_cli.dashboard import generate_dashboard
 
 
 class Operations(object):
@@ -33,11 +34,13 @@ class Operations(object):
             return self.item(self.arg.commands[1:])
         elif self.arg.commands[0] == 'version':
             return self.version(self.arg.commands[1:])
+        elif self.arg.commands[0] == 'dashboard':
+            return self.dashboard(self.arg.commands[1:])
         else:
             self._print_help()
 
     def _print_help(self):
-        sys.stderr.write(self._help_msg)
+        sys.stderr.write(self._help_msg + '\n')
         sys.exit(1)
 
     def _generic_delete(self, typ, ids):
@@ -173,9 +176,11 @@ class Operations(object):
                                                    'deleteMissing': True}
             if LooseVersion(zabbix_version) < LooseVersion('5.2'):
                 params['rules']['templateScreens'] = {'createMissing': True,
+                                                      'updateExisting': False,
                                                       'deleteMissing': True}
             else:
                 params['rules']['templateDashboards'] = {'createMissing': True,
+                                                         'updateExisting': False,
                                                          'deleteMissing': True}
             try:
                 if not self.req.post(method='configuration.import', params=params):
@@ -318,3 +323,41 @@ class Operations(object):
         except Exception as e:
             sys.stderr.write('Error find: {0}\n'.format(e))
             sys.exit(3)
+
+    def dashboard(self, args):
+        if args[0] == 'upload':
+            if not len(args) == 2:
+                return self._print_help()
+            zabbix_version = str(self.req.post(method='apiinfo.version', params=[]))
+            if LooseVersion(zabbix_version) < LooseVersion('6.0'):
+                print("You can import Mamonsu dashboard only on Zabbix 6.0+.")
+                return
+            else:
+                template = args[1]
+                try:
+                    fltr, ids = {'host': [template]}, 'templateid'
+                    uuid = self.req.post(
+                        method='{0}.get'.format('template'),
+                        params={'filter': fltr})[0]['uuid']
+                    params = {
+                        'format': 'xml',
+                        'rules': {
+                            'templateDashboards': {
+                                'createMissing': True,
+                                'updateExisting': False,
+                                'deleteMissing': False
+                            }
+                        },
+                        'source': generate_dashboard(template, uuid)
+                    }
+                    result = self.req.post(
+                        method='configuration.import',
+                        params=params)
+                    print(result)
+                except Exception as e:
+                    sys.stderr.write('Dashboard upload error: {0}\n'.format(e))
+                    sys.exit(3)
+                finally:
+                    return
+        else:
+            return self._print_help()

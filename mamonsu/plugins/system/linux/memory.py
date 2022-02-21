@@ -33,6 +33,9 @@ class Memory(Plugin):
         ('unused', 'MemFree',
          'Free: Wasted memory', '000000'),
 
+        ('available', 'MemAvailable',
+         'Free: Available', '008000'),
+
         ('slab', 'Slab',
          'Slab: Kernel used memory (inode cache)', 'CCCC00'),
 

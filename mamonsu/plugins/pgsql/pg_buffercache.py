@@ -28,6 +28,8 @@ class PgBufferCache(Plugin):
         ("dirty", "PostgreSQL: shared buffer dirty size", "00CC00")
     ]
 
+    graph_name = "PostgreSQL: shared buffer"
+
     def run(self, zbx):
         if not self.extension_installed("pg_buffercache"):
             return
@@ -57,11 +59,11 @@ class PgBufferCache(Plugin):
                 "color": item[2]})
         if not dashboard:
             return template.graph({
-                "name": "PostgreSQL: shared buffer",
+                "name": self.graph_name,
                 "items": items})
         else:
             return [{
-                "dashboard": {"name": "PostgreSQL: shared buffer",
+                "dashboard": {"name": self.graph_name,
                               "page": ZbxTemplate.dashboard_page_overview["name"],
                               "size": ZbxTemplate.dashboard_widget_size_medium,
                               "position": 2}

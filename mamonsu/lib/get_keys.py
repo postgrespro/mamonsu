@@ -37,5 +37,5 @@ class GetKeys(object):
             args = []
         result = ""
         for one in args:
-            result += 'UserParameter={0}\n'.format(one)
+            result += 'UserParameter={0}\n'.format(' '.join(one.replace('\n', ' ').split()))
         return result

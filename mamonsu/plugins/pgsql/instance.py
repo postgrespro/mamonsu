@@ -76,6 +76,12 @@ class Instance(Plugin):
            END;
     """
 
+    graphs_name = {
+        "rate": "PostgreSQL instance: rate",
+        "events": "PostgreSQL instance: events",
+        "temp": "PostgreSQL instance: temp files",
+        "tuples": "PostgreSQL instance: tuples"}
+
     def run(self, zbx):
         all_items = self.Items
         if Pooler.server_version_greater("12.0"):
@@ -144,13 +150,8 @@ class Instance(Plugin):
                 }]
 
     def graphs(self, template, dashboard=False):
-        graphs_name = [
-            "PostgreSQL instance: rate",
-            "PostgreSQL instance: events",
-            "PostgreSQL instance: temp files",
-            "PostgreSQL instance: tuples"]
         result = ""
-        for name in graphs_name:
+        for name in self.graphs_name.values():
             items = []
             for num, item in enumerate(self.Items + self.Items_pg_12):
                 if item[3][0] == name:
