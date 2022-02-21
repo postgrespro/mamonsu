@@ -53,6 +53,9 @@ BEGIN
 END
 \$do\$;"
 
+# pg_stat_statements preps
+sudo -u postgres ${PG_PATH}psql -c "CREATE EXTENSION pg_stat_statements;"
+
 # read metric for specific version
 while read metric; do
     GREP=$( mamonsu agent metric-get ${metric} | grep "pgsql\|sys\|mamonsu" )
