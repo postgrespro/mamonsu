@@ -9,7 +9,8 @@ List of Mamonsu commands and options:
     mamonsu tune [tuning_options] [connection_options]  
     mamonsu upload [upload_options]  
     mamonsu zabbix {template | host | hostgroup} server_action  
-    mamonsu zabbix item {error | lastvalue | lastclock} host_id  
+    mamonsu zabbix item {error | lastvalue | lastclock} host_id
+    mamonsu zabbix dashboard upload [template_name]
     mamonsu zabbix version  
     mamonsu --version  
     mamonsu --help
@@ -30,6 +31,7 @@ List of Mamonsu commands and options:
     - [zabbix host](#zabbix-host)
     - [zabbix hostgroup](#zabbix-hostgroup)
     - [zabbix template](#zabbix-template)
+    - [zabbix dashboard](#zabbix-dashboard)
 - [Connection options](#connection-options)
 - [Zabbix Server Actions](#zabbix-server-actions)
 - [Usage](#usage)
@@ -339,6 +341,17 @@ mamonsu zabbix template delete template_id
 mamonsu zabbix template export file
 ```
 Manage Zabbix templates using one of the actions described in the section called “[Zabbix Server Actions](#zabbix-server-actions)”.
+
+### zabbix dashboard
+Syntax:
+```shell
+mamonsu zabbix dashboard upload [template_name]
+```
+Upload Zabbix Dashboard with necessary PostgreSQL and system metrics to Mamonsu template. Works only with Zabbix 6.0 and higher. Template example:  
+<details>
+    <summary>Click to view</summary>
+    <img src="../examples/Mamonsu%20Dashboard.png" alt="Mamonsu Dashboard">
+</details>
 
 ## --version
 Syntax:
