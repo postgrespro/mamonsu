@@ -43,7 +43,7 @@ elif [ "${OS%:*}" = "ubuntu" ]; then
 fi
 
 # archive_mode preps
-sudo -u postgres ${PG_PATH}psql -c "DO
+sudo -u postgres ${PG_PATH}psql -d mamonsu_test_db -c "DO
 \$do\$
 DECLARE
    func_name varchar;
@@ -54,7 +54,7 @@ END
 \$do\$;"
 
 # pg_stat_statements preps
-sudo -u postgres ${PG_PATH}psql -c "CREATE EXTENSION pg_stat_statements;"
+sudo -u postgres ${PG_PATH}psql -d mamonsu_test_db -c "CREATE EXTENSION pg_stat_statements;"
 
 # read metric for specific version
 while read metric; do
