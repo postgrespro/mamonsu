@@ -58,7 +58,7 @@ class ArchiveCommand(Plugin):
     name = "PostgreSQL archive command {0}"
     Items = [
         # key, desc, color, side, graph
-        ("count_files_to_archive", "count files in archive_status need to archiv", "FFD700", 0, 1),
+        ("count_files_to_archive", "count files in archive_status need to archive", "FFD700", 0, 1),
         ("size_files_to_archive", "size of files need to archive", "00FF00", 0, 0),
         ("archived_files", "count archived files", "00F000", 0, 1),
         ("failed_trying_to_archive", "count attempts to archive files", "FF0000", 0, 1),

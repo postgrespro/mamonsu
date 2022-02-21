@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # default parameters
-ZBX_VERSION='5.4.8'
+ZBX_VERSION='5.4.10'
 
 for parameter in "$@"
 do
