@@ -128,4 +128,8 @@ TEMPLATE_ID=$( mamonsu zabbix $OPTIONS template id "mamonsu-zabbix" )
 mamonsu zabbix $OPTIONS template delete ${TEMPLATE_ID} | grep "templateids.*${TEMPLATE_ID}" || exit 11
 rm -rf template.xml
 
+# test 'mamonsu dashboard'
+echo && echo "------> mamonsu zabbix dashboard upload"
+mamonsu zabbix $OPTIONS dashboard upload "Mamonsu PostgreSQL" | grep "True\|Mamonsu dashboard" || exit 11
+
 exit 0
