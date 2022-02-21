@@ -53,9 +53,6 @@ BEGIN
 END
 \$do\$;"
 
-# wait for Cache Hit Ratio metric
-sleep 120
-
 # read metric for specific version
 while read metric; do
     GREP=$( mamonsu agent metric-get ${metric} | grep "pgsql\|sys\|mamonsu" )
