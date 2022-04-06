@@ -18,13 +18,13 @@ class Instance(Plugin):
         #    ('graph name', color, side), units, delta
 
         ("xact_commit", "transactions[committed]", "transactions: committed",
-         ("PostgreSQL instance: rate", "0000CC", 1),
+         ("PostgreSQL instance: transactions rate", "0000CC", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("blks_hit", "blocks[hit]", "blocks: hit",
-         ("PostgreSQL instance: rate", "00CC00", 0),
+         ("PostgreSQL instance: blocks rate", "00CC00", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("blks_read", "blocks[read]", "blocks: read",
-         ("PostgreSQL instance: rate", "CC0000", 0),
+         ("PostgreSQL instance: blocks rate", "CC0000", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
 
         ("conflicts", "events[conflicts]", "event: conflicts",
@@ -34,7 +34,7 @@ class Instance(Plugin):
          ("PostgreSQL instance: events", "000000", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
         ("xact_rollback", "events[xact_rollback]", "event: rollbacks",
-         ("PostgreSQL instance: events", "CC0000", 0),
+         ("PostgreSQL instance: transactions rate", "CC0000", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
         ("temp_bytes", "temp[bytes]", "temp: bytes written",
@@ -77,7 +77,8 @@ class Instance(Plugin):
     """
 
     graphs_name = {
-        "rate": "PostgreSQL instance: rate",
+        "transactions": "PostgreSQL instance: blocks rate",
+        "blocks": "PostgreSQL instance: transactions rate",
         "events": "PostgreSQL instance: events",
         "temp": "PostgreSQL instance: temp files",
         "tuples": "PostgreSQL instance: tuples"}
