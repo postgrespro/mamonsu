@@ -7,9 +7,10 @@ from .pool import Pooler
 
 class PgStatStatement(Plugin):
     AgentPluginType = "pg"
+    # TODO: добавить выбор схемы
     query = """
     SELECT {0}
-    FROM public.pg_stat_statements;
+    FROM public.{1};
     """
     query_info = """
     SELECT {0}
@@ -81,8 +82,12 @@ class PgStatStatement(Plugin):
         ("PostgreSQL statements: wal statistics", None)]
 
     def run(self, zbx):
-        if not self.extension_installed("pg_stat_statements"):
+        if not self.extension_installed("pg_stat_statements") or not self.extension_installed("pgpro_stats"):
             return
+        if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
+            extension = "pgpro_stats_statements"
+        else:
+            extension = "pg_stat_statements"
         if Pooler.server_version_greater("14"):
             self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
             all_items = self.Items + self.Items_pg_13
@@ -102,7 +107,7 @@ class PgStatStatement(Plugin):
             self.Items[5][1] = self.Items[5][1].format("total_time")
             all_items = self.Items
             columns = [x[1] for x in all_items]
-        result = Pooler.query(self.query.format(", ".join(columns)))
+        result = Pooler.query(self.query.format(", ".join(columns), extension))
         for key, value in enumerate(result[0]):
             zbx_key, value = "pgsql.{0}".format(all_items[key][0]), int(value)
             zbx.send(zbx_key, value, all_items[key][4])
@@ -152,7 +157,11 @@ class PgStatStatement(Plugin):
             return []
 
     def keys_and_queries(self, template_zabbix):
-        if self.extension_installed("pg_stat_statements"):
+        if self.extension_installed("pg_stat_statements") or not self.extension_installed("pgpro_stats"):
+            if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
+                extension = "pgpro_stats_statements"
+            else:
+                extension = "pg_stat_statements"
             result = []
             if LooseVersion(self.VersionPG) < LooseVersion("13"):
                 self.Items[5][1] = self.Items[5][1].format("total_time")
@@ -164,7 +173,7 @@ class PgStatStatement(Plugin):
             for i, item in enumerate(all_items):
                 keys = item[0].split("[")
                 result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                               self.query.format(item[1])))
+                                                               self.query.format(item[1], extension)))
 
             if LooseVersion(self.VersionPG) >= LooseVersion("14"):
                 all_items = self.Items_pg_14

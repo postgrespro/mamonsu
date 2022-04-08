@@ -51,6 +51,8 @@ class AutoTunePgsl(object):
 
         if 'pg_wait_sampling' in extensions:
             needed_libraries.append('pg_wait_sampling')
+        if 'pgpro_stats' in extensions:
+            needed_libraries.append('pgpro_stats')
 
         if len(needed_libraries) == 0:
             return
