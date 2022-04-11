@@ -238,7 +238,7 @@ class PgWaitSampling(Plugin):
                         float(0), Plugin.DELTA.speed_per_second)
 
         if not self.extension_installed("pg_wait_sampling") or not self.extension_installed("pgpro_stats"):
-            return
+            self.disable_and_exit_if_extension_is_not_installed(ext="pg_wait_sampling/pgpro_stats")
         if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
             extension = "pgpro_stats"
         else:
