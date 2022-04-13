@@ -229,8 +229,9 @@ def run_deploy():
         try:
             bootstrap_extension_queries = fill_query_params(CreatePgBuffercacheFunctionsSQL)
             Pooler.query(bootstrap_extension_queries)
-            bootstrap_extension_queries = fill_query_params(CreateWaitSamplingFunctionsSQL)
-            Pooler.query(bootstrap_extension_queries)
+            if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
+                bootstrap_extension_queries = fill_query_params(CreateWaitSamplingFunctionsSQL)
+                Pooler.query(bootstrap_extension_queries)
         except Exception as e:
             sys.stderr.write(
                 "Bootstrap failed to create auxiliary extensions and functions.\n"
@@ -250,8 +251,9 @@ def run_deploy():
         try:
             bootstrap_grant_extension_queries = fill_grant_params(GrantsOnPgBuffercacheFunctionsSQL, args)
             Pooler.query(bootstrap_grant_extension_queries)
-            bootstrap_grant_extension_queries = fill_grant_params(GrantsOnWaitSamplingFunctionsSQL, args)
-            Pooler.query(bootstrap_grant_extension_queries)
+            if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
+                bootstrap_grant_extension_queries = fill_grant_params(GrantsOnWaitSamplingFunctionsSQL, args)
+                Pooler.query(bootstrap_grant_extension_queries)
         except Exception as e:
             sys.stderr.write("Bootstrap failed to grant execution permission to "
                              "the function which required auxiliary extension.\n")
