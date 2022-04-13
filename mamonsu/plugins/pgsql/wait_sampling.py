@@ -56,8 +56,13 @@ class PgWaitSampling(Plugin):
             WHERE key <> 'Total'
             GROUP BY 1
             ORDER BY count DESC;
+            """,
+        "pgpro_stats_bootstrap":
+            """
+            SELECT lock_type, count FROM mamonsu.wait_sampling_all_locks();
             """
     }
+    AllLockQuery["pg_wait_sampling_bootstrap"] = AllLockQuery["pg_wait_sampling"]
 
     HWLockItems = [
         # (sql_key, zbx_key, name, color)
@@ -86,14 +91,14 @@ class PgWaitSampling(Plugin):
     HWLockQuery = {
         "pg_wait_sampling":
             """
-            SELECT
-                event,
-                sum(count) AS count
-            FROM pg_wait_sampling_profile
-            WHERE event_type = 'Lock'
-            GROUP BY 1
-            ORDER BY count DESC;
-            """,
+                SELECT
+                    event,
+                    sum(count) AS count
+                FROM pg_wait_sampling_profile
+                WHERE event_type = 'Lock'
+                GROUP BY 1
+                ORDER BY count DESC;
+                """,
         "pgpro_stats":
             """
             WITH lock_table AS (
@@ -112,8 +117,13 @@ class PgWaitSampling(Plugin):
             WHERE key = 'Lock'
             GROUP BY 1
             ORDER BY count DESC;
+            """,
+        "pgpro_stats_bootstrap":
+            """
+            SELECT lock_type, count FROM mamonsu.wait_sampling_hw_locks();
             """
     }
+    HWLockQuery["pg_wait_sampling_bootstrap"] = HWLockQuery["pg_wait_sampling"]
 
     LWLockItems = [
         # (sql_key, zbx_key, name, color)
@@ -163,7 +173,8 @@ class PgWaitSampling(Plugin):
                   FROM jsonb_each((SELECT wait_stats
                                    FROM pgpro_stats_totals
                                    WHERE object_type = 'cluster'))) setoflocks, 
-            jsonb_each(setoflocks.locktuple) AS json_data)
+            jsonb_each(setoflocks.locktuple) AS json_data
+            WHERE setoflocks.key IN ('Lock', 'LWLock', 'LWLockTranche', 'LWLockNamed'))
             SELECT
                 CASE
                     WHEN lock_type = 'ProcArrayLock' THEN 'xid'
@@ -186,39 +197,15 @@ class PgWaitSampling(Plugin):
                 END,
                 sum(count) AS count
             FROM lock_table
-            WHERE key <> 'Total'
-            AND key IN ({0})
             GROUP BY 1
             ORDER BY count DESC;
+            """,
+        "pgpro_stats_bootstrap":
+            """
+            SELECT lock_type, count FROM mamonsu.wait_sampling_lw_locks();
             """
     }
-
-    lwlocks_list_tranche = [
-        # LWLockTranche
-        "clog", "commit_timestamp,	subtrans", "multixact_offset", "multixact_member", "async", "oldserxid",
-        "wal_insert", "buffer_content", "buffer_io", "replication_origin", "replication_slot_io", "proc",
-        "buffer_mapping", "lock_manager", "predicate_lock_manager",
-        "parallel_query_dsa", "tbm",
-        "parallel_append", "parallel_hash_join",
-        "serializable_xact"
-    ]
-    lwlocks_list_named = [
-        # LWLockNamed
-        "ShmemIndex", "OidGen", "XidGen", "ProcArray", "SInvalRead", "SInvalWrite", "WALBufMapping", "WALWrite",
-        "ControlFile", "Checkpoint", "XactSLRU", "SubtransSLRU", "MultiXactGen", "MultiXactOffsetSLRU",
-        "MultiXactMemberSLRU", "RelCacheInit", "CheckpointerComm", "TwoPhaseState", "TablespaceCreate", "BtreeVacuum",
-        "AddinShmemInit", "Autovacuum", "AutovacuumSchedule", "SyncScan", "RelationMapping", "NotifySLRU",
-        "NotifyQueue", "SerializableXactHash", "SerializableFinishedList", "SerializablePredicateList", "SerialSLRU",
-        "SyncRep", "BackgroundWorker", "DynamicSharedMemoryControl", "AutoFile", "ReplicationSlotAllocation",
-        "ReplicationSlotControl", "CommitTsSLRU", "CommitTs", "ReplicationOrigin", "MultiXactTruncation",
-        "OldSnapshotTimeMap", "LogicalRepWorker", "XactTruncation", "XactTruncation", "BackendRandom",
-        "WrapLimitsVacuum", "NotifyQueueTail", "CLogControl", "SubtransControl", "MultiXactOffsetControl",
-        "MultiXactMemberControl", "AsyncCtl", "AsyncQueue", "OldSerXid", "CommitTsControl", "CLogTruncation"
-    ]
-
-    LWLockQuery["pgpro_stats"] = LWLockQuery["pgpro_stats"].format(
-        "'" + "','".join(lwlocks_list_tranche) + "','" + "','".join(lwlocks_list_named) + "','" + "','".join(
-            [x + "Lock" for x in lwlocks_list_named]) + "'")
+    LWLockQuery["pg_wait_sampling_bootstrap"] = LWLockQuery["pg_wait_sampling"]
 
     def run(self, zbx):
 
@@ -240,13 +227,21 @@ class PgWaitSampling(Plugin):
         if not self.extension_installed("pg_wait_sampling") or not self.extension_installed("pgpro_stats"):
             self.disable_and_exit_if_extension_is_not_installed(ext="pg_wait_sampling/pgpro_stats")
         if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
+            if not Pooler.is_bootstraped():
+                self.disable_and_exit_if_not_superuser()
             extension = "pgpro_stats"
         else:
             extension = "pg_wait_sampling"
 
-        find_and_send(Pooler.query(self.AllLockQuery[extension]), self.AllLockItems, zbx)
-        find_and_send(Pooler.query(self.HWLockQuery[extension]), self.HWLockItems, zbx)
-        find_and_send(Pooler.query(self.LWLockQuery[extension]), self.LWLockItems, zbx)
+        find_and_send(Pooler.query(
+            self.AllLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.AllLockQuery[extension]),
+            self.AllLockItems, zbx)
+        find_and_send(Pooler.query(
+            self.HWLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.HWLockQuery[extension]),
+            self.HWLockItems, zbx)
+        find_and_send(Pooler.query(
+            self.LWLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.LWLockQuery[extension]),
+            self.LWLockItems, zbx)
 
     def items(self, template, dashboard=False):
         result = ""

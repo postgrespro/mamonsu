@@ -74,7 +74,7 @@ class Pool(object):
                    total_lag
             FROM mamonsu.count_{1}_lag_lsn();
             """
-        ),
+        )
     }
 
     def __init__(self, params=None):
@@ -145,6 +145,7 @@ class Pool(object):
                 self._cache["bootstrap"]["counter"] += 1
                 return self._cache["bootstrap"]["storage"][db]
         self._cache["bootstrap"]["counter"] = 0
+        # TODO: изменить на нормальное название, 'config' слишком общее
         sql = """
         SELECT count(*) 
         FROM pg_catalog.pg_class 
