@@ -28,7 +28,7 @@ class PgWaitSampling(Plugin):
                     ELSE 'buffer'
                 END,
                 sum(count) AS count
-            FROM pg_wait_sampling_profile
+            FROM {0}.pg_wait_sampling_profile
             WHERE event_type is not null
             GROUP BY 1
             ORDER BY count DESC;
@@ -41,7 +41,7 @@ class PgWaitSampling(Plugin):
                    json_data.value::int AS count
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
-                                   FROM pgpro_stats_totals
+                                   FROM {0}.pgpro_stats_totals
                                    WHERE object_type = 'cluster'))) setoflocks, 
             jsonb_each(setoflocks.locktuple) AS json_data)
             SELECT
@@ -94,7 +94,7 @@ class PgWaitSampling(Plugin):
                 SELECT
                     event,
                     sum(count) AS count
-                FROM pg_wait_sampling_profile
+                FROM {0}.pg_wait_sampling_profile
                 WHERE event_type = 'Lock'
                 GROUP BY 1
                 ORDER BY count DESC;
@@ -107,7 +107,7 @@ class PgWaitSampling(Plugin):
                    json_data.value::int AS count
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
-                                   FROM pgpro_stats_totals
+                                   FROM {0}.pgpro_stats_totals
                                    WHERE object_type = 'cluster'))) setoflocks, 
             jsonb_each(setoflocks.locktuple) AS json_data)
             SELECT
@@ -158,7 +158,7 @@ class PgWaitSampling(Plugin):
                     ELSE 'other'
                 END,
                 sum(count) AS count
-            FROM pg_wait_sampling_profile
+            FROM {0}.pg_wait_sampling_profile
             WHERE event_type = 'LWLockTranche' OR event_type = 'LWLockNamed'
             GROUP BY 1
             ORDER BY count DESC;
@@ -171,7 +171,7 @@ class PgWaitSampling(Plugin):
                    json_data.value::int AS count
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
-                                   FROM pgpro_stats_totals
+                                   FROM {0}.pgpro_stats_totals
                                    WHERE object_type = 'cluster'))) setoflocks, 
             jsonb_each(setoflocks.locktuple) AS json_data
             WHERE setoflocks.key IN ('Lock', 'LWLock', 'LWLockTranche', 'LWLockNamed'))
@@ -233,15 +233,17 @@ class PgWaitSampling(Plugin):
         else:
             extension = "pg_wait_sampling"
 
+        extension_schema = self.extension_schema(extension=extension)
+
         find_and_send(Pooler.query(
-            self.AllLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.AllLockQuery[extension]),
-            self.AllLockItems, zbx)
+            self.AllLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.AllLockQuery[
+                extension].format(extension_schema)), self.AllLockItems, zbx)
         find_and_send(Pooler.query(
-            self.HWLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.HWLockQuery[extension]),
-            self.HWLockItems, zbx)
+            self.HWLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.HWLockQuery[
+                extension].format(extension_schema)), self.HWLockItems, zbx)
         find_and_send(Pooler.query(
-            self.LWLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.LWLockQuery[extension]),
-            self.LWLockItems, zbx)
+            self.LWLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.LWLockQuery[
+                extension].format(extension_schema)), self.LWLockItems, zbx)
 
     def items(self, template, dashboard=False):
         result = ""
