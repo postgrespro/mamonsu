@@ -57,7 +57,7 @@ END
 sudo -u postgres ${PG_PATH}psql -d mamonsu_test_db -c "CREATE EXTENSION pg_stat_statements;"
 
 # wait few intervals to get all possible metrics
-sleep 200
+sleep 120
 
 # read metric for specific version
 while read metric; do
