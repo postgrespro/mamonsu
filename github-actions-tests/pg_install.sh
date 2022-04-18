@@ -77,6 +77,7 @@ sudo -u postgres echo "host    replication     replicator      127.0.0.1/0      
 sudo -u postgres ${PG_PATH}pg_ctl start -D /pg${PG_VERSION}/data_master/
 sleep 3
 sudo -u postgres ${PG_PATH}psql -c "CREATE DATABASE mamonsu_test_db;"
+sudo -u postgres ${PG_PATH}psql -d mamonsu_test_db -c "CREATE EXTENSION pg_stat_statements;"
 sudo -u postgres ${PG_PATH}psql -d mamonsu_test_db -c "CREATE TABLE mamonsu_test_table(id serial, value integer);"
 sudo -u postgres ${PG_PATH}psql -d mamonsu_test_db -c "INSERT INTO mamonsu_test_table(value) SELECT * FROM generate_series(1, 10000);"
 sudo -u postgres ${PG_PATH}psql -c "CREATE USER replicator WITH REPLICATION ENCRYPTED PASSWORD 'secret';"

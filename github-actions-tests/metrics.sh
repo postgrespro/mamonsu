@@ -54,7 +54,7 @@ END
 \$do\$;"
 
 # pg_stat_statements preps
-sudo -u postgres ${PG_PATH}psql -d mamonsu_test_db -c "CREATE EXTENSION pg_stat_statements;"
+# sudo -u postgres ${PG_PATH}psql -d mamonsu_test_db -c "CREATE EXTENSION pg_stat_statements;"
 
 # wait few intervals to get all possible metrics
 sleep 120
