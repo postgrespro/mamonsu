@@ -4,7 +4,7 @@ from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
 
 
-class PgWaitSampling(Plugin):
+class WaitSampling(Plugin):
     AgentPluginType = "pg"
 
     AllLockItems = [
