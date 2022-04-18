@@ -7,13 +7,12 @@ from .pool import Pooler
 
 class PgStatStatement(Plugin):
     AgentPluginType = "pg"
-    # TODO: добавить выбор схемы
     query = """
-    SELECT {0}
-    FROM public.{1};
+    SELECT {metrics}
+    FROM {extension_schema}.{extension};
     """
     query_info = """
-    SELECT {0}
+    SELECT {metrics}
     FROM public.pg_stat_statements_info;
     """
     key = "pgsql."
@@ -86,15 +85,17 @@ class PgStatStatement(Plugin):
             self.disable_and_exit_if_extension_is_not_installed(ext="pg_stat_statements/pgpro_stats")
         if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
             extension = "pgpro_stats_statements"
+            extension_schema = self.extension_schema(extension="pgpro_stats")
         else:
             extension = "pg_stat_statements"
+            extension_schema = self.extension_schema(extension="pg_stat_statements")
         if Pooler.server_version_greater("14"):
             self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
             all_items = self.Items + self.Items_pg_13
             columns = [x[1] for x in all_items]
             info_items = self.Items_pg_14
             info_params = [x[1] for x in info_items]
-            info_result = Pooler.query(self.query_info.format(", ".join(info_params)))
+            info_result = Pooler.query(self.query_info.format(metrics=(", ".join(info_params))))
             for key, value in enumerate(info_result[0]):
                 zbx_key, value = "pgsql.{0}".format(
                     info_items[key][0]), int(value)
@@ -107,7 +108,7 @@ class PgStatStatement(Plugin):
             self.Items[5][1] = self.Items[5][1].format("total_time")
             all_items = self.Items
             columns = [x[1] for x in all_items]
-        result = Pooler.query(self.query.format(", ".join(columns), extension))
+        result = Pooler.query(self.query.format(metrics=(", ".join(columns)), extension_schema=extension_schema, extension=extension))
         for key, value in enumerate(result[0]):
             zbx_key, value = "pgsql.{0}".format(all_items[key][0]), int(value)
             zbx.send(zbx_key, value, all_items[key][4])
@@ -173,14 +174,14 @@ class PgStatStatement(Plugin):
             for i, item in enumerate(all_items):
                 keys = item[0].split("[")
                 result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                               self.query.format(item[1], extension)))
+                                                               self.query.format(metrics=item[1], extension_schema=extension_schema, extension=extension)))
 
             if LooseVersion(self.VersionPG) >= LooseVersion("14"):
                 all_items = self.Items_pg_14
                 for i, item in enumerate(all_items):
                     keys = item[0].split("[")
                     result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                                   self.query_info.format(item[1])))
+                                                                   self.query_info.format(metrics=(item[1]))))
             return template_zabbix.key_and_query(result)
         else:
             return
