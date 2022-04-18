@@ -51,9 +51,6 @@
   - [pg_locks](#pg_locks)
     - [Items](#items-13)
     - [Graphs](#graphs-8)
-  - [pg_stat_statements](#pg_stat_statements)
-    - [Items](#items-14)
-    - [Graphs](#graphs-9)
   - [Prepared Transactions](#prepared-transactions)
     - [Items](#items-15)
     - [Graphs](#graphs-10)
@@ -64,6 +61,9 @@
     - [Items](#items-16)
     - [Discovery Rules](#discovery-rules-4)
     - [Triggers](#triggers-8)
+  - [Statements](#statements)
+    - [Items](#items-14)
+    - [Graphs](#graphs-9)
   - [Temp Files](#temp-files)
     - [Items](#items-17)
     - [Graphs](#graphs-11)
@@ -79,7 +79,7 @@
   - [Compressed File System](#compressed-file-system)
     - [Items](#items-21)
     - [Discovery Rules](#discovery-rules-5)
-  - [pg_wait_sampling](#pg_wait_sampling)
+  - [Wait Sampling](#wait-sampling)
     - [Items](#items-22)
     - [Graphs](#graphs-13)
     
@@ -3438,11 +3438,317 @@ Default config:
   </tr>
 </table>
 
-### pg_stat_statements
+### Prepared Transactions
+
+Default config:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_prepared_transaction_time = 18000
 
 ### Items
 
-*pg_stat_statements metrics* use information from `pg_stat_statements` and `pg_stat_statements_info`.
+*Prepared Transactions metrics* use information from `pg_prepared_xacts`.   
+
+1. **Prepared Transactions Count**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: number of prepared transactions</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.prepared.count</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Prepared Transactions Count* calculates as summa of all rows in `pg_prepared_xacts`.
+
+
+2. **Oldest Prepared Transaction Time**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: oldest prepared transaction time in sec</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.prepared.oldest</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Oldest Prepared Transaction Time* calculates as `max(now() - prepared)`.
+
+### Graphs
+
+<table>
+  <tr>
+    <th>Name</th>
+    <td>PostgreSQL prepared transaction</td>
+  </tr>
+  <tr>
+    <th>Metrics</th>
+    <td>PostgreSQL: number of prepared transactions	<br> PostgreSQL: oldest prepared transaction time in sec</td>
+  </tr>
+</table>
+
+### Triggers
+
+1. **PostgreSQL prepared transaction is too old on {HOSTNAME}**  
+    Triggers if *PostgreSQL: oldest prepared transaction time in sec* exceeds `max_prepared_transaction_time`.
+
+### Relations
+
+### Discovery Rules
+
+1. **Relation Size Discovery**
+
+    Items:
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>Relation size: {#RELATIONNAME}</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.relation.size[{#RELATIONNAME}]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td>Bytes</td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+    </table>
+
+    Graphs:
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL relation size: {#RELATIONNAME}</td>
+      </tr>
+      <tr>
+        <th>Metrics</th>
+        <td>Relation size: {#RELATIONNAME}</td>
+      </tr>
+    </table>
+
+### Replication
+
+Default config:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lag_more_than_in_sec = 300
+
+### Items
+
+*Replication metrics* use information from `pg_replication_slots`.
+
+
+1. **Server Mode**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: server mode</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.server_mode</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Text</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Server Mode* shows server status as `MASTER` or `STANDBY`.
+
+
+2. **Non-active Replication Slots**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: count non-active replication slots</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.replication.non_active_slots[]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Non-active Replication Slots* calculates as count of slots with `false` active status.
+
+
+3. **Streaming Replication Lag**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: streaming replication lag</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.replication_lag[sec]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Streaming Replication Lag* calculates as difference between now and `pg_last_xact_replay_timestamp`.
+
+### Discovery Rules
+
+1. **Replication Lag Discovery**
+
+    Items:
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>Delta of total lag for {#APPLICATION_NAME}</td>
+        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written, flushed and applied</td>
+        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written and flushed it</td>
+        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written it</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.replication.total_lag[{#APPLICATION_NAME}]</td>
+        <td>pgsql.replication.replay_lag[{#APPLICATION_NAME}]</td>
+        <td>pgsql.replication.flush_lag[{#APPLICATION_NAME}]</td>
+        <td>pgsql.replication.write_lag[{#APPLICATION_NAME}]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+        <td>Numeric (float)</td>
+        <td>Numeric (float)</td>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+        <td>Text</td>
+        <td>Text</td>
+        <td>Text</td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+        <td>As Is</td>
+        <td>As Is</td>
+        <td>As Is</td>
+      </tr>
+    </table>
+
+    Graphs:
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>Delta of total lag for {#APPLICATION_NAME}</td>
+      </tr>
+      <tr>
+        <th>Metrics</th>
+        <td>Delta of total lag for {#APPLICATION_NAME}</td>
+      </tr>
+    </table>
+
+### Triggers
+
+1. **PostgreSQL server mode changed on {HOSTNAME} to {ITEM.LASTVALUE}**
+
+2. **PostgreSQL number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})**  
+
+3. **PostgreSQL streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})**  
+    Triggers if *PostgreSQL: streaming replication lag* exceeds `lag_more_than_in_sec`.
+
+### Statements
+
+### Items
+
+*Statements metrics* use information from `pg_stat_statements` and `pg_stat_statements_info` for PostgreSQL cluster and from `pgpro_stats` extension for PostgresPro cluster.
 
 1. **Amount of WAL Files**  
    
@@ -3822,312 +4128,6 @@ Default config:
     <td>PostgreSQL statements: amount of wal files <br> PostgreSQL statements: amount of wal records <br> PostgreSQL statements: full page writes</td>
   </tr>
 </table>
-
-### Prepared Transactions
-
-Default config:  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_prepared_transaction_time = 18000
-
-### Items
-
-*Prepared Transactions metrics* use information from `pg_prepared_xacts`.   
-
-1. **Prepared Transactions Count**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL: number of prepared transactions</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.prepared.count</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-   
-    *Prepared Transactions Count* calculates as summa of all rows in `pg_prepared_xacts`.
-
-
-2. **Oldest Prepared Transaction Time**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL: oldest prepared transaction time in sec</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.prepared.oldest</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-   
-    *Oldest Prepared Transaction Time* calculates as `max(now() - prepared)`.
-
-### Graphs
-
-<table>
-  <tr>
-    <th>Name</th>
-    <td>PostgreSQL prepared transaction</td>
-  </tr>
-  <tr>
-    <th>Metrics</th>
-    <td>PostgreSQL: number of prepared transactions	<br> PostgreSQL: oldest prepared transaction time in sec</td>
-  </tr>
-</table>
-
-### Triggers
-
-1. **PostgreSQL prepared transaction is too old on {HOSTNAME}**  
-    Triggers if *PostgreSQL: oldest prepared transaction time in sec* exceeds `max_prepared_transaction_time`.
-
-### Relations
-
-### Discovery Rules
-
-1. **Relation Size Discovery**
-
-    Items:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>Relation size: {#RELATIONNAME}</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.relation.size[{#RELATIONNAME}]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td>Bytes</td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-    </table>
-
-    Graphs:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL relation size: {#RELATIONNAME}</td>
-      </tr>
-      <tr>
-        <th>Metrics</th>
-        <td>Relation size: {#RELATIONNAME}</td>
-      </tr>
-    </table>
-
-### Replication
-
-Default config:  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lag_more_than_in_sec = 300
-
-### Items
-
-*Replication metrics* use information from `pg_replication_slots`.
-
-
-1. **Server Mode**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL: server mode</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.server_mode</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Text</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-   
-    *Server Mode* shows server status as `MASTER` or `STANDBY`.
-
-
-2. **Non-active Replication Slots**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL: count non-active replication slots</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.replication.non_active_slots[]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-   
-    *Non-active Replication Slots* calculates as count of slots with `false` active status.
-
-
-3. **Streaming Replication Lag**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL: streaming replication lag</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.replication_lag[sec]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-   
-    *Streaming Replication Lag* calculates as difference between now and `pg_last_xact_replay_timestamp`.
-
-### Discovery Rules
-
-1. **Replication Lag Discovery**
-
-    Items:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>Delta of total lag for {#APPLICATION_NAME}</td>
-        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written, flushed and applied</td>
-        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written and flushed it</td>
-        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written it</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.replication.total_lag[{#APPLICATION_NAME}]</td>
-        <td>pgsql.replication.replay_lag[{#APPLICATION_NAME}]</td>
-        <td>pgsql.replication.flush_lag[{#APPLICATION_NAME}]</td>
-        <td>pgsql.replication.write_lag[{#APPLICATION_NAME}]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-        <td>Numeric (float)</td>
-        <td>Numeric (float)</td>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-        <td>Text</td>
-        <td>Text</td>
-        <td>Text</td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-        <td>As Is</td>
-        <td>As Is</td>
-        <td>As Is</td>
-      </tr>
-    </table>
-
-    Graphs:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>Delta of total lag for {#APPLICATION_NAME}</td>
-      </tr>
-      <tr>
-        <th>Metrics</th>
-        <td>Delta of total lag for {#APPLICATION_NAME}</td>
-      </tr>
-    </table>
-
-### Triggers
-
-1. **PostgreSQL server mode changed on {HOSTNAME} to {ITEM.LASTVALUE}**
-
-2. **PostgreSQL number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})**  
-
-3. **PostgreSQL streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})**  
-    Triggers if *PostgreSQL: streaming replication lag* exceeds `lag_more_than_in_sec`.
 
 ### Temp Files
 
@@ -5021,11 +5021,11 @@ Default config:
       </tr>
     </table>
 
-### pg_wait_sampling
+### Wait Sampling
 
 ### Items
 
-*pg_wait_sampling metrics* use information from `pg_wait_sampling_profile`.  
+*Wait Sampling metrics* use information from `pgpro_stats` extension by default or from `pg_wait_sampling` extension if you installed it on non-PostgrePro edition.  
 
 ***Buffer Locks***
 1. **Buffer Locks**  
