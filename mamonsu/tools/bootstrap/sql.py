@@ -314,6 +314,46 @@ END
 $do$;
 """
 
+CreateStatementsFunctionsSQL = """
+DO
+$do$
+DECLARE
+    pg_type text;
+    extension_schema text;
+BEGIN
+   CREATE EXTENSION IF NOT EXISTS pgpro_stats WITH SCHEMA mamonsu;
+
+   WITH tb_type AS (SELECT exists(SELECT * FROM pg_proc WHERE proname = 'pgpro_version'))
+   SELECT
+      CASE
+         WHEN exists = false THEN 'vanilla' ELSE 'pro'
+      END INTO pg_type
+   FROM tb_type;
+
+   <<functions_creation>>
+   BEGIN
+   IF pg_type = 'pro' THEN
+      IF (SELECT EXISTS(SELECT * FROM pg_extension WHERE extname = 'pgpro_stats')) THEN
+         SELECT n.nspname INTO extension_schema
+         FROM pg_extension e
+         JOIN pg_namespace n
+         ON e.extnamespace = n.oid
+         WHERE e.extname = 'pgpro_stats';   
+         EXECUTE 'CREATE OR REPLACE FUNCTION mamonsu.statements_pro()
+                  RETURNS TABLE({columns}) AS $$
+                      SELECT {metrics}
+                      FROM ' || extension_schema || '.pgpro_stats_totals
+                      WHERE object_type = ''cluster'';        
+                  $$ LANGUAGE SQL SECURITY DEFINER;';
+      ELSE
+         EXIT functions_creation;
+      END IF;
+   END IF;
+   END functions_creation;
+END
+$do$;
+"""
+
 GrantsOnDefaultSchemaSQL = """
 ALTER TABLE mamonsu.config OWNER TO {1};
 
@@ -360,6 +400,17 @@ BEGIN
    END IF;
    IF (SELECT EXISTS(SELECT proname FROM pg_proc WHERE proname = 'wait_sampling_lw_locks')) THEN
       EXECUTE 'GRANT EXECUTE ON FUNCTION mamonsu.wait_sampling_lw_locks() TO {1};';
+   END IF;
+END
+$do$;
+"""
+
+GrantsOnStatementsFunctionsSQL = """
+DO
+$do$
+BEGIN
+   IF (SELECT EXISTS(SELECT proname FROM pg_proc WHERE proname = 'statements_pro')) THEN
+      EXECUTE 'GRANT EXECUTE ON FUNCTION mamonsu.statements_pro() TO {1};';
    END IF;
 END
 $do$;
