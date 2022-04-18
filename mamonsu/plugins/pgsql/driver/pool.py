@@ -87,7 +87,7 @@ class Pool(object):
             "server_version": {"storage": {}},
             "bootstrap": {"storage": {}, "counter": 0, "cache": 10, "version": False},
             "recovery": {"storage": {}, "counter": 0, "cache": 10},
-            "extension_schema": {"pg_buffercache": {}},
+            "extension_schema": {"pg_buffercache": {}, "pg_stat_statements": {}, "pg_wait_sampling": {}, "pgpro_stats": {}},
             "pgpro": {"storage": {}},
             "pgproee": {"storage": {}}
         }
@@ -228,7 +228,6 @@ class Pool(object):
             return self._cache["extension_schema"][extension][db]
         except:
             self._connections[db].log.info("{0} is not installed".format(extension))
-            self._cache["pgproee"][db] = False
 
     def databases(self):
         result, databases = self.query("""
