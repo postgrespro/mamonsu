@@ -27,9 +27,10 @@ class WaitSampling(Plugin):
                     WHEN event_type = 'Lock' THEN 'hwlock'
                     ELSE 'buffer'
                 END,
-                sum(count) AS count
+                sum(count * current_setting('pg_wait_sampling.profile_period')::bigint) AS count
             FROM {extension_schema}.pg_wait_sampling_profile
             WHERE event_type is not null
+            AND queryid IS NOT NULL AND queryid != 0
             GROUP BY 1
             ORDER BY count DESC;
             """,
@@ -93,9 +94,10 @@ class WaitSampling(Plugin):
             """
                 SELECT
                     event,
-                    sum(count) AS count
+                    sum(count * current_setting('pg_wait_sampling.profile_period')::bigint) AS count
                 FROM {extension_schema}.pg_wait_sampling_profile
                 WHERE event_type = 'Lock'
+                AND queryid IS NOT NULL AND queryid != 0
                 GROUP BY 1
                 ORDER BY count DESC;
                 """,
@@ -157,9 +159,10 @@ class WaitSampling(Plugin):
                     WHEN event = 'buffer_mapping' THEN 'buffer'
                     ELSE 'other'
                 END,
-                sum(count) AS count
+                sum(count * current_setting('pg_wait_sampling.profile_period')::bigint) AS count
             FROM {extension_schema}.pg_wait_sampling_profile
             WHERE event_type = 'LWLockTranche' OR event_type = 'LWLockNamed'
+            AND queryid IS NOT NULL AND queryid != 0
             GROUP BY 1
             ORDER BY count DESC;
             """,
