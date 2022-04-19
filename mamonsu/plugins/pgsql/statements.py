@@ -28,7 +28,7 @@ class Statements(Plugin):
 
     query_info = """
     SELECT {metrics}
-    FROM public.pg_stat_statements_info;
+    FROM {extension_schema}.pg_stat_statements_info;
     """
     key = "pgsql."
     # zbx_key, sql, desc, unit, delta, (Graph, color, side)
@@ -115,7 +115,8 @@ class Statements(Plugin):
                 all_items += self.Items_pg_13
                 info_items = self.Items_pg_14
                 info_params = [x[1] for x in info_items]
-                info_result = Pooler.query(self.query_info.format(metrics=(", ".join(info_params))))
+                info_result = Pooler.query(
+                    self.query_info.format(metrics=(", ".join(info_params)), extension_schema=extension_schema))
                 for key, value in enumerate(info_result[0]):
                     zbx_key, value = "pgsql.{0}".format(
                         info_items[key][0]), int(value)
@@ -129,8 +130,9 @@ class Statements(Plugin):
         else:
             self.Items[5][1] = self.Items[5][1].format("total_time")
             columns = [x[1] for x in all_items]
-        result = Pooler.query(self.query[extension + "_bootstrap"].format(columns=", ".join(
-            [x[0][x[0].find("[") + 1:x[0].find("]")] for x in all_items])) if Pooler.is_bootstraped() else self.query[
+        result = Pooler.query(self.query[extension + "_bootstrap"].format(
+            columns=", ".join([x[0][x[0].find("[") + 1:x[0].find("]")] for x in all_items]),
+            metrics=(", ".join(columns)), extension_schema=extension_schema) if Pooler.is_bootstraped() else self.query[
             extension].format(metrics=(", ".join(columns)), extension_schema=extension_schema))
         for key, value in enumerate(result[0]):
             zbx_key, value = "pgsql.{0}".format(all_items[key][0]), int(value)
@@ -206,7 +208,8 @@ class Statements(Plugin):
                                                                self.query[extension + "_bootstrap"].format(
                                                                    columns=", ".join(
                                                                        [x[0][x[0].find("[") + 1:x[0].find("]")] for x in
-                                                                        all_items])) if Pooler.is_bootstraped() else
+                                                                        all_items]), metrics=(", ".join(columns)),
+                                                                   extension_schema=extension_schema) if Pooler.is_bootstraped() else
                                                                self.query[extension].format(
                                                                    metrics=(", ".join(columns)),
                                                                    extension_schema=extension_schema)))
@@ -217,7 +220,8 @@ class Statements(Plugin):
                 for i, item in enumerate(all_items):
                     keys = item[0].split("[")
                     result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                                   self.query_info.format(metrics=(item[1]))))
+                                                                   self.query_info.format(metrics=(item[1]),
+                                                                                          extension_schema=extension_schema)))
             return template_zabbix.key_and_query(result)
         else:
             return
