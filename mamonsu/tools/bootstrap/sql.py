@@ -238,13 +238,13 @@ BEGIN
             jsonb_each(setoflocks.locktuple) AS json_data)
             SELECT
                 CASE
-                    WHEN event_type = ''LWLockNamed'' THEN ''lwlock''
-                    WHEN event_type = ''LWLockTranche'' THEN ''lwlock''
-                    WHEN event_type = ''LWLock'' THEN ''lwlock''
-                    WHEN event_type = ''Lock'' THEN ''hwlock''
-                    WHEN event_type = ''BufferPin'' THEN ''buffer''
-                    WHEN event_type = ''Extension'' THEN ''extension''
-                    WHEN event_type = ''Client'' THEN ''client''
+                    WHEN key = ''LWLockNamed'' THEN ''lwlock''
+                    WHEN key = ''LWLockTranche'' THEN ''lwlock''
+                    WHEN key = ''LWLock'' THEN ''lwlock''
+                    WHEN key = ''Lock'' THEN ''hwlock''
+                    WHEN key = ''BufferPin'' THEN ''buffer''
+                    WHEN key = ''Extension'' THEN ''extension''
+                    WHEN key = ''Client'' THEN ''client''
                     ELSE ''other''
                 END,
                 sum(count) AS count
