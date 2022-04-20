@@ -22,6 +22,7 @@ class WaitSampling(Plugin):
         ("other", "all_lock[other]",
          "Other Locks (e.g. IPC, Timeout, IO)", "B8813E")
     ]
+    AllLockItems = [(x[0], x[1], ": " + x[2], x[3]) for x in AllLockItems]
 
     AllLockQuery = {
         "pg_wait_sampling":
@@ -102,6 +103,7 @@ class WaitSampling(Plugin):
         ("advisory", "hwlock[advisory]",
          "Advisory User Locks", "007700")
     ]
+    HWLockItems = [(x[0], x[1], " HWLocks: " + x[2], x[3]) for x in HWLockItems]
 
     HWLockQuery = {
         "pg_wait_sampling":
@@ -151,6 +153,7 @@ class WaitSampling(Plugin):
         ("logical_replication", "lwlock[logical_replication]", "Logical Replication Locks", "8B00C7"),
         ("buffer", "lwlock[buffer]", "Buffer Bperations Locks", "0000CC"),
         ("other", "lwlock[other]", "Other Operations Lightweight Locks", "007700")]
+    LWLockItems = [(x[0], x[1], " LWLocks: " + x[2], x[3]) for x in LWLockItems]
 
     LWLockQuery = {
         "pg_wait_sampling":
@@ -283,7 +286,7 @@ class WaitSampling(Plugin):
         for item in (self.AllLockItems + self.LWLockItems + self.HWLockItems):
             result += template.item({
                 "key": "pgsql.{0}".format(item[1]),
-                "name": "PostgreSQL waits: {0}".format(item[2]),
+                "name": "PostgreSQL waits{0}".format(item[2]),
                 "delay": self.plugin_config("interval"),
                 "value_type": self.VALUE_TYPE.numeric_float})
         if not dashboard:
@@ -294,9 +297,9 @@ class WaitSampling(Plugin):
     def graphs(self, template, dashboard=False):
         result = ""
         for graph_name, graph_items in [
-            ("PostgreSQL waits: Locks by type", self.AllLockItems),
-            ("PostgreSQL waits: Heavyweight locks", self.HWLockItems),
-            ("PostgreSQL waits: Lightweight locks", self.LWLockItems)]:
+            ("PostgreSQL waits: Locks by Type", self.AllLockItems),
+            ("PostgreSQL waits: Heavyweight Locks", self.HWLockItems),
+            ("PostgreSQL waits: Lightweight Locks", self.LWLockItems)]:
             items = []
             for item in graph_items:
                 items.append({
