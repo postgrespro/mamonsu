@@ -238,10 +238,14 @@ BEGIN
             jsonb_each(setoflocks.locktuple) AS json_data)
             SELECT
                 CASE
-                    WHEN key = ''LWLockNamed'' THEN ''lwlock''
-                    WHEN key = ''LWLockTranche'' THEN ''lwlock''
-                    WHEN key = ''Lock'' THEN ''hwlock''
-                    ELSE ''buffer''
+                    WHEN event_type = ''LWLockNamed'' THEN ''lwlock''
+                    WHEN event_type = ''LWLockTranche'' THEN ''lwlock''
+                    WHEN event_type = ''LWLock'' THEN ''lwlock''
+                    WHEN event_type = ''Lock'' THEN ''hwlock''
+                    WHEN event_type = ''BufferPin'' THEN ''buffer''
+                    WHEN event_type = ''Extension'' THEN ''extension''
+                    WHEN event_type = ''Client'' THEN ''client''
+                    ELSE ''other''
                 END,
                 sum(count) AS count
             FROM lock_table
@@ -282,19 +286,26 @@ BEGIN
             WHERE setoflocks.key IN (''Lock'', ''LWLock'', ''LWLockTranche'', ''LWLockNamed''))
             SELECT
                 CASE
-                    WHEN lock_type = ''ProcArrayLock'' THEN ''xid''
-                    WHEN lock_type = ''WALBufMappingLock'' THEN ''wal''
-                    WHEN lock_type = ''WALWriteLock'' THEN ''wal''
-                    WHEN lock_type = ''ControlFileLock'' THEN ''wal''
+                    WHEN lock_type LIKE ''ProcArray%'' THEN ''xid''
+                    WHEN lock_type LIKE ''Autovacuum%'' THEN ''autovacuum''
+                    WHEN lock_type LIKE ''AutovacuumSchedule%'' THEN ''autovacuum''
+                    WHEN lock_type LIKE ''WALBufMapping%'' THEN ''wal''
+                    WHEN lock_type LIKE ''WALInsert%'' THEN ''wal''
+                    WHEN lock_type LIKE ''WALWrite%'' THEN ''wal''
+                    WHEN lock_type LIKE ''ControlFile%'' THEN ''wal''
                     WHEN lock_type = ''wal_insert'' THEN ''wal''
-                    WHEN lock_type = ''CLogControlLock'' THEN ''clog''
+                    WHEN lock_type LIKE ''CLogControl%'' THEN ''clog''
+                    WHEN lock_type LIKE ''CLogTruncation%'' THEN ''clog''
                     WHEN lock_type = ''clog'' THEN ''clog''
-                    WHEN lock_type = ''SyncRepLock'' THEN ''replication''
-                    WHEN lock_type = ''ReplicationSlotAllocationLock'' THEN ''replication''
-                    WHEN lock_type = ''ReplicationSlotControlLock'' THEN ''replication''
-                    WHEN lock_type = ''ReplicationOriginLock'' THEN ''replication''
+                    WHEN lock_type LIKE ''SyncRep%'' THEN ''replication''
+                    WHEN lock_type LIKE ''ReplicationSlotAllocation%'' THEN ''replication''
+                    WHEN lock_type LIKE ''ReplicationSlotControl%'' THEN ''replication''
+                    WHEN lock_type LIKE ''ReplicationOrigin%'' THEN ''replication''
                     WHEN lock_type = ''replication_origin'' THEN ''replication''
                     WHEN lock_type = ''replication_slot_io'' THEN ''replication''
+                    WHEN lock_type LIKE ''LogicalRepWorker%'' THEN ''logical_replication''
+                    WHEN lock_type LIKE ''BufferContent%'' THEN ''buffer''
+                    WHEN lock_type LIKE ''BufferMapping%'' THEN ''buffer''
                     WHEN lock_type = ''buffer_content'' THEN ''buffer''
                     WHEN lock_type = ''buffer_io'' THEN ''buffer''
                     WHEN lock_type = ''buffer_mapping'' THEN ''buffer''

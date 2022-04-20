@@ -14,7 +14,13 @@ class WaitSampling(Plugin):
         ("hwlock", "all_lock[hwlock]",
          "Heavyweight locks", "00CC00"),
         ("buffer", "all_lock[buffer]",
-         "Buffer locks", "CC0000")
+         "Buffer locks", "CC0000"),
+        ("extension", "all_lock[extension]",
+         "Extension locks", "8D00D9"),
+        ("client", "all_lock[client]",
+         "Client locks", "5CA8FF"),
+        ("other", "all_lock[other]",
+         "Other locks (e.g. IPC, Timeout, IO)", "B8813E")
     ]
 
     AllLockQuery = {
@@ -26,7 +32,10 @@ class WaitSampling(Plugin):
                     WHEN event_type = 'LWLockTranche' THEN 'lwlock'
                     WHEN event_type = 'LWLock' THEN 'lwlock'
                     WHEN event_type = 'Lock' THEN 'hwlock'
-                    ELSE 'buffer'
+                    WHEN event_type = 'BufferPin' THEN 'buffer'
+                    WHEN event_type = 'Extension' THEN 'extension'
+                    WHEN event_type = 'Client' THEN 'client'
+                    ELSE 'other'
                 END,
                 sum(count * current_setting('pg_wait_sampling.profile_period')::bigint) AS count
             FROM {extension_schema}.pg_wait_sampling_profile
@@ -48,11 +57,14 @@ class WaitSampling(Plugin):
             jsonb_each(setoflocks.locktuple) AS json_data)
             SELECT
                 CASE
-                    WHEN key = 'LWLockNamed' THEN 'lwlock'
-                    WHEN key = 'LWLockTranche' THEN 'lwlock'
-                    WHEN key = 'LWLock' THEN 'lwlock'
-                    WHEN key = 'Lock' THEN 'hwlock'
-                    ELSE 'buffer'
+                    WHEN event_type = 'LWLockNamed' THEN 'lwlock'
+                    WHEN event_type = 'LWLockTranche' THEN 'lwlock'
+                    WHEN event_type = 'LWLock' THEN 'lwlock'
+                    WHEN event_type = 'Lock' THEN 'hwlock'
+                    WHEN event_type = 'BufferPin' THEN 'buffer'
+                    WHEN event_type = 'Extension' THEN 'extension'
+                    WHEN event_type = 'Client' THEN 'client'
+                    ELSE 'other'
                 END,
                 sum(count) AS count
             FROM lock_table
@@ -132,9 +144,11 @@ class WaitSampling(Plugin):
     LWLockItems = [
         # (sql_key, zbx_key, name, color)
         ("xid", "lwlock[xid]", "XID access", "BBBB00"),
+        ("autovacuum", "lwlock[autovacuum]", "Autovacuum Locks", "5CA8FF"),
         ("wal", "lwlock[wal]", "WAL access", "CC0000"),
         ("clog", "lwlock[clog]", "CLOG access", "00CC00"),
-        ("replication", "lwlock[replication]", "Replication Locks", "FFFFCC"),
+        ("replication", "lwlock[replication]", "Replication Locks", "B8813E"),
+        ("logical_replication", "lwlock[logical_replication]", "Logical Replication Locks", "8B00C7"),
         ("buffer", "lwlock[buffer]", "Buffer operations", "0000CC"),
         ("other", "lwlock[other]", "Other operations", "007700")]
 
@@ -143,22 +157,29 @@ class WaitSampling(Plugin):
             """
             SELECT
                 CASE
-                    WHEN event = 'ProcArrayLock' THEN 'xid'
-                    WHEN event = 'WALBufMappingLock' THEN 'wal'
-                    WHEN event = 'WALWriteLock' THEN 'wal'
-                    WHEN event = 'ControlFileLock' THEN 'wal'
-                    WHEN event = 'wal_insert' THEN 'wal'
-                    WHEN event = 'CLogControlLock' THEN 'clog'
-                    WHEN event = 'clog' THEN 'clog'
-                    WHEN event = 'SyncRepLock' THEN 'replication'
-                    WHEN event = 'ReplicationSlotAllocationLock' THEN 'replication'
-                    WHEN event = 'ReplicationSlotControlLock' THEN 'replication'
-                    WHEN event = 'ReplicationOriginLock' THEN 'replication'
-                    WHEN event = 'replication_origin' THEN 'replication'
-                    WHEN event = 'replication_slot_io' THEN 'replication'
-                    WHEN event = 'buffer_content' THEN 'buffer'
-                    WHEN event = 'buffer_io' THEN 'buffer'
-                    WHEN event = 'buffer_mapping' THEN 'buffer'
+                    WHEN lock_type LIKE 'ProcArray%' THEN 'xid'
+                    WHEN lock_type LIKE 'Autovacuum%' THEN 'autovacuum'
+                    WHEN lock_type LIKE 'AutovacuumSchedule%' THEN 'autovacuum'
+                    WHEN lock_type LIKE 'WALBufMapping%' THEN 'wal'
+                    WHEN lock_type LIKE 'WALInsert%' THEN 'wal'
+                    WHEN lock_type LIKE 'WALWrite%' THEN 'wal'
+                    WHEN lock_type LIKE 'ControlFile%' THEN 'wal'
+                    WHEN lock_type = 'wal_insert' THEN 'wal'
+                    WHEN lock_type LIKE 'CLogControl%' THEN 'clog'
+                    WHEN lock_type LIKE 'CLogTruncation%' THEN 'clog'
+                    WHEN lock_type = 'clog' THEN 'clog'
+                    WHEN lock_type LIKE 'SyncRep%' THEN 'replication'
+                    WHEN lock_type LIKE 'ReplicationSlotAllocation%' THEN 'replication'
+                    WHEN lock_type LIKE 'ReplicationSlotControl%' THEN 'replication'
+                    WHEN lock_type LIKE 'ReplicationOrigin%' THEN 'replication'
+                    WHEN lock_type = 'replication_origin' THEN 'replication'
+                    WHEN lock_type = 'replication_slot_io' THEN 'replication'
+                    WHEN lock_type LIKE 'LogicalRepWorker%' THEN 'logical_replication'
+                    WHEN lock_type LIKE 'BufferContent%' THEN 'buffer'
+                    WHEN lock_type LIKE 'BufferMapping%' THEN 'buffer'
+                    WHEN lock_type = 'buffer_content' THEN 'buffer'
+                    WHEN lock_type = 'buffer_io' THEN 'buffer'
+                    WHEN lock_type = 'buffer_mapping' THEN 'buffer'
                     ELSE 'other'
                 END,
                 sum(count * current_setting('pg_wait_sampling.profile_period')::bigint) AS count
@@ -182,19 +203,26 @@ class WaitSampling(Plugin):
             WHERE setoflocks.key IN ('LWLock', 'LWLockTranche', 'LWLockNamed'))
             SELECT
                 CASE
-                    WHEN lock_type = 'ProcArrayLock' THEN 'xid'
-                    WHEN lock_type = 'WALBufMappingLock' THEN 'wal'
-                    WHEN lock_type = 'WALWriteLock' THEN 'wal'
-                    WHEN lock_type = 'ControlFileLock' THEN 'wal'
+                    WHEN lock_type LIKE 'ProcArray%' THEN 'xid'
+                    WHEN lock_type LIKE 'Autovacuum%' THEN 'autovacuum'
+                    WHEN lock_type LIKE 'AutovacuumSchedule%' THEN 'autovacuum'
+                    WHEN lock_type LIKE 'WALBufMapping%' THEN 'wal'
+                    WHEN lock_type LIKE 'WALInsert%' THEN 'wal'
+                    WHEN lock_type LIKE 'WALWrite%' THEN 'wal'
+                    WHEN lock_type LIKE 'ControlFile%' THEN 'wal'
                     WHEN lock_type = 'wal_insert' THEN 'wal'
-                    WHEN lock_type = 'CLogControlLock' THEN 'clog'
+                    WHEN lock_type LIKE 'CLogControl%' THEN 'clog'
+                    WHEN lock_type LIKE 'CLogTruncation%' THEN 'clog'
                     WHEN lock_type = 'clog' THEN 'clog'
-                    WHEN lock_type = 'SyncRepLock' THEN 'replication'
-                    WHEN lock_type = 'ReplicationSlotAllocationLock' THEN 'replication'
-                    WHEN lock_type = 'ReplicationSlotControlLock' THEN 'replication'
-                    WHEN lock_type = 'ReplicationOriginLock' THEN 'replication'
+                    WHEN lock_type LIKE 'SyncRep%' THEN 'replication'
+                    WHEN lock_type LIKE 'ReplicationSlotAllocation%' THEN 'replication'
+                    WHEN lock_type LIKE 'ReplicationSlotControl%' THEN 'replication'
+                    WHEN lock_type LIKE 'ReplicationOrigin%' THEN 'replication'
                     WHEN lock_type = 'replication_origin' THEN 'replication'
                     WHEN lock_type = 'replication_slot_io' THEN 'replication'
+                    WHEN lock_type LIKE 'LogicalRepWorker%' THEN 'logical_replication'
+                    WHEN lock_type LIKE 'BufferContent%' THEN 'buffer'
+                    WHEN lock_type LIKE 'BufferMapping%' THEN 'buffer'
                     WHEN lock_type = 'buffer_content' THEN 'buffer'
                     WHEN lock_type = 'buffer_io' THEN 'buffer'
                     WHEN lock_type = 'buffer_mapping' THEN 'buffer'
