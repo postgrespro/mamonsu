@@ -5027,18 +5027,18 @@ Default config:
 
 *Wait Sampling metrics* use information from `pgpro_stats` extension by default or from `pg_wait_sampling` extension if you installed it on non-PostgrePro edition.  
 
-***Buffer Locks***
-1. **Buffer Locks**  
+***Locks in general***
+1. **Lightweight Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: Buffer locks</td>
+        <td>PostgreSQL waits: Lightweight Locks</td>
       </tr>
       <tr>
         <th>Key</th>
-        <td>pgsql.all_lock[buffer]</td>
+        <td>pgsql.all_lock[lwlock]</td>
       </tr>
       <tr>
         <th>Type</th>
@@ -5058,14 +5058,13 @@ Default config:
       </tr>
     </table>
 
-***Heavyweight Locks***
-1. **Heavyweight Locks**  
+2. **Heavyweight Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: Heavyweight locks</td>
+        <td>PostgreSQL waits: Heavyweight Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5089,13 +5088,134 @@ Default config:
       </tr>
     </table>
 
-2. **Advisory User Lock**  
+3. **Buffer Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: advisory user lock</td>
+        <td>PostgreSQL waits: Buffer Locks</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.all_lock[buffer]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+3. **Client Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits: Client Locks</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.all_lock[client]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>10+</td>
+      </tr>
+    </table>
+
+4. **Extension Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits: Extension Locks</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.all_lock[extension]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>10+</td>
+      </tr>
+    </table>
+
+5. **Other Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits: Other Locks</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.all_lock[other]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+***Heavyweight Locks***
+1. **Advisory User Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits HWLocks: Advisory User Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5119,13 +5239,13 @@ Default config:
       </tr>
     </table>
 
-3. **Extend a Relation**  
+2. **Extend a Relation Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: extend a relation</td>
+        <td>PostgreSQL waits HWLocks: Extend a Relation Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5149,103 +5269,13 @@ Default config:
       </tr>
     </table>
 
-4. **Lock On a Relation**  
+3. **Locks on a Page**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: lock on a relation</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.hwlock[relation]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>Speed Per Second</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-
-5. **Lock On a Tuple**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL waits: lock on a tuple</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.hwlock[tuple]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>Speed Per Second</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-
-6. **Lock On Database Object**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL waits: lock on database object</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.hwlock[object]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>Speed Per Second</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-
-7. **Lock On Page**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL waits: lock on page</td>
+        <td>PostgreSQL waits HWLocks: Locks on a Page</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5269,13 +5299,103 @@ Default config:
       </tr>
     </table>
 
-8. **Speculative Insertion Lock**  
+4. **Locks on a Relation**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: speculative insertion lock</td>
+        <td>PostgreSQL waits HWLocks: Locks on a Relation</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.hwlock[relation]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+5. **Locks on a Tuple**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits HWLocks: Locks on a Tuple</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.hwlock[tuple]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+6. **Locks on Database Object**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits HWLocks: Locks on Database Object</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.hwlock[object]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+7. **Speculative Insertion Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits HWLocks: Speculative Insertion Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5299,13 +5419,13 @@ Default config:
       </tr>
     </table>
 
-9. **Transaction to Finish**  
+8. **Transaction to Finish Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: transaction to finish</td>
+        <td>PostgreSQL waits HWLocks: Transaction to Finish Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5329,13 +5449,13 @@ Default config:
       </tr>
     </table>
 
-10. **Userlock**  
+9. **Userlocks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: userlock</td>
+        <td>PostgreSQL waits HWLocks: Userlocks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5359,13 +5479,13 @@ Default config:
       </tr>
     </table>
 
-11. **Virtual XID Lock**  
+10. **Virtual XID Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: virtual xid lock</td>
+        <td>PostgreSQL waits HWLocks: Virtual XID Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5390,17 +5510,17 @@ Default config:
     </table>
 
 ***Lightweight Locks***
-1. **Lightweight Locks**  
+1. **Autovacuum Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: Lightweight locks</td>
+        <td>PostgreSQL waits: Autovacuum Locks</td>
       </tr>
       <tr>
         <th>Key</th>
-        <td>pgsql.all_lock[lwlock]</td>
+        <td>pgsql.lwlock[autovacuum]</td>
       </tr>
       <tr>
         <th>Type</th>
@@ -5420,13 +5540,13 @@ Default config:
       </tr>
     </table>
 
-2. **Buffer Operations**  
+2. **Buffer Operations Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: Buffer operations</td>
+        <td>PostgreSQL waits: Buffer Operations Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5450,13 +5570,13 @@ Default config:
       </tr>
     </table>
 
-3. **CLOG Access**  
+3. **CLOG Access Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: CLOG access</td>
+        <td>PostgreSQL waits: CLOG Access Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5480,7 +5600,37 @@ Default config:
       </tr>
     </table>
 
-4. **Replication Locks**  
+4. **Logical Replication Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits: Logical Replication Locks</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.lwlock[logical_replication]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>10+</td>
+      </tr>
+    </table>
+
+5. **Replication Locks**  
    
     Zabbix item:  
     <table>
@@ -5510,13 +5660,13 @@ Default config:
       </tr>
     </table>
 
-5. **WAL Access**  
+6. **WAL Access Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: WAL access</td>
+        <td>PostgreSQL waits: WAL Access Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5540,13 +5690,13 @@ Default config:
       </tr>
     </table>
 
-6. **XID Access**  
+7. **XID Access Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: XID access</td>
+        <td>PostgreSQL waits: XID Access Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5570,13 +5720,13 @@ Default config:
       </tr>
     </table>
 
-7. **Other Operations**  
+8. **Other Operations Lightweight Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: Other operations</td>
+        <td>PostgreSQL waits: Other Operations Lightweight Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5605,14 +5755,14 @@ Default config:
 <table>
   <tr>
     <th>Name</th>
-    <td>PostgreSQL waits: Heavyweight locks</td>
-    <td>PostgreSQL waits: Lightweight locks</td>
-    <td>PostgreSQL waits: Locks by type</td>
+    <td>PostgreSQL waits: Heavyweight Locks</td>
+    <td>PostgreSQL waits: Lightweight Locks</td>
+    <td>PostgreSQL waits: Locks by Type</td>
   </tr>
   <tr>
     <th>Metrics</th>
-    <td>PostgreSQL waits: lock on a relation <br> PostgreSQL waits: extend a relation <br> PostgreSQL waits: lock on page <br> PostgreSQL waits: lock on a tuple <br> PostgreSQL waits: transaction to finish <br> PostgreSQL waits: virtual xid lock <br> PostgreSQL waits: speculative insertion lock	<br> PostgreSQL waits: lock on database object <br> PostgreSQL waits: userlock <br> PostgreSQL waits: advisory user lock</td>
-    <td>PostgreSQL waits: XID access <br> PostgreSQL waits: WAL access <br> PostgreSQL waits: CLOG access <br> PostgreSQL waits: Replication Locks <br> PostgreSQL waits: Buffer operations	<br> PostgreSQL waits: Other operations</td>
-    <td>PostgreSQL waits: Lightweight locks <br> PostgreSQL waits: Heavyweight locks <br> PostgreSQL waits: Buffer locks</td>
+    <td>PostgreSQL waits HWLocks: Advisory User Lock <br> PostgreSQL waits HWLocks: Extend a Relation Locks <br> PostgreSQL waits HWLocks: Locks on a Page <br> PostgreSQL waits HWLocks: Locks on a Relation <br> PostgreSQL waits HWLocks: Locks on a Tuple <br> PostgreSQL waits HWLocks: Locks on Database Object <br> PostgreSQL waits HWLocks: Speculative Insertion Locks <br> PostgreSQL waits HWLocks: Transaction to Finish Locks <br> PostgreSQL waits HWLocks: Virtual XID Locks <br> PostgreSQL waits HWLocks: Userlocks</td>
+    <td>PostgreSQL waits LWLocks: Autovacuum Locks <br> PostgreSQL waits LWLocks: Buffer Operations Locks <br> PostgreSQL waits LWLocks: CLOG Access Locks <br> PostgreSQL waits LWLocks: Logical Replication Locks <br> PostgreSQL waits LWLocks: Replication Locks <br> PostgreSQL waits LWLocks: WAL Access Locks <br> PostgreSQL waits LWLocks: XID Access Locks <br> PostgreSQL waits LWLocks: Other operations</td>
+    <td>PostgreSQL waits: Lightweight Locks <br> PostgreSQL waits: Heavyweight Locks <br> PostgreSQL waits: Buffer Locks <br> PostgreSQL waits: Client Locks <br> PostgreSQL waits: Extension Locks <br> PostgreSQL waits: Other Locks</td>
   </tr>
 </table>
