@@ -24,6 +24,7 @@ class WaitSampling(Plugin):
                 CASE
                     WHEN event_type = 'LWLockNamed' THEN 'lwlock'
                     WHEN event_type = 'LWLockTranche' THEN 'lwlock'
+                    WHEN event_type = 'LWLock' THEN 'lwlock'
                     WHEN event_type = 'Lock' THEN 'hwlock'
                     ELSE 'buffer'
                 END,
@@ -49,6 +50,7 @@ class WaitSampling(Plugin):
                 CASE
                     WHEN key = 'LWLockNamed' THEN 'lwlock'
                     WHEN key = 'LWLockTranche' THEN 'lwlock'
+                    WHEN key = 'LWLock' THEN 'lwlock'
                     WHEN key = 'Lock' THEN 'hwlock'
                     ELSE 'buffer'
                 END,
@@ -161,7 +163,7 @@ class WaitSampling(Plugin):
                 END,
                 sum(count * current_setting('pg_wait_sampling.profile_period')::bigint) AS count
             FROM {extension_schema}.pg_wait_sampling_profile
-            WHERE event_type = 'LWLockTranche' OR event_type = 'LWLockNamed'
+            WHERE event_type IN ('LWLock', 'LWLockTranche', 'LWLockNamed')
             AND queryid IS NOT NULL AND queryid != 0
             GROUP BY 1
             ORDER BY count DESC;
@@ -177,7 +179,7 @@ class WaitSampling(Plugin):
                                    FROM {extension_schema}.pgpro_stats_totals
                                    WHERE object_type = 'cluster'))) setoflocks, 
             jsonb_each(setoflocks.locktuple) AS json_data
-            WHERE setoflocks.key IN ('Lock', 'LWLock', 'LWLockTranche', 'LWLockNamed'))
+            WHERE setoflocks.key IN ('LWLock', 'LWLockTranche', 'LWLockNamed'))
             SELECT
                 CASE
                     WHEN lock_type = 'ProcArrayLock' THEN 'xid'
