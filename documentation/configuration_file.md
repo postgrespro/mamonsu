@@ -8,6 +8,8 @@ The *agent.conf* configuration file is located in the */etc/mamonsu* directory b
 
 All parameters must be specified in the `parameter = value` format.
 
+> **_NOTE:_**  It is necessary to give permissions to the mamonsu user to directories/files for correct interaction of agent with them.
+
 ***
 
 ### Connection Parameters
@@ -85,6 +87,11 @@ The [zabbix] section provides connection settings for the Zabbix server and can 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 10051
 
+**timeout**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Zabbix server connection timeout in seconds.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 15
+
 <p>&nbsp;</p>
 
 **[agent]**  
@@ -118,6 +125,7 @@ The [sender] section controls the queue size of the data to be sent to the Zabbi
 ***
 
 ### Logging Parameters
+
 **[metric_log]**  
 The [metric_log] section enables storing the collected metric data in text files locally. This section can contain the following parameters:
 
@@ -129,7 +137,9 @@ The [metric_log] section enables storing the collected metric data in text files
 **directory**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the directory where log files with metric data will be stored.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: /var/log/mamonsu
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: /var/log/mamonsu  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permissions: mamonsu:mamonsu rwxrwx 
 
 **max_size_mb**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The maximum size of a log file, in MB. When the specified size is reached, it is renamed to localhost.log.archive, and an empty localhost.log file is created.
@@ -144,6 +154,8 @@ The [log] section specifies logging settings for Mamonsu and can contain the fol
 **file**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the log filename, which can be preceded by the full path.
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permissions: mamonsu:mamonsu rw-r--
+
 **level**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the debug level. This option can take DEBUG, ERROR, or INFO values.
 
@@ -153,7 +165,7 @@ The [log] section specifies logging settings for Mamonsu and can contain the fol
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The format of the logged data.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: [%(levelname)s] %(asctime)s - %(name)s - %(message)s   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where levelname is the debug level, asctime returns the current time, name specifies the plugin that emitted this log entry or root otherwise, and message provides the actual log message.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where levelname is the debug level, asctime returns the current time, name specifies the plugin that emitted this log entry or root otherwise, and message provides the actual log message.  
 
 ***
 
@@ -169,7 +181,9 @@ The [plugins] section specifies custom plugins to be added for metrics collectio
 **directory**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the directory that contains custom plugins for metrics collection. Setting this parameter to None forbids using custom plugins.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: /etc/mamonsu/plugins
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: /etc/mamonsu/plugins  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permissions: mamonsu:mamonsu rwxrwx  
 
 If you need to configure any of the plugins you add to Mamonsu after installation, you have to add this plugin section to the agent.conf file.
 

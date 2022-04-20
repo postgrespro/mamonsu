@@ -11,8 +11,10 @@ from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu import __version__ as mamonsu_version
 from mamonsu.lib.default_config import DefaultConfig
 from mamonsu.plugins.pgsql.pool import Pooler
-from mamonsu.tools.bootstrap.sql import CreateMamonsuUserSQL, CreateSchemaExtensionSQL, \
-    CreateSchemaDefaultSQL, GrantsOnDefaultSchemaSQL, GrantsOnExtensionSchemaSQL, QuerySplit
+from mamonsu.tools.bootstrap.sql import CreateMamonsuUserSQL, CreatePgBuffercacheFunctionsSQL, CreateSchemaDefaultSQL, \
+    GrantsOnDefaultSchemaSQL, GrantsOnPgBuffercacheFunctionsSQL, QuerySplit, CreateWaitSamplingFunctionsSQL, \
+    GrantsOnWaitSamplingFunctionsSQL, CreateStatementsFunctionsSQL, GrantsOnStatementsFunctionsSQL
+from mamonsu.plugins.pgsql.statements import Statements
 
 
 class Args(DefaultConfig):
@@ -67,7 +69,7 @@ class Args(DefaultConfig):
             '-x', '--create-extensions',
             action='store_true',
             dest='create_extensions',
-            help='create pg_buffercache extension in mamonsu schema')
+            help='create auxiliary extensions and functions in mamonsu schema')
         bootstrap_group.add_option(
             '-c', '--config',
             dest='config',
@@ -226,14 +228,22 @@ def run_deploy():
 
     if args.args.create_extensions:
         try:
-            bootstrap_extension_queries = fill_query_params(CreateSchemaExtensionSQL)
+            bootstrap_extension_queries = fill_query_params(CreatePgBuffercacheFunctionsSQL)
             Pooler.query(bootstrap_extension_queries)
+            if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
+                bootstrap_extension_queries = fill_query_params(CreateWaitSamplingFunctionsSQL)
+                Pooler.query(bootstrap_extension_queries)
+                statements_items = [x[1] for x in Statements.Items]
+                statements_items[5] = statements_items[5].format("total_exec_time+total_plan_time")
+                statements_columns = [x[0][x[0].find("[")+1:x[0].find("]")] for x in Statements.Items]
+                bootstrap_extension_queries = CreateStatementsFunctionsSQL.format(
+                    columns=" bigint, ".join(statements_columns) + " bigint", metrics=(", ".join(statements_items)))
+                Pooler.query(bootstrap_extension_queries)
         except Exception as e:
             sys.stderr.write(
-                "Bootstrap failed to create pg_buffercache extension and functions.\n"
+                "Bootstrap failed to create auxiliary extensions and functions.\n"
                 "Error: {0}\n".format(e))
-            sys.stderr.write("Please install pg_buffercache extension manually and rerun bootstrap "
-                             "if you want to get metrics from pg_buffercache view. \n")
+            sys.stderr.write("Please install auxiliary extensions manually and rerun bootstrap. \n")
 
     try:
         bootstrap_grant_queries = fill_grant_params(GrantsOnDefaultSchemaSQL, args)
@@ -246,12 +256,16 @@ def run_deploy():
 
     if args.args.create_extensions:
         try:
-            bootstrap_grant_extension_queries = fill_grant_params(GrantsOnExtensionSchemaSQL, args)
+            bootstrap_grant_extension_queries = fill_grant_params(GrantsOnPgBuffercacheFunctionsSQL, args)
             Pooler.query(bootstrap_grant_extension_queries)
-
+            if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
+                bootstrap_grant_extension_queries = fill_grant_params(GrantsOnWaitSamplingFunctionsSQL, args)
+                Pooler.query(bootstrap_grant_extension_queries)
+                bootstrap_grant_extension_queries = fill_grant_params(GrantsOnStatementsFunctionsSQL, args)
+                Pooler.query(bootstrap_grant_extension_queries)
         except Exception as e:
             sys.stderr.write("Bootstrap failed to grant execution permission to "
-                             "the function which required pg_buffercache extension.\n")
+                             "the function which required auxiliary extension.\n")
             sys.stderr.write("Error: \n {0}\n".format(e))
 
     sys.stdout.write("Bootstrap successfully completed\n")

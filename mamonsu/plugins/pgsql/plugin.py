@@ -61,3 +61,10 @@ PostgresPro Enterprise Edition is not detected [instance: '{0}']
 parameter is neither 'on' nor 'always'. Enable it "{1}" or "{2}" in PostgreSQL instance, \
 if needed and restart.""".format('archive_mode', 'alter system set archive_mode = on;',
                                  'alter system set archive_mode = always;'))
+
+    def disable_and_exit_if_not_superuser(self, db=None):
+        if not Pooler.is_superuser():
+            self.disable()
+            raise PluginDisableException("""Disable plugin and exit, because \
+you need superuser rights or bootstrap to run this plugin [instance: '{0}']
+""".format(Pooler.connection_string(db)))

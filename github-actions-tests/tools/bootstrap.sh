@@ -54,20 +54,22 @@ function check_db_objects() {
   $PSQL $DB -c "\dt mamonsu.config" | grep "mamonsu.*config.*table.*$MAMONSU_USER"  || exit 11
   MAMONSU_TIMESTAMP_NAME=`echo $MAMONSU_VERSION | sed 's/\./\_/g'`
   $PSQL $DB -c "\dt mamonsu.timestamp_master_$MAMONSU_TIMESTAMP_NAME" | grep  "mamonsu.*timestamp_master_$MAMONSU_TIMESTAMP_NAME.*table.*$MAMONSU_USER"  || exit 11
-  $PSQL $DB -c "\df mamonsu.timestamp_master_update" | grep  "mamonsu.*timestamp_master_update"  || exit 11
-  $PSQL $DB -c "\df mamonsu.timestamp_get" | grep  "mamonsu.*timestamp_get"  || exit 11
-  $PSQL $DB -c "\df mamonsu.count_autovacuum" | grep  "mamonsu.*count_autovacuum"  || exit 11
-  $PSQL $DB -c "\df mamonsu.get_oldest_xid" | grep  "mamonsu.*get_oldest_xid"  || exit 11
-  $PSQL $DB -c "\df mamonsu.get_oldest_transaction" | grep  "mamonsu.*get_oldest_transaction"  || exit 11
-  echo "WALXLOG $WALXLOG"
-  $PSQL $DB -c "\df mamonsu.count_"$WALXLOG"_files" | grep  "mamonsu.*count_"$WALXLOG"_files"  || exit 11
-  $PSQL $DB -c "\df mamonsu.buffer_cache" | grep  "mamonsu.*buffer_cache"  || exit 11
+
   $PSQL $DB -c "\df mamonsu.archive_command_files" | grep  "mamonsu.*archive_command_files"  || exit 11
   $PSQL $DB -c "\df mamonsu.archive_stat" | grep  "mamonsu.*archive_stat"  || exit 11
-  $PSQL $DB -c "\df mamonsu.get_sys_param" | grep  "mamonsu.*get_sys_param"  || exit 11
-  $PSQL $DB -c "\df mamonsu.get_connections_states" | grep  "mamonsu.*get_connections_states"  || exit 11
-  $PSQL $DB -c "\df mamonsu.prepared_transaction" | grep  "mamonsu.*prepared_transaction"  || exit 11
+  $PSQL $DB -c "\df mamonsu.buffer_cache" | grep  "mamonsu.*buffer_cache"  || exit 11
+  $PSQL $DB -c "\df mamonsu.count_autovacuum" | grep  "mamonsu.*count_autovacuum"  || exit 11
+  $PSQL $DB -c "\df mamonsu.count_"$WALXLOG"_files" | grep  "mamonsu.*count_"$WALXLOG"_files"  || exit 11
   $PSQL $DB -c "\df mamonsu.count_"$WALXLOG"_lag_lsn" | grep  "mamonsu.*count_"$WALXLOG"_lag_lsn"  || exit 11
+  $PSQL $DB -c "\df mamonsu.get_connections_states" | grep  "mamonsu.*get_connections_states"  || exit 11
+  $PSQL $DB -c "\df mamonsu.get_oldest_transaction" | grep  "mamonsu.*get_oldest_transaction"  || exit 11
+  $PSQL $DB -c "\df mamonsu.get_oldest_xid" | grep  "mamonsu.*get_oldest_xid"  || exit 11
+  $PSQL $DB -c "\df mamonsu.get_oldest_transaction" | grep  "mamonsu.*get_oldest_transaction"  || exit 11
+  $PSQL $DB -c "\df mamonsu.get_sys_param" | grep  "mamonsu.*get_sys_param"  || exit 11
+  $PSQL $DB -c "\df mamonsu.pg_buffercache_pages" | grep  "mamonsu.*pg_buffercache_pages"  || exit 11
+  $PSQL $DB -c "\df mamonsu.prepared_transaction" | grep  "mamonsu.*prepared_transaction"  || exit 11
+  $PSQL $DB -c "\df mamonsu.timestamp_get" | grep  "mamonsu.*timestamp_get"  || exit 11
+  $PSQL $DB -c "\df mamonsu.timestamp_master_update" | grep  "mamonsu.*timestamp_master_update"  || exit 11
 }
 
 function pg_drop_database() {

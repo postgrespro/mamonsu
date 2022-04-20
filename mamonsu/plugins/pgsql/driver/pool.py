@@ -74,7 +74,7 @@ class Pool(object):
                    total_lag
             FROM mamonsu.count_{1}_lag_lsn();
             """
-        ),
+        )
     }
 
     def __init__(self, params=None):
@@ -87,7 +87,7 @@ class Pool(object):
             "server_version": {"storage": {}},
             "bootstrap": {"storage": {}, "counter": 0, "cache": 10, "version": False},
             "recovery": {"storage": {}, "counter": 0, "cache": 10},
-            "extension_schema": {"pg_buffercache": {}},
+            "extension_schema": {"pg_buffercache": {}, "pg_stat_statements": {}, "pg_wait_sampling": {}, "pgpro_stats": {}},
             "pgpro": {"storage": {}},
             "pgproee": {"storage": {}}
         }
@@ -145,6 +145,7 @@ class Pool(object):
                 self._cache["bootstrap"]["counter"] += 1
                 return self._cache["bootstrap"]["storage"][db]
         self._cache["bootstrap"]["counter"] = 0
+        # TODO: изменить на нормальное название, 'config' слишком общее
         sql = """
         SELECT count(*) 
         FROM pg_catalog.pg_class 
@@ -227,7 +228,6 @@ class Pool(object):
             return self._cache["extension_schema"][extension][db]
         except:
             self._connections[db].log.info("{0} is not installed".format(extension))
-            self._cache["pgproee"][db] = False
 
     def databases(self):
         result, databases = self.query("""

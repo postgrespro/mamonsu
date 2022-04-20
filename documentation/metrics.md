@@ -51,9 +51,6 @@
   - [pg_locks](#pg_locks)
     - [Items](#items-13)
     - [Graphs](#graphs-8)
-  - [pg_stat_statements](#pg_stat_statements)
-    - [Items](#items-14)
-    - [Graphs](#graphs-9)
   - [Prepared Transactions](#prepared-transactions)
     - [Items](#items-15)
     - [Graphs](#graphs-10)
@@ -64,6 +61,9 @@
     - [Items](#items-16)
     - [Discovery Rules](#discovery-rules-4)
     - [Triggers](#triggers-8)
+  - [Statements](#statements)
+    - [Items](#items-14)
+    - [Graphs](#graphs-9)
   - [Temp Files](#temp-files)
     - [Items](#items-17)
     - [Graphs](#graphs-11)
@@ -79,7 +79,7 @@
   - [Compressed File System](#compressed-file-system)
     - [Items](#items-21)
     - [Discovery Rules](#discovery-rules-5)
-  - [pg_wait_sampling](#pg_wait_sampling)
+  - [Wait Sampling](#wait-sampling)
     - [Items](#items-22)
     - [Graphs](#graphs-13)
     
@@ -3438,11 +3438,317 @@ Default config:
   </tr>
 </table>
 
-### pg_stat_statements
+### Prepared Transactions
+
+Default config:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_prepared_transaction_time = 18000
 
 ### Items
 
-*pg_stat_statements metrics* use information from `pg_stat_statements` and `pg_stat_statements_info`.
+*Prepared Transactions metrics* use information from `pg_prepared_xacts`.   
+
+1. **Prepared Transactions Count**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: number of prepared transactions</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.prepared.count</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Prepared Transactions Count* calculates as summa of all rows in `pg_prepared_xacts`.
+
+
+2. **Oldest Prepared Transaction Time**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: oldest prepared transaction time in sec</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.prepared.oldest</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Oldest Prepared Transaction Time* calculates as `max(now() - prepared)`.
+
+### Graphs
+
+<table>
+  <tr>
+    <th>Name</th>
+    <td>PostgreSQL prepared transaction</td>
+  </tr>
+  <tr>
+    <th>Metrics</th>
+    <td>PostgreSQL: number of prepared transactions	<br> PostgreSQL: oldest prepared transaction time in sec</td>
+  </tr>
+</table>
+
+### Triggers
+
+1. **PostgreSQL prepared transaction is too old on {HOSTNAME}**  
+    Triggers if *PostgreSQL: oldest prepared transaction time in sec* exceeds `max_prepared_transaction_time`.
+
+### Relations
+
+### Discovery Rules
+
+1. **Relation Size Discovery**
+
+    Items:
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>Relation size: {#RELATIONNAME}</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.relation.size[{#RELATIONNAME}]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td>Bytes</td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+    </table>
+
+    Graphs:
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL relation size: {#RELATIONNAME}</td>
+      </tr>
+      <tr>
+        <th>Metrics</th>
+        <td>Relation size: {#RELATIONNAME}</td>
+      </tr>
+    </table>
+
+### Replication
+
+Default config:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lag_more_than_in_sec = 300
+
+### Items
+
+*Replication metrics* use information from `pg_replication_slots`.
+
+
+1. **Server Mode**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: server mode</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.server_mode</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Text</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Server Mode* shows server status as `MASTER` or `STANDBY`.
+
+
+2. **Non-active Replication Slots**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: count non-active replication slots</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.replication.non_active_slots[]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Non-active Replication Slots* calculates as count of slots with `false` active status.
+
+
+3. **Streaming Replication Lag**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL: streaming replication lag</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.replication_lag[sec]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+   
+    *Streaming Replication Lag* calculates as difference between now and `pg_last_xact_replay_timestamp`.
+
+### Discovery Rules
+
+1. **Replication Lag Discovery**
+
+    Items:
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>Delta of total lag for {#APPLICATION_NAME}</td>
+        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written, flushed and applied</td>
+        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written and flushed it</td>
+        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written it</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.replication.total_lag[{#APPLICATION_NAME}]</td>
+        <td>pgsql.replication.replay_lag[{#APPLICATION_NAME}]</td>
+        <td>pgsql.replication.flush_lag[{#APPLICATION_NAME}]</td>
+        <td>pgsql.replication.write_lag[{#APPLICATION_NAME}]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+        <td>Numeric (float)</td>
+        <td>Numeric (float)</td>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+        <td>Text</td>
+        <td>Text</td>
+        <td>Text</td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+        <td>As Is</td>
+        <td>As Is</td>
+        <td>As Is</td>
+      </tr>
+    </table>
+
+    Graphs:
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>Delta of total lag for {#APPLICATION_NAME}</td>
+      </tr>
+      <tr>
+        <th>Metrics</th>
+        <td>Delta of total lag for {#APPLICATION_NAME}</td>
+      </tr>
+    </table>
+
+### Triggers
+
+1. **PostgreSQL server mode changed on {HOSTNAME} to {ITEM.LASTVALUE}**
+
+2. **PostgreSQL number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})**  
+
+3. **PostgreSQL streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})**  
+    Triggers if *PostgreSQL: streaming replication lag* exceeds `lag_more_than_in_sec`.
+
+### Statements
+
+### Items
+
+*Statements metrics* use information from `pg_stat_statements` and `pg_stat_statements_info` for PostgreSQL cluster and from `pgpro_stats` extension for PostgresPro cluster.
 
 1. **Amount of WAL Files**  
    
@@ -3822,312 +4128,6 @@ Default config:
     <td>PostgreSQL statements: amount of wal files <br> PostgreSQL statements: amount of wal records <br> PostgreSQL statements: full page writes</td>
   </tr>
 </table>
-
-### Prepared Transactions
-
-Default config:  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_prepared_transaction_time = 18000
-
-### Items
-
-*Prepared Transactions metrics* use information from `pg_prepared_xacts`.   
-
-1. **Prepared Transactions Count**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL: number of prepared transactions</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.prepared.count</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-   
-    *Prepared Transactions Count* calculates as summa of all rows in `pg_prepared_xacts`.
-
-
-2. **Oldest Prepared Transaction Time**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL: oldest prepared transaction time in sec</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.prepared.oldest</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-   
-    *Oldest Prepared Transaction Time* calculates as `max(now() - prepared)`.
-
-### Graphs
-
-<table>
-  <tr>
-    <th>Name</th>
-    <td>PostgreSQL prepared transaction</td>
-  </tr>
-  <tr>
-    <th>Metrics</th>
-    <td>PostgreSQL: number of prepared transactions	<br> PostgreSQL: oldest prepared transaction time in sec</td>
-  </tr>
-</table>
-
-### Triggers
-
-1. **PostgreSQL prepared transaction is too old on {HOSTNAME}**  
-    Triggers if *PostgreSQL: oldest prepared transaction time in sec* exceeds `max_prepared_transaction_time`.
-
-### Relations
-
-### Discovery Rules
-
-1. **Relation Size Discovery**
-
-    Items:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>Relation size: {#RELATIONNAME}</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.relation.size[{#RELATIONNAME}]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td>Bytes</td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-    </table>
-
-    Graphs:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL relation size: {#RELATIONNAME}</td>
-      </tr>
-      <tr>
-        <th>Metrics</th>
-        <td>Relation size: {#RELATIONNAME}</td>
-      </tr>
-    </table>
-
-### Replication
-
-Default config:  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lag_more_than_in_sec = 300
-
-### Items
-
-*Replication metrics* use information from `pg_replication_slots`.
-
-
-1. **Server Mode**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL: server mode</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.server_mode</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Text</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-   
-    *Server Mode* shows server status as `MASTER` or `STANDBY`.
-
-
-2. **Non-active Replication Slots**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL: count non-active replication slots</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.replication.non_active_slots[]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-   
-    *Non-active Replication Slots* calculates as count of slots with `false` active status.
-
-
-3. **Streaming Replication Lag**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL: streaming replication lag</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.replication_lag[sec]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-   
-    *Streaming Replication Lag* calculates as difference between now and `pg_last_xact_replay_timestamp`.
-
-### Discovery Rules
-
-1. **Replication Lag Discovery**
-
-    Items:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>Delta of total lag for {#APPLICATION_NAME}</td>
-        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written, flushed and applied</td>
-        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written and flushed it</td>
-        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written it</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.replication.total_lag[{#APPLICATION_NAME}]</td>
-        <td>pgsql.replication.replay_lag[{#APPLICATION_NAME}]</td>
-        <td>pgsql.replication.flush_lag[{#APPLICATION_NAME}]</td>
-        <td>pgsql.replication.write_lag[{#APPLICATION_NAME}]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-        <td>Numeric (float)</td>
-        <td>Numeric (float)</td>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-        <td>Text</td>
-        <td>Text</td>
-        <td>Text</td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>As Is</td>
-        <td>As Is</td>
-        <td>As Is</td>
-        <td>As Is</td>
-      </tr>
-    </table>
-
-    Graphs:
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>Delta of total lag for {#APPLICATION_NAME}</td>
-      </tr>
-      <tr>
-        <th>Metrics</th>
-        <td>Delta of total lag for {#APPLICATION_NAME}</td>
-      </tr>
-    </table>
-
-### Triggers
-
-1. **PostgreSQL server mode changed on {HOSTNAME} to {ITEM.LASTVALUE}**
-
-2. **PostgreSQL number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})**  
-
-3. **PostgreSQL streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})**  
-    Triggers if *PostgreSQL: streaming replication lag* exceeds `lag_more_than_in_sec`.
 
 ### Temp Files
 
@@ -5021,24 +5021,24 @@ Default config:
       </tr>
     </table>
 
-### pg_wait_sampling
+### Wait Sampling
 
 ### Items
 
-*pg_wait_sampling metrics* use information from `pg_wait_sampling_profile`.  
+*Wait Sampling metrics* use information from `pgpro_stats` extension by default or from `pg_wait_sampling` extension if you installed it on non-PostgrePro edition.  
 
-***Buffer Locks***
-1. **Buffer Locks**  
+***Locks in general***
+1. **Lightweight Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: Buffer locks</td>
+        <td>PostgreSQL waits: Lightweight Locks</td>
       </tr>
       <tr>
         <th>Key</th>
-        <td>pgsql.all_lock[buffer]</td>
+        <td>pgsql.all_lock[lwlock]</td>
       </tr>
       <tr>
         <th>Type</th>
@@ -5058,14 +5058,13 @@ Default config:
       </tr>
     </table>
 
-***Heavyweight Locks***
-1. **Heavyweight Locks**  
+2. **Heavyweight Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: Heavyweight locks</td>
+        <td>PostgreSQL waits: Heavyweight Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5089,13 +5088,134 @@ Default config:
       </tr>
     </table>
 
-2. **Advisory User Lock**  
+3. **Buffer Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: advisory user lock</td>
+        <td>PostgreSQL waits: Buffer Locks</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.all_lock[buffer]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+3. **Client Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits: Client Locks</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.all_lock[client]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>10+</td>
+      </tr>
+    </table>
+
+4. **Extension Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits: Extension Locks</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.all_lock[extension]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>10+</td>
+      </tr>
+    </table>
+
+5. **Other Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits: Other Locks</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.all_lock[other]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+***Heavyweight Locks***
+1. **Advisory User Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits HWLocks: Advisory User Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5119,13 +5239,13 @@ Default config:
       </tr>
     </table>
 
-3. **Extend a Relation**  
+2. **Extend a Relation Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: extend a relation</td>
+        <td>PostgreSQL waits HWLocks: Extend a Relation Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5149,103 +5269,13 @@ Default config:
       </tr>
     </table>
 
-4. **Lock On a Relation**  
+3. **Locks on a Page**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: lock on a relation</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.hwlock[relation]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>Speed Per Second</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-
-5. **Lock On a Tuple**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL waits: lock on a tuple</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.hwlock[tuple]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>Speed Per Second</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-
-6. **Lock On Database Object**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL waits: lock on database object</td>
-      </tr>
-      <tr>
-        <th>Key</th>
-        <td>pgsql.hwlock[object]</td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td>Numeric (float)</td>
-      </tr>
-      <tr>
-        <th>Units</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th>Delta</th>
-        <td>Speed Per Second</td>
-      </tr>
-      <tr>
-        <th>Supported Version</th>
-        <td>9.5+</td>
-      </tr>
-    </table>
-
-7. **Lock On Page**  
-   
-    Zabbix item:  
-    <table>
-      <tr>
-        <th>Name</th>
-        <td>PostgreSQL waits: lock on page</td>
+        <td>PostgreSQL waits HWLocks: Locks on a Page</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5269,13 +5299,103 @@ Default config:
       </tr>
     </table>
 
-8. **Speculative Insertion Lock**  
+4. **Locks on a Relation**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: speculative insertion lock</td>
+        <td>PostgreSQL waits HWLocks: Locks on a Relation</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.hwlock[relation]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+5. **Locks on a Tuple**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits HWLocks: Locks on a Tuple</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.hwlock[tuple]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+6. **Locks on Database Object**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits HWLocks: Locks on Database Object</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.hwlock[object]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+7. **Speculative Insertion Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits HWLocks: Speculative Insertion Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5299,13 +5419,13 @@ Default config:
       </tr>
     </table>
 
-9. **Transaction to Finish**  
+8. **Transaction to Finish Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: transaction to finish</td>
+        <td>PostgreSQL waits HWLocks: Transaction to Finish Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5329,13 +5449,13 @@ Default config:
       </tr>
     </table>
 
-10. **Userlock**  
+9. **Userlocks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: userlock</td>
+        <td>PostgreSQL waits HWLocks: Userlocks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5359,13 +5479,13 @@ Default config:
       </tr>
     </table>
 
-11. **Virtual XID Lock**  
+10. **Virtual XID Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: virtual xid lock</td>
+        <td>PostgreSQL waits HWLocks: Virtual XID Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5390,17 +5510,17 @@ Default config:
     </table>
 
 ***Lightweight Locks***
-1. **Lightweight Locks**  
+1. **Autovacuum Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: Lightweight locks</td>
+        <td>PostgreSQL waits: Autovacuum Locks</td>
       </tr>
       <tr>
         <th>Key</th>
-        <td>pgsql.all_lock[lwlock]</td>
+        <td>pgsql.lwlock[autovacuum]</td>
       </tr>
       <tr>
         <th>Type</th>
@@ -5420,13 +5540,13 @@ Default config:
       </tr>
     </table>
 
-2. **Buffer Operations**  
+2. **Buffer Operations Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: Buffer operations</td>
+        <td>PostgreSQL waits: Buffer Operations Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5450,13 +5570,13 @@ Default config:
       </tr>
     </table>
 
-3. **CLOG Access**  
+3. **CLOG Access Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: CLOG access</td>
+        <td>PostgreSQL waits: CLOG Access Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5480,7 +5600,37 @@ Default config:
       </tr>
     </table>
 
-4. **Replication Locks**  
+4. **Logical Replication Locks**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL waits: Logical Replication Locks</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.lwlock[logical_replication]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>10+</td>
+      </tr>
+    </table>
+
+5. **Replication Locks**  
    
     Zabbix item:  
     <table>
@@ -5510,13 +5660,13 @@ Default config:
       </tr>
     </table>
 
-5. **WAL Access**  
+6. **WAL Access Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: WAL access</td>
+        <td>PostgreSQL waits: WAL Access Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5540,13 +5690,13 @@ Default config:
       </tr>
     </table>
 
-6. **XID Access**  
+7. **XID Access Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: XID access</td>
+        <td>PostgreSQL waits: XID Access Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5570,13 +5720,13 @@ Default config:
       </tr>
     </table>
 
-7. **Other Operations**  
+8. **Other Operations Lightweight Locks**  
    
     Zabbix item:  
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL waits: Other operations</td>
+        <td>PostgreSQL waits: Other Operations Lightweight Locks</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -5605,14 +5755,14 @@ Default config:
 <table>
   <tr>
     <th>Name</th>
-    <td>PostgreSQL waits: Heavyweight locks</td>
-    <td>PostgreSQL waits: Lightweight locks</td>
-    <td>PostgreSQL waits: Locks by type</td>
+    <td>PostgreSQL waits: Heavyweight Locks</td>
+    <td>PostgreSQL waits: Lightweight Locks</td>
+    <td>PostgreSQL waits: Locks by Type</td>
   </tr>
   <tr>
     <th>Metrics</th>
-    <td>PostgreSQL waits: lock on a relation <br> PostgreSQL waits: extend a relation <br> PostgreSQL waits: lock on page <br> PostgreSQL waits: lock on a tuple <br> PostgreSQL waits: transaction to finish <br> PostgreSQL waits: virtual xid lock <br> PostgreSQL waits: speculative insertion lock	<br> PostgreSQL waits: lock on database object <br> PostgreSQL waits: userlock <br> PostgreSQL waits: advisory user lock</td>
-    <td>PostgreSQL waits: XID access <br> PostgreSQL waits: WAL access <br> PostgreSQL waits: CLOG access <br> PostgreSQL waits: Replication Locks <br> PostgreSQL waits: Buffer operations	<br> PostgreSQL waits: Other operations</td>
-    <td>PostgreSQL waits: Lightweight locks <br> PostgreSQL waits: Heavyweight locks <br> PostgreSQL waits: Buffer locks</td>
+    <td>PostgreSQL waits HWLocks: Advisory User Lock <br> PostgreSQL waits HWLocks: Extend a Relation Locks <br> PostgreSQL waits HWLocks: Locks on a Page <br> PostgreSQL waits HWLocks: Locks on a Relation <br> PostgreSQL waits HWLocks: Locks on a Tuple <br> PostgreSQL waits HWLocks: Locks on Database Object <br> PostgreSQL waits HWLocks: Speculative Insertion Locks <br> PostgreSQL waits HWLocks: Transaction to Finish Locks <br> PostgreSQL waits HWLocks: Virtual XID Locks <br> PostgreSQL waits HWLocks: Userlocks</td>
+    <td>PostgreSQL waits LWLocks: Autovacuum Locks <br> PostgreSQL waits LWLocks: Buffer Operations Locks <br> PostgreSQL waits LWLocks: CLOG Access Locks <br> PostgreSQL waits LWLocks: Logical Replication Locks <br> PostgreSQL waits LWLocks: Replication Locks <br> PostgreSQL waits LWLocks: WAL Access Locks <br> PostgreSQL waits LWLocks: XID Access Locks <br> PostgreSQL waits LWLocks: Other operations</td>
+    <td>PostgreSQL waits: Lightweight Locks <br> PostgreSQL waits: Heavyweight Locks <br> PostgreSQL waits: Buffer Locks <br> PostgreSQL waits: Client Locks <br> PostgreSQL waits: Extension Locks <br> PostgreSQL waits: Other Locks</td>
   </tr>
 </table>
