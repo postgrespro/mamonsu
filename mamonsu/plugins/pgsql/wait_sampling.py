@@ -10,17 +10,17 @@ class WaitSampling(Plugin):
     AllLockItems = [
         # (sql_key, zbx_key, name, color)
         ("lwlock", "all_lock[lwlock]",
-         "Lightweight locks", "0000CC"),
+         "Lightweight Locks", "0000CC"),
         ("hwlock", "all_lock[hwlock]",
-         "Heavyweight locks", "00CC00"),
+         "Heavyweight Locks", "00CC00"),
         ("buffer", "all_lock[buffer]",
-         "Buffer locks", "CC0000"),
+         "Buffer Locks", "CC0000"),
         ("extension", "all_lock[extension]",
-         "Extension locks", "8D00D9"),
+         "Extension Locks", "8D00D9"),
         ("client", "all_lock[client]",
-         "Client locks", "5CA8FF"),
+         "Client Locks", "5CA8FF"),
         ("other", "all_lock[other]",
-         "Other locks (e.g. IPC, Timeout, IO)", "B8813E")
+         "Other Locks (e.g. IPC, Timeout, IO)", "B8813E")
     ]
 
     AllLockQuery = {
@@ -82,25 +82,25 @@ class WaitSampling(Plugin):
     HWLockItems = [
         # (sql_key, zbx_key, name, color)
         ("relation", "hwlock[relation]",
-         "lock on a relation", "CC0000"),
+         "Locks on a Relation", "CC0000"),
         ("extend", "hwlock[extend]",
-         "extend a relation", "00CC00"),
+         "Extend a Relation Locks", "00CC00"),
         ("page", "hwlock[page]",
-         "lock on page", "0000CC"),
+         "Locks on a Page", "0000CC"),
         ("tuple", "hwlock[tuple]",
-         "lock on a tuple", "CC00CC"),
+         "Locks on a Tuple", "CC00CC"),
         ("transactionid", "hwlock[transactionid]",
-         "transaction to finish", "000000"),
+         "Transaction to Finish Locks", "000000"),
         ("virtualxid", "hwlock[virtualxid]",
-         "virtual xid lock", "CCCC00"),
+         "Virtual XID Locks", "CCCC00"),
         ("speculative token", "hwlock[speculative_token]",
-         "speculative insertion lock", "777777"),
+         "Speculative Insertion Locks", "777777"),
         ("object", "hwlock[object]",
-         "lock on database object", "770000"),
+         "Locks on Database Object", "770000"),
         ("userlock", "hwlock[userlock]",
-         "userlock", "000077"),
+         "Userlocks", "000077"),
         ("advisory", "hwlock[advisory]",
-         "advisory user lock", "007700")
+         "Advisory User Locks", "007700")
     ]
 
     HWLockQuery = {
@@ -143,14 +143,14 @@ class WaitSampling(Plugin):
 
     LWLockItems = [
         # (sql_key, zbx_key, name, color)
-        ("xid", "lwlock[xid]", "XID access", "BBBB00"),
+        ("xid", "lwlock[xid]", "XID Access Locks", "BBBB00"),
         ("autovacuum", "lwlock[autovacuum]", "Autovacuum Locks", "5CA8FF"),
-        ("wal", "lwlock[wal]", "WAL access", "CC0000"),
-        ("clog", "lwlock[clog]", "CLOG access", "00CC00"),
+        ("wal", "lwlock[wal]", "WAL Access Locks", "CC0000"),
+        ("clog", "lwlock[clog]", "CLOG Access Locks", "00CC00"),
         ("replication", "lwlock[replication]", "Replication Locks", "B8813E"),
         ("logical_replication", "lwlock[logical_replication]", "Logical Replication Locks", "8B00C7"),
-        ("buffer", "lwlock[buffer]", "Buffer operations", "0000CC"),
-        ("other", "lwlock[other]", "Other operations", "007700")]
+        ("buffer", "lwlock[buffer]", "Buffer Bperations Locks", "0000CC"),
+        ("other", "lwlock[other]", "Other Operations Lightweight Locks", "007700")]
 
     LWLockQuery = {
         "pg_wait_sampling":
