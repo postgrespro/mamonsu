@@ -1,7 +1,6 @@
 import ctypes
 
-from ctypes import (Structure, Union, byref, c_double, c_longlong,
-                    c_ulong, c_ulonglong, c_size_t, sizeof)
+from ctypes import (Structure, Union, byref, c_double, c_longlong, c_ulong, c_ulonglong, c_size_t, sizeof)
 from ctypes.wintypes import HANDLE, LONG, LPCSTR, LPCWSTR, DWORD
 from collections import namedtuple
 
@@ -12,8 +11,10 @@ kernel32 = ctypes.windll.kernel32
 
 long = int
 
+
 def u(x):
     return x
+
 
 PDH_FMT_RAW = long(16)
 PDH_FMT_ANSI = long(32)
@@ -28,20 +29,20 @@ PDH_FMT_NOSCALE = long(4096)
 
 class PerformanceInfo(Structure):
     _fields_ = [
-        ('size', c_ulong),
-        ('CommitTotal', c_size_t),
-        ('CommitLimit', c_size_t),
-        ('CommitPeak', c_size_t),
-        ('PhysicalTotal', c_size_t),
-        ('PhysicalAvailable', c_size_t),
-        ('SystemCache', c_size_t),
-        ('KernelTotal', c_size_t),
-        ('KernelPaged', c_size_t),
-        ('KernelNonpaged', c_size_t),
-        ('PageSize', c_size_t),
-        ('HandleCount', c_ulong),
-        ('ProcessCount', c_ulong),
-        ('ThreadCount', c_ulong),
+        ("size", c_ulong),
+        ("CommitTotal", c_size_t),
+        ("CommitLimit", c_size_t),
+        ("CommitPeak", c_size_t),
+        ("PhysicalTotal", c_size_t),
+        ("PhysicalAvailable", c_size_t),
+        ("SystemCache", c_size_t),
+        ("KernelTotal", c_size_t),
+        ("KernelPaged", c_size_t),
+        ("KernelNonpaged", c_size_t),
+        ("PageSize", c_size_t),
+        ("HandleCount", c_ulong),
+        ("ProcessCount", c_ulong),
+        ("ThreadCount", c_ulong),
     ]
 
     def __init__(self):
@@ -56,15 +57,14 @@ class PerformanceInfo(Structure):
 
 
 class DiskInfo(object):
-
     Types = {
-        0: 'UNKNOWN',
-        1: 'NO_ROOT_DIR',
-        2: 'REMOVABLE',
-        3: 'FIXED',
-        4: 'REMOTE',
-        5: 'CDROM',
-        6: 'RAMDISK',
+        0: "UNKNOWN",
+        1: "NO_ROOT_DIR",
+        2: "REMOVABLE",
+        3: "FIXED",
+        4: "REMOTE",
+        5: "CDROM",
+        6: "RAMDISK",
     }
 
     @classmethod
@@ -73,14 +73,14 @@ class DiskInfo(object):
         bitmask = kernel32.GetLogicalDrives()
         for letter in u'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
             if bitmask & 1:
-                if kernel32.GetDriveTypeW(letter+':\\') == 3:
+                if kernel32.GetDriveTypeW(letter + ":\\") == 3:
                     drives.append(letter)
             bitmask >>= 1
         return drives
 
     @classmethod
     def get_drive_info(cls, drive):
-        _diskusage = namedtuple('disk_usage', 'total used free')
+        _diskusage = namedtuple("disk_usage", "total used free")
         used, total, free = c_ulonglong(), c_ulonglong(), c_ulonglong()
         drive = drive + u':\\'
         ret = kernel32.GetDiskFreeSpaceExW(
@@ -93,18 +93,18 @@ class DiskInfo(object):
 
 class PDH_Counter_Union(Union):
     _fields_ = [
-        ('longValue', LONG),
-        ('doubleValue', c_double),
-        ('largeValue', c_longlong),
-        ('ansiValue', LPCSTR),
-        ('unicodeValue', LPCWSTR)
+        ("longValue", LONG),
+        ("doubleValue", c_double),
+        ("largeValue", c_longlong),
+        ("ansiValue", LPCSTR),
+        ("unicodeValue", LPCWSTR)
     ]
 
 
 class PDHFmtCounterValue(Structure):
     _fields_ = [
-        ('CStatus', DWORD),
-        ('union', PDH_Counter_Union),
+        ("CStatus", DWORD),
+        ("union", PDH_Counter_Union),
     ]
 
 
@@ -121,10 +121,10 @@ class PerfData(object):
         if fmts is None:
             fmts = []
             for counter in counters:
-                fmts.append('double')
+                fmts.append("double")
 
         getfmt = lambda fmt: globals().get(
-            'PDH_FMT_' + fmt.upper(), PDH_FMT_LONG)
+            "PDH_FMT_" + fmt.upper(), PDH_FMT_LONG)
         if type(fmts) is list:
             ifmts = [getfmt(fmt) for fmt in fmts]
         else:
@@ -171,5 +171,5 @@ class PerfData(object):
         if errs:
             raise BaseException
 
-        return tuple([getattr(value.union, fmts[i] + 'Value')
+        return tuple([getattr(value.union, fmts[i] + "Value")
                       for i, value in enumerate(values)])
