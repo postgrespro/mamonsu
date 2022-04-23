@@ -58,10 +58,10 @@ class ArchiveCommand(Plugin):
     name = "PostgreSQL archive command {0}"
     Items = [
         # key, desc, color, side, graph
-        ("count_files_to_archive", "count files in archive_status need to archive", "FFD700", 0, 1),
-        ("size_files_to_archive", "size of files need to archive", "00FF00", 0, 0),
-        ("archived_files", "count archived files", "00F000", 0, 1),
-        ("failed_trying_to_archive", "count attempts to archive files", "FF0000", 0, 1),
+        ("count_files_to_archive", "count files in archive_status need to archive", "9C8A4E", 0, 1),
+        ("size_files_to_archive", "size of files need to archive", "6A4f5D", 0, 0),
+        ("archived_files", "count archived files", "578159", 0, 1),
+        ("failed_trying_to_archive", "count attempts to archive files", "E57862", 0, 1),
     ]
     old_archived_count = None
     old_failed_count = None
@@ -179,7 +179,7 @@ class ArchiveCommand(Plugin):
         for item in self.Items:
             if item[4] == 1:
                 graph.append({
-                    "key": self.right_type(self.key, item[0]), "color": item[2], "yaxisside": item[3]
+                    "key": self.right_type(self.key, item[0]), "color": item[2], "yaxisside": item[3], "drawtype": 2
                 })
         result += template.graph({
             "name": self.name.format("") + " archive status ",

@@ -18,21 +18,21 @@ class Memory(Plugin):
 
     Items = [
         # zbx_key, meminfo_key, name, color, drawtype
-        ('total', 'MemTotal', 'Memory Total', '5CA8FF', 4),
-        ('used', None, 'Used: User-space applications', 'CC0000', 1),
-        ('buffers', 'Buffers', 'Buffers: Block device cache and dirty', '00CC00', 1),
-        ('swap', None, 'Swap: Swap space used', '0000CC', 1),
-        ('cached', 'Cached', 'Cached: Parked file data (file content) cache', 'CC00CC', 1),
-        ('unused', 'MemFree', 'Free: Wasted memory', '000000', 1),
-        ('available', 'MemAvailable', 'Free: Available', '008000', 1),
-        ('slab', 'Slab', 'Slab: Kernel used memory (inode cache)', 'CCCC00', 1),
-        ('swap_cache', 'SwapCached', 'SwapCached: Fetched unmod yet swap pages', '777777', 1),
-        ('page_tables', 'PageTables', 'PageTables: Map bt virtual and physical', '770000', 1),
-        ('vmalloc_used', 'VmallocUsed', 'VMallocUsed: vmaloc() allocated by kernel', '000077', 1),
-        ('committed', 'Committed_AS', 'Committed_AS: Total committed memory', '007700', 1),
-        ('mapped', 'Mapped', 'Mapped: All mmap()ed pages', 'DF0000', 1),
-        ('active', 'Active', 'Active: Memory recently used', '00DF00', 1),
-        ('inactive', 'Inactive', 'Inactive: Memory not currently used', '0000DF', 1)
+        ('active', 'Active', 'Active: Memory recently used', '90BD72', 1),
+        ('available', 'MemAvailable', 'Free: Available', '578159', 1),
+        ('buffers', 'Buffers', 'Buffers: Block device cache and dirty', '00B0B8', 1),
+        ('cached', 'Cached', 'Cached: Parked file data (file content) cache', '9C8A4E', 1),
+        ('committed', 'Committed_AS', 'Committed_AS: Total committed memory', '52768F', 1),
+        ('inactive', 'Inactive', 'Inactive: Memory not currently used', '001219', 1),
+        ('mapped', 'Mapped', 'Mapped: All mmap()ed pages', '9F1E28', 1),
+        ('page_tables', 'PageTables', 'PageTables: Map bt virtual and physical', '8B817C', 1),
+        ('slab', 'Slab', 'Slab: Kernel used memory (inode cache)', 'F6CB93', 1),
+        ('swap', None, 'Swap: Swap space used', '0082A5', 1),
+        ('swap_cache', 'SwapCached', 'SwapCached: Fetched unmod yet swap pages', '7EB29B', 1),
+        ('total', 'MemTotal', 'Memory Total', 'E57862', 4),
+        ('unused', 'MemFree', 'Free: Wasted memory', '3B415A', 1),
+        ('used', None, 'Used: User-space applications', '6A4F5D', 1),
+        ('vmalloc_used', 'VmallocUsed', 'VMallocUsed: vmaloc() allocated by kernel', 'CF6518', 1)
     ]
 
     def run(self, zbx):

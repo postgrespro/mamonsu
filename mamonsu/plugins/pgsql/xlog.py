@@ -246,27 +246,31 @@ class Xlog(Plugin):
              "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has written and flushed it",
              "value_type": Plugin.VALUE_TYPE.text,
-             "delay": self.plugin_config("interval")},
+             "delay": self.plugin_config("interval"),
+             "drawtype": 2},
             {"key": self.right_type(self.key_replay, var_discovery="{#APPLICATION_NAME},"),
              "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has written, flushed and applied",
              "value_type": Plugin.VALUE_TYPE.text,
-             "delay": self.plugin_config("interval")},
+             "delay": self.plugin_config("interval"),
+             "drawtype": 2},
             {"key": self.right_type(self.key_write, var_discovery="{#APPLICATION_NAME},"),
              "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has written it",
              "value_type": Plugin.VALUE_TYPE.text,
-             "delay": self.plugin_config("interval")},
+             "delay": self.plugin_config("interval"),
+             "drawtype": 2},
             {"key": self.right_type(self.key_total_lag, var_discovery="{#APPLICATION_NAME},"),
              "name": "Delta of total lag for {#APPLICATION_NAME}",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
-             "delay": self.plugin_config("interval")}
+             "delay": self.plugin_config("interval"),
+             "drawtype": 2}
         ]
         graphs = [
             {
                 "name": "Delta of total lag for {#APPLICATION_NAME}",
                 "items": [
-                    {"color": "CC0000",
+                    {"color": "8B817C",
                      "key": self.right_type(self.key_total_lag, var_discovery="{#APPLICATION_NAME},")},
                 ]
             }

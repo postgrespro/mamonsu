@@ -66,10 +66,10 @@ class DiskStats(Plugin):
         graphs = [{
             'name': 'Logical devices overview: {#LOGICALDEVICE}',
             'items': [{
-                    'color': 'CC0000',
+                    'color': '7EB29B',
                     'key': 'system.disk.read[{#LOGICALDEVICE}]'},
                 {
-                    'color': '0000CC',
+                    'color': '6A4F5D',
                     'key': 'system.disk.write[{#LOGICALDEVICE}]'},
                 {
                     'key': 'system.disk.queue_avg[{#LOGICALDEVICE}]',

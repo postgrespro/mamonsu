@@ -18,32 +18,32 @@ class BgWriter(Plugin):
 
         ("buffers_checkpoint", "bgwriter[buffers_checkpoint]",
          "bgwriter: buffers written during checkpoints",
-         ("PostgreSQL bgwriter", "CCCC00", 1),
+         ("PostgreSQL bgwriter", "6A4f5D", 1),
          Plugin.DELTA.simple_change),
 
         ("buffers_clean", "bgwriter[buffers_clean]",
          "bgwriter: buffers written",
-         ("PostgreSQL bgwriter", "0000CC", 1),
+         ("PostgreSQL bgwriter", "9C8A4E", 1),
          Plugin.DELTA.simple_change),
 
         ("maxwritten_clean", "bgwriter[maxwritten_clean]",
          "bgwriter: number of bgwriter stopped by max write count",
-         ("PostgreSQL bgwriter", "777777", 0),
+         ("PostgreSQL bgwriter", "8B817C", 0),
          Plugin.DELTA.simple_change),
 
         ("buffers_backend", "bgwriter[buffers_backend]",
          "bgwriter: buffers written directly by a backend",
-         ("PostgreSQL bgwriter", "CC0000", 1),
+         ("PostgreSQL bgwriter", "7EB29B", 1),
          Plugin.DELTA.simple_change),
 
         ("buffers_backend_fsync", "bgwriter[buffers_backend_fsync]",
          "bgwriter: times a backend execute its own fsync",
-         ("PostgreSQL bgwriter", "CC00CC", 0),
+         ("PostgreSQL bgwriter", "00B0B8", 0),
          Plugin.DELTA.simple_change),
 
         ("buffers_alloc", "bgwriter[buffers_alloc]",
          "bgwriter: buffers allocated",
-         ("PostgreSQL bgwriter", "00CC00", 1),
+         ("PostgreSQL bgwriter", "3B415A", 1),
          Plugin.DELTA.simple_change)
     ]
 
@@ -83,12 +83,14 @@ class BgWriter(Plugin):
             if item[3][2] == 0:
                 items_write_sync.append({
                     "key": self.right_type(self.key, item[0]),
-                    "color": item[3][1]
+                    "color": item[3][1],
+                    "drawtype": 2
                 })
             if item[3][2] == 1:
                 items_buffers.append({
                     "key": self.right_type(self.key, item[0]),
-                    "color": item[3][1]
+                    "color": item[3][1],
+                    "drawtype": 2
                 })
         result = template.graph({
             "name": self.graph_name_buffers,

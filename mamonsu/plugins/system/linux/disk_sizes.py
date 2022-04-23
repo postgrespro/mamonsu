@@ -116,10 +116,10 @@ class DiskSizes(Plugin):
             'name': 'Mount point overview: {#MOUNTPOINT}',
             'type': self.GRAPH_TYPE.stacked,
             'items': [{
-                'color': 'CC0000',
+                'color': 'E57862',
                 'key': 'system.vfs.used[{#MOUNTPOINT}]'},
                 {
-                    'color': '0000CC',
+                    'color': '578159',
                     'key': 'system.vfs.free[{#MOUNTPOINT}]'}]
         }]
 

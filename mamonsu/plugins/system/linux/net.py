@@ -70,10 +70,10 @@ class Net(Plugin):
         graphs = [{
             'name': 'Network device: {#NETDEVICE}',
             'items': [{
-                'color': 'CC0000',
+                'color': '7EB29B',
                 'key': 'system.net.rx_bytes[{#NETDEVICE}]'},
                 {
-                    'color': '0000CC',
+                    'color': '6A4F5D',
                     'key': 'system.net.tx_bytes[{#NETDEVICE}]'}]
         }]
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)

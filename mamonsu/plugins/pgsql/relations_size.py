@@ -105,14 +105,16 @@ class RelationsSize(Plugin):
              "name": "Relation size: {#RELATIONNAME}",
              "units": Plugin.UNITS.bytes,
              "value_type": Plugin.VALUE_TYPE.numeric_unsigned,
-             "delay": self.plugin_config("interval")},
+             "delay": self.plugin_config("interval"),
+             "drawtype": 2},
         ]
         graphs = [{
             "name": "PostgreSQL relation size: {#RELATIONNAME}",
             "type": 1,
             "items": [
-                {"color": "00CC00",
-                 "key": self.right_type(self.key_rel_size_discovery, var_discovery="{#RELATIONNAME},")}]
+                {"color": "8B817C",
+                 "key": self.right_type(self.key_rel_size_discovery, var_discovery="{#RELATIONNAME},"),
+                 "drawtype": 2}]
         },
         ]
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)

@@ -36,43 +36,43 @@ class Statements(Plugin):
         ("stat[read_bytes]",
          "sum(shared_blks_read+local_blks_read+temp_blks_read)*8*1024",
          "read bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: bytes", "BBBB00", 0)),
+         ("PostgreSQL statements: bytes", "7EB29B", 0)),
         ("stat[write_bytes]",
          "sum(shared_blks_written+local_blks_written"
          "+temp_blks_written)*8*1024",
          "write bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: bytes", "00CC00", 0)),
+         ("PostgreSQL statements: bytes", "6A4F5D", 0)),
         ("stat[dirty_bytes]",
          "sum(shared_blks_dirtied+local_blks_dirtied)*8*1024",
          "dirty bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: bytes", "0000CC", 0)),
+         ("PostgreSQL statements: bytes", "9C8A4E", 0)),
 
         ("stat[read_time]",
          "sum(blk_read_time)/float4(100)",
          "read io time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: spend time", "00CC00", 0)),
+         ("PostgreSQL statements: spend time", "7EB29B", 0)),
         ("stat[write_time]",
          "sum(blk_write_time)/float4(100)",
          "write io time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: spend time", "0000CC", 0)),
+         ("PostgreSQL statements: spend time", "6A4F5D", 0)),
         ["stat[other_time]",
          "sum({0}-blk_read_time-blk_write_time)/float4(100)",
          "other (mostly cpu) time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: spend time", "BBBB00", 0)]]
+         ("PostgreSQL statements: spend time", "9C8A4E", 0)]]
 
     Items_pg_13 = [
         ("stat[wal_bytes]",
          "sum(wal_bytes)",
          "amount of wal files", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: wal statistics", "BCC000", 0)),
+         ("PostgreSQL statements: wal statistics", "00B0B8", 0)),
         ("stat[wal_records]",
          "sum(wal_records)",
          "amount of wal records", Plugin.UNITS.none, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: wal statistics", "CC6600", 0)),
+         ("PostgreSQL statements: wal statistics", "0082A5", 0)),
         ("stat[wal_fpi]",
          "sum(wal_fpi)",
          "full page writes", Plugin.UNITS.none, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: wal statistics", "00CCCC", 0))
+         ("PostgreSQL statements: wal statistics", "9C8A4E", 0))
     ]
 
     Items_pg_14 = [
@@ -81,13 +81,13 @@ class Statements(Plugin):
          "the number of times the pg_stat_statements.max was exceeded",
          Plugin.UNITS.none,
          Plugin.DELTA.simple_change,
-         ("PostgreSQL statements info: the number of times the pg_stat_statements.max was exceeded", "0000CC", 0)),
+         ("PostgreSQL statements info: the number of times the pg_stat_statements.max was exceeded", "6A4F5D", 0)),
         ("stat_info[stats_reset]",
          "ceil(extract(epoch from stats_reset))",
          "last statistics reset",
          Plugin.UNITS.unixtime,
          Plugin.DELTA.as_is,
-         ("PostgreSQL statements info: last statistics reset", "0000CC", 0))
+         ("PostgreSQL statements info: last statistics reset", "9C8A4E", 0))
     ]
 
     all_graphs = [
@@ -169,7 +169,8 @@ class Statements(Plugin):
                     items.append({
                         "key": self.right_type(self.key + keys[0] + "{0}", keys[1][:-1]),
                         "color": item[5][1],
-                        "yaxisside": item[5][2]})
+                        "yaxisside": item[5][2],
+                    "drawtype": 2})
             # create graph
             graph = {
                 "name": graph_item[0],

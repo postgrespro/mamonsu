@@ -8,13 +8,13 @@ class Memory(Plugin):
     Items = [
         # perf_item, zbx_key, desc, delta, unit, (color, site)
         (r'\Memory\Cache Bytes', '[cache]',
-            'Memory cached', Plugin.UNITS.bytes, ('0000CC', 0)),
+            'Memory cached', Plugin.UNITS.bytes, ('9C8A4E', 0)),
 
         (r'\Memory\Available Bytes', '[available]',
-            'Memory available', Plugin.UNITS.bytes, ('00CC00', 0)),
+            'Memory available', Plugin.UNITS.bytes, ('578159', 0)),
 
         (r'\Memory\Free & Zero Page List Bytes', '[free]',
-            'Memory free', Plugin.UNITS.bytes, ('CC0000', 0))
+            'Memory free', Plugin.UNITS.bytes, ('3B415A', 0))
     ]
 
     def run(self, zbx):

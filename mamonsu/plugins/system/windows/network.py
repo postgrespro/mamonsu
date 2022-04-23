@@ -12,10 +12,10 @@ class Network(Plugin):
     Items = [
         # perf_item, zbx_key, desc, delta, unit, (color, site)
         (_item[0], '[total_output_queue]',
-            'Output Queue Length', None, ('0000CC', 0)),
+            'Output Queue Length', None, ('E57862', 0)),
 
         (_item[1], '[total_bytes]',
-            'Bytes Total', 'b', ('00CC00', 1))
+            'Bytes Total', 'b', ('E57862', 1))
     ]
 
     def run(self, zbx):

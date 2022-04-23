@@ -141,26 +141,31 @@ class Databases(Plugin):
             "name": "Database: {#DATABASE} size",
             "type": 1,
             "items": [
-                {"color": "00CC00",
-                 "key": self.right_type(self.key_db_size, var_discovery="{#DATABASE},")}]
+                {"color": "8B817C",
+                 "key": self.right_type(self.key_db_size, var_discovery="{#DATABASE},"),
+                 "drawtype": 2}]
         },
             {
                 "name": "Database bloating overview: {#DATABASE}",
                 "items": [
-                    {"color": "CC0000",
-                     "key": self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},")},
-                    {"color": "00CC00",
+                    {"color": "7EB29B",
+                     "key": self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},"),
+                     "drawtype": 2},
+                    {"color": "6A4F5D",
                      "key": self.right_type(self.key_autovacumm),
-                     "yaxisside": 1}]
+                     "yaxisside": 1,
+                     "drawtype": 2}]
             },
             {
                 "name": "Database max age overview: {#DATABASE}",
                 "items": [
-                    {"color": "CC0000",
-                     "key": self.right_type(self.key_db_age, var_discovery="{#DATABASE},")},
-                    {"color": "00CC00",
+                    {"color": "7EB29B",
+                     "key": self.right_type(self.key_db_age, var_discovery="{#DATABASE},"),
+                     "drawtype": 2},
+                    {"color": "6A4F5D",
                      "key": self.right_type(self.key_autovacumm),
-                     "yaxisside": 1}]
+                     "yaxisside": 1,
+                     "drawtype": 2}]
             }]
         triggers = [{
             "name": "PostgreSQL invalid indexes in database {#DATABASE} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",

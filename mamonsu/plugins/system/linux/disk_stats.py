@@ -106,15 +106,15 @@ class DiskStats(Plugin):
         graph = {
             'name': 'Block devices: read/write operations',
             'items': [
-                {'key': self.right_type(self.key + '.all_read{0}'), 'color': 'CC0000'},
-                {'key': self.right_type(self.key + '.all_write{0}'), 'color': '0000CC'}]
+                {'key': self.right_type(self.key + '.all_read{0}'), 'color': '7EB29B'},
+                {'key': self.right_type(self.key + '.all_write{0}'), 'color': '6A4F5D'}]
         }
         result = template.graph(graph)
         graph = {
             'name': 'Block devices: read/write bytes',
             'items': [
-                {'key': self.right_type(self.key + '.all_read_b{0}'), 'color': 'CC0000'},
-                {'key': self.right_type(self.key + '.all_write_b{0}'), 'color': '0000CC'}]
+                {'key': self.right_type(self.key + '.all_read_b{0}'), 'color': '7EB29B'},
+                {'key': self.right_type(self.key + '.all_write_b{0}'), 'color': '6A4F5D'}]
         }
         if not dashboard:
             return result + template.graph(graph)
@@ -187,26 +187,26 @@ class DiskStats(Plugin):
         graphs = [{
             'name': 'Block device overview: {#BLOCKDEVICE} operations',
             'items': [{
-                'color': 'CC0000',
+                'color': '7EB29B',
                 'key': 'system.disk.read[{#BLOCKDEVICE}]'},
                 {
-                    'color': '0000CC',
+                    'color': '6A4F5D',
                     'key': 'system.disk.write[{#BLOCKDEVICE}]'},
                 {
                     'yaxisside': 1,
-                    'color': '00CC00',
+                    'color': 'F6CB93',
                     'key': 'system.disk.utilization[{#BLOCKDEVICE}]'}]},
             {
                 'name': 'Block device overview: {#BLOCKDEVICE} byte/s',
                 'items': [{
-                    'color': 'CC0000',
+                    'color': '7EB29B',
                     'key': 'system.disk.read_b[{#BLOCKDEVICE}]'},
                     {
-                        'color': '0000CC',
+                        'color': '6A4F5D',
                         'key': 'system.disk.write_b[{#BLOCKDEVICE}]'},
                     {
                         'yaxisside': 1,
-                        'color': '00CC00',
+                        'color': 'F6CB93',
                         'key': 'system.disk.utilization[{#BLOCKDEVICE}]'}]
             }]
 

@@ -9,12 +9,12 @@ class WaitSampling(Plugin):
 
     AllLockItems = [
         # (sql_key, zbx_key, name, color)
-        ("lwlock", "all_lock[lwlock]", "Lightweight Locks", "0000CC"),
-        ("hwlock", "all_lock[hwlock]", "Heavyweight Locks", "00CC00"),
-        ("buffer", "all_lock[buffer]", "Buffer Locks", "CC0000"),
-        ("extension", "all_lock[extension]", "Extension Locks", "8D00D9"),
-        ("client", "all_lock[client]", "Client Locks", "5CA8FF"),
-        ("other", "all_lock[other]", "Other Locks (e.g. IPC, Timeout, IO)", "B8813E")
+        ("lwlock", "all_lock[lwlock]", "Lightweight Locks", "7EB29B"),
+        ("hwlock", "all_lock[hwlock]", "Heavyweight Locks", "6A4F5D"),
+        ("buffer", "all_lock[buffer]", "Buffer Locks", "00B0B8"),
+        ("extension", "all_lock[extension]", "Extension Locks", "9C8A4E"),
+        ("client", "all_lock[client]", "Client Locks", "F6CB93"),
+        ("other", "all_lock[other]", "Other Locks (e.g. IPC, Timeout, IO)", "3B415A")
     ]
     AllLockItems = [(x[0], x[1], ": " + x[2], x[3]) for x in AllLockItems]
 
@@ -76,16 +76,16 @@ class WaitSampling(Plugin):
 
     HWLockItems = [
         # (sql_key, zbx_key, name, color)
-        ("relation", "hwlock[relation]", "Locks on a Relation", "CC0000"),
-        ("extend", "hwlock[extend]", "Extend a Relation Locks", "00CC00"),
-        ("page", "hwlock[page]", "Locks on a Page", "0000CC"),
-        ("tuple", "hwlock[tuple]", "Locks on a Tuple", "CC00CC"),
-        ("transactionid", "hwlock[transactionid]", "Transaction to Finish Locks", "000000"),
-        ("virtualxid", "hwlock[virtualxid]", "Virtual XID Locks", "CCCC00"),
-        ("speculative token", "hwlock[speculative_token]", "Speculative Insertion Locks", "777777"),
-        ("object", "hwlock[object]", "Locks on Database Object", "770000"),
-        ("userlock", "hwlock[userlock]", "Userlocks", "000077"),
-        ("advisory", "hwlock[advisory]", "Advisory User Locks", "007700")
+        ("relation", "hwlock[relation]", "Locks on a Relation", "7EB29B"),
+        ("extend", "hwlock[extend]", "Extend a Relation Locks", "3B415A"),
+        ("page", "hwlock[page]", "Locks on a Page", "F6CB93"),
+        ("tuple", "hwlock[tuple]", "Locks on a Tuple", "0082A5"),
+        ("transactionid", "hwlock[transactionid]", "Transaction to Finish Locks", "00B0B8"),
+        ("virtualxid", "hwlock[virtualxid]", "Virtual XID Locks", "6A4F5D"),
+        ("speculative token", "hwlock[speculative_token]", "Speculative Insertion Locks", "9C8A4E"),
+        ("object", "hwlock[object]", "Locks on Database Object", "8B817C"),
+        ("userlock", "hwlock[userlock]", "Userlocks", "52768F"),
+        ("advisory", "hwlock[advisory]", "Advisory User Locks", "FE9430")
     ]
     HWLockItems = [(x[0], x[1], " HWLocks: " + x[2], x[3]) for x in HWLockItems]
 
@@ -129,14 +129,14 @@ class WaitSampling(Plugin):
 
     LWLockItems = [
         # (sql_key, zbx_key, name, color)
-        ("xid", "lwlock[xid]", "XID Access Locks", "BBBB00"),
-        ("autovacuum", "lwlock[autovacuum]", "Autovacuum Locks", "5CA8FF"),
-        ("wal", "lwlock[wal]", "WAL Access Locks", "CC0000"),
-        ("clog", "lwlock[clog]", "CLOG Access Locks", "00CC00"),
-        ("replication", "lwlock[replication]", "Replication Locks", "B8813E"),
-        ("logical_replication", "lwlock[logical_replication]", "Logical Replication Locks", "8B00C7"),
-        ("buffer", "lwlock[buffer]", "Buffer Operations Locks", "0000CC"),
-        ("other", "lwlock[other]", "Other Operations Lightweight Locks", "007700")]
+        ("xid", "lwlock[xid]", "XID Access Locks", "6A4F5D"),
+        ("autovacuum", "lwlock[autovacuum]", "Autovacuum Locks", "00B0B8"),
+        ("wal", "lwlock[wal]", "WAL Access Locks", "7EB29B"),
+        ("clog", "lwlock[clog]", "CLOG Access Locks", "0082A5"),
+        ("replication", "lwlock[replication]", "Replication Locks", "3B415A"),
+        ("logical_replication", "lwlock[logical_replication]", "Logical Replication Locks", "9C8A4E"),
+        ("buffer", "lwlock[buffer]", "Buffer Operations Locks", "F6CB93"),
+        ("other", "lwlock[other]", "Other Operations Lightweight Locks", "8B817C")]
     LWLockItems = [(x[0], x[1], " LWLocks: " + x[2], x[3]) for x in LWLockItems]
 
     LWLockQuery = {
@@ -288,7 +288,8 @@ class WaitSampling(Plugin):
             for item in graph_items:
                 items.append({
                     "key": "pgsql.{0}".format(item[1]),
-                    "color": item[3]})
+                    "color": item[3],
+                    "drawtype": 2})
             result += template.graph({
                 "name": graph_name,
                 "type": 1,

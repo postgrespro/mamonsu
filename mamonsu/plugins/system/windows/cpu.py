@@ -10,14 +10,11 @@ class Cpu(Plugin):
 
     Items = [
 
-        (r'\Processor(*)\% User Time', '[user_time]',
-            'User time', Plugin.UNITS.percent, 'CC0000'),
+        (r'\Processor(*)\% User Time', '[user_time]', 'User time', Plugin.UNITS.percent, '578159'),
 
-        (r'\Processor(*)\% Idle Time', '[idle_time]',
-            'Idle time', Plugin.UNITS.percent, '00CC00'),
+        (r'\Processor(*)\% Idle Time', '[idle_time]', 'Idle time', Plugin.UNITS.percent, '8B817C'),
 
-        (r'\Processor(*)\% Privileged Time', '[privileged_time]',
-            'Privileged time', Plugin.UNITS.percent, ('770000')),
+        (r'\Processor(*)\% Privileged Time', '[privileged_time]', 'Privileged time', Plugin.UNITS.percent, '00B0B8'),
 
     ]
 

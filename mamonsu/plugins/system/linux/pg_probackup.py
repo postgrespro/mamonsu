@@ -139,7 +139,7 @@ class PgProbackup(Plugin):
                 'name': 'Pg_probackup: backup dir: {#BACKUPDIR} size',
                 'type': 1,
                 'items': [
-                    {'color': '00CC00',
+                    {'color': '8B817C',
                      'key': self.right_type(self.key_dir_size, var_discovery="{#BACKUPDIR},")}]
             },
         ]

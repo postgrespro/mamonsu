@@ -14,17 +14,17 @@ class Connections(Plugin):
     }
     # (state, key, name, graph item color)
     Items = [
-        ("active", "active", "number of active user connections", "00BB00"),
-        ("idle", "idle", "number of idle user connections", "0000BB"),
+        ("active", "active", "number of active user connections", "578159"),
+        ("idle", "idle", "number of idle user connections", "8B817C"),
         ("idle in transaction", "idle_in_transaction",
-         "number of user idle in transaction connections", "CC00CC"),
+         "number of user idle in transaction connections", "9C8A4E"),
         ("idle in transaction (aborted)", "idle_in_transaction_aborted",
-         "number of user idle in transaction (aborted) connections", "CCCCCC"),
+         "number of user idle in transaction (aborted) connections", "F6CB93"),
         ("fastpath function call", "fastpath_function_call",
-         "number of user fastpath function call connections", "CCCC00"),
+         "number of user fastpath function call connections", "00B0B8"),
         ("disabled", "disabled",
          "number of user disabled connections",
-         "00CCCC")
+         "3B415A")
     ]
 
     # for PG 10+
@@ -180,25 +180,30 @@ class Connections(Plugin):
         for item in self.Items:
             items.append({
                 "key": self.right_type(self.key, item[1]),
-                "color": item[3]
+                "color": item[3],
+                "drawtype": 2
             })
         items.append({
             "key": self.right_type(self.key, "total"),
-            "color": "BB0000"
+            "color": "E57862",
+            "drawtype": 2
         })
         items.append({
             "key": self.right_type(self.key, "waiting"),
-            "color": "546E7A"
+            "color": "0082A5",
+            "drawtype": 2
         })
         items.append({
             "key": self.right_type(self.key, "max_connections"),
-            "color": "067845"
+            "color": "FF3C47",
+            "drawtype": 2
         })
 
         if Pooler.server_version_greater("10.0"):
             items.append({
                 "key": self.right_type(self.key, "other"),
-                "color": "8D6E63"
+                "color": "7EB29B",
+                "drawtype": 2
             })
 
         graph = {

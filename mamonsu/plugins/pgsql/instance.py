@@ -18,54 +18,54 @@ class Instance(Plugin):
         #    ('graph name', color, side), units, delta
 
         ("xact_commit", "transactions[committed]", "transactions: committed",
-         ("PostgreSQL instance: transactions rate", "0000CC", 0),
+         ("PostgreSQL instance: transactions rate", "578159", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("blks_hit", "blocks[hit]", "blocks: hit",
-         ("PostgreSQL instance: blocks rate", "00CC00", 0),
+         ("PostgreSQL instance: blocks rate", "7EB29B", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("blks_read", "blocks[read]", "blocks: read",
-         ("PostgreSQL instance: blocks rate", "CC0000", 0),
+         ("PostgreSQL instance: blocks rate", "6A4F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
 
         ("conflicts", "events[conflicts]", "event: conflicts",
-         ("PostgreSQL instance: events", "0000CC", 0),
+         ("PostgreSQL instance: events", "9C8A4E", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
         ("deadlocks", "events[deadlocks]", "event: deadlocks",
-         ("PostgreSQL instance: events", "000000", 0),
+         ("PostgreSQL instance: events", "3B415A", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
         ("xact_rollback", "events[xact_rollback]", "event: rollbacks",
-         ("PostgreSQL instance: transactions rate", "CC0000", 0),
+         ("PostgreSQL instance: transactions rate", "E57862", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
         ("temp_bytes", "temp[bytes]", "temp: bytes written",
-         ("PostgreSQL instance: temp files", "CC0000", 0),
+         ("PostgreSQL instance: temp files", "00B0B8", 0),
          Plugin.UNITS.bytes, Plugin.DELTA.simple_change),
         ("temp_files", "temp[files]", "temp: files created",
-         ("PostgreSQL instance: temp files", "0000CC", 1),
+         ("PostgreSQL instance: temp files", "0082A5", 1),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
         # stacked
         ("tup_deleted", "tuples[deleted]", "tuples: deleted",
-         ("PostgreSQL instance: tuples", "000000", 0),
+         ("PostgreSQL instance: tuples", "3B415A", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("tup_fetched", "tuples[fetched]", "tuples: fetched",
-         ("PostgreSQL instance: tuples", "0000CC", 0),
+         ("PostgreSQL instance: tuples", "7EB29B", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("tup_inserted", "tuples[inserted]", "tuples: inserted",
-         ("PostgreSQL instance: tuples", "00CC00", 0),
+         ("PostgreSQL instance: tuples", "00B0B8", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("tup_returned", "tuples[returned]", "tuples: returned",
-         ("PostgreSQL instance: tuples", "CC00CC", 1),
+         ("PostgreSQL instance: tuples", "9C8A4E", 1),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("tup_updated", "tuples[updated]", "tuples: updated",
-         ("PostgreSQL instance: tuples", "CC0000", 0),
+         ("PostgreSQL instance: tuples", "6A4F5F", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
     ]
     Items_pg_12 = [
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta
         ("checksum_failures", "events[checksum_failures]", "event: checksum_failures",
-         ("PostgreSQL instance: events", "00FF00", 0),
+         ("PostgreSQL instance: events", "6A4F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change)
     ]
 
@@ -161,7 +161,8 @@ class Instance(Plugin):
                     items.append({
                         "key": self.right_type(self.key + keys[0] + "{0}", keys[1][:-1]),
                         "color": item[3][1],
-                        "yaxisside": item[3][2]
+                        "yaxisside": item[3][2],
+                        "drawtype": 2
                     })
             graph = {
                 "name": name,

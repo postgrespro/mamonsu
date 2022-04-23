@@ -23,28 +23,28 @@ class PgLocks(Plugin):
         # key, desc, color
         ("accessshare",
          "Read only queries",
-         "0000CC"),
+         "578159"),
         ("rowshare",
          "SELECT FOR SHARE and SELECT FOR UPDATE",
-         "00CC00"),
+         "3B415A"),
         ("rowexclusive",
          "Write queries",
-         "CC0000"),
+         "7EB29B"),
         ("shareupdateexclusive",
          "VACUUM, ANALYZE, CREATE INDEX CONCURRENTLY",
-         "CC00CC"),
+         "F6CB93"),
         ("share",
          "CREATE INDEX",
-         "777777"),
+         "0082A5"),
         ("sharerowexclusive",
          "Locks from application",
-         "CCCCCC"),
+         "00B0B8"),
         ("exclusive",
          "Locks from application or some operation on system catalogs",
-         "CCCC00"),
+         "9C8A4E"),
         ("accessexclusive",
          "ALTER TABLE, DROP TABLE, TRUNCATE, REINDEX, CLUSTER, VACUUM FULL, LOCK TABLE",
-         "00CCCC")
+         "6A4F5D")
     ]
 
     graph_name = "PostgreSQL locks sampling"
@@ -88,7 +88,8 @@ class PgLocks(Plugin):
         for item in self.Items:
             items.append({
                 "key": self.right_type(self.key, item[0]),
-                "color": item[2]
+                "color": item[2],
+                "drawtype": 2
             })
         if not dashboard:
             return template.graph({

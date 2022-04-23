@@ -148,13 +148,14 @@ class Cfs(Plugin):
         items = [{
             "key": "pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]",
             "name": "Relation {#COMPRESSED_RELATION}: compress ratio",
-            "delay": self.timeRatioInterval
+            "delay": self.timeRatioInterval,
+            "drawtype": 2
         }]
         graphs = [{
             "name": "Relation {#COMPRESSED_RELATION}: compress ratio",
             "delay": self.timeRatioInterval,
             "items": [{
-                "color": "00CC00",
+                "color": "8B817C",
                 "key": "pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]"
             }]
         }]

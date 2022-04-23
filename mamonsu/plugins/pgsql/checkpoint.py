@@ -29,22 +29,22 @@ class Checkpoint(Plugin):
 
         ("checkpoints_timed", "count_timed",
          "checkpoints: by timeout (in hour)",
-         ("PostgreSQL checkpoint", "00CC00", 0),
+         ("PostgreSQL checkpoint", "578159", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
         ("checkpoints_req", "count_wal",
          "checkpoints: by wal (in hour)",
-         ("PostgreSQL checkpoint", "CC0000", 0),
+         ("PostgreSQL checkpoint", "6A4F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
         ("checkpoint_write_time", "write_time",
          "checkpoint: write time",
-         ("PostgreSQL checkpoints", "0000CC", 1),
+         ("PostgreSQL checkpoints", "00B0B8", 1),
          Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1),
 
         ("checkpoint_sync_time", "checkpoint_sync_time",
          "checkpoint: sync time",
-         ("PostgreSQL checkpoints", "000000", 1),
+         ("PostgreSQL checkpoints", "9C8A4E", 1),
          Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1)
     ]
 
@@ -86,13 +86,15 @@ class Checkpoint(Plugin):
                 items_checkpoints.append({
                     "key": self.right_type(self.key, item[1]),
                     "color": item[3][1],
-                    "delay": self.Interval
+                    "delay": self.Interval,
+                    "drawtype": 2
                 })
             if item[3][2] == 1:
                 items_checkpoints_write_sync.append({
                     "key": self.right_type(self.key, item[1]),
                     "color": item[3][1],
-                    "delay": self.Interval
+                    "delay": self.Interval,
+                    "drawtype": 2
                 })
         result = template.graph({
             "name": self.graph_name_count,
