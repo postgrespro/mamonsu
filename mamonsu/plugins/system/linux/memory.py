@@ -112,7 +112,7 @@ class Memory(Plugin):
             return [
                 {
                     "dashboard": {
-                        "name": "System: Server Memory Detailed Overview",
+                        "name": "System: Server Free/Used Memory Overview",
                         "page": ZbxTemplate.dashboard_page_overview["name"],
                         "size": ZbxTemplate.dashboard_widget_size_medium,
                         "position": 4
