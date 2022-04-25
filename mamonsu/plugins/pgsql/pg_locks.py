@@ -44,7 +44,7 @@ class PgLocks(Plugin):
          "9C8A4E"),
         ("accessexclusive",
          "ALTER TABLE, DROP TABLE, TRUNCATE, REINDEX, CLUSTER, VACUUM FULL, LOCK TABLE",
-         "6A4F5D")
+         "793F5D")
     ]
 
     graph_name = "PostgreSQL locks sampling"

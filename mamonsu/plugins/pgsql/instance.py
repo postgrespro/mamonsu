@@ -24,7 +24,7 @@ class Instance(Plugin):
          ("PostgreSQL instance: blocks rate", "7EB29B", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("blks_read", "blocks[read]", "blocks: read",
-         ("PostgreSQL instance: blocks rate", "6A4F5D", 0),
+         ("PostgreSQL instance: blocks rate", "793F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
 
         ("conflicts", "events[conflicts]", "event: conflicts",
@@ -65,7 +65,7 @@ class Instance(Plugin):
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta
         ("checksum_failures", "events[checksum_failures]", "event: checksum_failures",
-         ("PostgreSQL instance: events", "6A4F5D", 0),
+         ("PostgreSQL instance: events", "793F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change)
     ]
 

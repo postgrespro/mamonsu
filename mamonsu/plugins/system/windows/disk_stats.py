@@ -80,7 +80,7 @@ class DiskStats(Plugin):
                         "key": "system.disk.read[{#LOGICALDEVICE}]"
                     },
                     {
-                        "color": "6A4F5D",
+                        "color": "793F5D",
                         "key": "system.disk.write[{#LOGICALDEVICE}]"
                     },
                     {

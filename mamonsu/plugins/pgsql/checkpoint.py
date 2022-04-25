@@ -34,7 +34,7 @@ class Checkpoint(Plugin):
 
         ("checkpoints_req", "count_wal",
          "checkpoints: by wal (in hour)",
-         ("PostgreSQL checkpoint", "6A4F5D", 0),
+         ("PostgreSQL checkpoint", "793F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
         ("checkpoint_write_time", "write_time",

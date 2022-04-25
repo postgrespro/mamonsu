@@ -10,7 +10,7 @@ class WaitSampling(Plugin):
     AllLockItems = [
         # (sql_key, zbx_key, name, color)
         ("lwlock", "all_lock[lwlock]", "Lightweight Locks", "7EB29B"),
-        ("hwlock", "all_lock[hwlock]", "Heavyweight Locks", "6A4F5D"),
+        ("hwlock", "all_lock[hwlock]", "Heavyweight Locks", "793F5D"),
         ("buffer", "all_lock[buffer]", "Buffer Locks", "00B0B8"),
         ("extension", "all_lock[extension]", "Extension Locks", "9C8A4E"),
         ("client", "all_lock[client]", "Client Locks", "F6CB93"),
@@ -81,7 +81,7 @@ class WaitSampling(Plugin):
         ("page", "hwlock[page]", "Locks on a Page", "F6CB93"),
         ("tuple", "hwlock[tuple]", "Locks on a Tuple", "0082A5"),
         ("transactionid", "hwlock[transactionid]", "Transaction to Finish Locks", "00B0B8"),
-        ("virtualxid", "hwlock[virtualxid]", "Virtual XID Locks", "6A4F5D"),
+        ("virtualxid", "hwlock[virtualxid]", "Virtual XID Locks", "793F5D"),
         ("speculative token", "hwlock[speculative_token]", "Speculative Insertion Locks", "9C8A4E"),
         ("object", "hwlock[object]", "Locks on Database Object", "8B817C"),
         ("userlock", "hwlock[userlock]", "Userlocks", "52768F"),
@@ -129,7 +129,7 @@ class WaitSampling(Plugin):
 
     LWLockItems = [
         # (sql_key, zbx_key, name, color)
-        ("xid", "lwlock[xid]", "XID Access Locks", "6A4F5D"),
+        ("xid", "lwlock[xid]", "XID Access Locks", "793F5D"),
         ("autovacuum", "lwlock[autovacuum]", "Autovacuum Locks", "00B0B8"),
         ("wal", "lwlock[wal]", "WAL Access Locks", "7EB29B"),
         ("clog", "lwlock[clog]", "CLOG Access Locks", "0082A5"),

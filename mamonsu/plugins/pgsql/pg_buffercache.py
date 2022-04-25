@@ -25,7 +25,7 @@ class PgBufferCache(Plugin):
         # key, name, color
         ("size", "PostgreSQL: shared buffer size", "E57862"),
         ("twice_used", "PostgreSQL: shared buffer twice used size", "7EB29B"),
-        ("dirty", "PostgreSQL: shared buffer dirty size", "6A4F5D")
+        ("dirty", "PostgreSQL: shared buffer dirty size", "793F5D")
     ]
 
     graph_name = "PostgreSQL: shared buffer"

@@ -32,7 +32,7 @@ class Memory(Plugin):
         ("swap_cache", "SwapCached", "SwapCached - Fetched unmod Yet Swap Pages", "7EB29B", 1),
         ("total", "MemTotal", "Total - All Memory", "E57862", 4),
         ("unused", "MemFree", "Unused - Wasted Memory", "3B415A", 1),
-        ("used", None, "Used - User-Space Applications", "6A4F5D", 1),
+        ("used", None, "Used - User-Space Applications", "793F5D", 1),
         ("vmalloc_used", "VmallocUsed", "VMallocUsed - vmaloc() Allocated by Kernel", "CF6518", 1)
     ]
 

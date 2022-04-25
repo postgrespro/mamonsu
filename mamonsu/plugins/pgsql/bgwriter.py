@@ -18,7 +18,7 @@ class BgWriter(Plugin):
 
         ("buffers_checkpoint", "bgwriter[buffers_checkpoint]",
          "bgwriter: buffers written during checkpoints",
-         ("PostgreSQL bgwriter", "6A4f5D", 1),
+         ("PostgreSQL bgwriter", "793F5D", 1),
          Plugin.DELTA.simple_change),
 
         ("buffers_clean", "bgwriter[buffers_clean]",

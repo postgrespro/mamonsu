@@ -151,7 +151,7 @@ class Databases(Plugin):
                     {"color": "7EB29B",
                      "key": self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},"),
                      "drawtype": 2},
-                    {"color": "6A4F5D",
+                    {"color": "793F5D",
                      "key": self.right_type(self.key_autovacumm),
                      "yaxisside": 1,
                      "drawtype": 2}]
@@ -162,7 +162,7 @@ class Databases(Plugin):
                     {"color": "7EB29B",
                      "key": self.right_type(self.key_db_age, var_discovery="{#DATABASE},"),
                      "drawtype": 2},
-                    {"color": "6A4F5D",
+                    {"color": "793F5D",
                      "key": self.right_type(self.key_autovacumm),
                      "yaxisside": 1,
                      "drawtype": 2}]

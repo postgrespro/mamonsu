@@ -28,7 +28,7 @@ class ProcStat(Plugin):
     CpuItems = [
         # key, zbx_key, name, delta, color, side
         (1, "cpu[user]", "by Normal Programs and Daemons", Plugin.DELTA.speed_per_second, "578159", 0),
-        (2, "cpu[nice]", "by nice(1)d Programs", Plugin.DELTA.speed_per_second, "6A4F5D", 0),
+        (2, "cpu[nice]", "by nice(1)d Programs", Plugin.DELTA.speed_per_second, "793F5D", 0),
         (3, "cpu[system]", "by the Kernel in System Activities", Plugin.DELTA.speed_per_second, "9C8A4E", 0),
         (4, "cpu[idle]", "Idle", Plugin.DELTA.speed_per_second, "8B817C", 0),
         (5, "cpu[iowait]", "Waiting for I/O Operations", Plugin.DELTA.speed_per_second, "0082A5", 0),

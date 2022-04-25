@@ -117,7 +117,7 @@ class DiskStats(Plugin):
                 },
                 {
                     "key": self.right_type(self.key + ".all_write{0}"),
-                    "color": "6A4F5D"
+                    "color": "793F5D"
                 }
             ]
         }
@@ -131,7 +131,7 @@ class DiskStats(Plugin):
                 },
                 {
                     "key": self.right_type(self.key + ".all_write_b{0}"),
-                    "color": "6A4F5D"
+                    "color": "793F5D"
                 }
             ]
         }
@@ -230,7 +230,7 @@ class DiskStats(Plugin):
                         "key": "system.disk.read[{#BLOCKDEVICE}]"
                     },
                     {
-                        "color": "6A4F5D",
+                        "color": "793F5D",
                         "key": "system.disk.write[{#BLOCKDEVICE}]"
                     },
                     {
@@ -248,7 +248,7 @@ class DiskStats(Plugin):
                         "key": "system.disk.read_b[{#BLOCKDEVICE}]"
                     },
                     {
-                        "color": "6A4F5D",
+                        "color": "793F5D",
                         "key": "system.disk.write_b[{#BLOCKDEVICE}]"
                     },
                     {

@@ -59,7 +59,7 @@ class ArchiveCommand(Plugin):
     Items = [
         # key, desc, color, side, graph
         ("count_files_to_archive", "count files in archive_status need to archive", "9C8A4E", 0, 1),
-        ("size_files_to_archive", "size of files need to archive", "6A4f5D", 0, 0),
+        ("size_files_to_archive", "size of files need to archive", "793F5D", 0, 0),
         ("archived_files", "count archived files", "578159", 0, 1),
         ("failed_trying_to_archive", "count attempts to archive files", "E57862", 0, 1),
     ]
