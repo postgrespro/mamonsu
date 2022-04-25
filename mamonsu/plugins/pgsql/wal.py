@@ -8,7 +8,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 NUMBER_NON_ACTIVE_SLOTS = 0
 
 
-class Xlog(Plugin):
+class Wal(Plugin):
     AgentPluginType = "pg"
     DEFAULT_CONFIG = {
         "lag_more_than_in_sec": str(60 * 5)

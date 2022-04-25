@@ -10,7 +10,7 @@ from mamonsu.plugins.pgsql.instance import Instance
 from mamonsu.plugins.pgsql.oldest import Oldest
 from mamonsu.plugins.pgsql.pg_buffercache import PgBufferCache
 from mamonsu.plugins.pgsql.pg_locks import PgLocks
-from mamonsu.plugins.pgsql.wal import Xlog
+from mamonsu.plugins.pgsql.wal import Wal
 from mamonsu.plugins.system.linux.memory import Memory
 from mamonsu.plugins.system.linux.proc_stat import ProcStat
 
@@ -1071,11 +1071,11 @@ def generate_dashboard(template, uuid):
                                          Instance.graphs_name["events"],
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[3][0] + "]"),
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[0][0] + "]"),
-                                         Xlog.key_non_active_slots.format("[]"),
+                                         Wal.key_non_active_slots.format("[]"),
                                          Oldest.key.format("[transaction_time]"),
                                          PgHealth.key_ping.format("[]"),
                                          PgHealth.key_version.format("[]"),
-                                         Xlog.key_replication.format("[sec]"),
+                                         Wal.key_replication.format("[sec]"),
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[1][0] + "]"),
                                          Instance.key + Instance.Items[6][1],
                                          Instance.key + Instance.Items[7][1],
@@ -1085,7 +1085,7 @@ def generate_dashboard(template, uuid):
                                          Instance.key + Instance.Items[10][1],
                                          Instance.key + Instance.Items[11][1],
                                          PgHealth.key_uptime.format("[]"),
-                                         Xlog.key_wal_records.format("[]"),
-                                         Xlog.key_wal_sync_duty,
-                                         Xlog.key_wall.format("[]"),
+                                         Wal.key_wal_records.format("[]"),
+                                         Wal.key_wal_sync_duty,
+                                         Wal.key_wall.format("[]"),
                                          uuid).replace("\\r\\n", " ").split())
