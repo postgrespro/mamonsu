@@ -22,13 +22,13 @@ class PgLocks(Plugin):
     Items = [
         # key, desc, color
         ("accessshare",
-         "Read only queries",
+         "Read Only Queries",
          "578159"),
         ("rowshare",
          "SELECT FOR SHARE and SELECT FOR UPDATE",
          "3B415A"),
         ("rowexclusive",
-         "Write queries",
+         "Write Queries",
          "7EB29B"),
         ("shareupdateexclusive",
          "VACUUM, ANALYZE, CREATE INDEX CONCURRENTLY",
@@ -37,17 +37,17 @@ class PgLocks(Plugin):
          "CREATE INDEX",
          "0082A5"),
         ("sharerowexclusive",
-         "Locks from application",
+         "Locks from Application",
          "00B0B8"),
         ("exclusive",
-         "Locks from application or some operation on system catalogs",
+         "Locks from Application or Some Operations on System Catalogs",
          "9C8A4E"),
         ("accessexclusive",
          "ALTER TABLE, DROP TABLE, TRUNCATE, REINDEX, CLUSTER, VACUUM FULL, LOCK TABLE",
          "793F5D")
     ]
 
-    graph_name = "PostgreSQL locks sampling"
+    graph_name = "PostgreSQL: Locks Sampling"
 
     def run(self, zbx):
         result = Pooler.query(self.query)
@@ -65,7 +65,7 @@ class PgLocks(Plugin):
         for item in self.Items:
             result += template.item({
                 "key": self.right_type(self.key, item[0]),
-                "name": "PostgreSQL locks: {0}".format(item[1]),
+                "name": "PostgreSQL Locks: {0}".format(item[1]),
                 "delay": self.plugin_config("interval"),
                 "value_type": self.VALUE_TYPE.numeric_unsigned
             })

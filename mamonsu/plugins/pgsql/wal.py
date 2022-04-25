@@ -151,50 +151,50 @@ class Xlog(Plugin):
         else:
             delta = Plugin.DELTA_SPEED
         result += template.item({
-            "name": "PostgreSQL: wal write speed",
+            "name": "PostgreSQL WAL: WAL Write Speed",
             "key": self.right_type(self.key_wall),
             "units": Plugin.UNITS.bytes_per_second,
             "delay": self.plugin_config("interval"),
             "delta": delta
         }) + template.item({
-            "name": "PostgreSQL: streaming replication lag",
+            "name": "PostgreSQL WAL: Streaming Replication Lag",
             "key": self.right_type(self.key_replication, "sec"),
             "delay": self.plugin_config("interval")
         }) + template.item({
-            "name": "PostgreSQL: count of xlog files",
+            "name": "PostgreSQL WAL: Count of WAL Files",
             "key": self.right_type(self.key_count_wall),
             "delay": self.plugin_config("interval")
         }) + template.item({
-            "name": "PostgreSQL: count non-active replication slots",
+            "name": "PostgreSQL WAL: Count Non-Active Replication Slots",
             "key": self.right_type(self.key_non_active_slots),
             "value_type": self.VALUE_TYPE.numeric_unsigned,
         }) + template.item({
-            "name": "PostgreSQL: wal records generated",
+            "name": "PostgreSQL WAL: WAL Records Generated",
             "key": self.right_type(self.key_wal_records),
             "value_type": self.VALUE_TYPE.numeric_unsigned,
             "delta": delta,
         }) + template.item({
-            "name": "PostgreSQL: wal full page images generated",
+            "name": "PostgreSQL WAL: WAL Full Page Images Generated",
             "key": self.right_type(self.key_wal_fpi),
             "value_type": self.VALUE_TYPE.numeric_unsigned,
             "delta": delta,
         }) + template.item({
-            "name": "PostgreSQL: wal buffers full",
+            "name": "PostgreSQL WAL: WAL Buffers Full",
             "key": self.key_wal_buffers_full,
             "value_type": self.VALUE_TYPE.numeric_unsigned,
             "delta": delta,
         }) + template.item({
-            "name": "PostgreSQL: wal write time (ms)",
+            "name": "PostgreSQL WAL: WAL Write Time (ms)",
             "key": self.key_wal_write_time,
             "value_type": self.VALUE_TYPE.numeric_unsigned,
             "delta": delta,
         }) + template.item({
-            "name": "PostgreSQL: wal sync time (ms)",
+            "name": "PostgreSQL WAL: WAL Sync Time (ms)",
             "key": self.key_wal_sync_time,
             "value_type": self.VALUE_TYPE.numeric_unsigned,
             "delta": delta,
         }) + template.item({
-            "name": "PostgreSQL: wal sync duty (%)",
+            "name": "PostgreSQL WAL: WAL Sync Duty (%)",
             "key": self.key_wal_sync_duty,
             "value_type": Plugin.VALUE_TYPE.numeric_float,
             "units": Plugin.UNITS.percent,

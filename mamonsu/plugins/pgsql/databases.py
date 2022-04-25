@@ -91,7 +91,7 @@ class Databases(Plugin):
     def items(self, template, dashboard=False):
         if not dashboard:
             return template.item({
-                "name": "PostgreSQL: count of autovacuum workers",
+                "name": "PostgreSQL Autovacuum: Count of Autovacuum Workers",
                 "key": self.right_type(self.key_autovacumm),
                 "delay": self.plugin_config("interval")
             })

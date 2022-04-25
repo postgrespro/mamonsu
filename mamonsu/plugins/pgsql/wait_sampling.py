@@ -270,7 +270,7 @@ class WaitSampling(Plugin):
         for item in (self.AllLockItems + self.LWLockItems + self.HWLockItems):
             result += template.item({
                 "key": "pgsql.{0}".format(item[1]),
-                "name": "PostgreSQL waits{0}".format(item[2]),
+                "name": "PostgreSQL Wait Sampling{0}".format(item[2]),
                 "delay": self.plugin_config("interval"),
                 "value_type": self.VALUE_TYPE.numeric_float})
         if not dashboard:
@@ -281,9 +281,9 @@ class WaitSampling(Plugin):
     def graphs(self, template, dashboard=False):
         result = ""
         for graph_name, graph_items in [
-            ("PostgreSQL waits: Locks by Type", self.AllLockItems),
-            ("PostgreSQL waits: Heavyweight Locks", self.HWLockItems),
-            ("PostgreSQL waits: Lightweight Locks", self.LWLockItems)]:
+            ("PostgreSQL Wait Sampling: Locks by Type", self.AllLockItems),
+            ("PostgreSQL Wait Sampling: Heavyweight Locks", self.HWLockItems),
+            ("PostgreSQL Wait Sampling: Lightweight Locks", self.LWLockItems)]:
             items = []
             for item in graph_items:
                 items.append({

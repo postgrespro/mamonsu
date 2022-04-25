@@ -9,14 +9,14 @@ class PreparedTransaction(Plugin):
     key_count = {
         "state": "count_prepared",
         "key": "pgsql.prepared.count",
-        "name": "PostgreSQL: number of prepared transactions",
+        "name": "PostgreSQL Prepared Transactions: Number of Prepared Transactions",
         "color": "8B817C",
         "yaxisside": 0,
     }
     key_prepared = {
         "state": "oldest_prepared",
         "key": "pgsql.prepared.oldest",
-        "name": "PostgreSQL: oldest prepared transaction time in sec",
+        "name": "PostgreSQL Prepared Transactions: the Oldest Prepared Transaction Running Time in sec",
         "color": "9C8A4E",
         "yaxisside": 1,
     }
@@ -72,7 +72,7 @@ class PreparedTransaction(Plugin):
 
     def graphs(self, template, dashboard=False):
         result = template.graph({
-            "name": "PostgreSQL prepared transaction",
+            "name": "PostgreSQL Prepared Transactions: Overview",
             "items": [{
                 "key": self.key_count["key"],
                 "color": self.key_count["color"],

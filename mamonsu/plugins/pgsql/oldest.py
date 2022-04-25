@@ -57,17 +57,17 @@ class Oldest(Plugin):
         if not dashboard:
             return template.item({
                 "key": self.right_type(self.key, "xid_age"),
-                "name": "PostgreSQL: age of oldest xid",
+                "name": "PostgreSQL Transactions: Age of the Oldest XID",
                 "delay": self.plugin_config("interval"),
                 "value_type": Plugin.VALUE_TYPE.numeric_unsigned
             }) + template.item({
                 "key": self.right_type(self.key, "transaction_time"),
-                "name": "PostgreSQL: oldest transaction running time in sec",
+                "name": "PostgreSQL Transactions: the Oldest Transaction Running Time in sec",
                 "delay": self.plugin_config("interval"),
                 "units": Plugin.UNITS.s
             }) + template.item({
                 "key": self.right_type("pgsql.parallel{0}", "queries"),
-                "name": "PostgreSQL: number of parallel queries being executed now",
+                "name": "PostgreSQL Transactions: Number of Parallel Queries Being Executed Now",
                 "delay": self.plugin_config("interval"),
                 "value_type": Plugin.VALUE_TYPE.numeric_unsigned
             })

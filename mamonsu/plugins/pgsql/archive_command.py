@@ -57,11 +57,11 @@ class ArchiveCommand(Plugin):
     key = "pgsql.archive_command{0}"
     name = "PostgreSQL archive command {0}"
     Items = [
-        # key, desc, color, side, graph
-        ("count_files_to_archive", "count files in archive_status need to archive", "9C8A4E", 0, 1),
-        ("size_files_to_archive", "size of files need to archive", "793F5D", 0, 0),
-        ("archived_files", "count archived files", "578159", 0, 1),
-        ("failed_trying_to_archive", "count attempts to archive files", "E57862", 0, 1),
+        # key, desc, color, side, graph, delta, units
+        ("count_files_to_archive", "Files in archive_status Need to Archive Count", "9C8A4E", 0, 1, Plugin.DELTA.as_is, self.UNITS.none),
+        ("size_files_to_archive", "Files Need to Archive Size", "793F5D", 0, 0, Plugin.DELTA.as_is, self.UNITS.bytes),
+        ("archived_files", "Archived Files Count", "578159", 0, 1, Plugin.DELTA.simple_change, self.UNITS.none),
+        ("failed_trying_to_archive", "Attempts to Archive Files Count", "E57862", 0, 1, Plugin.DELTA.simple_change, self.UNITS.none),
     ]
     old_archived_count = None
     old_failed_count = None
@@ -131,32 +131,15 @@ class ArchiveCommand(Plugin):
 
     def items(self, template, dashboard=False):
         result = ""
-        result += template.item({
-            "key": self.right_type(self.key, self.Items[0][0]),
-            "name": self.name.format(self.Items[0][1]),
-            "value_type": self.VALUE_TYPE.numeric_unsigned,
-            "delay": self.plugin_config("interval"),
-            "delta": Plugin.DELTA.as_is
-        }) + template.item({
-            "key": self.right_type(self.key, self.Items[1][0]),
-            "name": self.name.format(self.Items[1][1]),
-            "value_type": self.VALUE_TYPE.numeric_unsigned,
-            "units": self.UNITS.bytes,
-            "delay": self.plugin_config("interval"),
-            "delta": Plugin.DELTA.as_is
-        }) + template.item({
-            "key": self.right_type(self.key, self.Items[2][0]),
-            "name": self.name.format(self.Items[2][1]),
-            "value_type": self.VALUE_TYPE.numeric_unsigned,
-            "delay": self.plugin_config("interval"),
-            "delta": Plugin.DELTA.simple_change
-        }) + template.item({
-            "key": self.right_type(self.key, self.Items[3][0]),
-            "name": self.name.format(self.Items[3][1]),
-            "value_type": self.VALUE_TYPE.numeric_unsigned,
-            "delay": self.plugin_config("interval"),
-            "delta": Plugin.DELTA.simple_change
-        })
+        for item in self.Items:
+            result += template.item({
+                "key": self.right_type(self.key, self.Items[0][0]),
+                "name": "PostgreSQL Archiver: {0}".format(self.name.format(self.Items[0][1])),
+                "value_type": self.VALUE_TYPE.numeric_unsigned,
+                "delay": self.plugin_config("interval"),
+                "delta": self.Items[0][5],
+                "units": self.Items[0][6]
+            })
         if not dashboard:
             return result
         else:

@@ -46,26 +46,26 @@ class PgHealth(Plugin):
             delay = 5  # TODO check delay
             value_type = Plugin.VALUE_TYPE.numeric_float
         result += template.item({
-            "name": "PostgreSQL: ping",
+            "name": "PostgreSQL Health: Ping",
             "key": self.right_type(self.key_ping),
             "value_type": Plugin.VALUE_TYPE.numeric_float,
             "units": Plugin.UNITS.ms,
             "delay": delay
         }) + template.item({
-            "name": "PostgreSQL: cache hit ratio",
+            "name": "PostgreSQL Health: Cache Hit Ratio",
             "key": self.right_type(self.key_cache, "hit"),
             "value_type": Plugin.VALUE_TYPE.numeric_float,
             "units": Plugin.UNITS.percent,
             "type": Plugin.TYPE.CALCULATED,
             "params": "last(pgsql.blocks[hit])*100/(last(pgsql.blocks[hit])+last(pgsql.blocks[read]))"
         }) + template.item({
-            "name": "PostgreSQL: service uptime",
+            "name": "PostgreSQL Health: Service Uptime",
             "key": self.right_type(self.key_uptime),
             "value_type": value_type,
             "delay": delay,
             "units": Plugin.UNITS.unixtime
         }) + template.item({
-            "name": "PostgreSQL: server version",
+            "name": "PostgreSQL Health: Server Version",
             "key": self.right_type(self.key_version),
             "value_type": Plugin.VALUE_TYPE.text,
             "delay": delay,

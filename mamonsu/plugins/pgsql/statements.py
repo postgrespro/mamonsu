@@ -35,65 +35,65 @@ class Statements(Plugin):
     Items = [
         ("stat[read_bytes]",
          "sum(shared_blks_read+local_blks_read+temp_blks_read)*8*1024",
-         "read bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: bytes", "7EB29B", 0)),
+         "Read bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Bytes", "7EB29B", 0)),
         ("stat[write_bytes]",
          "sum(shared_blks_written+local_blks_written"
          "+temp_blks_written)*8*1024",
-         "write bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: bytes", "793F5D", 0)),
+         "Write bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Bytes", "793F5D", 0)),
         ("stat[dirty_bytes]",
          "sum(shared_blks_dirtied+local_blks_dirtied)*8*1024",
-         "dirty bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: bytes", "9C8A4E", 0)),
+         "Dirty bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Bytes", "9C8A4E", 0)),
 
         ("stat[read_time]",
          "sum(blk_read_time)/float4(100)",
-         "read io time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: spend time", "7EB29B", 0)),
+         "Read IO Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Spend Time", "7EB29B", 0)),
         ("stat[write_time]",
          "sum(blk_write_time)/float4(100)",
-         "write io time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: spend time", "793F5D", 0)),
+         "Write IO Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Spend Time", "793F5D", 0)),
         ["stat[other_time]",
          "sum({0}-blk_read_time-blk_write_time)/float4(100)",
-         "other (mostly cpu) time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: spend time", "9C8A4E", 0)]]
+         "Other (mostly CPU) Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Spend Time", "9C8A4E", 0)]]
 
     Items_pg_13 = [
         ("stat[wal_bytes]",
          "sum(wal_bytes)",
-         "amount of wal files", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: wal statistics", "00B0B8", 0)),
+         "Amount of WAL Files", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: WAL Statistics", "00B0B8", 0)),
         ("stat[wal_records]",
          "sum(wal_records)",
-         "amount of wal records", Plugin.UNITS.none, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: wal statistics", "0082A5", 0)),
+         "Amount of WAL Records", Plugin.UNITS.none, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: WAL Statistics", "0082A5", 0)),
         ("stat[wal_fpi]",
          "sum(wal_fpi)",
-         "full page writes", Plugin.UNITS.none, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL statements: wal statistics", "9C8A4E", 0))
+         "Full Page Writes", Plugin.UNITS.none, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: WAL Statistics", "9C8A4E", 0))
     ]
 
     Items_pg_14 = [
         ("stat_info[dealloc]",
          "dealloc",
-         "the number of times the pg_stat_statements.max was exceeded",
+         "Nnumber of Times pg_stat_statements.max Was Exceeded",
          Plugin.UNITS.none,
          Plugin.DELTA.simple_change,
-         ("PostgreSQL statements info: the number of times the pg_stat_statements.max was exceeded", "793F5D", 0)),
+         ("PostgreSQL Statements Info: Number of Times pg_stat_statements.max Was Exceeded", "793F5D", 0)),
         ("stat_info[stats_reset]",
          "ceil(extract(epoch from stats_reset))",
-         "last statistics reset",
+         "Last Statistics Reset Time",
          Plugin.UNITS.unixtime,
          Plugin.DELTA.as_is,
-         ("PostgreSQL statements info: last statistics reset", "9C8A4E", 0))
+         ("PostgreSQL Statements Info: Last Statistics Reset Time", "9C8A4E", 0))
     ]
 
     all_graphs = [
-        ("PostgreSQL statements: bytes", None),
-        ("PostgreSQL statements: spend time", 1),
-        ("PostgreSQL statements: wal statistics", None)]
+        ("PostgreSQL Statements: Bytes", None),
+        ("PostgreSQL Statements: Spend Time", 1),
+        ("PostgreSQL Statements: WAL Statistics", None)]
 
     def run(self, zbx):
         if not self.extension_installed("pg_stat_statements") or not self.extension_installed("pgpro_stats"):
@@ -149,7 +149,7 @@ class Statements(Plugin):
             keys = item[0].split("[")
             result += template.item({
                 "key": self.right_type(self.key + keys[0] + "{0}", keys[1][:-1]),
-                "name": "PostgreSQL statements: {0}".format(item[2]),
+                "name": "PostgreSQL Statements: {0}".format(item[2]),
                 "value_type": self.VALUE_TYPE.numeric_float,
                 "units": item[3],
                 "delay": self.plugin_config("interval"),

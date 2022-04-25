@@ -17,54 +17,54 @@ class Instance(Plugin):
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta
 
-        ("xact_commit", "transactions[committed]", "transactions: committed",
+        ("xact_commit", "transactions[committed]", "Transactions Committed",
          ("PostgreSQL instance: transactions rate", "578159", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("blks_hit", "blocks[hit]", "blocks: hit",
+        ("blks_hit", "blocks[hit]", "Blocks Hit",
          ("PostgreSQL instance: blocks rate", "7EB29B", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("blks_read", "blocks[read]", "blocks: read",
+        ("blks_read", "blocks[read]", "Blocks Read",
          ("PostgreSQL instance: blocks rate", "793F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
 
-        ("conflicts", "events[conflicts]", "event: conflicts",
+        ("conflicts", "events[conflicts]", "Conflict Events",
          ("PostgreSQL instance: events", "9C8A4E", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
-        ("deadlocks", "events[deadlocks]", "event: deadlocks",
+        ("deadlocks", "events[deadlocks]", "Deadlock Events",
          ("PostgreSQL instance: events", "3B415A", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
-        ("xact_rollback", "events[xact_rollback]", "event: rollbacks",
+        ("xact_rollback", "events[xact_rollback]", "Rollback Events",
          ("PostgreSQL instance: transactions rate", "E57862", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
-        ("temp_bytes", "temp[bytes]", "temp: bytes written",
+        ("temp_bytes", "temp[bytes]", "Temp Bytes Written",
          ("PostgreSQL instance: temp files", "00B0B8", 0),
          Plugin.UNITS.bytes, Plugin.DELTA.simple_change),
-        ("temp_files", "temp[files]", "temp: files created",
+        ("temp_files", "temp[files]", "Temp Files Created",
          ("PostgreSQL instance: temp files", "0082A5", 1),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
         # stacked
-        ("tup_deleted", "tuples[deleted]", "tuples: deleted",
+        ("tup_deleted", "tuples[deleted]", "Tuples Deleted",
          ("PostgreSQL instance: tuples", "3B415A", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("tup_fetched", "tuples[fetched]", "tuples: fetched",
+        ("tup_fetched", "tuples[fetched]", "Tuples Fetched",
          ("PostgreSQL instance: tuples", "7EB29B", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("tup_inserted", "tuples[inserted]", "tuples: inserted",
+        ("tup_inserted", "tuples[inserted]", "Tuples Inserted",
          ("PostgreSQL instance: tuples", "00B0B8", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("tup_returned", "tuples[returned]", "tuples: returned",
+        ("tup_returned", "tuples[returned]", "Tuples Returned",
          ("PostgreSQL instance: tuples", "9C8A4E", 1),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("tup_updated", "tuples[updated]", "tuples: updated",
+        ("tup_updated", "tuples[updated]", "Tuples Updated",
          ("PostgreSQL instance: tuples", "6A4F5F", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
     ]
     Items_pg_12 = [
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta
-        ("checksum_failures", "events[checksum_failures]", "event: checksum_failures",
+        ("checksum_failures", "events[checksum_failures]", "checksum_failures Events",
          ("PostgreSQL instance: events", "793F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change)
     ]
@@ -77,11 +77,11 @@ class Instance(Plugin):
     """
 
     graphs_name = {
-        "transactions": "PostgreSQL instance: blocks rate",
-        "blocks": "PostgreSQL instance: transactions rate",
-        "events": "PostgreSQL instance: events",
-        "temp": "PostgreSQL instance: temp files",
-        "tuples": "PostgreSQL instance: tuples"}
+        "transactions": "PostgreSQL Instance: Blocks Rate",
+        "blocks": "PostgreSQL Instance: Transactions Rate",
+        "events": "PostgreSQL Instance: Events",
+        "temp": "PostgreSQL Instance: Temp Files",
+        "tuples": "PostgreSQL Instance: Tuples"}
 
     def run(self, zbx):
         all_items = self.Items
@@ -111,7 +111,7 @@ class Instance(Plugin):
             keys = item[1].split("[")
             result += template.item({
                 "key": self.right_type(self.key + keys[0] + "{0}", keys[1][:-1]),
-                "name": "PostgreSQL {0}".format(item[2]),
+                "name": "PostgreSQL Instance: {0}".format(item[2]),
                 "value_type": self.VALUE_TYPE.numeric_float,
                 "units": item[4],
                 "delay": self.plugin_config("interval"),
@@ -119,7 +119,7 @@ class Instance(Plugin):
             })
             result += template.item({
                 "key": self.key_server_mode,
-                "name": "PostgreSQL server mode",
+                "name": "PostgreSQL Instance: Server Mode",
                 "value_type": self.VALUE_TYPE.text,
                 "units": self.UNITS.none,
                 "delay": self.plugin_config("interval"),
@@ -174,13 +174,13 @@ class Instance(Plugin):
             return result
         else:
             return [{
-                "dashboard": {"name": "PostgreSQL instance: tuples",
+                "dashboard": {"name": "PostgreSQL Instance: Tuples",
                               "page": ZbxTemplate.dashboard_page_overview["name"],
                               "size": ZbxTemplate.dashboard_widget_size_medium,
                               "position": 6}
             },
                 {
-                    "dashboard": {"name": "PostgreSQL instance: events",
+                    "dashboard": {"name": "PostgreSQL Instance: Events",
                                   "page": ZbxTemplate.dashboard_page_instance["name"],
                                   "size": ZbxTemplate.dashboard_widget_size_medium,
                                   "position": 4}

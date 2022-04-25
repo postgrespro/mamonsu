@@ -23,15 +23,15 @@ class MemoryLeakDiagnostic(Plugin):
     """
     key_count_diff = "pgsql.memory_leak_diagnostic.count_diff[]"
     key_count_diff_error = "pgsql.memory_leak_diagnostic.msg_text[]"
-    name_count_diff = ("PostgreSQL: number of pids which private anonymous memory exceeds private_anon_mem_threshold")
+    name_count_diff = ("PostgreSQL Memory Leak: Number of Pids Which Private Anonymous Memory Exceeds private_anon_mem_threshold")
     name_count_diff_error = (
-        "PostgreSQL: number of pids which private anonymous memory exceeds private_anon_mem_threshold, text of message")
+        "PostgreSQL Memory Leak: Number of Pids Which Private Anonymous Memory Exceeds private_anon_mem_threshold, text of message")
 
     def __init__(self, config):
         super(Plugin, self).__init__(config)
         if not platform.LINUX:
             self.disable()
-            self.log.error("Plugin {name} work only on Linux. ".format(name=self.__class__.__name__))
+            self.log.error("Plugin {name} works only on Linux. ".format(name=self.__class__.__name__))
 
         if self.is_enabled():
             self.page_size = os.sysconf("SC_PAGE_SIZE")

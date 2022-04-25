@@ -10,7 +10,7 @@ from mamonsu.plugins.pgsql.instance import Instance
 from mamonsu.plugins.pgsql.oldest import Oldest
 from mamonsu.plugins.pgsql.pg_buffercache import PgBufferCache
 from mamonsu.plugins.pgsql.pg_locks import PgLocks
-from mamonsu.plugins.pgsql.xlog import Xlog
+from mamonsu.plugins.pgsql.wal import Xlog
 from mamonsu.plugins.system.linux.memory import Memory
 from mamonsu.plugins.system.linux.proc_stat import ProcStat
 

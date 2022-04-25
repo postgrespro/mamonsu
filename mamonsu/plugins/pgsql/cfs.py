@@ -95,32 +95,32 @@ class Cfs(Plugin):
     def items(self, template, dashboard=False):
         if not dashboard:
             return template.item({
-                "name": "PostgreSQL cfs compression: written byte/s",
+                "name": "PostgreSQL CFS: Written byte/s",
                 "key": "pgsql.cfs.activity[written_bytes]",
                 "units": self.UNITS.bytes_per_second,
                 "delay": self.Interval
             }) + template.item({
-                "name": "PostgreSQL cfs compression: scanned byte/s",
+                "name": "PostgreSQL CFS: Scanned byte/s",
                 "key": "pgsql.cfs.activity[scanned_bytes]",
                 "units": self.UNITS.bytes_per_second,
                 "delay": self.Interval
             }) + template.item({
-                "name": "PostgreSQL cfs compression: compressed files",
+                "name": "PostgreSQL CFS: Compressed Files",
                 "key": "pgsql.cfs.activity[compressed_files]",
                 "units": self.UNITS.none,
                 "delay": self.Interval
             }) + template.item({
-                "name": "PostgreSQL cfs compression: scanned files",
+                "name": "PostgreSQL CFS: Scanned Files",
                 "key": "pgsql.cfs.activity[scanned_files]",
                 "units": self.UNITS.none,
                 "delay": self.Interval
             }) + template.item({
-                "name": "PostgreSQL cfs compression: current ratio",
+                "name": "PostgreSQL CFS: Current Ratio",
                 "key": "pgsql.cfs.activity[current_compress_ratio]",
                 "units": self.UNITS.none,
                 "delay": self.Interval
             }) + template.item({
-                "name": "PostgreSQL cfs compression: total ratio",
+                "name": "PostgreSQL CFS: Total Ratio",
                 "key": "pgsql.cfs.activity[total_compress_ratio]",
                 "units": self.UNITS.none,
                 "delay": self.Interval
