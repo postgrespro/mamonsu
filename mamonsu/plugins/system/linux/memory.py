@@ -100,7 +100,7 @@ class Memory(Plugin):
             {
                 "name": "System: Server Free/Used Memory Overview",
                 "height": 400,
-                "type": 0,
+                "type": 1,
                 "items": free_used_items
             }
         ]
