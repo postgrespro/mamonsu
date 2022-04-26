@@ -17,38 +17,38 @@ class BgWriter(Plugin):
         #    ('graph name', color, side), units, delta
 
         ("buffers_checkpoint", "bgwriter[buffers_checkpoint]",
-         "bgwriter: buffers written during checkpoints",
-         ("PostgreSQL bgwriter", "CCCC00", 1),
+         "Buffers Written During Checkpoints",
+         ("PostgreSQL bgwriter", "793F5D", 1),
          Plugin.DELTA.simple_change),
 
         ("buffers_clean", "bgwriter[buffers_clean]",
-         "bgwriter: buffers written",
-         ("PostgreSQL bgwriter", "0000CC", 1),
+         "Buffers Written",
+         ("PostgreSQL bgwriter", "9C8A4E", 1),
          Plugin.DELTA.simple_change),
 
         ("maxwritten_clean", "bgwriter[maxwritten_clean]",
-         "bgwriter: number of bgwriter stopped by max write count",
-         ("PostgreSQL bgwriter", "777777", 0),
+         "Number of bgwriter Stopped by Max Write Count",
+         ("PostgreSQL bgwriter", "8B817C", 0),
          Plugin.DELTA.simple_change),
 
         ("buffers_backend", "bgwriter[buffers_backend]",
-         "bgwriter: buffers written directly by a backend",
-         ("PostgreSQL bgwriter", "CC0000", 1),
+         "Buffers Written Directly by a Backend",
+         ("PostgreSQL bgwriter", "7EB29B", 1),
          Plugin.DELTA.simple_change),
 
         ("buffers_backend_fsync", "bgwriter[buffers_backend_fsync]",
-         "bgwriter: times a backend execute its own fsync",
-         ("PostgreSQL bgwriter", "CC00CC", 0),
+         "Times a Backend Execute Its Own Fsync",
+         ("PostgreSQL bgwriter", "00B0B8", 0),
          Plugin.DELTA.simple_change),
 
         ("buffers_alloc", "bgwriter[buffers_alloc]",
-         "bgwriter: buffers allocated",
-         ("PostgreSQL bgwriter", "00CC00", 1),
+         "Buffers Allocated",
+         ("PostgreSQL bgwriter", "3B415A", 1),
          Plugin.DELTA.simple_change)
     ]
 
-    graph_name_buffers = "PostgreSQL bgwriter buffers"
-    graph_name_ws = "PostgreSQL bgwriter write/sync"
+    graph_name_buffers = "PostgreSQL bgwriter: Buffers"
+    graph_name_ws = "PostgreSQL bgwriter: Write/Sync"
 
     def run(self, zbx):
         columns = [x[0] for x in self.Items]
@@ -67,7 +67,7 @@ class BgWriter(Plugin):
         for item in self.Items:
             result += template.item({
                 "key": self.right_type(self.key, item[0]),
-                "name": "PostgreSQL {0}".format(item[2]),
+                "name": "PostgreSQL bgwriter: {0}".format(item[2]),
                 "value_type": self.VALUE_TYPE.numeric_unsigned,
                 "delay": self.plugin_config("interval"),
                 "delta": delta
@@ -83,12 +83,14 @@ class BgWriter(Plugin):
             if item[3][2] == 0:
                 items_write_sync.append({
                     "key": self.right_type(self.key, item[0]),
-                    "color": item[3][1]
+                    "color": item[3][1],
+                    "drawtype": 2
                 })
             if item[3][2] == 1:
                 items_buffers.append({
                     "key": self.right_type(self.key, item[0]),
-                    "color": item[3][1]
+                    "color": item[3][1],
+                    "drawtype": 2
                 })
         result = template.graph({
             "name": self.graph_name_buffers,

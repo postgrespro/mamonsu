@@ -17,55 +17,55 @@ class Instance(Plugin):
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta
 
-        ("xact_commit", "transactions[committed]", "transactions: committed",
-         ("PostgreSQL instance: transactions rate", "0000CC", 0),
+        ("xact_commit", "transactions[committed]", "Transactions Committed",
+         ("PoPostgreSQL Instance: Transactions Rate", "578159", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("blks_hit", "blocks[hit]", "blocks: hit",
-         ("PostgreSQL instance: blocks rate", "00CC00", 0),
+        ("blks_hit", "blocks[hit]", "Blocks Hit",
+         ("PostgreSQL Instance: Blocks Rate", "7EB29B", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("blks_read", "blocks[read]", "blocks: read",
-         ("PostgreSQL instance: blocks rate", "CC0000", 0),
+        ("blks_read", "blocks[read]", "Blocks Read",
+         ("PostgreSQL Instance: Blocks Rate", "793F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
 
-        ("conflicts", "events[conflicts]", "event: conflicts",
-         ("PostgreSQL instance: events", "0000CC", 0),
+        ("conflicts", "events[conflicts]", "Conflict Events",
+         ("PostgreSQL Instance: Events", "9C8A4E", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
-        ("deadlocks", "events[deadlocks]", "event: deadlocks",
-         ("PostgreSQL instance: events", "000000", 0),
+        ("deadlocks", "events[deadlocks]", "Deadlock Events",
+         ("PostgreSQL Instance: Events", "3B415A", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
-        ("xact_rollback", "events[xact_rollback]", "event: rollbacks",
-         ("PostgreSQL instance: transactions rate", "CC0000", 0),
+        ("xact_rollback", "events[xact_rollback]", "Rollback Events",
+         ("PoPostgreSQL Instance: Transactions Rate", "E57862", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
-        ("temp_bytes", "temp[bytes]", "temp: bytes written",
-         ("PostgreSQL instance: temp files", "CC0000", 0),
+        ("temp_bytes", "temp[bytes]", "Temp Bytes Written",
+         ("PostgreSQL Instance: Temp Files", "00B0B8", 0),
          Plugin.UNITS.bytes, Plugin.DELTA.simple_change),
-        ("temp_files", "temp[files]", "temp: files created",
-         ("PostgreSQL instance: temp files", "0000CC", 1),
+        ("temp_files", "temp[files]", "Temp Files Created",
+         ("PostgreSQL Instance: Temp Files", "0082A5", 1),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
         # stacked
-        ("tup_deleted", "tuples[deleted]", "tuples: deleted",
-         ("PostgreSQL instance: tuples", "000000", 0),
+        ("tup_deleted", "tuples[deleted]", "Tuples Deleted",
+         ("PostgreSQL Instance: Tuples", "3B415A", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("tup_fetched", "tuples[fetched]", "tuples: fetched",
-         ("PostgreSQL instance: tuples", "0000CC", 0),
+        ("tup_fetched", "tuples[fetched]", "Tuples Fetched",
+         ("PostgreSQL Instance: Tuples", "7EB29B", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("tup_inserted", "tuples[inserted]", "tuples: inserted",
-         ("PostgreSQL instance: tuples", "00CC00", 0),
+        ("tup_inserted", "tuples[inserted]", "Tuples Inserted",
+         ("PostgreSQL Instance: Tuples", "00B0B8", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("tup_returned", "tuples[returned]", "tuples: returned",
-         ("PostgreSQL instance: tuples", "CC00CC", 1),
+        ("tup_returned", "tuples[returned]", "Tuples Returned",
+         ("PostgreSQL Instance: Tuples", "9C8A4E", 1),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
-        ("tup_updated", "tuples[updated]", "tuples: updated",
-         ("PostgreSQL instance: tuples", "CC0000", 0),
+        ("tup_updated", "tuples[updated]", "Tuples Updated",
+         ("PostgreSQL Instance: Tuples", "6A4F5F", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
     ]
     Items_pg_12 = [
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta
-        ("checksum_failures", "events[checksum_failures]", "event: checksum_failures",
-         ("PostgreSQL instance: events", "00FF00", 0),
+        ("checksum_failures", "events[checksum_failures]", "checksum_failures Events",
+         ("PostgreSQL Instance: Events", "793F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change)
     ]
 
@@ -77,11 +77,11 @@ class Instance(Plugin):
     """
 
     graphs_name = {
-        "transactions": "PostgreSQL instance: blocks rate",
-        "blocks": "PostgreSQL instance: transactions rate",
-        "events": "PostgreSQL instance: events",
-        "temp": "PostgreSQL instance: temp files",
-        "tuples": "PostgreSQL instance: tuples"}
+        "transactions": "PostgreSQL Instance: Blocks Rate",
+        "blocks": "PoPostgreSQL Instance: Transactions Rate",
+        "events": "PostgreSQL Instance: Events",
+        "temp": "PostgreSQL Instance: Temp Files",
+        "tuples": "PostgreSQL Instance: Tuples"}
 
     def run(self, zbx):
         all_items = self.Items
@@ -111,7 +111,7 @@ class Instance(Plugin):
             keys = item[1].split("[")
             result += template.item({
                 "key": self.right_type(self.key + keys[0] + "{0}", keys[1][:-1]),
-                "name": "PostgreSQL {0}".format(item[2]),
+                "name": "PostgreSQL Instance: {0}".format(item[2]),
                 "value_type": self.VALUE_TYPE.numeric_float,
                 "units": item[4],
                 "delay": self.plugin_config("interval"),
@@ -119,7 +119,7 @@ class Instance(Plugin):
             })
             result += template.item({
                 "key": self.key_server_mode,
-                "name": "PostgreSQL server mode",
+                "name": "PostgreSQL Instance: Server Mode",
                 "value_type": self.VALUE_TYPE.text,
                 "units": self.UNITS.none,
                 "delay": self.plugin_config("interval"),
@@ -161,7 +161,8 @@ class Instance(Plugin):
                     items.append({
                         "key": self.right_type(self.key + keys[0] + "{0}", keys[1][:-1]),
                         "color": item[3][1],
-                        "yaxisside": item[3][2]
+                        "yaxisside": item[3][2],
+                        "drawtype": 2
                     })
             graph = {
                 "name": name,
@@ -173,13 +174,13 @@ class Instance(Plugin):
             return result
         else:
             return [{
-                "dashboard": {"name": "PostgreSQL instance: tuples",
+                "dashboard": {"name": "PostgreSQL Instance: Tuples",
                               "page": ZbxTemplate.dashboard_page_overview["name"],
                               "size": ZbxTemplate.dashboard_widget_size_medium,
                               "position": 6}
             },
                 {
-                    "dashboard": {"name": "PostgreSQL instance: events",
+                    "dashboard": {"name": "PostgreSQL Instance: Events",
                                   "page": ZbxTemplate.dashboard_page_instance["name"],
                                   "size": ZbxTemplate.dashboard_widget_size_medium,
                                   "position": 4}

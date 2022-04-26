@@ -14,17 +14,17 @@ class Connections(Plugin):
     }
     # (state, key, name, graph item color)
     Items = [
-        ("active", "active", "number of active user connections", "00BB00"),
-        ("idle", "idle", "number of idle user connections", "0000BB"),
+        ("active", "active", "Number of Active User Connections", "578159"),
+        ("idle", "idle", "Number of Idle User Connections", "8B817C"),
         ("idle in transaction", "idle_in_transaction",
-         "number of user idle in transaction connections", "CC00CC"),
+         "Number of Idle in Transaction User Connections", "9C8A4E"),
         ("idle in transaction (aborted)", "idle_in_transaction_aborted",
-         "number of user idle in transaction (aborted) connections", "CCCCCC"),
+         "Number of Idle in Transaction (Aborted) User Connections", "F6CB93"),
         ("fastpath function call", "fastpath_function_call",
-         "number of user fastpath function call connections", "CCCC00"),
+         "Number of Fastpath Function Call User Connections", "00B0B8"),
         ("disabled", "disabled",
-         "number of user disabled connections",
-         "00CCCC")
+         "Number of Disabled User Connections",
+         "3B415A")
     ]
 
     # for PG 10+
@@ -68,7 +68,7 @@ class Connections(Plugin):
     WHERE name = 'max_connections';
     """
     key = "pgsql.connections{0}"
-    graph_name = "PostgreSQL connections"
+    graph_name = "PostgreSQL Connections: Overview"
 
     def run(self, zbx):
         if Pooler.is_bootstraped() and Pooler.bootstrap_version_greater("2.3.4"):
@@ -141,31 +141,31 @@ class Connections(Plugin):
 
     def items(self, template, dashboard=False):
         result = template.item({
-            "name": "PostgreSQL: number of user total connections",
+            "name": "PostgreSQL Connections: Number of Total User Connections",
             "key": self.right_type(self.key, "total"),
             "delay": self.plugin_config("interval")
         })
         result += template.item({
-            "name": "PostgreSQL: number of user waiting connections",
+            "name": "PostgreSQL Connections: Number of Waiting User Connections",
             "key": self.right_type(self.key, "waiting"),
             "delay": self.plugin_config("interval")
         })
         result += template.item({
-            "name": "PostgreSQL: max connections",
+            "name": "PostgreSQL Connections: Max Connections",
             "key": self.right_type(self.key, "max_connections"),
             "delay": self.plugin_config("interval")
         })
 
         for item in self.Items:
             result += template.item({
-                "name": "PostgreSQL: {0}".format(item[2]),
+                "name": "PostgreSQL Connections: {0}".format(item[2]),
                 "key": self.right_type(self.key, item[1]),
                 "delay": self.plugin_config("interval")
             })
 
         if Pooler.server_version_greater("10.0"):
             result += template.item({
-                "name": "PostgreSQL: number of other connections",
+                "name": "PostgreSQL Connections: Number of Other Connections",
                 "key": self.right_type(self.key, "other"),
                 "delay": self.plugin_config("interval")
             })
@@ -180,25 +180,30 @@ class Connections(Plugin):
         for item in self.Items:
             items.append({
                 "key": self.right_type(self.key, item[1]),
-                "color": item[3]
+                "color": item[3],
+                "drawtype": 2
             })
         items.append({
             "key": self.right_type(self.key, "total"),
-            "color": "BB0000"
+            "color": "E57862",
+            "drawtype": 2
         })
         items.append({
             "key": self.right_type(self.key, "waiting"),
-            "color": "546E7A"
+            "color": "0082A5",
+            "drawtype": 2
         })
         items.append({
             "key": self.right_type(self.key, "max_connections"),
-            "color": "067845"
+            "color": "FF3C47",
+            "drawtype": 2
         })
 
         if Pooler.server_version_greater("10.0"):
             items.append({
                 "key": self.right_type(self.key, "other"),
-                "color": "8D6E63"
+                "color": "7EB29B",
+                "drawtype": 2
             })
 
         graph = {

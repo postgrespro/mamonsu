@@ -28,28 +28,28 @@ class Checkpoint(Plugin):
         #    ('graph name', color, side), units, delta, factor
 
         ("checkpoints_timed", "count_timed",
-         "checkpoints: by timeout (in hour)",
-         ("PostgreSQL checkpoint", "00CC00", 0),
+         "by Timeout (in hour)",
+         ("PostgreSQL: checkpoint", "578159", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
         ("checkpoints_req", "count_wal",
-         "checkpoints: by wal (in hour)",
-         ("PostgreSQL checkpoint", "CC0000", 0),
+         "by WAL (in hour)",
+         ("PostgreSQL: Checkpoint", "793F5D", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
         ("checkpoint_write_time", "write_time",
-         "checkpoint: write time",
-         ("PostgreSQL checkpoints", "0000CC", 1),
+         "Write Time",
+         ("PostgreSQL: Checkpoints", "00B0B8", 1),
          Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1),
 
         ("checkpoint_sync_time", "checkpoint_sync_time",
-         "checkpoint: sync time",
-         ("PostgreSQL checkpoints", "000000", 1),
+         "Sync Time",
+         ("PostgreSQL: checkpoints", "9C8A4E", 1),
          Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1)
     ]
 
-    graph_name_count = "PostgreSQL checkpoints count"
-    graph_name_ws = "PostgreSQL checkpoints write/sync"
+    graph_name_count = "PostgreSQL Checkpoints: Count (in hour)"
+    graph_name_ws = "PostgreSQL Checkpoints: Write/Sync"
 
     def run(self, zbx):
         columns = [x[0] for x in self.Items]
@@ -68,7 +68,7 @@ class Checkpoint(Plugin):
         for item in self.Items:
             result += template.item({
                 "key": self.right_type(self.key, item[1]),
-                "name": "PostgreSQL {0}".format(item[2]),
+                "name": "PostgreSQL Checkpoints: {0}".format(item[2]),
                 "value_type": Plugin.VALUE_TYPE.numeric_float,
                 "units": item[4],
                 "delay": self.plugin_config("interval"),
@@ -86,13 +86,15 @@ class Checkpoint(Plugin):
                 items_checkpoints.append({
                     "key": self.right_type(self.key, item[1]),
                     "color": item[3][1],
-                    "delay": self.Interval
+                    "delay": self.Interval,
+                    "drawtype": 2
                 })
             if item[3][2] == 1:
                 items_checkpoints_write_sync.append({
                     "key": self.right_type(self.key, item[1]),
                     "color": item[3][1],
-                    "delay": self.Interval
+                    "delay": self.Interval,
+                    "drawtype": 2
                 })
         result = template.graph({
             "name": self.graph_name_count,
@@ -105,13 +107,13 @@ class Checkpoint(Plugin):
             return result
         else:
             return [{
-                "dashboard": {"name": "PostgreSQL checkpoints count",
+                "dashboard": {"name": "PostgreSQL Checkpoints: Count (in hour)",
                               "page": ZbxTemplate.dashboard_page_overview["name"],
                               "size": ZbxTemplate.dashboard_widget_size_medium,
                               "position": 9}
             },
                 {
-                    "dashboard": {"name": "PostgreSQL checkpoints write/sync",
+                    "dashboard": {"name": "PostgreSQL Checkpoints: Write/Sync",
                                   "page": ZbxTemplate.dashboard_page_overview["name"],
                                   "size": ZbxTemplate.dashboard_widget_size_medium,
                                   "position": 10}

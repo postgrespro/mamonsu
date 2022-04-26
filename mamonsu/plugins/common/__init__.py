@@ -1,2 +1,3 @@
-__all__ = ['health']
+__all__ = ["health"]
+
 from . import *

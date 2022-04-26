@@ -1,7 +1,7 @@
 class Scripts(object):
     Bash = {
         # name_of_script: 'script '
-        'disk_sizes':
+        "disk_sizes":
             """#!/bin/bash
 PATH=/usr/local/bin:${PATH}
 IFS_DEFAULT="${IFS}"

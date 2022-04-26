@@ -23,12 +23,12 @@ class PgBufferCache(Plugin):
     query = [query_agent_size, query_agent_twice_used, query_agent_dirty]
     Items = [
         # key, name, color
-        ("size", "PostgreSQL: shared buffer size", "0000CC"),
-        ("twice_used", "PostgreSQL: shared buffer twice used size", "CC0000"),
-        ("dirty", "PostgreSQL: shared buffer dirty size", "00CC00")
+        ("size", "PostgreSQL pg_buffercache: Shared Buffer Size", "E57862"),
+        ("twice_used", "PostgreSQL pg_buffercache: Shared Buffer Twice Used Size", "7EB29B"),
+        ("dirty", "PostgreSQL pg_buffercache: Shared Buffer Dirty Size", "793F5D")
     ]
 
-    graph_name = "PostgreSQL: shared buffer"
+    graph_name = "PostgreSQL pg_buffercache: Shared Buffer"
 
     def run(self, zbx):
         if not self.extension_installed("pg_buffercache"):
@@ -56,7 +56,8 @@ class PgBufferCache(Plugin):
         for item in self.Items:
             items.append({
                 "key": self.right_type(self.key, item[0]),
-                "color": item[2]})
+                "color": item[2],
+                "drawtype": 2})
         if not dashboard:
             return template.graph({
                 "name": self.graph_name,
