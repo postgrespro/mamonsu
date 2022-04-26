@@ -133,12 +133,12 @@ class ArchiveCommand(Plugin):
         result = ""
         for item in self.Items:
             result += template.item({
-                "key": self.right_type(self.key, self.Items[0][0]),
-                "name": "PostgreSQL Archiver: {0}".format(self.name.format(self.Items[0][1])),
+                "key": self.right_type(self.key, item[0]),
+                "name": "PostgreSQL Archiver: {0}".format(self.name.format(item[1])),
                 "value_type": self.VALUE_TYPE.numeric_unsigned,
                 "delay": self.plugin_config("interval"),
-                "delta": self.Items[0][5],
-                "units": self.Items[0][6]
+                "delta": item[5],
+                "units": item[6]
             })
         if not dashboard:
             return result
