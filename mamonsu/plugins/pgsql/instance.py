@@ -35,7 +35,7 @@ class Instance(Plugin):
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
         ("xact_rollback", "events[xact_rollback]", "Rollback Events",
          ("PoPostgreSQL Instance: Transactions Rate", "E57862", 0),
-         Plugin.UNITS.none, Plugin.DELTA.simple_change),
+         Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
 
         ("temp_bytes", "temp[bytes]", "Temp Bytes Written",
          ("PostgreSQL Instance: Temp Files", "00B0B8", 0),
