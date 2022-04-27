@@ -52,6 +52,8 @@ class Plugin(object):
     VALUE_TYPE = Template.VALUE_TYPE
     UNITS = Template.UNITS
     TYPE = Template.TYPE
+    DRAWTYPE = Template.DRAWTYPE
+    YAXISSIDE = Template.YAXISSIDE
 
     DELTA_SPEED = Template.DELTA.speed_per_second
     DELTA_CHANGE = Template.DELTA.simple_change
@@ -215,3 +217,12 @@ class Plugin(object):
                 else:
                     new_key = key.format('.{0}[{1}]'.format(var, var_discovery + self.Macros[self.Type]))
         return new_key
+
+    @staticmethod
+    def generate_prefixes(plugin_type, plugin_name):
+        return {
+            "key_prefix": "{0}.{1}".format(plugin_type.lower(), "_".join(plugin_name.split()).lower()),
+            "name_prefix": "{0} {1}: ".format("PosgreSQL " if plugin_type == "pgsql" else
+                                              "System" if plugin_type == "system" else "",
+                                              " ".join([(word[0].upper() + word[1:].lower()) for word in plugin_name.split()]))
+        }

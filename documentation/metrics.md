@@ -1690,7 +1690,7 @@ Default config:
       </tr>
     </table>
 
-    *Files Need To Archive* is calculated as difference between current WAL number and last archived WAL number. You can find SQL-query that calculates this metric in plugin source [code](../mamonsu/plugins/pgsql/archive_command.py).
+    *Files Need To Archive* is calculated as difference between current WAL number and last archived WAL number. You can find SQL-query that calculates this metric in plugin source [code](../mamonsu/plugins/pgsql/archiver.py).
 
 
 4. **Size Of Files Need To Archive**  
@@ -1723,7 +1723,7 @@ Default config:
       </tr>
     </table>
 
-    *Size Of Files Need To Archive* is calculated as difference between current WAL number and last archived WAL number multiplied by `wal_segment_size`. You can find SQL-query that calculates this metric in plugin source [code](../mamonsu/plugins/pgsql/archive_command.py).
+    *Size Of Files Need To Archive* is calculated as difference between current WAL number and last archived WAL number multiplied by `wal_segment_size`. You can find SQL-query that calculates this metric in plugin source [code](../mamonsu/plugins/pgsql/archiver.py).
 
 ### Graphs
 

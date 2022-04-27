@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from mamonsu.plugins.pgsql.archive_command import ArchiveCommand
+from mamonsu.plugins.pgsql.archiver import Archiver
 from mamonsu.plugins.pgsql.bgwriter import BgWriter
 from mamonsu.plugins.pgsql.checkpoint import Checkpoint
 from mamonsu.plugins.pgsql.connections import Connections
@@ -1052,7 +1052,7 @@ def generate_dashboard(template, uuid):
                                          PgLocks.graph_name,
                                          Instance.graphs_name["tuples"],
                                          PgBufferCache.graph_name,
-                                         ArchiveCommand.key.format("[" + ArchiveCommand.Items[2][0] + "]"),
+                                         Archiver.key.format("[" + Archiver.Items[2][0] + "]"),
                                          Databases.key_autovacumm.format("[]"),
                                          BgWriter.graph_name_buffers,
                                          BgWriter.graph_name_ws,
@@ -1069,14 +1069,14 @@ def generate_dashboard(template, uuid):
                                          Memory.key.format("[" + Memory.Items[0][0] + "]"),
                                          Instance.key + Instance.Items[4][1],
                                          Instance.graphs_name["events"],
-                                         ArchiveCommand.key.format("[" + ArchiveCommand.Items[3][0] + "]"),
-                                         ArchiveCommand.key.format("[" + ArchiveCommand.Items[0][0] + "]"),
+                                         Archiver.key.format("[" + Archiver.Items[3][0] + "]"),
+                                         Archiver.key.format("[" + Archiver.Items[0][0] + "]"),
                                          Wal.key_non_active_slots.format("[]"),
                                          Oldest.key.format("[transaction_time]"),
                                          PgHealth.key_ping.format("[]"),
                                          PgHealth.key_version.format("[]"),
                                          Wal.key_replication.format("[sec]"),
-                                         ArchiveCommand.key.format("[" + ArchiveCommand.Items[1][0] + "]"),
+                                         Archiver.key.format("[" + Archiver.Items[1][0] + "]"),
                                          Instance.key + Instance.Items[6][1],
                                          Instance.key + Instance.Items[7][1],
                                          Connections.key.format("[total]"),

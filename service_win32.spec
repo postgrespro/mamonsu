@@ -8,7 +8,7 @@ a = Analysis(['service_win32.py'],
              binaries=[],
              datas=[],
              hiddenimports=[
-                'mamonsu.plugins.pgsql.archive_command',
+                'mamonsu.plugins.pgsql.archiver',
                 'mamonsu.plugins.pgsql.bgwriter',
                 'mamonsu.plugins.pgsql.cfs',
                 'mamonsu.plugins.pgsql.checkpoint',

@@ -28,6 +28,16 @@ class _template(object):
                  'EXTERNAL', 'ODBC', 'IPMI', 'SSH', 'TELNET', 'CALCULATED', 'JMX',
                  'SNMP_TRAP', 'DEPENDENT', 'HTTP_AGENT', 'SNMP_AGENT', 'ITEM_TYPE_SCRIPT'])
     TYPE = _type(0, 2, 3, 5, 7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21)
+    # type of graph item drawing style
+    _drawtype = namedtuple(
+        'drawtype', ['LINE', 'FILLED_REGION', 'BOLD_LINE', 'DOT', 'DASHED_LINE', 'GRADIENT_LINE']
+    )
+    DRAWTYPE = _drawtype(0, 1, 2, 3, 4, 5)
+    # side of graph item on graph
+    _yaxisside = namedtuple(
+        'yaxisside', ['LEFT', 'RIGHT']
+    )
+    YAXISSIDE = _yaxisside(0, 1)
 
 
 class _api(object):
