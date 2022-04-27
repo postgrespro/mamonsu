@@ -6,7 +6,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class PgBufferCache(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     key = "pgsql.buffers{0}"
     query_agent_size = """
     SELECT sum(1) * (current_setting('block_size')::int8) AS size

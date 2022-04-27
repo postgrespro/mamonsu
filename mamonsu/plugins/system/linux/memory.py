@@ -3,7 +3,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Memory(Plugin):
-    AgentPluginType = "sys"
+    AgentPluginType = "system"
 
     query_agent = "cat /proc/meminfo | awk '/^{0}\:/ "
     query_agent_used = "MemTotal=$(cat /proc/meminfo | awk '/MemTotal\:/ { print $2 }'); " \

@@ -198,7 +198,7 @@ class Plugin(object):
             else:
                 new_key = key.format('[{0}{1}]'.format(var, var_discovery[:-1]))
         else:
-            if self.AgentPluginType == 'sys':
+            if self.AgentPluginType == 'system':
                 if var_discovery != "":
                     if var == "":
                         new_key = key.format('{0}[{1}]'.format(var, var_discovery))

@@ -3,7 +3,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class DiskSizes(Plugin):
-    AgentPluginType = "sys"
+    AgentPluginType = "system"
 
     query_agent_discovery = "/disk_sizes.sh -j MOUNTPOINT"
     query_agent_used = "df $1 | awk 'NR == 2 {print $$3 * 1024}'"

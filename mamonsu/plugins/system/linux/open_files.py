@@ -2,7 +2,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class OpenFiles(Plugin):
-    AgentPluginType = "sys"
+    AgentPluginType = "system"
 
     query_agent = "cat  /proc/sys/fs/file-nr | awk '{ print $1 }'"
     key = "system.open_files{0}"

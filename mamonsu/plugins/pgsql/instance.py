@@ -7,7 +7,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Instance(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     query_agent = """
     SELECT sum({0}) AS {0}
     FROM pg_catalog.pg_stat_database;

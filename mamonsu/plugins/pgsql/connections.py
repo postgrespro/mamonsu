@@ -7,7 +7,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Connections(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     # (state, key, name, graph)
     DEFAULT_CONFIG = {
         "percent_connections_tr": str(90)

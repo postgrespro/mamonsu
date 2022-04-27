@@ -7,7 +7,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class PgHealth(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     DEFAULT_CONFIG = {
         "uptime": str(60 * 10),
         "cache": str(80)

@@ -8,7 +8,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 class Databases(Plugin):
     Interval = 60 * 5
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     # queries to form sql files
     query_bloating_tables = """
     SELECT count(*)

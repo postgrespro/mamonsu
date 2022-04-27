@@ -6,7 +6,7 @@ import subprocess
 
 
 class PgProbackup(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
 
     os_walk_error = None
     block_size = 4096

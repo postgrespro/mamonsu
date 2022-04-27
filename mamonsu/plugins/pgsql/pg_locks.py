@@ -6,7 +6,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class PgLocks(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     query = """
     SELECT lower(mode),
            count(mode)

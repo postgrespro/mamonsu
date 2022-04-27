@@ -2,7 +2,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class La(Plugin):
-    AgentPluginType = "sys"
+    AgentPluginType = "system"
 
     query_agent = "cat /proc/loadavg | awk '{ print $1 }'"
     key = "system.la{0}"

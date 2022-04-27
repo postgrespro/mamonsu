@@ -5,7 +5,7 @@ from .pool import Pooler
 
 
 class WaitSampling(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
 
     AllLockItems = [
         # (sql_key, zbx_key, name, color)

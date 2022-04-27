@@ -7,7 +7,7 @@ if platform.LINUX:
 
 class Health(Plugin):
 
-    AgentPluginType = "sys"
+    AgentPluginType = "system"
 
     DEFAULT_CONFIG = {
         "max_memory_usage": str(40 * 1024 * 1024)

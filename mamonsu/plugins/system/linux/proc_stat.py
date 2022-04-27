@@ -5,7 +5,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class ProcStat(Plugin):
-    AgentPluginType = "sys"
+    AgentPluginType = "system"
 
     query_agent = "cat /proc/stat"
     query_agent_procs = ["cat /proc/stat | awk '/procs_running/ { print $2 }'",

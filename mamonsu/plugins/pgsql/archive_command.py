@@ -8,10 +8,13 @@ import re
 
 
 class ArchiveCommand(Plugin):
-    AgentPluginType = "pg"
+
+    AgentPluginType = "pgsql"
+
     DEFAULT_CONFIG = {
         "max_count_files": str(2)
     }
+
     Interval = 60
 
     # if streaming replication is on, archive queue length and size will always be 0 for replicas

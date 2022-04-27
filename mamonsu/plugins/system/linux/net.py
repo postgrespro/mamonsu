@@ -2,7 +2,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class Net(Plugin):
-    AgentPluginType = "sys"
+    AgentPluginType = "system"
 
     query_agent_discovery = "/net.sh -j NETDEVICE"
     query_agent = "expr `grep -Ei '$1' /proc/net/dev | awk '{print $$"

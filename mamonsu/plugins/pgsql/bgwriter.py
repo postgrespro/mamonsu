@@ -6,7 +6,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class BgWriter(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     key = "pgsql.bgwriter{0}"
     query = """
     SELECT {0}

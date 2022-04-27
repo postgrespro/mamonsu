@@ -6,7 +6,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Checkpoint(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     Interval = 60 * 5
 
     query = """

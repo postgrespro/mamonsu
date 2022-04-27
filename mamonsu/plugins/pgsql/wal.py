@@ -9,7 +9,7 @@ NUMBER_NON_ACTIVE_SLOTS = 0
 
 
 class Wal(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     DEFAULT_CONFIG = {
         "lag_more_than_in_sec": str(60 * 5)
     }

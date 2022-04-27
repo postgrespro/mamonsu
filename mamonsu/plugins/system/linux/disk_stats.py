@@ -5,7 +5,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 class DiskStats(Plugin):
     # todo yaxis right 100%
-    AgentPluginType = "sys"
+    AgentPluginType = "system"
 
     query_agent_discovery = "/disk_stats.sh -j BLOCKDEVICE"
     agent_query_read_op = "expr `grep -w '$1' /proc/diskstats | awk '{print $$4}'`"

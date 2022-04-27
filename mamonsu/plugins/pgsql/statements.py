@@ -6,7 +6,7 @@ from .pool import Pooler
 
 
 class Statements(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     query = {
         "pg_stat_statements":
             """

@@ -2,7 +2,7 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 
 
 class SystemUptime(Plugin):
-    AgentPluginType = "sys"
+    AgentPluginType = "system"
 
     DEFAULT_CONFIG = {"uptime": str(60 * 5)}
     query_agent = "cat /proc/uptime | awk '{ print int($1) }'"

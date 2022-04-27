@@ -6,7 +6,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class Oldest(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     key = "pgsql.oldest{0}"
     OldestXidSql = """
     SELECT greatest(max(age(backend_xmin)),

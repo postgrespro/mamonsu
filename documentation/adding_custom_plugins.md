@@ -33,9 +33,9 @@ class PLUGIN_NAME(Plugin):
     # metrics collection interval in seconds
     Interval = PLUGIN INTERVAL
 
-    # Plugin type specifies which group new metrics will belong to. Plugin type can be one of 'pg', 'sys' or 'all:
-    # 'pg' configures PostgreSQL metrics
-    # 'sys' configures system metrics
+    # Plugin type specifies which group new metrics will belong to. Plugin type can be one of 'pgsql', 'system' or 'all:
+    # 'pgsql' configures PostgreSQL metrics
+    # 'system' configures system metrics
     # 'all' configures both PostgreSQL and system metrics
     AgentPluginType = 'PLUGIN TYPE'
 

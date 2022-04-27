@@ -94,7 +94,7 @@ def start():
                     if klass.__name__ != "PgWaitSampling" and klass.__name__ != "Cfs":
                         plugins.append(klass(cfg))
                 args.plugin_type = correct_plugin_type(args.plugin_type)
-                if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
+                if args.plugin_type == 'pgsql' or args.plugin_type == 'system' or args.plugin_type == 'all':
                     template = GetKeys()
                     # write conf file
                     try:
@@ -163,7 +163,7 @@ def start():
                     commands.append('postgrespro_agent.xml')
                 plugins = []
                 args.plugin_type = correct_plugin_type(args.plugin_type)
-                if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
+                if args.plugin_type == 'pgsql' or args.plugin_type == 'system' or args.plugin_type == 'all':
                     for klass in Plugin.only_child_subclasses():
                         if klass.__name__ != "PgWaitSampling" and klass.__name__ != "Cfs":  # check if plugin is for EE
                             plugins.append(klass(cfg))
@@ -244,7 +244,7 @@ def define_pg_version(version_args):
 def correct_plugin_type(plugin_type):
     types = plugin_type.split(',')
     # if number of plugin types is more than 1 and plugin types are valid => plugin type should be 'all'
-    valid_plugin_types = ('pg', 'sys', 'all')
+    valid_plugin_types = ('pgsql', 'system', 'all')
     if len(types) == 2 or len(types) == 3:
         # check if any plugin types is equal
         if is_any_equal(types):
