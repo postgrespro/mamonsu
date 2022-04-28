@@ -101,11 +101,11 @@ class Databases(Plugin):
     def graphs(self, template, dashboard=False):
         result = template.graph({
             "name": "PostgreSQL Autovacuum: Count of Autovacuum Workers",
-            "items": {
+            "items": [{
                 "key": self.right_type(self.key_autovacumm),
                 "color": "7EB29B",
                 "drawtype": 2
-            }
+            }]
         })
         if not dashboard:
             return result
