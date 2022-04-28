@@ -185,7 +185,7 @@ def generate_dashboard(template, uuid):
                         </widget>
                         <widget>
                            <type>GRAPH_CLASSIC</type>
-                           <name>bgwriter write/sync</name>
+                           <name>bgwriter Events</name>
                            <x>8</x>
                            <y>19</y>
                            <width>8</width>
@@ -1013,7 +1013,7 @@ def generate_dashboard(template, uuid):
                         </widget>
                         <widget>
                            <type>ITEM</type>
-                           <name>WAL Write Speed</name>
+                           <name>Count of WAL Files</name>
                            <y>30</y>
                            <width>4</width>
                            <height>3</height>
@@ -1051,7 +1051,7 @@ def generate_dashboard(template, uuid):
                                          template,
                                          Connections.graph_name,
                                          PgLocks.graph_name,
-                                         Instance.graphs_name["tuples"],
+                                         Instance.graphs_name["transactions"],
                                          PgBufferCache.graph_name,
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[2][0] + "]"),
                                          Databases.key_autovacumm.format("[]"),
@@ -1088,5 +1088,5 @@ def generate_dashboard(template, uuid):
                                          PgHealth.key_uptime.format("[]"),
                                          Wal.key_wal_records.format("[]"),
                                          Wal.key_wal_sync_duty,
-                                         Wal.key_wall.format("[]"),
+                                         Wal.key_count_wall.format("[]"),
                                          uuid).replace("\\r\\n", " ").split())
