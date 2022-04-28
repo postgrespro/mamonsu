@@ -142,36 +142,36 @@ class Replication(Plugin):
             }]
         items = [
             {"key": self.right_type(self.key_send, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL Replication: Send Lag - Time elapsed sending recent WAL locally on {#APPLICATION_NAME}",
+             "name": "PostgreSQL Replication: {#APPLICATION_NAME} Send Lag - Time elapsed sending recent WAL locally",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_receive, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL Replication: Receive Lag - Time elapsed between receiving recent WAL locally and receiving notification that "
-                     "this standby server {#APPLICATION_NAME} has flushed it",
+             "name": "PostgreSQL Replication: {#APPLICATION_NAME} Receive Lag - Time elapsed between receiving recent WAL locally and receiving notification that "
+                     "this standby server has flushed it",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_write, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL Replication: Write Lag - Time elapsed between flushing recent WAL locally and receiving notification that "
-                     "this standby server {#APPLICATION_NAME} has written it",
+             "name": "PostgreSQL Replication: {#APPLICATION_NAME} Write Lag - Time elapsed between flushing recent WAL locally and receiving notification that "
+                     "this standby server has written it",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_flush, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL Replication: Flush Lag - Time elapsed between flushing recent WAL locally and receiving notification that "
-                     "this standby server {#APPLICATION_NAME} has written and flushed it",
+             "name": "PostgreSQL Replication: {#APPLICATION_NAME} Flush Lag - Time elapsed between flushing recent WAL locally and receiving notification that "
+                     "this standby server has written and flushed it",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_replay, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL Replication: Replay Lag - Time elapsed between flushing recent WAL locally and receiving notification that "
-                     "this standby server {#APPLICATION_NAME} has written, flushed and applied",
+             "name": "PostgreSQL Replication: {#APPLICATION_NAME} Replay Lag - Time elapsed between flushing recent WAL locally and receiving notification that "
+                     "this standby server has written, flushed and applied",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_total_lag, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL Replication: Delta of Total Lag for {#APPLICATION_NAME}",
+             "name": "PostgreSQL Replication: {#APPLICATION_NAME} Delta of Total Lag",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2}
