@@ -18,7 +18,7 @@ class Instance(Plugin):
         #    ('graph name', color, side), units, delta
 
         ("xact_commit", "transactions[committed]", "Transactions Committed",
-         ("PoPostgreSQL Instance: Transactions Rate", "578159", 0),
+         ("PostgreSQL Instance: Transactions Rate", "578159", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("blks_hit", "blocks[hit]", "Blocks Hit",
          ("PostgreSQL Instance: Blocks Rate", "7EB29B", 0),
@@ -34,7 +34,7 @@ class Instance(Plugin):
          ("PostgreSQL Instance: Events", "3B415A", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
         ("xact_rollback", "events[xact_rollback]", "Rollback Events",
-         ("PoPostgreSQL Instance: Transactions Rate", "E57862", 0),
+         ("PostgreSQL Instance: Transactions Rate", "E57862", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
 
         ("temp_bytes", "temp[bytes]", "Temp Bytes Written",
@@ -77,8 +77,8 @@ class Instance(Plugin):
     """
 
     graphs_name = {
-        "transactions": "PostgreSQL Instance: Blocks Rate",
-        "blocks": "PoPostgreSQL Instance: Transactions Rate",
+        "blocks": "PostgreSQL Instance: Blocks Rate",
+        "transactions": "PostgreSQL Instance: Transactions Rate",
         "events": "PostgreSQL Instance: Events",
         "temp": "PostgreSQL Instance: Temp Files",
         "tuples": "PostgreSQL Instance: Tuples"}
