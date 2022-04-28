@@ -9,7 +9,7 @@ NUMBER_NON_ACTIVE_SLOTS = 0
 
 
 class Wal(Plugin):
-    AgentPluginType = "pg"
+    AgentPluginType = "pgsql"
     DEFAULT_CONFIG = {
         "lag_more_than_in_sec": str(60 * 5)
     }
@@ -53,6 +53,8 @@ class Wal(Plugin):
     key_flush = "pgsql.replication.flush_lag{0}"
     key_replay = "pgsql.replication.replay_lag{0}"
     key_write = "pgsql.replication.write_lag{0}"
+    key_send = "pgsql.replication.send_lag{0}"
+    key_receive = "pgsql.replication.receive_lag{0}"
 
     # keys for PG 14 and higher
     key_wal_records = "pgsql.wal.records.count{0}"
@@ -84,15 +86,23 @@ class Wal(Plugin):
             if Pooler.server_version_greater("10.0"):
                 result = Pooler.query(self.query_wal_lsn_diff)
                 result_lags = Pooler.run_sql_type("wal_lag_lsn",
-                                                  args=[" flush_lag, replay_lag, write_lag, ", "wal", "lsn"])
+                                                  args=[" (pg_wal_lsn_diff(pg_current_wal_lsn(), sent_lsn))::int AS send_lag, "
+                                                        "(pg_wal_lsn_diff(sent_lsn, flush_lsn))::int AS receive_lag, "
+                                                        "(pg_wal_lsn_diff(sent_lsn, write_lsn))::int AS write_lag, "
+                                                        "(pg_wal_lsn_diff(write_lsn, flush_lsn))::int AS flush_lag, "
+                                                        "(pg_wal_lsn_diff(flush_lsn, replay_lsn))::int AS replay_lag, " if not Pooler.is_bootstraped() else
+                                                        " send_lag, receive_lag, write_lag, flush_lag, replay_lag, ",
+                                                        "wal", "lsn"])
                 if result_lags:
                     lags = []
                     for info in result_lags:
                         lags.append({"{#APPLICATION_NAME}": info[0]})
-                        zbx.send("pgsql.replication.flush_lag[{0}]".format(info[0]), info[1])
-                        zbx.send("pgsql.replication.replay_lag[{0}]".format(info[0]), info[2])
+                        zbx.send("pgsql.replication.send_lag[{0}]".format(info[0]), info[1])
+                        zbx.send("pgsql.replication.receive_lag[{0}]".format(info[0]), info[2])
                         zbx.send("pgsql.replication.write_lag[{0}]".format(info[0]), info[3])
-                        zbx.send("pgsql.replication.total_lag[{0}]".format(info[0]), float(info[4]))
+                        zbx.send("pgsql.replication.flush_lag[{0}]".format(info[0]), info[4])
+                        zbx.send("pgsql.replication.replay_lag[{0}]".format(info[0]), info[5])
+                        zbx.send("pgsql.replication.total_lag[{0}]".format(info[0]), float(info[6]))
                     zbx.send("pgsql.replication.discovery[]", zbx.json({"data": lags}))
                     del lags
             else:
@@ -242,22 +252,33 @@ class Wal(Plugin):
                 ]
             }]
         items = [
-            {"key": self.right_type(self.key_flush, var_discovery="{#APPLICATION_NAME},"),
-             "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
-                     "this standby server {#APPLICATION_NAME} has written and flushed it",
-             "value_type": Plugin.VALUE_TYPE.text,
+            {"key": self.right_type(self.key_send, var_discovery="{#APPLICATION_NAME},"),
+             "name": "Time elapsed sending recent WAL locally on {#APPLICATION_NAME}",
+             "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
-            {"key": self.right_type(self.key_replay, var_discovery="{#APPLICATION_NAME},"),
-             "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
-                     "this standby server {#APPLICATION_NAME} has written, flushed and applied",
-             "value_type": Plugin.VALUE_TYPE.text,
+            {"key": self.right_type(self.key_receive, var_discovery="{#APPLICATION_NAME},"),
+             "name": "Time elapsed between receiving recent WAL locally and receiving notification that "
+                     "this standby server {#APPLICATION_NAME} has flushed it",
+             "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_write, var_discovery="{#APPLICATION_NAME},"),
              "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has written it",
-             "value_type": Plugin.VALUE_TYPE.text,
+             "value_type": Plugin.VALUE_TYPE.numeric_float,
+             "delay": self.plugin_config("interval"),
+             "drawtype": 2},
+            {"key": self.right_type(self.key_flush, var_discovery="{#APPLICATION_NAME},"),
+             "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
+                     "this standby server {#APPLICATION_NAME} has written and flushed it",
+             "value_type": Plugin.VALUE_TYPE.numeric_float,
+             "delay": self.plugin_config("interval"),
+             "drawtype": 2},
+            {"key": self.right_type(self.key_replay, var_discovery="{#APPLICATION_NAME},"),
+             "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
+                     "this standby server {#APPLICATION_NAME} has written, flushed and applied",
+             "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_total_lag, var_discovery="{#APPLICATION_NAME},"),

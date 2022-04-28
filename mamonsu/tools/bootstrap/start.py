@@ -166,9 +166,13 @@ def fill_query_params(queries):
             'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
             'waiting' if Pooler.server_version_less('9.6.0') else 'case when wait_event_type is null then false '
                                                                   ' else true end  as waiting',
-            'flush_lag, replay_lag, write_lag,' if Pooler.server_version_greater('10.0') else '',
+            '(pg_wal_lsn_diff(pg_current_wal_lsn(), sent_lsn))::int AS send_lag, '
+            '(pg_wal_lsn_diff(sent_lsn, flush_lsn))::int AS receive_lag, '
+            '(pg_wal_lsn_diff(sent_lsn, write_lsn))::int AS write_lag, '
+            '(pg_wal_lsn_diff(write_lsn, flush_lsn))::int AS flush_lag, '
+            '(pg_wal_lsn_diff(flush_lsn, replay_lsn))::int AS replay_lag,' if Pooler.server_version_greater('10.0') else '',
             'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
-            'flush_lag INTERVAL, replay_lag INTERVAL, write_lag INTERVAL,' if Pooler.server_version_greater('10.0')
+            'send_lag INTEGER, receive_lag INTEGER, write_lag INTEGER, flush_lag INTEGER, replay_lag INTEGER,' if Pooler.server_version_greater('10.0')
             else '',
             'lsn' if Pooler.server_version_greater('10.0') else 'location',
             'walfile' if Pooler.server_version_greater('10.0') else 'xlogfile',
