@@ -89,7 +89,7 @@ class Wal(Plugin):
         else:
             delta = Plugin.DELTA_SPEED
         result += template.item({
-            "name": "PostgreSQL WAL: WAL Write Speed",
+            "name": "PostgreSQL WAL: Write Speed",
             "key": self.right_type(self.key_wall),
             "units": Plugin.UNITS.bytes_per_second,
             "delay": self.plugin_config("interval"),
@@ -99,32 +99,32 @@ class Wal(Plugin):
             "key": self.right_type(self.key_count_wall),
             "delay": self.plugin_config("interval")
         }) + template.item({
-            "name": "PostgreSQL WAL: WAL Records Generated",
+            "name": "PostgreSQL WAL: Records Generated",
             "key": self.right_type(self.key_wal_records),
             "value_type": self.VALUE_TYPE.numeric_unsigned,
             "delta": delta,
         }) + template.item({
-            "name": "PostgreSQL WAL: WAL Full Page Images Generated",
+            "name": "PostgreSQL WAL: Full Page Images Generated",
             "key": self.right_type(self.key_wal_fpi),
             "value_type": self.VALUE_TYPE.numeric_unsigned,
             "delta": delta,
         }) + template.item({
-            "name": "PostgreSQL WAL: WAL Buffers Full",
+            "name": "PostgreSQL WAL: Buffers Full",
             "key": self.key_wal_buffers_full,
             "value_type": self.VALUE_TYPE.numeric_unsigned,
             "delta": delta,
         }) + template.item({
-            "name": "PostgreSQL WAL: WAL Write Time (ms)",
+            "name": "PostgreSQL WAL: Write Time (ms)",
             "key": self.key_wal_write_time,
             "value_type": self.VALUE_TYPE.numeric_unsigned,
             "delta": delta,
         }) + template.item({
-            "name": "PostgreSQL WAL: WAL Sync Time (ms)",
+            "name": "PostgreSQL WAL: Sync Time (ms)",
             "key": self.key_wal_sync_time,
             "value_type": self.VALUE_TYPE.numeric_unsigned,
             "delta": delta,
         }) + template.item({
-            "name": "PostgreSQL WAL: WAL Sync Duty (%)",
+            "name": "PostgreSQL WAL: Sync Duty (%)",
             "key": self.key_wal_sync_duty,
             "value_type": Plugin.VALUE_TYPE.numeric_float,
             "units": Plugin.UNITS.percent,
