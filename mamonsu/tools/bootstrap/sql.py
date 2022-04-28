@@ -168,7 +168,7 @@ coalesce (ROUND(MAX(EXTRACT (EPOCH FROM (now() - prepared)))),0)::bigint AS olde
 FROM pg_catalog.pg_prepared_xacts$$ LANGUAGE SQL SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION mamonsu.count_{3}_lag_lsn()
-RETURNS TABLE(application_name TEXT, {8} total_lag NUMERIC ) AS $$
+RETURNS TABLE(application_name TEXT, {8} total_lag INTEGER) AS $$
 SELECT application_name,
        {6} 
        (pg_{7}_diff(pg_current_{7}(), replay_{9}))::int AS total_lag
