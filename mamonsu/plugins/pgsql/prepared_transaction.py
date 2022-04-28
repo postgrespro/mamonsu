@@ -94,7 +94,7 @@ class PreparedTransaction(Plugin):
 
     def triggers(self, template, dashboard=False):
         result = template.trigger({
-            "name": "PostgreSQL prepared transaction is too old on {HOSTNAME}",
+            "name": "PostgreSQL Prepared Transactions: prepared transaction is too old on {HOSTNAME}",
             "expression": "{#TEMPLATE:" + self.key_prepared["key"] + ".last()}&gt;" + self.plugin_config(
                 "max_prepared_transaction_time")
         })

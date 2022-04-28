@@ -130,7 +130,7 @@ class Cfs(Plugin):
 
     def discovery_rules(self, template, dashboard=False):
         rule = {
-            "name": "Compressed relations discovery",
+            "name": "PostgreSQL CFS Discovery",
             "key": "pgsql.cfs.discovery_compressed_relations[]"
         }
         if Plugin.old_zabbix:
@@ -147,12 +147,12 @@ class Cfs(Plugin):
             }]
         items = [{
             "key": "pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]",
-            "name": "Relation {#COMPRESSED_RELATION}: compress ratio",
+            "name": "PostgreSQL CFS: Relation {#COMPRESSED_RELATION} Compress Ratio",
             "delay": self.timeRatioInterval,
             "drawtype": 2
         }]
         graphs = [{
-            "name": "Relation {#COMPRESSED_RELATION}: compress ratio",
+            "name": "PostgreSQL CFS: Relation {#COMPRESSED_RELATION} Compress Ratio",
             "delay": self.timeRatioInterval,
             "items": [{
                 "color": "8B817C",

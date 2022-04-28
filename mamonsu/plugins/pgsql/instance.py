@@ -188,7 +188,7 @@ class Instance(Plugin):
 
     def triggers(self, template, dashboard=False):
         return template.trigger({
-            "name": "PostgreSQL server mode changed on {HOSTNAME} to {ITEM.LASTVALUE}",
+            "name": "PostgreSQL Instance: server mode has been changed on {HOSTNAME} to {ITEM.LASTVALUE}",
             "expression": "{#TEMPLATE:" + self.key_server_mode + ".change()}>0"
         })
 

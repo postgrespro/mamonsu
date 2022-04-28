@@ -95,15 +95,15 @@ class PgHealth(Plugin):
 
     def triggers(self, template, dashboard=False):
         result = template.trigger({
-            "name": "PostgreSQL service was restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})",
+            "name": "PostgreSQL Health: service has been restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})",
             "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".last()}&lt;" + str(
                 self.plugin_config("uptime"))
         }) + template.trigger({
-            "name": "PostgreSQL cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})",
+            "name": "PostgreSQL Health: cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})",
             "expression": "{#TEMPLATE:" + self.right_type(self.key_cache, "hit") + ".last()}&lt;" + str(
                 self.plugin_config("cache"))
         }) + template.trigger({
-            "name": "PostgreSQL no ping from PostgreSQL for 3 minutes {HOSTNAME}",
+            "name": "PostgreSQL Health: no ping from PostgreSQL for 3 minutes on {HOSTNAME}",
             "expression": "{#TEMPLATE:" + self.right_type(self.key_ping) + ".nodata(180)}=1"
         })
         return result

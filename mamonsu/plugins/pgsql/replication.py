@@ -125,7 +125,7 @@ class Replication(Plugin):
 
     def discovery_rules(self, template, dashboard=False):
         rule = {
-            "name": "Replication lag discovery",
+            "name": "PostgreSQL Replication Lag Discovery",
             "key": self.key_lsn_replication_discovery.format("[{0}]".format(self.Macros[self.Type]))
         }
         if Plugin.old_zabbix:
@@ -142,43 +142,43 @@ class Replication(Plugin):
             }]
         items = [
             {"key": self.right_type(self.key_send, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL WAL Send Lag: Time elapsed sending recent WAL locally on {#APPLICATION_NAME}",
+             "name": "PostgreSQL Replication: Send Lag - Time elapsed sending recent WAL locally on {#APPLICATION_NAME}",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_receive, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL WAL Receive Lag: Time elapsed between receiving recent WAL locally and receiving notification that "
+             "name": "PostgreSQL Replication: Receive Lag - Time elapsed between receiving recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has flushed it",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_write, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL WAL Write Lag: Time elapsed between flushing recent WAL locally and receiving notification that "
+             "name": "PostgreSQL Replication: Write Lag - Time elapsed between flushing recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has written it",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_flush, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL WAL Flush Lag: Time elapsed between flushing recent WAL locally and receiving notification that "
+             "name": "PostgreSQL Replication: Flush Lag - Time elapsed between flushing recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has written and flushed it",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_replay, var_discovery="{#APPLICATION_NAME},"),
-             "name": "PostgreSQL WAL Replay Lag: Time elapsed between flushing recent WAL locally and receiving notification that "
+             "name": "PostgreSQL Replication: Replay Lag - Time elapsed between flushing recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has written, flushed and applied",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_total_lag, var_discovery="{#APPLICATION_NAME},"),
-             "name": "Delta of total lag for {#APPLICATION_NAME}",
+             "name": "PostgreSQL Replication: Delta of Total Lag for {#APPLICATION_NAME}",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2}
         ]
         graphs = [
             {
-                "name": "Delta of total lag for {#APPLICATION_NAME}",
+                "name": "PostgreSQL Replication: Delta of Total Lag for {#APPLICATION_NAME}",
                 "items": [
                     {"color": "8B817C",
                      "key": self.right_type(self.key_total_lag, var_discovery="{#APPLICATION_NAME},")},

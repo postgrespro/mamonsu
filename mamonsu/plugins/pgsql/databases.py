@@ -105,7 +105,7 @@ class Databases(Plugin):
 
     def discovery_rules(self, template, dashboard=False):
         rule = {
-            "name": "Database discovery",
+            "name": "PostgreSQL Databases Discovery",
             "key": self.key_db_discovery.format("[{0}]".format(self.Macros[self.Type])),
 
         }
@@ -123,22 +123,22 @@ class Databases(Plugin):
             }]
         items = [
             {"key": self.right_type(self.key_db_size, var_discovery="{#DATABASE},"),
-             "name": "Database {#DATABASE}: size",
+             "name": "PostgreSQL Databases {#DATABASE}: size",
              "units": Plugin.UNITS.bytes,
              "value_type": Plugin.VALUE_TYPE.numeric_unsigned,
              "delay": self.plugin_config("interval")},
             {"key": self.right_type(self.key_db_age, var_discovery="{#DATABASE},"),
-             "name": "Max age (datfrozenxid) in: {#DATABASE}",
+             "name": "PostgreSQL Databases: Max datfrozenxid Age in: {#DATABASE}",
              "delay": self.plugin_config("interval")},
             {"key": self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},"),
-             "name": "Count of bloating tables in database: {#DATABASE}",
+             "name": "PostgreSQL Databases: Count of Bloating Tables in {#DATABASE}",
              "delay": self.plugin_config("interval")},
             {"key": self.right_type(self.key_invalid_indexes, var_discovery="{#DATABASE},"),
-             "name": "Count of invalid indexes in database: {#DATABASE}",
+             "name": "PostgreSQL Databases: Count of Invalid Indexes in {#DATABASE}",
              "delay": self.plugin_config("interval")}
         ]
         graphs = [{
-            "name": "Database: {#DATABASE} size",
+            "name": "PostgreSQL Databases: {#DATABASE} size",
             "type": 1,
             "items": [
                 {"color": "8B817C",
@@ -146,7 +146,7 @@ class Databases(Plugin):
                  "drawtype": 2}]
         },
             {
-                "name": "Database bloating overview: {#DATABASE}",
+                "name": "PostgreSQL Databases: {#DATABASE} Bloating Overview",
                 "items": [
                     {"color": "7EB29B",
                      "key": self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},"),
@@ -157,7 +157,7 @@ class Databases(Plugin):
                      "drawtype": 2}]
             },
             {
-                "name": "Database max age overview: {#DATABASE}",
+                "name": "PostgreSQL Databases: {#DATABASE} Max age(datfrozenxid)",
                 "items": [
                     {"color": "7EB29B",
                      "key": self.right_type(self.key_db_age, var_discovery="{#DATABASE},"),
@@ -168,7 +168,7 @@ class Databases(Plugin):
                      "drawtype": 2}]
             }]
         triggers = [{
-            "name": "PostgreSQL invalid indexes in database {#DATABASE} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
+            "name": "PostgreSQL Databases: invalid indexes in {#DATABASE} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
             "expression": "{#TEMPLATE:pgsql.database.invalid_indexes[{#DATABASE}].last()}&gt;0"}
         ]
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs, triggers=triggers)

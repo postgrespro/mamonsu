@@ -55,7 +55,6 @@ class ArchiveCommand(Plugin):
     SELECT failed_count FROM pg_stat_archiver;
     """
     key = "pgsql.archive_command{0}"
-    name = "PostgreSQL archive command {0}"
     Items = [
         # key, desc, color, side, graph, delta, units
         ("count_files_to_archive", "Files in archive_status Need to Archive Count", "9C8A4E", 0, 1, Plugin.DELTA.as_is, Plugin.UNITS.none),
@@ -134,7 +133,7 @@ class ArchiveCommand(Plugin):
         for item in self.Items:
             result += template.item({
                 "key": self.right_type(self.key, item[0]),
-                "name": "PostgreSQL Archiver: {0}".format(self.name.format(item[1])),
+                "name": "PostgreSQL Archiver: {0}".format(item[1]),
                 "value_type": self.VALUE_TYPE.numeric_unsigned,
                 "delay": self.plugin_config("interval"),
                 "delta": item[5],
@@ -165,14 +164,14 @@ class ArchiveCommand(Plugin):
                     "key": self.right_type(self.key, item[0]), "color": item[2], "yaxisside": item[3], "drawtype": 2
                 })
         result += template.graph({
-            "name": self.name.format("") + " archive status ",
+            "name": "PostgreSQL Archiver: Archive Status",
             "items": graph
         })
         if not dashboard:
             return result
         else:
             return [{
-                "dashboard": {"name": self.name.format("") + " archive status ",
+                "dashboard": {"name": "PostgreSQL Archiver: Archive Status",
                               "page": ZbxTemplate.dashboard_page_wal["name"],
                               "size": ZbxTemplate.dashboard_widget_size_medium,
                               "position": 1}
@@ -180,7 +179,7 @@ class ArchiveCommand(Plugin):
 
     def triggers(self, template, dashboard=False):
         return template.trigger({
-            "name": "PostgreSQL count files in ./archive_status on {HOSTNAME} more than 2",
+            "name": "PostgreSQL Archiver: count files need to archive on {HOSTNAME} more than 2",
             "expression": "{#TEMPLATE:" + self.right_type(self.key,
                                                           self.Items[0][0]) + ".last()}&gt;" + self.plugin_config(
                 "max_count_files")
