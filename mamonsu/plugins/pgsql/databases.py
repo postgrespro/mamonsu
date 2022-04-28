@@ -96,8 +96,22 @@ class Databases(Plugin):
                 "delay": self.plugin_config("interval")
             })
         else:
+            return []
+
+    def graphs(self, template, dashboard=False):
+        result = template.graph({
+            "name": "PostgreSQL Autovacuum: Count of Autovacuum Workers",
+            "items": {
+                "key": self.right_type(self.key_autovacumm),
+                "color": "7EB29B",
+                "drawtype": 2
+            }
+        })
+        if not dashboard:
+            return result
+        else:
             return [{
-                "dashboard": {"name": self.right_type(self.key_autovacumm),
+                "dashboard": {"name": "PostgreSQL Autovacuum: Count of Autovacuum Workers",
                               "page": ZbxTemplate.dashboard_page_overview["name"],
                               "size": ZbxTemplate.dashboard_widget_size_medium,
                               "position": 5}
