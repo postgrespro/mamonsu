@@ -253,30 +253,30 @@ class Wal(Plugin):
             }]
         items = [
             {"key": self.right_type(self.key_send, var_discovery="{#APPLICATION_NAME},"),
-             "name": "Time elapsed sending recent WAL locally on {#APPLICATION_NAME}",
+             "name": "PostgreSQL WAL Send Lag: Time elapsed sending recent WAL locally on {#APPLICATION_NAME}",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_receive, var_discovery="{#APPLICATION_NAME},"),
-             "name": "Time elapsed between receiving recent WAL locally and receiving notification that "
+             "name": "PostgreSQL WAL Receive Lag: Time elapsed between receiving recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has flushed it",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_write, var_discovery="{#APPLICATION_NAME},"),
-             "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
+             "name": "PostgreSQL WAL Write Lag: Time elapsed between flushing recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has written it",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_flush, var_discovery="{#APPLICATION_NAME},"),
-             "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
+             "name": "PostgreSQL WAL Flush Lag: Time elapsed between flushing recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has written and flushed it",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
             {"key": self.right_type(self.key_replay, var_discovery="{#APPLICATION_NAME},"),
-             "name": "Time elapsed between flushing recent WAL locally and receiving notification that "
+             "name": "PostgreSQL WAL Replay Lag: Time elapsed between flushing recent WAL locally and receiving notification that "
                      "this standby server {#APPLICATION_NAME} has written, flushed and applied",
              "value_type": Plugin.VALUE_TYPE.numeric_float,
              "delay": self.plugin_config("interval"),
