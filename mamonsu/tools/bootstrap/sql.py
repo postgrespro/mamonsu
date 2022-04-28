@@ -37,6 +37,7 @@ CREATE TABLE mamonsu.timestamp_master_{1}(
 
 INSERT INTO mamonsu.timestamp_master_{1} (id) values (1);
 
+DROP FUNCTION IF EXISTS mamonsu.timestamp_master_update();
 CREATE OR REPLACE FUNCTION mamonsu.timestamp_master_update()
 RETURNS void AS $$
   UPDATE mamonsu.timestamp_master_{1} SET
@@ -46,6 +47,7 @@ RETURNS void AS $$
     id = 1;
 $$ LANGUAGE SQL SECURITY DEFINER;
 
+DROP FUNCTION IF EXISTS mamonsu.timestamp_get();
 CREATE OR REPLACE FUNCTION mamonsu.timestamp_get()
 RETURNS double precision AS $$
   SELECT
@@ -60,12 +62,14 @@ DO
 $do$
 BEGIN
    IF (SELECT setting::integer FROM pg_settings WHERE name = 'server_version_num') >= 100000 THEN
+      DROP FUNCTION IF EXISTS mamonsu.count_autovacuum();
       CREATE OR REPLACE FUNCTION mamonsu.count_autovacuum()
       RETURNS BIGINT AS $$
          SELECT count(*)::bigint FROM pg_catalog.pg_stat_activity
          WHERE backend_type = 'autovacuum worker'
       $$ LANGUAGE SQL SECURITY DEFINER;
    ELSE
+      DROP FUNCTION IF EXISTS mamonsu.count_autovacuum();
       CREATE OR REPLACE FUNCTION mamonsu.count_autovacuum()
       RETURNS BIGINT AS $$
          SELECT count(*)::bigint FROM pg_catalog.pg_stat_activity
@@ -81,6 +85,7 @@ DO
 $do$
 BEGIN
    IF (SELECT setting::integer FROM pg_settings WHERE name = 'server_version_num') >= 100000 THEN
+      DROP FUNCTION IF EXISTS mamonsu.get_connections_states();
       CREATE OR REPLACE FUNCTION mamonsu.get_connections_states()
       RETURNS TABLE(state text, waiting boolean) AS $$
          SELECT state,
@@ -89,6 +94,7 @@ BEGIN
          WHERE (backend_type = 'client backend' OR backend_type = 'parallel worker')
       $$ LANGUAGE SQL SECURITY DEFINER;
    ELSE
+      DROP FUNCTION IF EXISTS mamonsu.get_connections_states();
       CREATE OR REPLACE FUNCTION mamonsu.get_connections_states()
       RETURNS TABLE(state text, waiting boolean) AS $$
          SELECT state,
@@ -100,6 +106,7 @@ BEGIN
 END
 $do$;
 
+DROP FUNCTION IF EXISTS mamonsu.get_oldest_xid();
 CREATE or REPLACE FUNCTION mamonsu.get_oldest_xid()
 RETURNS BIGINT AS $$
     SELECT
@@ -108,6 +115,7 @@ RETURNS BIGINT AS $$
     FROM pg_catalog.pg_stat_activity
 $$ LANGUAGE SQL SECURITY DEFINER;
 
+DROP FUNCTION IF EXISTS mamonsu.get_oldest_transaction();
 CREATE or REPLACE FUNCTION mamonsu.get_oldest_transaction()
 RETURNS DOUBLE PRECISION AS $$
     SELECT 
@@ -122,6 +130,7 @@ RETURNS DOUBLE PRECISION AS $$
         pid <> pg_backend_pid()
 $$ LANGUAGE SQL SECURITY DEFINER;
 
+DROP FUNCTION IF EXISTS mamonsu.count_{3}_files();
 CREATE OR REPLACE FUNCTION mamonsu.count_{3}_files()
 RETURNS BIGINT AS $$
 WITH list(filename) as (SELECT * FROM pg_catalog.pg_ls_dir('pg_{3}'))
@@ -132,6 +141,7 @@ FROM
 WHERE filename similar to '{2}'
 $$ LANGUAGE SQL SECURITY DEFINER;
 
+DROP FUNCTION IF EXISTS mamonsu.archive_command_files();
 CREATE OR REPLACE FUNCTION mamonsu.archive_command_files()
 RETURNS TABLE(files_count BIGINT, files_size BIGINT) AS $$
 WITH values AS (
@@ -151,22 +161,26 @@ greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - la
 FROM values
 $$ LANGUAGE SQL SECURITY DEFINER;
 
+DROP FUNCTION IF EXISTS mamonsu.archive_stat();
 CREATE OR REPLACE FUNCTION mamonsu.archive_stat()
 RETURNS TABLE(archived_count BIGINT, failed_count BIGINT) AS $$
 SELECT archived_count, failed_count from pg_stat_archiver
 $$ LANGUAGE SQL SECURITY DEFINER;
 
+DROP FUNCTION IF EXISTS mamonsu.get_sys_param(text);
 CREATE OR REPLACE FUNCTION mamonsu.get_sys_param(param text)
 RETURNS TABLE(SETTING TEXT) AS $$
 select setting from pg_catalog.pg_settings where name = param
 $$ LANGUAGE SQL SECURITY DEFINER;
 
+DROP FUNCTION IF EXISTS mamonsu.prepared_transaction();
 CREATE OR REPLACE FUNCTION mamonsu.prepared_transaction()
 RETURNS TABLE(count_prepared BIGINT, oldest_prepared BIGINT) AS $$
 SELECT COUNT(*) AS count_prepared,
 coalesce (ROUND(MAX(EXTRACT (EPOCH FROM (now() - prepared)))),0)::bigint AS oldest_prepared  
 FROM pg_catalog.pg_prepared_xacts$$ LANGUAGE SQL SECURITY DEFINER;
 
+DROP FUNCTION IF EXISTS mamonsu.count_{3}_lag_lsn();
 CREATE OR REPLACE FUNCTION mamonsu.count_{3}_lag_lsn()
 RETURNS TABLE(application_name TEXT, {8} total_lag INTEGER) AS $$
 SELECT application_name,
@@ -188,7 +202,8 @@ BEGIN
     JOIN pg_namespace n
     ON e.extnamespace = n.oid
     WHERE e.extname = 'pg_buffercache';
-    EXECUTE 'CREATE OR REPLACE FUNCTION mamonsu.buffer_cache()
+    EXECUTE 'DROP FUNCTION IF EXISTS mamonsu.buffer_cache();
+CREATE OR REPLACE FUNCTION mamonsu.buffer_cache()
 RETURNS TABLE(SIZE BIGINT, TWICE_USED BIGINT, DIRTY BIGINT) AS $$
 SELECT
    SUM(1) * (current_setting(''block_size'')::int8),
@@ -225,7 +240,8 @@ BEGIN
          JOIN pg_namespace n
          ON e.extnamespace = n.oid
          WHERE e.extname = 'pgpro_stats';   
-         EXECUTE 'CREATE OR REPLACE FUNCTION mamonsu.wait_sampling_all_locks()
+         EXECUTE 'DROP FUNCTION IF EXISTS mamonsu.wait_sampling_all_locks();
+         CREATE OR REPLACE FUNCTION mamonsu.wait_sampling_all_locks()
          RETURNS TABLE(lock_type text, count bigint) AS $$
             WITH lock_table AS (
             SELECT setoflocks.key,
@@ -253,7 +269,8 @@ BEGIN
             GROUP BY 1
             ORDER BY count DESC;
          $$ LANGUAGE SQL SECURITY DEFINER;';
-         EXECUTE 'CREATE OR REPLACE FUNCTION mamonsu.wait_sampling_hw_locks()
+         EXECUTE 'DROP FUNCTION IF EXISTS mamonsu.wait_sampling_hw_locks();
+         CREATE OR REPLACE FUNCTION mamonsu.wait_sampling_hw_locks()
          RETURNS TABLE(lock_type text, count bigint) AS $$
             WITH lock_table AS (
             SELECT setoflocks.key,
@@ -272,7 +289,8 @@ BEGIN
             GROUP BY 1
             ORDER BY count DESC;
          $$ LANGUAGE SQL SECURITY DEFINER;';
-         EXECUTE 'CREATE OR REPLACE FUNCTION mamonsu.wait_sampling_lw_locks()
+         EXECUTE 'DROP FUNCTION IF EXISTS mamonsu.wait_sampling_lw_locks();
+         CREATE OR REPLACE FUNCTION mamonsu.wait_sampling_lw_locks()
          RETURNS TABLE(lock_type text, count bigint) AS $$
             WITH lock_table AS (
             SELECT setoflocks.key,
@@ -350,7 +368,8 @@ BEGIN
          JOIN pg_namespace n
          ON e.extnamespace = n.oid
          WHERE e.extname = 'pgpro_stats';   
-         EXECUTE 'CREATE OR REPLACE FUNCTION mamonsu.statements_pro()
+         EXECUTE 'DROP FUNCTION IF EXISTS mamonsu.statements_pro();
+                  CREATE OR REPLACE FUNCTION mamonsu.statements_pro()
                   RETURNS TABLE({columns}) AS $$
                       SELECT {metrics}
                       FROM ' || extension_schema || '.pgpro_stats_totals
