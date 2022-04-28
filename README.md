@@ -29,7 +29,6 @@ Supported PostgreSQL versions: 9.5 - 14
 - [Build](#build)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Screenshots](#screenshots)
   - [Configuration](#configuration)
   - [Template creation and upload](#template-creation-and-upload)
   - [Run](#run)
@@ -208,22 +207,6 @@ git clone ... && cd mamonsu && python3 setup.py build && python3 setup.py instal
 ```  
 
 ## Usage
-### Screenshots
-
-<div style="text-align: center">
-  <p style="display: inline;">
-    <a href="examples/statistics-1.png">
-      <img alt="Example 1" src="examples/statistics-1-small.png" />
-    </a>
-    <a href="examples/statistics-2.png">
-      <img alt="Example 2" src="examples/statistics-2-small.png" />
-    </a>
-    <a href="examples/statistics-3.png">
-      <img alt="Example 3" src="examples/statistics-3-small.png" />
-    </a>
-  </p>
-</div>
-
 ### Configuration
 1. **Optionally, bootstrap Mamonsu**  
 If you omit this step, metrics can only be collected on behalf of a superuser, which is not recommended.
