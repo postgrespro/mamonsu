@@ -10,6 +10,7 @@ from mamonsu.plugins.pgsql.instance import Instance
 from mamonsu.plugins.pgsql.oldest import Oldest
 from mamonsu.plugins.pgsql.pg_buffercache import PgBufferCache
 from mamonsu.plugins.pgsql.pg_locks import PgLocks
+from mamonsu.plugins.pgsql.replication import Replication
 from mamonsu.plugins.pgsql.wal import Wal
 from mamonsu.plugins.system.linux.memory import Memory
 from mamonsu.plugins.system.linux.proc_stat import ProcStat
@@ -1071,11 +1072,11 @@ def generate_dashboard(template, uuid):
                                          Instance.graphs_name["events"],
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[3][0] + "]"),
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[0][0] + "]"),
-                                         Wal.key_non_active_slots.format("[]"),
+                                         Replication.key_non_active_slots.format("[]"),
                                          Oldest.key.format("[transaction_time]"),
                                          PgHealth.key_ping.format("[]"),
                                          PgHealth.key_version.format("[]"),
-                                         Wal.key_replication.format("[sec]"),
+                                         Replication.key_replication.format("[sec]"),
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[1][0] + "]"),
                                          Instance.key + Instance.Items[6][1],
                                          Instance.key + Instance.Items[7][1],
