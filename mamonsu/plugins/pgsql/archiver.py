@@ -161,13 +161,13 @@ class Archiver(Plugin):
                          FROM pg_stat_archiver;
                          """)[0][0])))
         if wal_exists:
-            queue_length = Pooler.query(self.items_status["count_files_to_archive"]["query"][query_type]
+            queue_length = Pooler.query(self.items_queue["count_files_to_archive"]["query"][query_type]
                                         .format("wal_lsn", "walfile") if Pooler.server_version_greater("10.0") else
-                                        self.items_status["count_files_to_archive"]["query"][query_type]
+                                        self.items_queue["count_files_to_archive"]["query"][query_type]
                                         .format("xlog_location", "xlogfile"))[0][0]
-            queue_size = Pooler.query(self.items_status["size_files_to_archive"]["query"][query_type]
+            queue_size = Pooler.query(self.items_queue["size_files_to_archive"]["query"][query_type]
                                       .format("wal_lsn", "walfile") if Pooler.server_version_greater("10.0") else
-                                      self.items_status["size_files_to_archive"]["query"][query_type]
+                                      self.items_queue["size_files_to_archive"]["query"][query_type]
                                       .format("xlog_location", "xlogfile"))[0][0]
             zbx.send("{0}[{1}]".format(self.prefixes["key_prefix"], "count_files_to_archive"), queue_length)
             zbx.send("{0}[{1}]".format(self.prefixes["key_prefix"], "size_files_to_archive"), queue_size)
