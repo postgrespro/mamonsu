@@ -3689,16 +3689,20 @@ Default config:
       <tr>
         <th>Name</th>
         <td>Delta of total lag for {#APPLICATION_NAME}</td>
-        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written, flushed and applied</td>
-        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written and flushed it</td>
-        <td>Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written it</td>
+        <td>PostgreSQL WAL Send Lag: Time elapsed sending recent WAL locally on {#APPLICATION_NAME}</td>
+        <td>PostgreSQL WAL Receive Lag: Time elapsed between receiving recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has flushed it</td>
+        <td>PostgreSQL WAL Write Lag: Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written it</td>
+        <td>PostgreSQL WAL Flush Lag: Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written and flushed it</td>
+        <td>PostgreSQL WAL Replay Lag: Time elapsed between flushing recent WAL locally and receiving notification that this standby server {#APPLICATION_NAME} has written, flushed and applied</td>
       </tr>
       <tr>
         <th>Key</th>
         <td>pgsql.replication.total_lag[{#APPLICATION_NAME}]</td>
-        <td>pgsql.replication.replay_lag[{#APPLICATION_NAME}]</td>
-        <td>pgsql.replication.flush_lag[{#APPLICATION_NAME}]</td>
+        <td>pgsql.replication.send_lag[{#APPLICATION_NAME}]</td>
+        <td>pgsql.replication.receive_lag[{#APPLICATION_NAME}]</td>
         <td>pgsql.replication.write_lag[{#APPLICATION_NAME}]</td>
+        <td>pgsql.replication.flush_lag[{#APPLICATION_NAME}]</td>
+        <td>pgsql.replication.replay_lag[{#APPLICATION_NAME}]</td>
       </tr>
       <tr>
         <th>Type</th>
@@ -3706,16 +3710,22 @@ Default config:
         <td>Numeric (float)</td>
         <td>Numeric (float)</td>
         <td>Numeric (float)</td>
+        <td>Numeric (float)</td>
+        <td>Numeric (float)</td>
       </tr>
       <tr>
         <th>Units</th>
-        <td></td>
-        <td>Text</td>
-        <td>Text</td>
-        <td>Text</td>
+        <td>Bytes</td>
+        <td>Bytes</td>
+        <td>Bytes</td>
+        <td>Bytes</td>
+        <td>Bytes</td>
+        <td>Bytes</td>
       </tr>
       <tr>
         <th>Delta</th>
+        <td>As Is</td>
+        <td>As Is</td>
         <td>As Is</td>
         <td>As Is</td>
         <td>As Is</td>
