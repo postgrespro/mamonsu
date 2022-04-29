@@ -9,7 +9,7 @@ NUMBER_NON_ACTIVE_SLOTS = 0
 
 
 class Wal(Plugin):
-    AgentPluginType = "pgsql"
+    AgentPluginType = "pg"
 
     # get amount of WAL since '0/00000000'
     query_wal_lsn_diff = """
