@@ -15,6 +15,7 @@ mamonsu (3.5.0-1) stable; urgency=low
   * unified Zabbix objects names;
   * unified config file sections and parameters names;
   * set new color scheme;
+  * fixed Windows NSIS installer script;
 
 mamonsu (3.4.0-1) stable; urgency=low
   * added Server Version metric;

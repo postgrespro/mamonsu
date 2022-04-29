@@ -12,7 +12,7 @@
 !define OLD_EXE_FILE "agent.exe"
 !define LOG_FILE "mamonsu.log"
 !define SERVICE_FILE "service_win32.exe"
-!define TEMPLATE_FILE "template_win32.xml"
+!define TEMPLATE_FILE "template_win.xml"
 
 !define SERVICE_NAME "mamonsu"
 !define SERVICE_DISPLAY_NAME "Monitoring agent: mamonsu"

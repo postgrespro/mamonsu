@@ -87,6 +87,7 @@ chown mamonsu.mamonsu /var/log/mamonsu
   - unified Zabbix objects names;
   - unified config file sections and parameters names;
   - set new color scheme;
+  - fixed Windows NSIS installer script;
 
 * Mon Feb 21 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.4.0-1
   - added Server Version metric;
