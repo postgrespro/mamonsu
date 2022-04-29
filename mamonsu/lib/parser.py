@@ -15,8 +15,8 @@ if platform.LINUX:
     usage_msg += """    -d                 daemonize
 """
 
-usage_msg += """        --version      output version information, then exit
-        --help         show this help, then exit
+usage_msg += """        --version      prints version information, then exits
+        --help         shows this help message, then exits
 
 Export example config with default variables:
 Command: export
@@ -25,17 +25,17 @@ Examples:
 Options:
     --add-plugins <directory>
     
-Export zabbix template with additional plugins included in config file:
+Export zabbix template with additional plugins defined in config file:
 Command: export template 
 Examples:
     {prog} export template [options] <file>
 Options:
     --add-plugins <directory>
-    --template-name <template name> by default PostgresPro-<platform name>
-    --application <application name in template> by default App-PostgresPro-<platform name>
+    --application <application name in template> by default 'Mamonsu PostgreSQL <platform name>'
     --config <file>
     --old-zabbix
-HINT: By default, mamonsu exports the template for Zabbix 4.4 or higher.
+    --template-name <template name> by default 'Mamonsu PostgreSQL <platform name>'
+HINT: By default, mamonsu exports template for Zabbix 4.4 or higher.
 To export a template for older Zabbix versions, use the --old-zabbix option.
 """
 
@@ -46,11 +46,11 @@ Examples:
     {prog} bootstrap -M <mamonsu_username>
 HINT:  -M <mamonsu_username> is used to assign ownership of bootstrap queries
 Options:
-    -p, --port <PGPORT>
-    -W <PGPASSWORD>
     -d, --dbname <DBNAME>
-    -U, --username <USERNAME>
     -h, --host <PGHOST>
+    -p, --port <PGPORT>
+    -U, --username <USERNAME>
+    -W <PGPASSWORD>
 """
 
 usage_msg += usage_msg_bootstrap
@@ -59,9 +59,9 @@ usage_msg += """
 Information about working mamonsu:
 Command: agent
 Examples:
-    {prog} agent version
-    {prog} agent metric-list
     {prog} agent metric-get <metric key>
+    {prog} agent metric-list
+    {prog} agent version
 Options:
     -c, --config <file>
 """
@@ -110,8 +110,8 @@ Example:
 Options:    
     --zabbix-address <name of the Zabbix host to send metrics>
     --zabbix-port <port of Zabbix server to send metrics> by default 10051
-    --zabbix-file <text file that stores the collected metric data to be visualized, such as localhost.log>
     --zabbix-client <name of the host on Zabbix Server to send metrics> 
+    --zabbix-file <text file that stores the collected metric data to be visualized, such as localhost.log>
     --zabbix-log-level <log level to send metrics> (INFO|DEBUG|WARN) by default INFO
 """
 
@@ -122,48 +122,48 @@ Command: export zabbix-parameters
 Examples:
     {prog} export zabbix-parameters  <file>
 Options:
-    --plugin-type <plugin_type> (pg|sys|all) by default all
-    --pg-version <pg_version> by default 10
     --add-plugins <directory>
     --config  <file>
-HINT: Supported version numbers are 12, 10, 11, 9.6, 9.5
+    --pg-version <pg_version> by default 12
+    --plugin-type <plugin_type> (pg|sys|all) by default all
+HINT: Supported version numbers are 14, 13, 12, 10, 11, 9.6, 9.5
 
 Export template for native zabbix agent:
 Command: export zabbix-template
 Examples:
     {prog} export zabbix-template [options] <file>
 Options:
-    --template-name <template name> by default PostgresPro-<platform name>
-    --plugin-type <plugin_type> (pg|sys|all) by default all
-    --application  <application name in template> by default App-PostgresPro-<platform name>
     --add-plugins <directory>
+    --application  <application name in template> by default 'Mamonsu PostgreSQL <platform name>'
     --config  <file>
     --old-zabbix
-By default, mamonsu exports the template for Zabbix 4.4 or higher.
+    --plugin-type <plugin_type> (pg|sys|all) by default all
+    --template-name <template name> by default 'Mamonsu PostgreSQL <platform name>'
+By default, mamonsu exports template for Zabbix 4.4 or higher.
 To export a template for older Zabbix versions, use the --old-zabbix option.
 
 Report about hardware and software:
 Command: report
 Options:
-    --run-system=Boolean by default True
-    --run-postgres=Boolean by default True
+    --disable-sudo
     --host <PGHOST>
     --port <PGPORT>
-    --disable-sudo
-    -W <PGPASSWORD>
+    --run-postgres=Boolean by default True
+    --run-system=Boolean by default True
     -d, --dbname <DBNAME>
-    -U, --username <USERNAME>
     -r, --print-report
     -w, --report-path <path to file>
+    -U, --username <USERNAME>
+    -W <PGPASSWORD>
     
 AutoTune config and system:
 Command: tune
 Options:
-    -l, --log-level (INFO|DEBUG|WARN) by default INFO
-    --dry-run
     --disable-sudo
-    --dont-tune-pgbadger
     --dont-reload-postgresql
+    --dont-tune-pgbadger
+    --dry-run    
+    -l, --log-level (INFO|DEBUG|WARN) by default INFO
 """
 
 if platform.WINDOWS:
@@ -171,10 +171,10 @@ if platform.WINDOWS:
 AutoTune config and system:
 Command: tune
 Options:
-    -l, --log-level (INFO|DEBUG|WARN) by default INFO
-    --dry-run
-    --dont-tune-pgbadger
     --dont-reload-postgresql
+    --dont-tune-pgbadger
+    --dry-run    
+    -l, --log-level (INFO|DEBUG|WARN) by default INFO
 """
 
 
@@ -193,10 +193,10 @@ Command: export
 Examples:
     {prog} export config <file> --add-plugins <directory>
 Options:
+    -a, --add-plugins <directory>
     -c, --config <file>
     -p, --pid    <pid-file>
-    -t, --template-name <template name> by default PostgresPro-<platform name>
-    -a, --add-plugins <directory>
+    -t, --template-name <template name> by default 'Mamonsu PostgreSQL <platform name>'
 
 
 Export zabbix template with additional plugins included in config file:
@@ -204,20 +204,20 @@ Command: export
 Examples:
     {prog} export template <file>
 Options:
-    --config <file>
-    --template-name <template name> by default PostgresPro-<platform name>
-    --application <application name in template> by default App-PostgresPro-<platform name>
     --add-plugins <directory>
+    --application <application name in template> by default 'Mamonsu PostgreSQL <platform name>'
+    --config <file>
+    --template-name <template name> by default 'Mamonsu PostgreSQL <platform name>'
 
 Export zabbix keys for native zabbix-agent:
 Command: export zabbix-parameters
 Examples:
     {prog} export zabbix-parameters  <file>
 Options:
-    --pg-version <pg_version> by default 10
-    --config <file>
     --add-plugins <directory>
-HINT:  Supported version numbers are 12, 10, 11, 9.6, 9.5.
+    --config <file>
+    --pg-version <pg_version> by default 12
+HINT:  Supported version numbers are 14, 13, 12, 10, 11, 9.6, 9.5.
 
         
 Export template for native zabbix agent:
@@ -225,10 +225,10 @@ Command: export zabbix-template
 Examples:
     {prog} export zabbix-template <file>
 Options:
-    --template-name <template name> by default PostgresPro-<platform name>
-    --application <application name in template> by default App-PostgresPro-<platform name>
-    --config <file>
     --add-plugins <directory>
+    --application <application name in template> by default 'Mamonsu PostgreSQL <platform name>'
+    --config <file>
+    --template-name <template name> by default 'Mamonsu PostgreSQL <platform name>'
 
 """)
         sys.exit(2)
@@ -278,7 +278,7 @@ def parse_args():
                       default='all')
     # PG version
     parser.add_option('-v', '--pg-version', dest='pg_version',
-                      default='10')
+                      default='12')
     parser.add_option(
         '--application', dest='application',
         default='Mamonsu PostgreSQL {0}'.format(sys.platform.title()))

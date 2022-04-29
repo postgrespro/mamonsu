@@ -1,5 +1,5 @@
 !define NAME Mamonsu
-!define VERSION 3.4.0
+!define VERSION 3.5.0
 !define MAMONSU_REG_PATH "Software\PostgresPro\Mamonsu"
 !define MAMONSU_REG_UNINSTALLER_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall"
 !define EDB_REG "SOFTWARE\Postgresql"
@@ -12,7 +12,7 @@
 !define OLD_EXE_FILE "agent.exe"
 !define LOG_FILE "mamonsu.log"
 !define SERVICE_FILE "service_win32.exe"
-!define TEMPLATE_FILE "template_win32.xml"
+!define TEMPLATE_FILE "template_win.xml"
 
 !define SERVICE_NAME "mamonsu"
 !define SERVICE_DISPLAY_NAME "Monitoring agent: mamonsu"

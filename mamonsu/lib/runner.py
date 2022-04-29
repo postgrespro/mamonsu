@@ -91,7 +91,7 @@ def start():
                 if len(commands) == 2:
                     commands.append('postgrespro_agent.conf')
                 for klass in Plugin.only_child_subclasses():
-                    if klass.__name__ != "PgWaitSampling" and klass.__name__ != "Cfs":
+                    if klass.__name__ != "WaitSampling" and klass.__name__ != "Cfs":
                         plugins.append(klass(cfg))
                 args.plugin_type = correct_plugin_type(args.plugin_type)
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
@@ -165,7 +165,7 @@ def start():
                 args.plugin_type = correct_plugin_type(args.plugin_type)
                 if args.plugin_type == 'pg' or args.plugin_type == 'sys' or args.plugin_type == 'all':
                     for klass in Plugin.only_child_subclasses():
-                        if klass.__name__ != "PgWaitSampling" and klass.__name__ != "Cfs":  # check if plugin is for EE
+                        if klass.__name__ != "WaitSampling" and klass.__name__ != "Cfs":  # check if plugin is for EE
                             plugins.append(klass(cfg))
                     template = ZbxTemplate(args.template, args.application)
                     try:
