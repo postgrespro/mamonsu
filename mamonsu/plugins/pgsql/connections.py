@@ -223,8 +223,8 @@ class Connections(Plugin):
 
     def triggers(self, template, dashboard=False):
         return template.trigger({
-            "name": "PostgreSQL many connections on {HOSTNAME} (total connections more than " + self.plugin_config(
-                "percent_connections_tr") + "% max connections)",
+            "name": "PostgreSQL Connections: too many connections on {HOSTNAME} (total connections more than " + self.plugin_config(
+                "percent_connections_tr") + "% of max_connections)",
             "expression": " {#TEMPLATE:" + self.right_type(self.key,
                                                            "total") + ".last()}/{#TEMPLATE:" + self.right_type(self.key,
                                                                                                                "max_connections") + ".last()}*100 >" + self.plugin_config(

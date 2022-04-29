@@ -65,7 +65,7 @@ class Pool(object):
             """
             SELECT application_name,
                    {0}
-                   pg_{1}_{2}_diff(pg_current_{1}_{2}(), replay_{2}) AS total_lag
+                   (pg_{1}_{2}_diff(pg_current_{1}_{2}(), replay_lsn))::int AS total_lag
             FROM pg_stat_replication;
             """,
             """

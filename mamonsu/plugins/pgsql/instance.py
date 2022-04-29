@@ -18,7 +18,7 @@ class Instance(Plugin):
         #    ('graph name', color, side), units, delta
 
         ("xact_commit", "transactions[committed]", "Transactions Committed",
-         ("PoPostgreSQL Instance: Transactions Rate", "578159", 0),
+         ("PostgreSQL Instance: Transactions Rate", "578159", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
         ("blks_hit", "blocks[hit]", "Blocks Hit",
          ("PostgreSQL Instance: Blocks Rate", "7EB29B", 0),
@@ -34,8 +34,8 @@ class Instance(Plugin):
          ("PostgreSQL Instance: Events", "3B415A", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
         ("xact_rollback", "events[xact_rollback]", "Rollback Events",
-         ("PoPostgreSQL Instance: Transactions Rate", "E57862", 0),
-         Plugin.UNITS.none, Plugin.DELTA.simple_change),
+         ("PostgreSQL Instance: Transactions Rate", "E57862", 0),
+         Plugin.UNITS.none, Plugin.DELTA.speed_per_second),
 
         ("temp_bytes", "temp[bytes]", "Temp Bytes Written",
          ("PostgreSQL Instance: Temp Files", "00B0B8", 0),
@@ -77,8 +77,8 @@ class Instance(Plugin):
     """
 
     graphs_name = {
-        "transactions": "PostgreSQL Instance: Blocks Rate",
-        "blocks": "PoPostgreSQL Instance: Transactions Rate",
+        "blocks": "PostgreSQL Instance: Blocks Rate",
+        "transactions": "PostgreSQL Instance: Transactions Rate",
         "events": "PostgreSQL Instance: Events",
         "temp": "PostgreSQL Instance: Temp Files",
         "tuples": "PostgreSQL Instance: Tuples"}
@@ -188,7 +188,7 @@ class Instance(Plugin):
 
     def triggers(self, template, dashboard=False):
         return template.trigger({
-            "name": "PostgreSQL server mode changed on {HOSTNAME} to {ITEM.LASTVALUE}",
+            "name": "PostgreSQL Instance: server mode has been changed on {HOSTNAME} to {ITEM.LASTVALUE}",
             "expression": "{#TEMPLATE:" + self.key_server_mode + ".change()}>0"
         })
 

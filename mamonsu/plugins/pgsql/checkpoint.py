@@ -121,7 +121,7 @@ class Checkpoint(Plugin):
 
     def triggers(self, template, dashboard=False):
         return template.trigger({
-            "name": "PostgreSQL required checkpoints occurs to frequently on {HOSTNAME}",
+            "name": "PostgreSQL Checkpoints: required checkpoints occurs to frequently on {HOSTNAME}",
             "expression": "{#TEMPLATE:" + self.right_type(self.key,
                                                           self.Items[1][1]) + ".last()}&gt;" + self.plugin_config(
                 "max_checkpoint_by_wal_in_hour")

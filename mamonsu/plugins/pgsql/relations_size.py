@@ -85,7 +85,7 @@ class RelationsSize(Plugin):
 
     def discovery_rules(self, template, dashboard=False):
         rule = {
-            "name": "Relation size discovery",
+            "name": "PostgreSQL Relations Sizes Discovery",
             "key": self.key_rel_size_discovery.format("[{0}]".format(self.Macros[self.Type])),
         }
         if Plugin.old_zabbix:
@@ -102,14 +102,14 @@ class RelationsSize(Plugin):
             }]
         items = [
             {"key": self.right_type(self.key_rel_size_discovery, var_discovery="{#RELATIONNAME},"),
-             "name": "Relation size: {#RELATIONNAME}",
+             "name": "PostgreSQL Relation Size: {#RELATIONNAME}",
              "units": Plugin.UNITS.bytes,
              "value_type": Plugin.VALUE_TYPE.numeric_unsigned,
              "delay": self.plugin_config("interval"),
              "drawtype": 2},
         ]
         graphs = [{
-            "name": "PostgreSQL relation size: {#RELATIONNAME}",
+            "name": "PostgreSQL Relation Size: {#RELATIONNAME}",
             "type": 1,
             "items": [
                 {"color": "8B817C",

@@ -10,6 +10,7 @@ from mamonsu.plugins.pgsql.instance import Instance
 from mamonsu.plugins.pgsql.oldest import Oldest
 from mamonsu.plugins.pgsql.pg_buffercache import PgBufferCache
 from mamonsu.plugins.pgsql.pg_locks import PgLocks
+from mamonsu.plugins.pgsql.replication import Replication
 from mamonsu.plugins.pgsql.wal import Wal
 from mamonsu.plugins.system.linux.memory import Memory
 from mamonsu.plugins.system.linux.proc_stat import ProcStat
@@ -184,7 +185,7 @@ def generate_dashboard(template, uuid):
                         </widget>
                         <widget>
                            <type>GRAPH_CLASSIC</type>
-                           <name>bgwriter write/sync</name>
+                           <name>bgwriter Events</name>
                            <x>8</x>
                            <y>19</y>
                            <width>8</width>
@@ -1012,7 +1013,7 @@ def generate_dashboard(template, uuid):
                         </widget>
                         <widget>
                            <type>ITEM</type>
-                           <name>WAL Write Speed</name>
+                           <name>Count of WAL Files</name>
                            <y>30</y>
                            <width>4</width>
                            <height>3</height>
@@ -1050,7 +1051,7 @@ def generate_dashboard(template, uuid):
                                          template,
                                          Connections.graph_name,
                                          PgLocks.graph_name,
-                                         Instance.graphs_name["tuples"],
+                                         Instance.graphs_name["transactions"],
                                          PgBufferCache.graph_name,
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[2][0] + "]"),
                                          Databases.key_autovacumm.format("[]"),
@@ -1071,11 +1072,11 @@ def generate_dashboard(template, uuid):
                                          Instance.graphs_name["events"],
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[3][0] + "]"),
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[0][0] + "]"),
-                                         Wal.key_non_active_slots.format("[]"),
+                                         Replication.key_non_active_slots.format("[]"),
                                          Oldest.key.format("[transaction_time]"),
                                          PgHealth.key_ping.format("[]"),
                                          PgHealth.key_version.format("[]"),
-                                         Wal.key_replication.format("[sec]"),
+                                         Replication.key_replication.format("[sec]"),
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[1][0] + "]"),
                                          Instance.key + Instance.Items[6][1],
                                          Instance.key + Instance.Items[7][1],
@@ -1087,5 +1088,5 @@ def generate_dashboard(template, uuid):
                                          PgHealth.key_uptime.format("[]"),
                                          Wal.key_wal_records.format("[]"),
                                          Wal.key_wal_sync_duty,
-                                         Wal.key_wall.format("[]"),
+                                         Wal.key_count_wall.format("[]"),
                                          uuid).replace("\\r\\n", " ").split())

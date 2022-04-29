@@ -28,7 +28,7 @@ class BgWriter(Plugin):
 
         ("maxwritten_clean", "bgwriter[maxwritten_clean]",
          "Number of bgwriter Stopped by Max Write Count",
-         ("PostgreSQL bgwriter", "8B817C", 0),
+         ("PostgreSQL bgwriter", "00B0B8", 0),
          Plugin.DELTA.simple_change),
 
         ("buffers_backend", "bgwriter[buffers_backend]",
@@ -38,7 +38,7 @@ class BgWriter(Plugin):
 
         ("buffers_backend_fsync", "bgwriter[buffers_backend_fsync]",
          "Times a Backend Execute Its Own Fsync",
-         ("PostgreSQL bgwriter", "00B0B8", 0),
+         ("PostgreSQL bgwriter", "9C8A4E", 0),
          Plugin.DELTA.simple_change),
 
         ("buffers_alloc", "bgwriter[buffers_alloc]",
@@ -48,7 +48,7 @@ class BgWriter(Plugin):
     ]
 
     graph_name_buffers = "PostgreSQL bgwriter: Buffers"
-    graph_name_ws = "PostgreSQL bgwriter: Write/Sync"
+    graph_name_ws = "PostgreSQL bgwriter: Events"
 
     def run(self, zbx):
         columns = [x[0] for x in self.Items]

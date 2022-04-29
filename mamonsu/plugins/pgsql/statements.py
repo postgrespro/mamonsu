@@ -203,6 +203,8 @@ class Statements(Plugin):
                 if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
                     all_items += self.Items_pg_13
 
+            columns = [x[1] for x in all_items]
+
             for i, item in enumerate(all_items):
                 keys = item[0].split("[")
                 result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),

@@ -87,11 +87,11 @@ class Oldest(Plugin):
 
     def triggers(self, template, dashboard=False):
         return template.trigger({
-            "name": "PostgreSQL oldest xid is too big on {HOSTNAME}",
+            "name": "PostgreSQL Transactions: the oldest XID is too big on {HOSTNAME}",
             "expression": "{#TEMPLATE:" + self.right_type(self.key, "xid_age") + ".last()}&gt;" + self.plugin_config(
                 "max_xid_age")
         }) + template.trigger({
-            "name": "PostgreSQL query running is too old on {HOSTNAME}",
+            "name": "PostgreSQL Transactions: running transaction is too old on {HOSTNAME}",
             "expression": "{#TEMPLATE:" + self.right_type(self.key,
                                                           "transaction_time") + ".last()}&gt;" + self.plugin_config(
                 "max_transaction_time")
