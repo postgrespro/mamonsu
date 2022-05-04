@@ -193,11 +193,6 @@ class Connections(Plugin):
             "color": "0082A5",
             "drawtype": 2
         })
-        items.append({
-            "key": self.right_type(self.key, "max_connections"),
-            "color": "FF3C47",
-            "drawtype": 2
-        })
 
         if Pooler.server_version_greater("10.0"):
             items.append({
@@ -208,6 +203,7 @@ class Connections(Plugin):
 
         graph = {
             "name": self.graph_name,
+            "type": 1,
             "items": items
         }
 
