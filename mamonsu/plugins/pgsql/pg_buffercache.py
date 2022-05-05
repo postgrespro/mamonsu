@@ -2,7 +2,6 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
-from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class PgBufferCache(Plugin):
@@ -63,12 +62,7 @@ class PgBufferCache(Plugin):
                 "name": self.graph_name,
                 "items": items})
         else:
-            return [{
-                "dashboard": {"name": self.graph_name,
-                              "page": ZbxTemplate.dashboard_page_overview["name"],
-                              "size": ZbxTemplate.dashboard_widget_size_medium,
-                              "position": 2}
-            }]
+            return []
 
     def keys_and_queries(self, template_zabbix):
         if self.extension_installed("pg_buffercache"):

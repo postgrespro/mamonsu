@@ -174,17 +174,24 @@ class Instance(Plugin):
             return result
         else:
             return [{
-                "dashboard": {"name": "PostgreSQL Instance: Tuples",
+                "dashboard": {"name": self.graphs_name["tuples"],
                               "page": ZbxTemplate.dashboard_page_overview["name"],
                               "size": ZbxTemplate.dashboard_widget_size_medium,
                               "position": 6}
             },
                 {
-                    "dashboard": {"name": "PostgreSQL Instance: Events",
+                    "dashboard": {"name": self.graphs_name["events"],
                                   "page": ZbxTemplate.dashboard_page_instance["name"],
                                   "size": ZbxTemplate.dashboard_widget_size_medium,
                                   "position": 4}
-                }]
+                },
+                {
+                    "dashboard": {"name": self.graphs_name["transactions"],
+                                  "page": ZbxTemplate.dashboard_page_overview["name"],
+                                  "size": ZbxTemplate.dashboard_widget_size_medium,
+                                  "position": 2}
+                }
+            ]
 
     def triggers(self, template, dashboard=False):
         return template.trigger({
