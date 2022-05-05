@@ -103,7 +103,7 @@ class Databases(Plugin):
             "name": "PostgreSQL Autovacuum: Count of Autovacuum Workers",
             "items": [{
                 "key": self.right_type(self.key_autovacumm),
-                "color": "7EB29B",
+                "color": "87C2B9",
                 "drawtype": 2
             }]
         })
@@ -155,14 +155,14 @@ class Databases(Plugin):
             "name": "PostgreSQL Databases: {#DATABASE} size",
             "type": 1,
             "items": [
-                {"color": "8B817C",
+                {"color": "A39B98",
                  "key": self.right_type(self.key_db_size, var_discovery="{#DATABASE},"),
                  "drawtype": 2}]
         },
             {
                 "name": "PostgreSQL Databases: {#DATABASE} Bloating Overview",
                 "items": [
-                    {"color": "7EB29B",
+                    {"color": "87C2B9",
                      "key": self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},"),
                      "drawtype": 2},
                     {"color": "793F5D",
@@ -173,7 +173,7 @@ class Databases(Plugin):
             {
                 "name": "PostgreSQL Databases: {#DATABASE} Max age(datfrozenxid)",
                 "items": [
-                    {"color": "7EB29B",
+                    {"color": "87C2B9",
                      "key": self.right_type(self.key_db_age, var_discovery="{#DATABASE},"),
                      "drawtype": 2},
                     {"color": "793F5D",

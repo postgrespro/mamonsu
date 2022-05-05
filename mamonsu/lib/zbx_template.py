@@ -91,7 +91,7 @@ class ZbxTemplate(object):
 
     graph_items_defaults = [
         ('sortorder', None), ('drawtype', 0),
-        ('color', '578159'), ('yaxisside', 0),
+        ('color', '00CC00'), ('yaxisside', 0),
         ('calc_fnc', 2), ('type', Template.GRAPH_TYPE.normal)
     ]
 

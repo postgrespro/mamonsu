@@ -11,8 +11,8 @@ class Network(Plugin):
 
     Items = [
         # perf_item, zbx_key, desc, delta, unit, (color, site)
-        (_item[0], "[total_output_queue]", "Output Queue Length", None, ("E57862", 0)),
-        (_item[1], "[total_bytes]", "Bytes Total", "b", ("E57862", 1))
+        (_item[0], "[total_output_queue]", "Output Queue Length", None, ("FF5656", 0)),
+        (_item[1], "[total_bytes]", "Bytes Total", "b", ("FF5656", 1))
     ]
 
     def run(self, zbx):
@@ -43,7 +43,8 @@ class Network(Plugin):
                 items.append({
                     "key": "system.network{0}".format(item[1]),
                     "color": item[4][0],
-                    "yaxisside": item[4][1]
+                    "yaxisside": item[4][1],
+                    "drawtype": 2
                 })
         graph = {
             "name": "System: Network Overview",

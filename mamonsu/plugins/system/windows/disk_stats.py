@@ -76,17 +76,20 @@ class DiskStats(Plugin):
                 "name": "System: Logical Devices Overview {#LOGICALDEVICE}",
                 "items": [
                     {
-                        "color": "7EB29B",
-                        "key": "system.disk.read[{#LOGICALDEVICE}]"
+                        "color": "87C2B9",
+                        "key": "system.disk.read[{#LOGICALDEVICE}]",
+                        "drawtype": 2
                     },
                     {
                         "color": "793F5D",
-                        "key": "system.disk.write[{#LOGICALDEVICE}]"
+                        "key": "system.disk.write[{#LOGICALDEVICE}]",
+                        "drawtype": 2
                     },
                     {
                         "key": "system.disk.queue_avg[{#LOGICALDEVICE}]",
                         "name": "System: Logical Device {#LOGICALDEVICE} Queue",
-                        "yaxisside": 1
+                        "yaxisside": 1,
+                        "drawtype": 2
                     }
                 ]
             }

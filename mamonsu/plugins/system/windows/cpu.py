@@ -8,8 +8,8 @@ class Cpu(Plugin):
     MaxPrivilegedTime = 60
 
     Items = [
-        (r'\Processor(*)\% User Time', "[user_time]", "User Time", Plugin.UNITS.percent, "578159"),
-        (r'\Processor(*)\% Idle Time', "[idle_time]", "Idle Time", Plugin.UNITS.percent, "8B817C"),
+        (r'\Processor(*)\% User Time', "[user_time]", "User Time", Plugin.UNITS.percent, "00CC00"),
+        (r'\Processor(*)\% Idle Time', "[idle_time]", "Idle Time", Plugin.UNITS.percent, "A39B98"),
         (r'\Processor(*)\% Privileged Time', "[privileged_time]", "Privileged Time", Plugin.UNITS.percent, "00B0B8"),
     ]
 
@@ -40,7 +40,8 @@ class Cpu(Plugin):
             if item[4] is not None:
                 items.append({
                     "key": "system.cpu{0}".format(item[1]),
-                    "color": item[4]
+                    "color": item[4],
+                    "drawtype": 2
                 })
         graph = {
             "name": "System: CPU Overview",

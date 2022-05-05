@@ -9,7 +9,7 @@ class WaitSampling(Plugin):
 
     AllLockItems = [
         # (sql_key, zbx_key, name, color)
-        ("lwlock", "all_lock[lwlock]", "Lightweight Locks", "7EB29B"),
+        ("lwlock", "all_lock[lwlock]", "Lightweight Locks", "87C2B9"),
         ("hwlock", "all_lock[hwlock]", "Heavyweight Locks", "793F5D"),
         ("buffer", "all_lock[buffer]", "Buffer Locks", "00B0B8"),
         ("extension", "all_lock[extension]", "Extension Locks", "9C8A4E"),
@@ -76,14 +76,14 @@ class WaitSampling(Plugin):
 
     HWLockItems = [
         # (sql_key, zbx_key, name, color)
-        ("relation", "hwlock[relation]", "Locks on a Relation", "7EB29B"),
+        ("relation", "hwlock[relation]", "Locks on a Relation", "87C2B9"),
         ("extend", "hwlock[extend]", "Extend a Relation Locks", "3B415A"),
         ("page", "hwlock[page]", "Locks on a Page", "F6CB93"),
-        ("tuple", "hwlock[tuple]", "Locks on a Tuple", "0082A5"),
+        ("tuple", "hwlock[tuple]", "Locks on a Tuple", "006AAE"),
         ("transactionid", "hwlock[transactionid]", "Transaction to Finish Locks", "00B0B8"),
         ("virtualxid", "hwlock[virtualxid]", "Virtual XID Locks", "793F5D"),
         ("speculative token", "hwlock[speculative_token]", "Speculative Insertion Locks", "9C8A4E"),
-        ("object", "hwlock[object]", "Locks on Database Object", "8B817C"),
+        ("object", "hwlock[object]", "Locks on Database Object", "A39B98"),
         ("userlock", "hwlock[userlock]", "Userlocks", "52768F"),
         ("advisory", "hwlock[advisory]", "Advisory User Locks", "FE9430")
     ]
@@ -131,12 +131,12 @@ class WaitSampling(Plugin):
         # (sql_key, zbx_key, name, color)
         ("xid", "lwlock[xid]", "XID Access Locks", "793F5D"),
         ("autovacuum", "lwlock[autovacuum]", "Autovacuum Locks", "00B0B8"),
-        ("wal", "lwlock[wal]", "WAL Access Locks", "7EB29B"),
-        ("clog", "lwlock[clog]", "CLOG Access Locks", "0082A5"),
+        ("wal", "lwlock[wal]", "WAL Access Locks", "87C2B9"),
+        ("clog", "lwlock[clog]", "CLOG Access Locks", "006AAE"),
         ("replication", "lwlock[replication]", "Replication Locks", "3B415A"),
         ("logical_replication", "lwlock[logical_replication]", "Logical Replication Locks", "9C8A4E"),
         ("buffer", "lwlock[buffer]", "Buffer Operations Locks", "F6CB93"),
-        ("other", "lwlock[other]", "Other Operations Lightweight Locks", "8B817C")]
+        ("other", "lwlock[other]", "Other Operations Lightweight Locks", "A39B98")]
     LWLockItems = [(x[0], x[1], " LWLocks: " + x[2], x[3]) for x in LWLockItems]
 
     LWLockQuery = {

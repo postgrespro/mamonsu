@@ -121,12 +121,14 @@ class DiskSizes(Plugin):
                 "type": self.GRAPH_TYPE.stacked,
                 "items": [
                     {
-                        "color": "E57862",
-                        "key": "system.vfs.used[{#MOUNTPOINT}]"
+                        "color": "FF5656",
+                        "key": "system.vfs.used[{#MOUNTPOINT}]",
+                        "drawtype": 2
                     },
                     {
-                        "color": "578159",
-                        "key": "system.vfs.free[{#MOUNTPOINT}]"
+                        "color": "00CC00",
+                        "key": "system.vfs.free[{#MOUNTPOINT}]",
+                        "drawtype": 2
                     }
                 ]
             }

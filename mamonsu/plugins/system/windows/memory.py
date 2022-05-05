@@ -7,7 +7,7 @@ class Memory(Plugin):
     Items = [
         # perf_item, zbx_key, desc, delta, unit, (color, site)
         (r"\Memory\Cache Bytes", "[cache]", "Memory Cached", Plugin.UNITS.bytes, ("9C8A4E", 0)),
-        (r"\Memory\Available Bytes", "[available]", "Memory Available", Plugin.UNITS.bytes, ("578159", 0)),
+        (r"\Memory\Available Bytes", "[available]", "Memory Available", Plugin.UNITS.bytes, ("00CC00", 0)),
         (r"\Memory\Free & Zero Page List Bytes", "[free]", "Memory Free", Plugin.UNITS.bytes, ("3B415A", 0))
     ]
 
@@ -39,7 +39,8 @@ class Memory(Plugin):
                 items.append({
                     "key": "system.memory{0}".format(item[1]),
                     "color": item[4][0],
-                    "yaxisside": item[4][1]
+                    "yaxisside": item[4][1],
+                    "drawtype": 1
                 })
         graph = {
             "name": "System: Memory Overview",

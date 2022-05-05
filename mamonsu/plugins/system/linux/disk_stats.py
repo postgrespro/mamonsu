@@ -113,11 +113,13 @@ class DiskStats(Plugin):
             "items": [
                 {
                     "key": self.right_type(self.key + ".all_read{0}"),
-                    "color": "7EB29B"
+                    "color": "00CC00",
+                    "drawtype": 2
                 },
                 {
                     "key": self.right_type(self.key + ".all_write{0}"),
-                    "color": "793F5D"
+                    "color": "FF5656",
+                    "drawtype": 2
                 }
             ]
         }
@@ -127,11 +129,13 @@ class DiskStats(Plugin):
             "items": [
                 {
                     "key": self.right_type(self.key + ".all_read_b{0}"),
-                    "color": "7EB29B"
+                    "color": "00CC00",
+                    "drawtype": 2
                 },
                 {
                     "key": self.right_type(self.key + ".all_write_b{0}"),
-                    "color": "793F5D"
+                    "color": "FF5656",
+                    "drawtype": 2
                 }
             ]
         }
@@ -226,17 +230,20 @@ class DiskStats(Plugin):
                 "name": "System: Block Device Overview {#BLOCKDEVICE} operations",
                 "items": [
                     {
-                        "color": "7EB29B",
-                        "key": "system.disk.read[{#BLOCKDEVICE}]"
+                        "color": "00CC00",
+                        "key": "system.disk.read[{#BLOCKDEVICE}]",
+                        "drawtype": 2
                     },
                     {
-                        "color": "793F5D",
-                        "key": "system.disk.write[{#BLOCKDEVICE}]"
+                        "color": "FF5656",
+                        "key": "system.disk.write[{#BLOCKDEVICE}]",
+                        "drawtype": 2
                     },
                     {
                         "yaxisside": 1,
-                        "color": "F6CB93",
-                        "key": "system.disk.utilization[{#BLOCKDEVICE}]"
+                        "color": "006AAE",
+                        "key": "system.disk.utilization[{#BLOCKDEVICE}]",
+                        "drawtype": 2
                     }
                 ]
             },
@@ -244,17 +251,20 @@ class DiskStats(Plugin):
                 "name": "System: Block Device Overview {#BLOCKDEVICE} byte/s",
                 "items": [
                     {
-                        "color": "7EB29B",
-                        "key": "system.disk.read_b[{#BLOCKDEVICE}]"
+                        "color": "00CC00",
+                        "key": "system.disk.read_b[{#BLOCKDEVICE}]",
+                        "drawtype": 2
                     },
                     {
-                        "color": "793F5D",
-                        "key": "system.disk.write_b[{#BLOCKDEVICE}]"
+                        "color": "FF5656",
+                        "key": "system.disk.write_b[{#BLOCKDEVICE}]",
+                        "drawtype": 2
                     },
                     {
                         "yaxisside": 1,
-                        "color": "F6CB93",
-                        "key": "system.disk.utilization[{#BLOCKDEVICE}]"
+                        "color": "006AAE",
+                        "key": "system.disk.utilization[{#BLOCKDEVICE}]",
+                        "drawtype": 2
                     }
                 ]
             }

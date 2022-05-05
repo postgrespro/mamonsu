@@ -155,7 +155,7 @@ class Cfs(Plugin):
             "name": "PostgreSQL CFS: Relation {#COMPRESSED_RELATION} Compress Ratio",
             "delay": self.timeRatioInterval,
             "items": [{
-                "color": "8B817C",
+                "color": "A39B98",
                 "key": "pgsql.cfs.compress_ratio[{#COMPRESSED_RELATION}]"
             }]
         }]

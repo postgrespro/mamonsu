@@ -180,7 +180,7 @@ class Replication(Plugin):
             {
                 "name": "PostgreSQL Replication: Delta of Total Lag for {#APPLICATION_NAME}",
                 "items": [
-                    {"color": "8B817C",
+                    {"color": "A39B98",
                      "key": self.right_type(self.key_total_lag, var_discovery="{#APPLICATION_NAME},")},
                 ]
             }
