@@ -96,7 +96,7 @@ class PgHealth(Plugin):
     def triggers(self, template, dashboard=False):
         result = template.trigger({
             "name": "PostgreSQL Health: service has been restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".last()}&lt;" + str(
+            "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".change()}&lt;" + str(
                 self.plugin_config("uptime"))
         }) + template.trigger({
             "name": "PostgreSQL Health: cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})",
