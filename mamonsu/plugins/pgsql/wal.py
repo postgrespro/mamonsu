@@ -139,6 +139,18 @@ class Wal(Plugin):
                               "page": ZbxTemplate.dashboard_page_wal["name"],
                               "size": ZbxTemplate.dashboard_widget_size_medium,
                               "position": 2}
+            },
+                {
+                    "dashboard": {"name": self.right_type(self.key_wal_write_time),
+                                  "page": ZbxTemplate.dashboard_page_wal["name"],
+                                  "size": ZbxTemplate.dashboard_widget_size_medium,
+                                  "position": 5}
+                },
+                {
+                    "dashboard": {"name": self.right_type(self.key_wal_sync_time),
+                                  "page": ZbxTemplate.dashboard_page_wal["name"],
+                                  "size": ZbxTemplate.dashboard_widget_size_medium,
+                                  "position": 6}
             }]
 
     def keys_and_queries(self, template_zabbix):
