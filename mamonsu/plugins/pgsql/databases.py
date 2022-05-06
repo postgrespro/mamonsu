@@ -37,6 +37,13 @@ class Databases(Plugin):
     AND l.relation IS NULL;
     """
 
+    # PG 14+ queries
+    query_sessions = """
+    SELECT {0}
+    FROM pg_catalog.pg_stat_database
+    WHERE datname = '{1}';
+    """
+
     # queries for zabbix agent
     query_agent_discovery = """
     SELECT json_build_object ('data',json_agg(json_build_object('{#DATABASE}',d.datname)))
@@ -52,6 +59,15 @@ class Databases(Plugin):
     key_db_bloating_tables = "pgsql.database.bloating_tables{0}"
     key_autovacumm = "pgsql.autovacumm.count{0}"
     key_invalid_indexes = "pgsql.database.invalid_indexes{0}"
+
+    # PG 14+ keys
+    key_db_sessions = [("sessions", "pgsql.database.sessions[{0}]", "Total Number of Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
+                       ("sessions_abandoned", "pgsql.database.sessions_abandoned[{0}]", "Client Lost Connection Terminated Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
+                       ("sessions_fatal", "pgsql.database.sessions_fatal[{0}]", "Fatal Errors Terminated Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
+                       ("sessions_killed", "pgsql.database.sessions_killed[{0}]", "Operator Intervention Terminated Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
+                       ("session_time", "pgsql.database.session_time[{0}]", "Time Spent by Sessions", Plugin.UNITS.ms, Plugin.VALUE_TYPE.numeric_float),
+                       ("active_time", "pgsql.database.active_time[{0}]", "Time Spent Executing SQL Statements", Plugin.UNITS.ms, Plugin.VALUE_TYPE.numeric_float),
+                       ("idle_in_transaction_time", "pgsql.database.idle_in_transaction_time[{0}]", "Time Spent Idling While in a Transaction", Plugin.UNITS.ms, Plugin.VALUE_TYPE.numeric_float)]
 
     DEFAULT_CONFIG = {
         "min_rows": str(50),
@@ -78,6 +94,12 @@ class Databases(Plugin):
             zbx.send("pgsql.database.bloating_tables[{0}]".format(info[0]), int(bloat_count))
             invalid_indexes_count = Pooler.query(self.query_invalid_indexes, info[0])[0][0]
             zbx.send("pgsql.database.invalid_indexes[{0}]".format(info[0]), int(invalid_indexes_count))
+
+            if Pooler.server_version_greater("14"):
+                for session_item in self.key_db_sessions:
+                    session_result = Pooler.query(self.query_sessions.format(session_item[0], info[0]), info[0])[0][0]
+                    zbx.send(session_item[1].format(info[0]), int(session_result))
+
         zbx.send("pgsql.database.discovery[]", zbx.json({"data": dbs}))
         del dbs, bloat_count, invalid_indexes_count
 
@@ -103,7 +125,7 @@ class Databases(Plugin):
             "name": "PostgreSQL Autovacuum: Count of Autovacuum Workers",
             "items": [{
                 "key": self.right_type(self.key_autovacumm),
-                "color": "7EB29B",
+                "color": "87C2B9",
                 "drawtype": 2
             }]
         })
@@ -151,18 +173,29 @@ class Databases(Plugin):
              "name": "PostgreSQL Databases: Count of Invalid Indexes in {#DATABASE}",
              "delay": self.plugin_config("interval")}
         ]
+
+        if Pooler.server_version_greater("14"):
+            for session_item in self.key_db_sessions:
+                items.append({
+                    "key": self.right_type(session_item[1], var_discovery="{#DATABASE},"),
+                    "name": "PostgreSQL Databases {{#DATABASE}}: {0}".format(session_item[2]),
+                    "units": session_item[3],
+                    "value_type": session_item[4],
+                    "delay": self.plugin_config("interval")
+                })
+
         graphs = [{
             "name": "PostgreSQL Databases: {#DATABASE} size",
             "type": 1,
             "items": [
-                {"color": "8B817C",
+                {"color": "A39B98",
                  "key": self.right_type(self.key_db_size, var_discovery="{#DATABASE},"),
                  "drawtype": 2}]
         },
             {
                 "name": "PostgreSQL Databases: {#DATABASE} Bloating Overview",
                 "items": [
-                    {"color": "7EB29B",
+                    {"color": "87C2B9",
                      "key": self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},"),
                      "drawtype": 2},
                     {"color": "793F5D",
@@ -173,7 +206,7 @@ class Databases(Plugin):
             {
                 "name": "PostgreSQL Databases: {#DATABASE} Max age(datfrozenxid)",
                 "items": [
-                    {"color": "7EB29B",
+                    {"color": "87C2B9",
                      "key": self.right_type(self.key_db_age, var_discovery="{#DATABASE},"),
                      "drawtype": 2},
                     {"color": "793F5D",

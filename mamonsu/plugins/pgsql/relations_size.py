@@ -112,7 +112,7 @@ class RelationsSize(Plugin):
             "name": "PostgreSQL Relation Size: {#RELATIONNAME}",
             "type": 1,
             "items": [
-                {"color": "8B817C",
+                {"color": "A39B98",
                  "key": self.right_type(self.key_rel_size_discovery, var_discovery="{#RELATIONNAME},"),
                  "drawtype": 2}]
         },

@@ -147,8 +147,9 @@ class PgProbackup(Plugin):
                 "type": 1,
                 "items": [
                     {
-                        "color": "8B817C",
-                        "key": self.right_type(self.key_dir_size, var_discovery="{#BACKUPDIR},")
+                        "color": "A39B98",
+                        "key": self.right_type(self.key_dir_size, var_discovery="{#BACKUPDIR},"),
+                        "drawtype": 2
                     }
                 ]
             },

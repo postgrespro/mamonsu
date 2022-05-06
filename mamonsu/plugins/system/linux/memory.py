@@ -19,20 +19,20 @@ class Memory(Plugin):
 
     Items = [
         # zbx_key, meminfo_key, name, color, drawtype
-        ("active", "Active", "Active - Memory Recently Used", "90BD72", 1),
-        ("available", "MemAvailable", "Available - Free Memory", "578159", 1),
+        ("active", "Active", "Active - Memory Recently Used", "BAEB6B", 1),
+        ("available", "MemAvailable", "Available - Free Memory", "00CC00", 1),
         ("buffers", "Buffers", "Buffers - Block Device Cache and Dirty", "00B0B8", 1),
-        ("cached", "Cached", "Cached - Parked File Data (file content) Cache", "9C8A4E", 1),
-        ("committed", "Committed_AS", "Committed AS - Total Committed Memory", "52768F", 1),
-        ("inactive", "Inactive", "Inactive - Memory Not Currently Used", "001219", 1),
+        ("cached", "Cached", "Cached - Parked File Data (file content) Cache", "52768F", 1),
+        ("committed", "Committed_AS", "Committed AS - Total Committed Memory", "9C8A4E", 1),
+        ("inactive", "Inactive", "Inactive - Memory Not Currently Used", "A39B98", 1),
         ("mapped", "Mapped", "Mapped - All mmap()ed Pages", "9F1E28", 1),
-        ("page_tables", "PageTables", "PageTables - Map bt Virtual and Physical", "8B817C", 1),
+        ("page_tables", "PageTables", "PageTables - Map bt Virtual and Physical", "793F5D", 1),
         ("slab", "Slab", "Slab - Kernel Used Memory (inode cache)", "F6CB93", 1),
-        ("swap", None, "Swap - Swap Space Used", "0082A5", 1),
-        ("swap_cache", "SwapCached", "SwapCached - Fetched unmod Yet Swap Pages", "7EB29B", 1),
-        ("total", "MemTotal", "Total - All Memory", "E57862", 4),
+        ("swap", None, "Swap - Swap Space Used", "006AAE", 1),
+        ("swap_cache", "SwapCached", "SwapCached - Fetched unmod Yet Swap Pages", "87C2B9", 1),
+        ("total", "MemTotal", "Total - All Memory", "FF5656", 4),
         ("unused", "MemFree", "Unused - Wasted Memory", "3B415A", 1),
-        ("used", None, "Used - User-Space Applications", "793F5D", 1),
+        ("used", None, "Used - User-Space Applications", "001219", 1),
         ("vmalloc_used", "VmallocUsed", "VMallocUsed - vmaloc() Allocated by Kernel", "CF6518", 1)
     ]
 

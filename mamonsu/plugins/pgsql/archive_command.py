@@ -57,10 +57,10 @@ class ArchiveCommand(Plugin):
     key = "pgsql.archive_command{0}"
     Items = [
         # key, desc, color, side, graph, delta, units
-        ("count_files_to_archive", "Files in archive_status Need to Archive Count", "9C8A4E", 0, 1, Plugin.DELTA.as_is, Plugin.UNITS.none),
+        ("count_files_to_archive", "Files in archive_status Need to Archive Count", "006AAE", 0, 1, Plugin.DELTA.as_is, Plugin.UNITS.none),
         ("size_files_to_archive", "Files Need to Archive Size", "793F5D", 0, 0, Plugin.DELTA.as_is, Plugin.UNITS.bytes),
-        ("archived_files", "Archived Files Count", "578159", 0, 1, Plugin.DELTA.simple_change, Plugin.UNITS.none),
-        ("failed_trying_to_archive", "Attempts to Archive Files Count", "E57862", 0, 1, Plugin.DELTA.simple_change, Plugin.UNITS.none),
+        ("archived_files", "Archived Files Count", "00CC00", 0, 1, Plugin.DELTA.simple_change, Plugin.UNITS.none),
+        ("failed_trying_to_archive", "Attempts to Archive Files Count", "FF5656", 0, 1, Plugin.DELTA.simple_change, Plugin.UNITS.none),
     ]
     old_archived_count = None
     old_failed_count = None

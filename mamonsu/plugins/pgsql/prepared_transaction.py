@@ -10,7 +10,7 @@ class PreparedTransaction(Plugin):
         "state": "count_prepared",
         "key": "pgsql.prepared.count",
         "name": "PostgreSQL Prepared Transactions: Number of Prepared Transactions",
-        "color": "8B817C",
+        "color": "A39B98",
         "yaxisside": 0,
     }
     key_prepared = {

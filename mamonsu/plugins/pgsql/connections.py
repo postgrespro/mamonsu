@@ -14,8 +14,8 @@ class Connections(Plugin):
     }
     # (state, key, name, graph item color)
     Items = [
-        ("active", "active", "Number of Active User Connections", "578159"),
-        ("idle", "idle", "Number of Idle User Connections", "8B817C"),
+        ("active", "active", "Number of Active User Connections", "00CC00"),
+        ("idle", "idle", "Number of Idle User Connections", "A39B98"),
         ("idle in transaction", "idle_in_transaction",
          "Number of Idle in Transaction User Connections", "9C8A4E"),
         ("idle in transaction (aborted)", "idle_in_transaction_aborted",
@@ -185,29 +185,25 @@ class Connections(Plugin):
             })
         items.append({
             "key": self.right_type(self.key, "total"),
-            "color": "E57862",
+            "color": "FF5656",
             "drawtype": 2
         })
         items.append({
             "key": self.right_type(self.key, "waiting"),
-            "color": "0082A5",
-            "drawtype": 2
-        })
-        items.append({
-            "key": self.right_type(self.key, "max_connections"),
-            "color": "FF3C47",
+            "color": "006AAE",
             "drawtype": 2
         })
 
         if Pooler.server_version_greater("10.0"):
             items.append({
                 "key": self.right_type(self.key, "other"),
-                "color": "7EB29B",
+                "color": "87C2B9",
                 "drawtype": 2
             })
 
         graph = {
             "name": self.graph_name,
+            "type": 1,
             "items": items
         }
 

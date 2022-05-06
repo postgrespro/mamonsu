@@ -64,23 +64,23 @@ class Wal(Plugin):
             result = Pooler.query("""
             SELECT wal_records FROM pg_stat_wal;
             """)
-            zbx.send(self.key_wal_records.format("[]"), int(result[0][0]))
+            zbx.send(self.key_wal_records.format("[]"), int(result[0][0]), self.DELTA_SPEED)
             result = Pooler.query("""
             SELECT wal_fpi FROM pg_stat_wal;
             """)
-            zbx.send(self.key_wal_fpi.format("[]"), int(result[0][0]))
+            zbx.send(self.key_wal_fpi.format("[]"), int(result[0][0]), self.DELTA_SPEED)
             result = Pooler.query("""
             SELECT wal_buffers_full FROM pg_stat_wal;
             """)
-            zbx.send(self.key_wal_buffers_full.format("[]"), int(result[0][0]))
+            zbx.send(self.key_wal_buffers_full.format("[]"), int(result[0][0]), self.DELTA_SPEED)
             result = Pooler.query("""
             SELECT wal_write_time FROM pg_stat_wal;
             """)
-            zbx.send(self.key_wal_write_time.format("[]"), int(result[0][0]))
+            zbx.send(self.key_wal_write_time.format("[]"), int(result[0][0]), self.DELTA_SPEED)
             result = Pooler.query("""
             SELECT wal_sync_time FROM pg_stat_wal;
             """)
-            zbx.send(self.key_wal_sync_time.format("[]"), int(result[0][0]))
+            zbx.send(self.key_wal_sync_time.format("[]"), int(result[0][0]), self.DELTA_SPEED)
 
     def items(self, template, dashboard=False):
         result = ""
@@ -101,27 +101,27 @@ class Wal(Plugin):
         }) + template.item({
             "name": "PostgreSQL WAL: Records Generated",
             "key": self.right_type(self.key_wal_records),
-            "value_type": self.VALUE_TYPE.numeric_unsigned,
+            "value_type": self.VALUE_TYPE.numeric_float,
             "delta": delta,
         }) + template.item({
             "name": "PostgreSQL WAL: Full Page Images Generated",
             "key": self.right_type(self.key_wal_fpi),
-            "value_type": self.VALUE_TYPE.numeric_unsigned,
+            "value_type": self.VALUE_TYPE.numeric_float,
             "delta": delta,
         }) + template.item({
             "name": "PostgreSQL WAL: Buffers Full",
             "key": self.key_wal_buffers_full,
-            "value_type": self.VALUE_TYPE.numeric_unsigned,
+            "value_type": self.VALUE_TYPE.numeric_float,
             "delta": delta,
         }) + template.item({
             "name": "PostgreSQL WAL: Write Time (ms)",
             "key": self.key_wal_write_time,
-            "value_type": self.VALUE_TYPE.numeric_unsigned,
+            "value_type": self.VALUE_TYPE.numeric_float,
             "delta": delta,
         }) + template.item({
             "name": "PostgreSQL WAL: Sync Time (ms)",
             "key": self.key_wal_sync_time,
-            "value_type": self.VALUE_TYPE.numeric_unsigned,
+            "value_type": self.VALUE_TYPE.numeric_float,
             "delta": delta,
         }) + template.item({
             "name": "PostgreSQL WAL: Sync Duty (%)",
@@ -139,6 +139,18 @@ class Wal(Plugin):
                               "page": ZbxTemplate.dashboard_page_wal["name"],
                               "size": ZbxTemplate.dashboard_widget_size_medium,
                               "position": 2}
+            },
+                {
+                    "dashboard": {"name": self.right_type(self.key_wal_write_time),
+                                  "page": ZbxTemplate.dashboard_page_wal["name"],
+                                  "size": ZbxTemplate.dashboard_widget_size_medium,
+                                  "position": 5}
+                },
+                {
+                    "dashboard": {"name": self.right_type(self.key_wal_sync_time),
+                                  "page": ZbxTemplate.dashboard_page_wal["name"],
+                                  "size": ZbxTemplate.dashboard_widget_size_medium,
+                                  "position": 6}
             }]
 
     def keys_and_queries(self, template_zabbix):

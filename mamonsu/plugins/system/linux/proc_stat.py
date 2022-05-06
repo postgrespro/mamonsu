@@ -20,19 +20,19 @@ class ProcStat(Plugin):
 
     ProcessItems = [
         # key, zbx_key, name, delta, color, side
-        ("procs_running", "processes[running]", "in State Running", Plugin.DELTA.as_is, "578159", 0),
-        ("procs_blocked", "processes[blocked]", "in State Blocked", Plugin.DELTA.as_is, "E57862", 0),
-        ("processes", "processes[forkrate]", "Forkrate", Plugin.DELTA.speed_per_second, "9C8A4E", 1),
+        ("procs_running", "processes[running]", "in State Running", Plugin.DELTA.as_is, "00CC00", 0),
+        ("procs_blocked", "processes[blocked]", "in State Blocked", Plugin.DELTA.as_is, "FF5656", 0),
+        ("processes", "processes[forkrate]", "Forkrate", Plugin.DELTA.speed_per_second, "006AAE", 1),
     ]
 
     CpuItems = [
         # key, zbx_key, name, delta, color, side
-        (1, "cpu[user]", "by Normal Programs and Daemons", Plugin.DELTA.speed_per_second, "578159", 0),
+        (1, "cpu[user]", "by Normal Programs and Daemons", Plugin.DELTA.speed_per_second, "00CC00", 0),
         (2, "cpu[nice]", "by nice(1)d Programs", Plugin.DELTA.speed_per_second, "793F5D", 0),
         (3, "cpu[system]", "by the Kernel in System Activities", Plugin.DELTA.speed_per_second, "9C8A4E", 0),
-        (4, "cpu[idle]", "Idle", Plugin.DELTA.speed_per_second, "8B817C", 0),
-        (5, "cpu[iowait]", "Waiting for I/O Operations", Plugin.DELTA.speed_per_second, "0082A5", 0),
-        (6, "cpu[irq]", "Handling Interrupts", Plugin.DELTA.speed_per_second, "3B415A", 0),
+        (4, "cpu[idle]", "Idle", Plugin.DELTA.speed_per_second, "A39B98", 0),
+        (5, "cpu[iowait]", "Waiting for I/O Operations", Plugin.DELTA.speed_per_second, "006AAE", 0),
+        (6, "cpu[irq]", "Handling Interrupts", Plugin.DELTA.speed_per_second, "FF5656", 0),
         (7, "cpu[softirq]", "Handling Batched Interrupts", Plugin.DELTA.speed_per_second, "F6CB93", 0),
     ]
 
@@ -97,7 +97,8 @@ class ProcStat(Plugin):
             items.append({
                 "key": self.right_type(self.key + keys[0] + "{0}", keys[1][:-1]),
                 "color": item[4],
-                "yaxisside": item[5]
+                "yaxisside": item[5],
+                "drawtype": 2
             })
         graphs = template.graph({
             "name": "System: Processes Overview",
@@ -110,7 +111,8 @@ class ProcStat(Plugin):
             items.append({
                 "key": self.right_type(self.key + keys[0] + "{0}", keys[1][:-1]),
                 "color": item[4],
-                "yaxisside": item[5]
+                "yaxisside": item[5],
+                "drawtype": 2
             })
         graphs += template.graph({
             "name": "System: CPU Time Spent",

@@ -2,7 +2,6 @@
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
-from mamonsu.lib.zbx_template import ZbxTemplate
 
 
 class PgBufferCache(Plugin):
@@ -23,9 +22,9 @@ class PgBufferCache(Plugin):
     query = [query_agent_size, query_agent_twice_used, query_agent_dirty]
     Items = [
         # key, name, color
-        ("size", "PostgreSQL pg_buffercache: Shared Buffer Size", "E57862"),
-        ("twice_used", "PostgreSQL pg_buffercache: Shared Buffer Twice Used Size", "7EB29B"),
-        ("dirty", "PostgreSQL pg_buffercache: Shared Buffer Dirty Size", "793F5D")
+        ("size", "PostgreSQL pg_buffercache: Shared Buffer Size", "00CC00"),
+        ("twice_used", "PostgreSQL pg_buffercache: Shared Buffer Twice Used Size", "006AAE"),
+        ("dirty", "PostgreSQL pg_buffercache: Shared Buffer Dirty Size", "FF5656")
     ]
 
     graph_name = "PostgreSQL pg_buffercache: Shared Buffer"
@@ -63,12 +62,7 @@ class PgBufferCache(Plugin):
                 "name": self.graph_name,
                 "items": items})
         else:
-            return [{
-                "dashboard": {"name": self.graph_name,
-                              "page": ZbxTemplate.dashboard_page_overview["name"],
-                              "size": ZbxTemplate.dashboard_widget_size_medium,
-                              "position": 2}
-            }]
+            return []
 
     def keys_and_queries(self, template_zabbix):
         if self.extension_installed("pg_buffercache"):

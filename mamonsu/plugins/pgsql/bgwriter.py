@@ -18,32 +18,32 @@ class BgWriter(Plugin):
 
         ("buffers_checkpoint", "bgwriter[buffers_checkpoint]",
          "Buffers Written During Checkpoints",
-         ("PostgreSQL bgwriter", "793F5D", 1),
+         ("PostgreSQL bgwriter", "006AAE", 1),
          Plugin.DELTA.simple_change),
 
         ("buffers_clean", "bgwriter[buffers_clean]",
          "Buffers Written",
-         ("PostgreSQL bgwriter", "9C8A4E", 1),
+         ("PostgreSQL bgwriter", "00CC00", 1),
          Plugin.DELTA.simple_change),
 
         ("maxwritten_clean", "bgwriter[maxwritten_clean]",
          "Number of bgwriter Stopped by Max Write Count",
-         ("PostgreSQL bgwriter", "00B0B8", 0),
+         ("PostgreSQL bgwriter", "FF5656", 0),
          Plugin.DELTA.simple_change),
 
         ("buffers_backend", "bgwriter[buffers_backend]",
          "Buffers Written Directly by a Backend",
-         ("PostgreSQL bgwriter", "7EB29B", 1),
+         ("PostgreSQL bgwriter", "9C8A4E", 1),
          Plugin.DELTA.simple_change),
 
         ("buffers_backend_fsync", "bgwriter[buffers_backend_fsync]",
          "Times a Backend Execute Its Own Fsync",
-         ("PostgreSQL bgwriter", "9C8A4E", 0),
+         ("PostgreSQL bgwriter", "00CC00", 0),
          Plugin.DELTA.simple_change),
 
         ("buffers_alloc", "bgwriter[buffers_alloc]",
          "Buffers Allocated",
-         ("PostgreSQL bgwriter", "3B415A", 1),
+         ("PostgreSQL bgwriter", "FF5656", 1),
          Plugin.DELTA.simple_change)
     ]
 
