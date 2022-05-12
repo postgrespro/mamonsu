@@ -25,7 +25,7 @@ jobs:
     strategy:
       matrix:
         docker_os: ['ubuntu:20.04', 'centos:7']
-        zabbix_version: ['4.0.39', '5.0.22', '5.4.12', '6.0.2']
+        zabbix_version: ['4.0.40', '5.0.23', '5.4.12', '6.0.4']
         pg_version: ['10', '11', '12', '13', '14']
         exclude:
           # excludes PG 9.6 on CentOS 8
