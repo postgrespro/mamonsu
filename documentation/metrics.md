@@ -1304,7 +1304,7 @@ Default config:
 
 ### Triggers
 
-1. **Process fork-rate to frequently on {HOSTNAME}**  
+1. **Process fork-rate too frequently on {HOSTNAME}**  
     Triggers if *Processes: forkrate* greater than 500.
 
 2. **System was restarted on {HOSTNAME} (up_time={ITEM.LASTVALUE})**  
@@ -2240,7 +2240,7 @@ Default config:
 
 ### Triggers
 
-1. **PostgreSQL required checkpoints occurs to frequently on {HOSTNAME}**  
+1. **PostgreSQL required checkpoints occurs too frequently on {HOSTNAME}**  
     Triggers if *PostgreSQL checkpoints: by wal (in hour)* exceeds `max_checkpoint_by_wal_in_hour`.
 
 ### Connections
