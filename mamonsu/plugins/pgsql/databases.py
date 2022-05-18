@@ -61,13 +61,13 @@ class Databases(Plugin):
     key_invalid_indexes = "pgsql.database.invalid_indexes{0}"
 
     # PG 14+ keys
-    key_db_sessions = [("sessions", "pgsql.database.sessions{0}", "Total Number of Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
-                       ("sessions_abandoned", "pgsql.database.sessions_abandoned{0}", "Client Lost Connection Terminated Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
-                       ("sessions_fatal", "pgsql.database.sessions_fatal{0}", "Fatal Errors Terminated Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
-                       ("sessions_killed", "pgsql.database.sessions_killed{0}", "Operator Intervention Terminated Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
-                       ("session_time", "pgsql.database.session_time{0}", "Time Spent by Sessions", Plugin.UNITS.ms, Plugin.VALUE_TYPE.numeric_float),
-                       ("active_time", "pgsql.database.active_time{0}", "Time Spent Executing SQL Statements", Plugin.UNITS.ms, Plugin.VALUE_TYPE.numeric_float),
-                       ("idle_in_transaction_time", "pgsql.database.idle_in_transaction_time{0}", "Time Spent Idling While in a Transaction", Plugin.UNITS.ms, Plugin.VALUE_TYPE.numeric_float)]
+    key_db_sessions = [("sessions", "pgsql.database.sessions[{0}]", "Total Number of Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
+                       ("sessions_abandoned", "pgsql.database.sessions_abandoned[{0}]", "Client Lost Connection Terminated Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
+                       ("sessions_fatal", "pgsql.database.sessions_fatal[{0}]", "Fatal Errors Terminated Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
+                       ("sessions_killed", "pgsql.database.sessions_killed[{0}]", "Operator Intervention Terminated Sessions", Plugin.UNITS.none, Plugin.VALUE_TYPE.numeric_unsigned),
+                       ("session_time", "pgsql.database.session_time[{0}]", "Time Spent by Sessions", Plugin.UNITS.ms, Plugin.VALUE_TYPE.numeric_float),
+                       ("active_time", "pgsql.database.active_time[{0}]", "Time Spent Executing SQL Statements", Plugin.UNITS.ms, Plugin.VALUE_TYPE.numeric_float),
+                       ("idle_in_transaction_time", "pgsql.database.idle_in_transaction_time[{0}]", "Time Spent Idling While in a Transaction", Plugin.UNITS.ms, Plugin.VALUE_TYPE.numeric_float)]
 
     DEFAULT_CONFIG = {
         "min_rows": str(50),
@@ -98,7 +98,7 @@ class Databases(Plugin):
             if Pooler.server_version_greater("14"):
                 for session_item in self.key_db_sessions:
                     session_result = Pooler.query(self.query_sessions.format(session_item[0], info[0]), info[0])[0][0]
-                    zbx.send(session_item[1].format("[{0}]".format(info[0])), int(session_result), self.DELTA_SPEED)
+                    zbx.send(session_item[1].format(info[0]), int(session_result))
 
         zbx.send("pgsql.database.discovery[]", zbx.json({"data": dbs}))
         del dbs, bloat_count, invalid_indexes_count
