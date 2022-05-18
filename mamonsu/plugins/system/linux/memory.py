@@ -51,8 +51,9 @@ class Memory(Plugin):
             zbx_key, meminfo_key = item[0], item[1]
             if meminfo_key is not None:
                 result[zbx_key] = meminfo.get(meminfo_key) or 0
-        result["used"] = meminfo["MemTotal"] - result["unused"] - result["buffers"] - result["cached"] - result[
-            "slab"] - result["page_tables"] - result["swap_cache"]
+        used = meminfo["MemTotal"] - result["unused"] - result["buffers"] - result["cached"] - result["slab"] - result[
+            "page_tables"] - result["swap_cache"]
+        result["used"] = used if used > 0 else 0
         result["swap"] = (meminfo.get("SwapTotal") or 0) - (meminfo.get("SwapFree") or 0)
 
         for key in result:
