@@ -42,11 +42,11 @@ if [ "${OS%:*}" = "centos" ]; then
     make rpm
     sudo mkdir -p /var/log/mamonsu
     sudo touch /var/log/mamonsu/mamonsu.log
-    chmod -R 640 /var/log/mamonsu/
+    chmod -R 777 /var/log/mamonsu/
     sudo mkdir -p /etc/mamonsu
     sudo touch /etc/mamonsu/agent.conf
     cat /mamonsu/github-actions-tests/sources/agent_3.4.0.conf > /etc/mamonsu/agent.conf
-    chmod -R 640 /etc/mamonsu/
+    chmod -R 777 /etc/mamonsu/
     sudo yum -y install ./mamonsu*.rpm
     systemctl daemon-reload
     systemctl restart mamonsu
@@ -71,11 +71,11 @@ elif [ "${OS%:*}" = "ubuntu" ]; then
     make deb
     sudo mkdir -p /var/log/mamonsu
     sudo touch /var/log/mamonsu/mamonsu.log
-    chmod -R 640 /var/log/mamonsu/
+    chmod -R 777 /var/log/mamonsu/
     sudo mkdir -p /etc/mamonsu
     sudo touch /etc/mamonsu/agent.conf
     cat /mamonsu/github-actions-tests/sources/agent_3.4.0.conf > /etc/mamonsu/agent.conf
-    chmod -R 640 /etc/mamonsu/
+    chmod -R 777 /etc/mamonsu/
     sudo apt-get -y install ./mamonsu*.deb
     service mamonsu restart
     sleep 5

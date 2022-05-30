@@ -30,7 +30,7 @@ export PYTHONPATH=%{buildroot}%{python3_sitelib}
 %{__mkdir} -p %{buildroot}/%{_sysconfdir}/logrotate.d
 %{__mkdir} -p %{buildroot}/%{_datarootdir}/%{name}
 
-%{__install} -m 0640 -p packaging/conf/example_linux.conf %{buildroot}/%{_sysconfdir}/%{name}/agent.conf
+%{__install} -m 0644 -p packaging/conf/example_linux.conf %{buildroot}/%{_sysconfdir}/%{name}/agent.conf
 %{__install} -m 0644 -p packaging/conf/template_linux.xml %{buildroot}/%{_datarootdir}/%{name}/template.xml
 %{__install} -m 0644 -p examples/*.py %{buildroot}/%{_datarootdir}/%{name}/
 %{__install} -m 0755 -p %{SOURCE1} %{buildroot}/%{_sysconfdir}/init.d/%{name}
