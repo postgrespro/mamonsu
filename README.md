@@ -1,5 +1,5 @@
 # Mamonsu: Monitoring agent for PostgreSQL
-Mamonsu is an active agent for Zabbix collecting PostgreSQL/PostgresPro instance and operating system metrics.
+Mamonsu is an active agent for Zabbix collecting PostgreSQL instance and operating system metrics.
 ***
 ## Build status
 ![Build Status](https://github.com/postgrespro/mamonsu/actions/workflows/mamonsu-tests-master.yml/badge.svg)
@@ -56,7 +56,7 @@ Only Python3.3+ and any text editor.
 Mamonsu by default has 3 plugin groups and all of them are active:
 - **common:** Mamonsu own metrics such as availability, plugin errors;
 - **system:** contains *nix and windows metric sets. For example, on UNIX-based platforms you can collect specific metrics such as load average, open files count, CPU nice/idle/system time, etc.;
-- **pgsql:** PostgreSQL/PostgresPro specific metrics;
+- **pgsql:** PostgreSQL specific metrics;
 
 Mamonsu not only collects metrics, but provides triggers and graphs.     
 See details in chapter called "[Metrics](documentation/metrics.md)".
