@@ -210,7 +210,7 @@ class Pool(object):
         result = self.query("""
         SELECT count(*) 
         FROM pg_catalog.pg_extension 
-        WHERE extname = '{0}';
+        WHERE lower(extname) = lower('{0}');
         """.format(ext), db)
         return (int(result[0][0])) == 1
 

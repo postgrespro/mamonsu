@@ -34,13 +34,14 @@ class PgsqlPlugin(Plugin):
             check(self, ext)
         self._ext_check_count += 1
 
+        # TODO: reason to create cache-like variable for extension???
         return self._ext_installed
 
     def extension_schema(self, extension, db=None):
         return Pooler.extension_schema(extension, db)
 
     def disable_and_exit_if_extension_is_not_installed(self, ext, db=None):
-        if not self.extension_installed(ext, db=db, silent=True):
+        if not Pooler.extension_installed(ext, db=db):
             self.disable()
             raise PluginDisableException("""Disable plugin and exit, because '{0}' \
 extension is not installed. Enable it in PostgreSQL instance: '{1}',

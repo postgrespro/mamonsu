@@ -95,14 +95,21 @@ class Statements(Plugin):
         ("PostgreSQL Statements: Spend Time", 1),
         ("PostgreSQL Statements: WAL Statistics", None)]
 
+    # pgpro_stats работает только для PGPRO 12+ в режиме bootstrap и/или если в конфиге указан суперпользователь mamonsu
     def run(self, zbx):
-        if not self.extension_installed("pg_stat_statements") or not self.extension_installed("pgpro_stats"):
-            self.disable_and_exit_if_extension_is_not_installed(ext="pg_stat_statements/pgpro_stats")
+        extension = ""
         if (Pooler.is_pgpro() or Pooler.is_pgpro_ee()) and Pooler.server_version_greater("12"):
-            if not Pooler.is_bootstraped():
-                self.disable_and_exit_if_not_superuser()
-            extension = "pgpro_stats"
+            if Pooler.extension_installed("pgpro_stats"):
+                if not Pooler.is_bootstraped():
+                    self.disable_and_exit_if_not_superuser()
+                extension = "pgpro_stats"
+            elif Pooler.extension_installed("pg_stat_statements"):
+                extension = "pg_stat_statements"
+            else:
+                self.disable_and_exit_if_extension_is_not_installed(ext="pgpro_stats")
         else:
+            if not Pooler.extension_installed("pg_stat_statements"):
+                self.disable_and_exit_if_extension_is_not_installed(ext="pg_stat_statements")
             extension = "pg_stat_statements"
 
         extension_schema = self.extension_schema(extension=extension)
@@ -184,13 +191,16 @@ class Statements(Plugin):
             return []
 
     def keys_and_queries(self, template_zabbix):
-        if self.extension_installed("pg_stat_statements") or not self.extension_installed("pgpro_stats"):
-            if (Pooler.is_pgpro() or Pooler.is_pgpro_ee()) and Pooler.server_version_greater("12"):
-                if not Pooler.is_bootstraped():
-                    self.disable_and_exit_if_not_superuser()
+        if (Pooler.is_pgpro() or Pooler.is_pgpro_ee()) and Pooler.server_version_greater("12"):
+            if Pooler.extension_installed("pgpro_stats"):
                 extension = "pgpro_stats"
-            else:
+            elif Pooler.extension_installed("pg_stat_statements"):
                 extension = "pg_stat_statements"
+        else:
+            if Pooler.extension_installed("pg_stat_statements"):
+                extension = "pg_stat_statements"
+
+        if Pooler.extension_installed("pgpro_stats") or Pooler.extension_installed("pg_stat_statements"):
 
             extension_schema = self.extension_schema(extension=extension)
 

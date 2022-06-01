@@ -30,8 +30,8 @@ class PgBufferCache(Plugin):
     graph_name = "PostgreSQL pg_buffercache: Shared Buffer"
 
     def run(self, zbx):
-        if not self.extension_installed("pg_buffercache"):
-            return
+        if not Pooler.extension_installed("pg_buffercache"):
+            self.disable_and_exit_if_extension_is_not_installed("pg_buffercache")
         result = Pooler.run_sql_type("buffer_cache", extension="pg_buffercache")[0]
         for i, value in enumerate(result):
             zbx.send("pgsql.buffers[{0}]".format(self.Items[i][0]), value)
@@ -65,7 +65,7 @@ class PgBufferCache(Plugin):
             return []
 
     def keys_and_queries(self, template_zabbix):
-        if self.extension_installed("pg_buffercache"):
+        if Pooler.extension_installed("pg_buffercache"):
             result = []
             for i, item in enumerate(self.Items):
                 result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + item[0]), self.query[i].format(

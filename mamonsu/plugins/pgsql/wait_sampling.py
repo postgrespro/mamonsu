@@ -244,26 +244,35 @@ class WaitSampling(Plugin):
                         "pgsql.{0}".format(item[1]),
                         float(0), Plugin.DELTA.speed_per_second)
 
-        if not self.extension_installed("pg_wait_sampling") or not self.extension_installed("pgpro_stats"):
-            self.disable_and_exit_if_extension_is_not_installed(ext="pg_wait_sampling/pgpro_stats")
+        extension = ""
         if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
-            if not Pooler.is_bootstraped():
-                self.disable_and_exit_if_not_superuser()
-            extension = "pgpro_stats"
+            if Pooler.extension_installed("pgpro_stats"):
+                if not Pooler.is_bootstraped():
+                    self.disable_and_exit_if_not_superuser()
+                extension = "pgpro_stats"
+            elif Pooler.extension_installed("pg_wait_sampling"):
+                extension = "pg_wait_sampling"
+            else:
+                self.disable_and_exit_if_extension_is_not_installed(ext="pgpro_stats")
         else:
+            if not Pooler.extension_installed("pg_wait_sampling"):
+                self.disable_and_exit_if_extension_is_not_installed(ext="pg_wait_sampling")
             extension = "pg_wait_sampling"
 
         extension_schema = self.extension_schema(extension=extension)
 
         find_and_send(Pooler.query(
-            self.AllLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.AllLockQuery[
-                extension].format(extension_schema=extension_schema)), self.AllLockItems, zbx)
+            self.AllLockQuery[extension + "_bootstrap"].format(
+                extension_schema=extension_schema) if Pooler.is_bootstraped() else self.AllLockQuery[extension].format(
+                extension_schema=extension_schema)), self.AllLockItems, zbx)
         find_and_send(Pooler.query(
-            self.HWLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.HWLockQuery[
-                extension].format(extension_schema=extension_schema)), self.HWLockItems, zbx)
+            self.HWLockQuery[extension + "_bootstrap"].format(
+                extension_schema=extension_schema) if Pooler.is_bootstraped() else self.HWLockQuery[extension].format(
+                extension_schema=extension_schema)), self.HWLockItems, zbx)
         find_and_send(Pooler.query(
-            self.LWLockQuery[extension + "_bootstrap"] if Pooler.is_bootstraped() else self.LWLockQuery[
-                extension].format(extension_schema=extension_schema)), self.LWLockItems, zbx)
+            self.LWLockQuery[extension + "_bootstrap"].format(
+                extension_schema=extension_schema) if Pooler.is_bootstraped() else self.LWLockQuery[extension].format(
+                extension_schema=extension_schema)), self.LWLockItems, zbx)
 
     def items(self, template, dashboard=False):
         result = ""
