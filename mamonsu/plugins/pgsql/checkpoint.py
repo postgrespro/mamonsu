@@ -29,22 +29,22 @@ class Checkpoint(Plugin):
 
         ("checkpoints_timed", "count_timed",
          "by Timeout (in hour)",
-         ("PostgreSQL: checkpoint", "00CC00", 0),
+         ("PostgreSQL Checkpoints: Count (in hour)", "00CC00", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
         ("checkpoints_req", "count_wal",
          "by WAL (in hour)",
-         ("PostgreSQL: Checkpoint", "FF5656", 0),
+         ("PostgreSQL Checkpoints: Count (in hour)", "FF5656", 0),
          Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
         ("checkpoint_write_time", "write_time",
          "Write Time",
-         ("PostgreSQL: Checkpoints", "00CC00", 1),
+         ("PostgreSQL Checkpoints: Write/Sync", "00CC00", 1),
          Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1),
 
         ("checkpoint_sync_time", "checkpoint_sync_time",
          "Sync Time",
-         ("PostgreSQL: checkpoints", "FF5656", 1),
+         ("PostgreSQL Checkpoints: Write/Sync", "FF5656", 1),
          Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1)
     ]
 
