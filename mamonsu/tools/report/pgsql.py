@@ -162,6 +162,31 @@ order by b.size desc
             '%-dead', '%-heap-hit', '%-idx-hit')
     )
 
+    query_current_locks = ("""
+SELECT blocked_locks.pid AS blocked_pid,
+       blocking_activity.datname as database,
+       blocked_activity.usename AS blocked_user,
+       blocking_locks.pid AS blocking_pid,
+       blocking_activity.usename AS blocking_user,
+       blocked_activity.query AS blocked_statement,
+       coalesce((blocked_activity.state_change - now()), interval '0') AS duration
+FROM  pg_catalog.pg_locks blocked_locks
+JOIN pg_catalog.pg_stat_activity blocked_activity ON blocked_activity.pid = blocked_locks.pid
+JOIN pg_catalog.pg_locks blocking_locks ON blocking_locks.locktype = blocked_locks.locktype
+AND blocking_locks.database IS NOT DISTINCT FROM blocked_locks.database
+AND blocking_locks.relation IS NOT DISTINCT FROM blocked_locks.relation
+AND blocking_locks.page IS NOT DISTINCT FROM blocked_locks.page
+AND blocking_locks.tuple IS NOT DISTINCT FROM blocked_locks.tuple
+AND blocking_locks.virtualxid IS NOT DISTINCT FROM blocked_locks.virtualxid
+AND blocking_locks.transactionid IS NOT DISTINCT FROM blocked_locks.transactionid
+AND blocking_locks.classid IS NOT DISTINCT FROM blocked_locks.classid
+AND blocking_locks.objid IS NOT DISTINCT FROM blocked_locks.objid
+AND blocking_locks.objsubid IS NOT DISTINCT FROM blocked_locks.objsubid
+AND blocking_locks.pid != blocked_locks.pid
+JOIN pg_catalog.pg_stat_activity blocking_activity ON blocking_activity.pid = blocking_locks.pid
+WHERE NOT blocked_locks.granted;
+    """, ("database", "blocked pid", "blocked user", "blocking pid", "blocking user", "blocked statement", "duration"))
+
     def __init__(self, args):
         self.args = args
         logging.info('Test connection...')
@@ -180,6 +205,8 @@ order by b.size desc
         self.dblist = self._collect_query(self.QueryDBList)
         logging.info('Collect biggest table...')
         self.biggest_tables = self._collect_biggest()
+        logging.info('Collect locks info...')
+        self.locks = self._collect_locks()
 
     def collect(self):
         info = self.printable_info()
@@ -225,6 +252,7 @@ order by b.size desc
         out += format_out('PG SETTINGS', format_obj(self.settings))
         out += format_out('PG DBLIST', format_obj(self.dblist))
         out += format_out('TABLES LIST', format_obj(self.biggest_tables))
+        out += format_out('CURRENT LOCKS', format_obj(self.locks))
         return out
 
     def printable_info(self):
@@ -271,6 +299,25 @@ order by b.size desc
         for key in self.biggest_tables:
             out += key_val_h1(
                 key, self.biggest_tables[key], 30)
+        for key in self.QueryPgSettings[2]:
+            out += header_h1(key)
+            for row in self.settings:
+                for name in self.QueryPgSettings[2][key]:
+                    if row[0] == name:
+                        val = row[1]
+                        if row[2] is not None:
+                            val += ' {0}'.format(row[2])
+                            val = humansize(val)
+                        out += key_val_h1(
+                            name, val, 30)
+        out += header_h1('Current Locks')
+        out += key_val_h1(
+            self.query_current_locks[1][0],
+            "\t\t" + "\t\t".join(self.query_current_locks[1][1:]),
+            30)
+        for key in self.locks:
+            out += key_val_h1(
+                key, self.locks[key], 30)
         return out
 
     def _collect_query(self, query_desc):
@@ -325,4 +372,20 @@ order by b.size desc
                     info_dbs[0], e))
         for table_name in sorted(result, key=sizes.__getitem__, reverse=True):
             sorted_result[table_name] = result[table_name]
+        return sorted_result
+
+    def _collect_locks(self):
+        result, pids, sorted_result = {}, {}, OrderedDict({})
+        try:
+            for info in Pooler.query(self.query_current_locks[0]):
+                blocked_pid = info[0]
+                result[blocked_pid] = ''
+                values = info[1:]
+                pids[blocked_pid] = values[-1]
+                for val in values:
+                    result[blocked_pid] = "{0}\t\t{1}".format(result[blocked_pid], val)
+        except Exception as e:
+            logging.error("Query locks error: {0}".format(e))
+        for blocked_pid in sorted(result, key=pids.__getitem__, reverse=True):
+            sorted_result[blocked_pid] = result[blocked_pid]
         return sorted_result
