@@ -36,6 +36,9 @@ class Memory(Plugin):
         ("vmalloc_used", "VmallocUsed", "VMallocUsed - vmaloc() Allocated by Kernel", "CF6518", 1)
     ]
 
+    graph_name_detailed = "System: Server Memory Detailed Overview"
+    graph_name_free_used = "System: Server Free/Used Memory Overview"
+
     def run(self, zbx):
 
         meminfo, result = {}, {}
@@ -93,13 +96,13 @@ class Memory(Plugin):
                 })
         graphs = [
             {
-                "name": "System: Server Memory Detailed Overview",
+                "name": self.graph_name_detailed,
                 "height": 400,
                 "type": 1,
                 "items": all_items
             },
             {
-                "name": "System: Server Free/Used Memory Overview",
+                "name": self.graph_name_free_used,
                 "height": 400,
                 "type": 1,
                 "items": free_used_items
