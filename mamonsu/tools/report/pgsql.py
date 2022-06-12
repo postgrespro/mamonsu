@@ -185,7 +185,7 @@ AND blocking_locks.objsubid IS NOT DISTINCT FROM blocked_locks.objsubid
 AND blocking_locks.pid != blocked_locks.pid
 JOIN pg_catalog.pg_stat_activity blocking_activity ON blocking_activity.pid = blocking_locks.pid
 WHERE NOT blocked_locks.granted;
-    """, ("database", "blocked pid", "blocked user", "blocking pid", "blocking user", "blocked statement", "duration"))
+    """, ("blocked pid", "database", "blocked user", "blocking pid", "blocking user", "blocked statement", "duration"))
 
     def __init__(self, args):
         self.args = args
