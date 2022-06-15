@@ -40,14 +40,8 @@ if [ "${OS%:*}" = "centos" ]; then
     rm -rf /etc/mamonsu; rm -rf /usr/bin/mamonsu; rm -rf /usr/local/bin/mamonsu; rm -rf /usr/lib/python3/dist-packages/mamonsu; rm -rf /usr/share/doc/mamonsu; rm -rf /usr/share/mamonsu; rm -rf /var/log/mamonsu; rm -rf /var/lib/mamonsu; rm -rf /run/mamonsu
     python3 setup.py build && python3 setup.py install
     make rpm
-    sudo mkdir -p /var/log/mamonsu
-    sudo touch /var/log/mamonsu/mamonsu.log
-    chmod -R 777 /var/log/mamonsu/
-    sudo mkdir -p /etc/mamonsu
-    sudo touch /etc/mamonsu/agent.conf
+    sudo rpm -i ./mamonsu*.rpm
     cat /mamonsu/github-actions-tests/sources/agent_3.4.0.conf > /etc/mamonsu/agent.conf
-    chmod -R 777 /etc/mamonsu/
-    sudo yum -y install ./mamonsu*.rpm
     systemctl daemon-reload
     systemctl restart mamonsu
     sleep 5
@@ -69,16 +63,8 @@ elif [ "${OS%:*}" = "ubuntu" ]; then
     rm -rf /etc/mamonsu; rm -rf /usr/bin/mamonsu; rm -rf /usr/local/bin/mamonsu; rm -rf /usr/lib/python3/dist-packages/mamonsu; rm -rf /usr/share/doc/mamonsu; rm -rf /usr/share/mamonsu; rm -rf /var/log/mamonsu; rm -rf /var/lib/mamonsu; rm -rf /run/mamonsu
     python3 setup.py build && python3 setup.py install
     make deb
-    sudo mkdir -p /var/log/mamonsu
-    sudo touch /var/log/mamonsu/mamonsu.log
-    chmod -R 777 /var/log/mamonsu/
-    sudo mkdir -p /etc/mamonsu
-    sudo touch /etc/mamonsu/agent.conf
+    sudo dpkg -i ./mamonsu*.deb
     cat /mamonsu/github-actions-tests/sources/agent_3.4.0.conf > /etc/mamonsu/agent.conf
-    chmod -R 777 /etc/mamonsu/
-    sudo apt-get -y install ./mamonsu*.deb
-    sudo chmod 600 /etc/mamonsu/agent.conf
-    sudo chown mamonsu:mamonsu /etc/mamonsu/agent.conf
     service mamonsu restart
     sleep 5
     echo && echo && echo "Mamonsu version:"
