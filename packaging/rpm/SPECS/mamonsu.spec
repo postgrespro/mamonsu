@@ -39,7 +39,6 @@ export PYTHONPATH=%{buildroot}%{python3_sitelib}
 %files
 %doc README.md
 %config(noreplace) %{_sysconfdir}/%{name}/agent.conf
-chown mamonsu.mamonsu %{_sysconfdir}/%{name}/agent.conf
 %{python3_sitelib}/%{name}/
 %{python3_sitelib}/%{name}-%{version}*
 %{_sysconfdir}/%{name}
@@ -65,6 +64,8 @@ touch /etc/mamonsu/plugins/__init__.py
 
 mkdir -p /var/log/mamonsu
 chown mamonsu.mamonsu /var/log/mamonsu
+
+chown mamonsu.mamonsu /etc/mamonsu/agent.conf
 
 %preun
 /sbin/service mamonsu stop >/dev/null 2>&1
