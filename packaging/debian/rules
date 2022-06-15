@@ -34,7 +34,7 @@ binary-indep: build install
 	dh_link -i
 	dh_compress -i
 	dh_fixperms -i
-	install -m 0600 -o mamonsu -g mamonsu packaging/conf/example_linux.conf debian/mamonsu/usr/share/mamonsu
+	install -m 0600 packaging/conf/example_linux.conf debian/mamonsu/usr/share/mamonsu
 	dh_installdeb -i
 	dh_gencontrol -i
 	dh_md5sums -i
