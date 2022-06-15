@@ -76,9 +76,9 @@ elif [ "${OS%:*}" = "ubuntu" ]; then
     sudo touch /etc/mamonsu/agent.conf
     cat /mamonsu/github-actions-tests/sources/agent_3.4.0.conf > /etc/mamonsu/agent.conf
     chmod -R 777 /etc/mamonsu/
+    sudo apt-get -y install ./mamonsu*.deb
     sudo chmod 600 /etc/mamonsu/agent.conf
     sudo chown mamonsu:mamonsu /etc/mamonsu/agent.conf
-    sudo apt-get -y install ./mamonsu*.deb
     service mamonsu restart
     sleep 5
     echo && echo && echo "Mamonsu version:"
