@@ -39,7 +39,7 @@ export PYTHONPATH=%{buildroot}%{python3_sitelib}
 %files
 %doc README.md
 %config(noreplace) %{_sysconfdir}/%{name}/agent.conf
-chown mamonsu.mamonsu %{buildroot}/%{_sysconfdir}/%{name}/agent.conf
+chown mamonsu.mamonsu %{_sysconfdir}/%{name}/agent.conf
 %{python3_sitelib}/%{name}/
 %{python3_sitelib}/%{name}-%{version}*
 %{_sysconfdir}/%{name}
