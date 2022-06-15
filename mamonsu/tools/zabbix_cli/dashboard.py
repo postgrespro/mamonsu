@@ -8,7 +8,6 @@ from mamonsu.plugins.pgsql.databases import Databases
 from mamonsu.plugins.pgsql.health import PgHealth
 from mamonsu.plugins.pgsql.instance import Instance
 from mamonsu.plugins.pgsql.oldest import Oldest
-from mamonsu.plugins.pgsql.pg_buffercache import PgBufferCache
 from mamonsu.plugins.pgsql.pg_locks import PgLocks
 from mamonsu.plugins.pgsql.replication import Replication
 from mamonsu.plugins.pgsql.wal import Wal
@@ -1052,7 +1051,7 @@ def generate_dashboard(template, uuid):
                                          Connections.graph_name,
                                          PgLocks.graph_name,
                                          Instance.graphs_name["transactions"],
-                                         PgBufferCache.graph_name,
+                                         Memory.graph_name_free_used,
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[2][0] + "]"),
                                          Databases.key_autovacumm.format("[]"),
                                          BgWriter.graph_name_buffers,

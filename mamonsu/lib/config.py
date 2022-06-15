@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pwd
 import socket
 import os
 import logging
@@ -79,6 +80,17 @@ class Config(DefaultConfig):
                 sys.stderr.write('Config file is empty: {0}\n'.format(cfg_file))
                 sys.exit(1)
             if cfg_file is not None:
+                if platform.LINUX:
+                    config_status = int(repr(oct(os.stat(cfg_file).st_mode))[:-1][-3:])
+                    config_owner = pwd.getpwuid(os.stat(cfg_file).st_uid).pw_name
+                    if not (config_status == 600 and config_owner == "mamonsu"):
+                        logging.info(
+                            "Shut down because of incorrect config file {0} permissions. It must be r/w for mamonsu user only (600).".format(
+                                cfg_file))
+                        sys.stderr.write(
+                            "Please, check your config file {0} permissions. It must be r/w for mamonsu user only (600).\n".format(
+                                cfg_file))
+                        sys.exit(1)
                 self.config.read_file(open(cfg_file))
 
         plugins = self.fetch('plugins', 'directory', str)
