@@ -119,7 +119,7 @@ class SparkmesActivity(Plugin):
                 # if key == 'calls_upd':
 
     # Declare zabbix items for template
-    def items(self, template):
+    def items(self, template, dashboard=False):
         result = ''
         for idx, item in enumerate(self.Items):
             key, zbxkey = item[0], item[1]
@@ -135,10 +135,13 @@ class SparkmesActivity(Plugin):
                 'units': item[3],
                 'value_type': Plugin.VALUE_TYPE.numeric_float
             })
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []
 
     # Declare zabbix graphs for template
-    def graphs(self, template):
+    def graphs(self, template, dashboard=False):
         result = ''
         for name in self.Graphs:
             items = []
@@ -162,4 +165,7 @@ class SparkmesActivity(Plugin):
             graph = {'name': name[0], 'items': items, 'type': name[1]}
             result += template.graph(graph)
 
-        return result
+        if not dashboard:
+            return result
+        else:
+            return []

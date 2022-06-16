@@ -29,7 +29,7 @@ class BiggestTables(Plugin):
                     table_name), info_sizes[2])
         zbx.send('pgsql.table.discovery[]', zbx.json({'data': tables}))
 
-    def discovery_rules(self, template):
+    def discovery_rules(self, template, dashboard=False):
         rule = {
             'name': 'Biggest table discovery',
             'key': 'pgsql.table.discovery[]',
