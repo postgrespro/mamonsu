@@ -18,7 +18,7 @@ mamonsu (3.5.0-1) stable; urgency=low
   * improved Replication metrics evaluation algorithm;
   * unified Zabbix objects names;
   * unified config file sections and parameters names;
-  * setted new color scheme;
+  * set new color scheme;
 
 mamonsu (3.4.0-1) stable; urgency=low
   * added Server Version metric;

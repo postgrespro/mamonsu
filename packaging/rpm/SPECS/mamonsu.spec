@@ -93,7 +93,7 @@ chown mamonsu.mamonsu /etc/mamonsu/agent.conf
   - improved Replication metrics evaluation algorithm;
   - unified Zabbix objects names;
   - unified config file sections and parameters names;
-  - setted new color scheme;
+  - set new color scheme;
 
 * Mon Feb 21 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.4.0-1
   - added Server Version metric;
