@@ -1,4 +1,4 @@
-# Mamonsu: configuration file
+# mamonsu: configuration file
 
 ## Configuration Parameters
 The *agent.conf* configuration file is located in the */etc/mamonsu* directory by default. It provides several groups of parameters that control which metrics to collect and how to log the collected data:  
@@ -8,7 +8,7 @@ The *agent.conf* configuration file is located in the */etc/mamonsu* directory b
 
 All parameters must be specified in the `parameter = value` format.
 
-> **_NOTE:_**  It is necessary to give permissions to the mamonsu user to directories/files for correct interaction of agent with them.
+> **_NOTE:_**  It is necessary to check permissions to the _mamonsu_ user to directories/files for correct interaction of agent with them. By default configuration file _agent.conf_ should have read/write permissions for _mamonsu_ user only.
 
 ***
 
@@ -45,12 +45,12 @@ The [postgres] section controls PostgreSQL metrics collection and can contain th
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 5432
 
 **application_name**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Application name that identifies Mamonsu connected to the PostgreSQL cluster.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Application name that identifies _mamonsu_ connected to the PostgreSQL cluster.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: mamonsu
 
 **query_timeout**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[statement_timeout](https://postgrespro.com/docs/postgresql/13/runtime-config-client#GUC-STATEMENT-TIMEOUT) for the Mamonsu session, in seconds. If a PostgreSQL metric query does not complete within this time interval, it gets terminated.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[statement_timeout](https://postgrespro.com/docs/postgresql/14/runtime-config-client#GUC-STATEMENT-TIMEOUT) for the _mamonsu_ session, in seconds. If a PostgreSQL metric query does not complete within this time interval, it gets terminated.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 10
 
@@ -95,7 +95,7 @@ The [zabbix] section provides connection settings for the Zabbix server and can 
 <p>&nbsp;</p>
 
 **[agent]**  
-The [agent] section specifies the location of Mamonsu and whether it is allowed to access metrics from the command line:
+The [agent] section specifies the location of _mamonsu_ and whether it is allowed to access metrics from the command line:
 
 **enabled**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables/disables metrics collection from the command line using the agent command.
@@ -103,12 +103,12 @@ The [agent] section specifies the location of Mamonsu and whether it is allowed 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: True
 
 **host**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The address of the system on which Mamonsu is running.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The address of the system on which _mamonsu_ is running.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 127.0.0.1
 
 **port**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The port on which Mamonsu is running.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The port on which _mamonsu_ is running.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 10052
 
@@ -118,7 +118,7 @@ The [agent] section specifies the location of Mamonsu and whether it is allowed 
 The [sender] section controls the queue size of the data to be sent to the Zabbix server:
 
 **queue**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The maximum number of collected metric values that can be accumulated locally before mamonsu sends them to the Zabbix server. Once the accumulated data is sent, the queue is cleared.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The maximum number of collected metric values that can be accumulated locally before _mamonsu_ sends them to the Zabbix server. Once the accumulated data is sent, the queue is cleared.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 2048
 
@@ -130,7 +130,7 @@ The [sender] section controls the queue size of the data to be sent to the Zabbi
 The [metric_log] section enables storing the collected metric data in text files locally. This section can contain the following parameters:
 
 **enabled**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables/disables storing the collected metric data in a text file. If this option is set to True, Mamonsu creates the localhost.log file for storing metric values.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables/disables storing the collected metric data in a text file. If this option is set to True, _mamonsu_ creates the [zabbix.client].log file for storing metric values.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: False
 
@@ -139,22 +139,19 @@ The [metric_log] section enables storing the collected metric data in text files
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: /var/log/mamonsu  
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permissions: mamonsu:mamonsu rwxrwx 
 
 **max_size_mb**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The maximum size of a log file, in MB. When the specified size is reached, it is renamed to localhost.log.archive, and an empty localhost.log file is created.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The maximum size of a log file, in MB. When the specified size is reached, it is renamed to [zabbix.client].log.archive, and an empty [zabbix.client].log file is created.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 1024
 
 <p>&nbsp;</p>
 
 **[log]**  
-The [log] section specifies logging settings for Mamonsu and can contain the following parameters:
+The [log] section specifies logging settings for _mamonsu_ and can contain the following parameters:
 
 **file**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the log filename, which can be preceded by the full path.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permissions: mamonsu:mamonsu rw-r--
 
 **level**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the debug level. This option can take DEBUG, ERROR, or INFO values.
@@ -181,18 +178,16 @@ The [plugins] section specifies custom plugins to be added for metrics collectio
 **directory**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the directory that contains custom plugins for metrics collection. Setting this parameter to None forbids using custom plugins.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: /etc/mamonsu/plugins  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: /etc/mamonsu/plugins
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permissions: mamonsu:mamonsu rwxrwx  
-
-If you need to configure any of the plugins you add to Mamonsu after installation, you have to add this plugin section to the agent.conf file.
+If you need to configure any of the plugins you add to _mamonsu_ after installation, you have to add this plugin section to the agent.conf file.
 
 The syntax of this section should follow the syntax used with the examples shown below in the section called “[Individual Plugin Sections](#individual-plugin-sections)”.
 
 ***
 
 ### Individual Plugin Sections
-All built-in plugins are installed along with Mamonsu. To configure a built-in plugin you should find a corresponding section below the Individual Plugin Sections heading and edit its parameter values.
+All built-in plugins are installed along with _mamonsu_. To configure a built-in plugin you should find a corresponding section below the Individual Plugin Sections heading and edit its parameter values.
 
 To disable any plugin you should set the enabled parameter to False and to enable it — set it to True. These values are case sensitive.
 
@@ -208,9 +203,10 @@ interval = 300
 backup_dirs = /backup_dir1,/backup_dir2
 pg_probackup_path = /usr/bin/pg_probackup-11
 ```
+Let's take a closer look at these examples:  
 
 **[preparedtransaction]**  
-This plugin gets age in seconds of the oldest prepared transaction and number of all transactions prepared for a two-phase commit. For additional information refer to [PREPARE TRANSACTION](https://postgrespro.com/docs/postgresql/13/sql-prepare-transaction) and [pg_prepared_xacts](https://postgrespro.com/docs/postgresql/13/view-pg-prepared-xacts).
+This plugin gets age in seconds of the oldest prepared transaction and number of all transactions prepared for a two-phase commit. For additional information refer to [PREPARE TRANSACTION](https://postgrespro.com/docs/postgresql/14/sql-prepare-transaction) and [pg_prepared_xacts](https://postgrespro.com/docs/postgresql/14/view-pg-prepared-xacts).
 
 The *max_prepared_transaction_time parameter* specifies the threshold in seconds for the age of the prepared transaction.
 

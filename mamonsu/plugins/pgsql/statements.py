@@ -50,15 +50,15 @@ class Statements(Plugin):
         ("stat[read_time]",
          "sum(blk_read_time)/float4(100)",
          "Read IO Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL Statements: Spend Time", "87C2B9", 0)),
+         ("PostgreSQL Statements: Spent Time", "87C2B9", 0)),
         ("stat[write_time]",
          "sum(blk_write_time)/float4(100)",
          "Write IO Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL Statements: Spend Time", "793F5D", 0)),
+         ("PostgreSQL Statements: Spent Time", "793F5D", 0)),
         ["stat[other_time]",
          "sum({0}-blk_read_time-blk_write_time)/float4(100)",
          "Other (mostly CPU) Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL Statements: Spend Time", "9C8A4E", 0)]]
+         ("PostgreSQL Statements: Spent Time", "9C8A4E", 0)]]
 
     Items_pg_13 = [
         ("stat[wal_bytes]",
@@ -92,7 +92,7 @@ class Statements(Plugin):
 
     all_graphs = [
         ("PostgreSQL Statements: Bytes", None),
-        ("PostgreSQL Statements: Spend Time", 1),
+        ("PostgreSQL Statements: Spent Time", 1),
         ("PostgreSQL Statements: WAL Statistics", None)]
 
     # pgpro_stats работает только для PGPRO 12+ в режиме bootstrap и/или если в конфиге указан суперпользователь mamonsu

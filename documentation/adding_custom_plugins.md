@@ -1,8 +1,8 @@
-# Mamonsu: adding custom plugins
+# mamonsu: adding custom plugins
 
-You can extend Mamonsu with your own custom plugins, as follows:
+You can extend _mamonsu_ with your own custom plugins as follows:
 
-1. Save all custom plugins in a single directory, such as */etc/mamonsu/plugins*.  
+1. Save all custom plugins in a single directory such as */etc/mamonsu/plugins*.  
 2. Make sure this directory is specified in your configuration file under the [plugins] section:
     ```editorconfig
     [plugins]
@@ -12,13 +12,13 @@ You can extend Mamonsu with your own custom plugins, as follows:
     ```shell
     mamonsu export template template.xml --add-plugins=/etc/mamonsu/plugins
     ```
-4. Upload the generated template.xml to the Zabbix server as explained in sections “[Installation](../README.md#installation)" and "[Configuration](../README.md#configuration)”.
+4. Upload generated template.xml to the Zabbix server as explained in sections “[Installation](../README.md#installation)" and "[Configuration](../README.md#configuration)”.
 
 ***
 
 ## How to write custom plugin
 
-Plugins have a fixed structure:  
+Plugin have a fixed structure:  
 ```python
 # all possible elements are listed here, but they are optional and it is not necessary to add all of them
 
@@ -161,4 +161,5 @@ class PLUGIN_NAME(Plugin):
         return template_zabbix.key_and_query(result)
 ```
 
-Native Mamonsu plugins are stored in [mamonsu/plugins](../mamonsu/plugins).
+Native _mamonsu_ plugins are stored in [mamonsu/plugins](../mamonsu/plugins).  
+Also you can explore [user examples](../examples).

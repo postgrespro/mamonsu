@@ -1,6 +1,6 @@
 # mamonsu: tools
 
-List of mamonsu commands and options:  
+List of _mamonsu_ commands and options:  
 
     mamonsu agent [agent_action] [-c | --config]  
     mamonsu bootstrap [-M mamonsu_user] [-x | --create-extensions] [-c | --config] [connection_options]  
@@ -52,13 +52,13 @@ Provides information on the collected metrics from the command line. You can spe
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checks the latest value for the specified metric. You can get a list of available metrics using the `metric-list` option.
 
 **metric-list**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shows the list of metrics that **mamonsu** is collecting. The output of this command provides the item's key of each metric, its latest value, and the time when this value was received.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shows the list of metrics that _mamonsu_ is collecting. The output of this command provides the item's key of each metric, its latest value, and the time when this value was received.
 
 **version**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Displays **mamonsu** version.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Displays _mamonsu_ version.
 
 **-c/--config**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies **mamonsu** config file.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies _mamonsu_ config file.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default = '/etc/mamonsu/agent.conf'  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mamonsu agent` gets info about default host and port from the config file. 
 
@@ -71,19 +71,19 @@ mamonsu bootstrap [-M mamonsu_user]
                   [-c | --config]
                   [connection_options]
 ```
-Bootstraps **mamonsu**. This command can take the following options:
+Bootstraps _mamonsu_. This command can take the following options:
 
 **-M**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify a non-privileged user that will own all **mamonsu** objects and processes.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify a non-privileged user that will own all _mamonsu_ objects and processes.
 
 **-x/--create-extensions**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates additional extensions and functions for collecting metrics using these extensions objects (currently, installation of `pg_buffercache` extension and setting of `pg_stat_statements`, `pg_wait_sampling` and `pgpro_stats` extensions).  
  >**_NOTE:_**  *pg_buffercache* can sometimes generate overhead compared to the common behavior of other objects. To avoid this you can `SET work_mem` on *database* or *mamonsu user* level, but be careful not to affect other objects performance. 
 
 **-c/--config**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies **mamonsu** config file.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies _mamonsu_ config file.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default = '/etc/mamonsu/agent.conf'  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mamonsu bootstrap` gets info about **mamonsu** default database from the config file.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mamonsu bootstrap` gets info about _mamonsu_ default database from the config file.  
 
 **connection_options**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides optional command-line connection parameters.
@@ -105,7 +105,7 @@ Generates a template or configuration file for metrics collection. The optional 
 **--application=application_name**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies an identifier under which the collected metrics will be displayed on the Zabbix server.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 'mamonsu PostgreSQL OS' where OS is the name of your operating system.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 'Mamonsu PostgreSQL OS' where OS is the name of your operating system.
 
 **--old-zabbix**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exports the template for Zabbix server version 4.4 or lower.  
@@ -113,7 +113,7 @@ Generates a template or configuration file for metrics collection. The optional 
 **--template-name=template_name**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify the name of the template that will be displayed on the Zabbix server.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 'mamonsu PostgreSQL OS' where OS is the name of your operating system.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 'Mamonsu PostgreSQL OS' where OS is the name of your operating system.
 
 ## export zabbix-
 Syntax:
@@ -137,7 +137,7 @@ Exports metrics configuration for use with the native Zabbix agent. The optional
 **--application=application_name**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies an identifier under which the collected metrics will be displayed on the Zabbix server.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 'mamonsu PostgreSQL OS' where OS is the name of your operating system.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 'Mamonsu PostgreSQL OS' where OS is the name of your operating system.
 
 **--config=config_file**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the *agent.conf* file to be used as the source for metrics definitions.
@@ -148,7 +148,7 @@ Exports metrics configuration for use with the native Zabbix agent. The optional
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exports the template for Zabbix server version 4.4 or lower.  
 
 **--pg-version=version**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the major version of the server for which to configure metrics collection. **mamonsu** can collect metrics for PostgreSQL 9.5+.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the major version of the server for which to configure metrics collection. _mamonsu_ can collect metrics for PostgreSQL 9.5+.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 12
 
@@ -166,7 +166,7 @@ Exports metrics configuration for use with the native Zabbix agent. The optional
 **--template-name=template_name**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the name of the template that will be displayed on the Zabbix server.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 'mamonsu PostgreSQL OS' where OS is the name of your operating system.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 'Mamonsu PostgreSQL OS' where OS is the name of your operating system.
 
 ## report
 Syntax:
@@ -179,7 +179,7 @@ mamonsu report [--disable-sudo]
                [connection_options]
 ```
 
-Generates a detailed report with information about the hardware, operating system, memory usage and other parameters of the monitored system, as well as PostgreSQL configuration.
+Generates a detailed report with information about the hardware, operating system, memory usage and other parameters of the monitored system, as well as PostgreSQL configuration, large tables and current locks.
 
 The following optional parameters customize the report:
 
@@ -226,10 +226,10 @@ Optimizes PostgreSQL and system configuration based on collected statistics. You
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Inactivates 'sudo' commands. If defined, command will not tune the settings that can only be changed by a superuser. This option is only available for Linux systems.
 
 **--dont-reload-postgresql**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forbids **mamonsu** to run the pg_reload_conf() function. If you specify this option, the modified settings that require reloading PostgreSQL configuration do not take effect immediately.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forbids _mamonsu_ to run the pg_reload_conf() function. If you specify this option, the modified settings that require reloading PostgreSQL configuration do not take effect immediately.
 
 **--dont-tune-pgbadger**  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forbids **mamonsu** to tune pgbadger parameters.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forbids _mamonsu_ to tune pgbadger parameters.
 
 **--dry-run**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Displays the settings to be tuned without changing the actual system and PostgreSQL configuration.
@@ -291,7 +291,7 @@ Syntax:
 ```shell
 mamonsu zabbix version
 ```
-Shows the version of the Zabbix server that **mamonsu** is connected to.
+Shows the version of the Zabbix server that _mamonsu_ is connected to.
 
 ### zabbix host
 Syntax:
@@ -332,10 +332,10 @@ Syntax:
 ```shell
 mamonsu zabbix dashboard upload [template_name]
 ```
-Uploads Zabbix Dashboard with necessary PostgreSQL and system metrics to **mamonsu** template. Works only with Zabbix 6.0 and higher. Template example:  
+Uploads Zabbix Dashboard with necessary PostgreSQL and system metrics to _mamonsu_ template. Works only with Zabbix 6.0 and higher. Template example:  
 <details>
     <summary>Click to view</summary>
-    <img src="../examples/mamonsu%20Dashboard.png" alt="mamonsu Dashboard">
+    <img src="../documentation/images/mamonsu_dashboard.png" alt="mamonsu Dashboard">
 </details>
 
 ## --version
@@ -343,24 +343,24 @@ Syntax:
 ```shell
 mamonsu --version
 ```
-Displays **mamonsu** version.
+Displays _mamonsu_ version.
 
 ## --help
 Syntax:
 ```shell
 mamonsu --help
 ```
-Displays **mamonsu** command-line help.
+Displays _mamonsu_ command-line help.
 ***
 ## Connection Options
 *connection_options* provides command-line connection parameters for the target PostgreSQL cluster. *connection_options* can be --host, --port, --dbname (-d), --username (-U), and --password (-W). The --dbname option should specify the *mamonsu_database* created for monitoring purposes. Note that the --username (-U) option must specify a superuser that can access the cluster.
 
-If you omit *connection_options*, **mamonsu** checks the corresponding environment variables for these settings. If they are missing, **mamonsu** tries to connect to the *current_user* database of the server instance running locally on port 5432 on behalf of *current_user*, where *current_user* is the operating system user name. Make sure to provide the actual connection parameters if your PostgreSQL cluster is located elsewhere.
+If you omit *connection_options*, _mamonsu_ checks the corresponding environment variables for these settings. If they are missing, _mamonsu_ tries to connect to the *current_user* database of the server instance running locally on port 5432 on behalf of *current_user*, where *current_user* is the operating system user name. Make sure to provide the actual connection parameters if your PostgreSQL cluster is located elsewhere.
 
 ***
 
 ## Zabbix Server Actions
-Using **mamonsu**, you can control some of the Zabbix server functionality from the command line. Specifically, you can create or delete Zabbix hosts and host groups, as well as generate, import, and delete Zabbix templates using one of the following commands. The *object_name* to use must correspond to the type of the Zabbix object specified in the command: template, host, or hostgroup.
+Using _mamonsu_, you can control some of the Zabbix server functionality from the command line. Specifically, you can create or delete Zabbix hosts and host groups, as well as generate, import, and delete Zabbix templates using one of the following commands. The *object_name* to use must correspond to the type of the Zabbix object specified in the command: template, host, or hostgroup.
 
 **list**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Displays the list of available templates, hosts, or host groups.
@@ -389,7 +389,7 @@ Using **mamonsu**, you can control some of the Zabbix server functionality from 
 ## Usage
 
 ### Collecting and Viewing Metrics Data
-Once started, **mamonsu** begins collecting system and PostgreSQL metrics. The agent command enables you to get an overview of the collected metrics from the command line in real time.
+Once started, _mamonsu_ begins collecting system and PostgreSQL metrics. The agent command enables you to get an overview of the collected metrics from the command line in real time.
 
 To view the list of available metrics, use the agent metric-list command:
 ```shell
@@ -413,7 +413,7 @@ You can view graphs for the collected metrics in the Zabbix web interface under 
 If you have chosen to save all the collected metrics data into a file, as explained in the config file section called “Logging Parameters”, you can later upload these metrics onto a Zabbix server for visualization using the [upload](#upload) command.
 
 ### Tuning PostgreSQL and System Configuration
-Based on the collected metrics data, **mamonsu** can tune your PostgreSQL and system configuration for optimal performance.
+Based on the collected metrics data, _mamonsu_ can tune your PostgreSQL and system configuration for optimal performance.
 
 You can get detailed information about the hardware, operating system, memory usage and other parameters of the monitored system, as well as PostgreSQL configuration, as follows:
 ```shell
@@ -430,7 +430,7 @@ mamonsu tune
 You can exclude some settings from the report or disable some of the optimizations by passing optional parameters. See the section called “[Command-Line Reference](#command-line-reference)” for the full list of parameters available for report and tune commands.
 
 ### Managing Zabbix Server Settings from the Command Line
-**mamonsu** enables you to work with the Zabbix server from the command line. You can upload template files to Zabbix, create and delete Zabbix hosts and host groups, link templates with hosts and check the latest metric values.
+_mamonsu_ enables you to work with the Zabbix server from the command line. You can upload template files to Zabbix, create and delete Zabbix hosts and host groups, link templates with hosts and check the latest metric values.
 
 To set up your Zabbix host from scratch, you can follow these steps:
 
@@ -439,7 +439,7 @@ To set up your Zabbix host from scratch, you can follow these steps:
     - Set the ZABBIX_USER and ZABBIX_PASSWD variables to the login and password of your Zabbix account, respectively. 
     - Set the ZABBIX_URL to http://zabbix/
 
-    If you skip this step, you will have to add the following options to all **mamonsu** zabbix commands that you run:
+    If you skip this step, you will have to add the following options to all _mamonsu_ zabbix commands that you run:
     ```shell
     --url=http://zabbix/ --user=zabbix_login --password=zabbix_password
     ```
@@ -461,20 +461,20 @@ To set up your Zabbix host from scratch, you can follow these steps:
     ```shell
     mamonsu zabbix host create host_name hostgroup_id template_id mamonsu_address
     ```
-    where *host_name* is the name of the host, *hostgroup_id* and *template_id* are the unique IDs returned in the previous step, and *mamonsu_address* is the IP address of the system on which **mamonsu** runs.
+    where *host_name* is the name of the host, *hostgroup_id* and *template_id* are the unique IDs returned in the previous step, and *mamonsu_address* is the IP address of the system on which _mamonsu_ runs.
 
 Once your Zabbix host is configured, complete the setup of your monitoring system as explained in sections “[Installation](../README.md#installation)" and "[Configuration](../README.md#configuration)”.
 
 ## Exporting Metrics for Native Zabbix Agent
-Using **mamonsu**, you can convert system and PostgreSQL metrics definitions to the format supported by the native [Zabbix agent](https://www.zabbix.com/documentation/current/manual/concepts/agent).
+Using _mamonsu_, you can convert system and PostgreSQL metrics definitions to the format supported by the native [Zabbix agent](https://www.zabbix.com/documentation/current/manual/concepts/agent).
 
 This feature currently has the following limitations:
 
-- You cannot export metrics if you run **mamonsu** on Windows systems.
+- You cannot export metrics if you run _mamonsu_ on Windows systems.
 
-- Metrics definitions for pg_wait_sampling and CFS features available in Postgres Pro Enterprise are not converted.
+- Metrics definitions for pgpro_stats and CFS features available in PostgresPro are not converted.
 
-To collect metrics provided by **mamonsu** using the native Zabbix agent, do the following:
+To collect metrics provided by _mamonsu_ using the native Zabbix agent, do the following:
 
 1. Generate a configuration file that is compatible with the native Zabbix agent and place it under /etc/zabbix/zabbix_agent.d/. You can prepend the filename with the required path:
     ```shell

@@ -85,21 +85,21 @@ class DiskSizes(Plugin):
         items = [
             {
                 "key": "system.vfs.used[{#MOUNTPOINT}]",
-                "name": "System: Mount Point {#MOUNTPOINT}: Used",
+                "name": "System: Mount Point {#MOUNTPOINT} Used",
                 "value_type": Plugin.VALUE_TYPE.numeric_unsigned,
                 "delay": self.plugin_config("interval"),
                 "units": Plugin.UNITS.bytes
             },
             {
                 "key": "system.vfs.free[{#MOUNTPOINT}]",
-                "name": "System: Mount Point {#MOUNTPOINT}: Free",
+                "name": "System: Mount Point {#MOUNTPOINT} Free",
                 "value_type": Plugin.VALUE_TYPE.numeric_unsigned,
                 "delay": self.plugin_config("interval"),
                 "units": Plugin.UNITS.bytes
             },
             {
                 "key": "system.vfs.percent_free[{#MOUNTPOINT}]",
-                "name": "System: Mount Point {#MOUNTPOINT}: Free in Percents",
+                "name": "System: Mount Point {#MOUNTPOINT} Free in Percents",
                 "delay": self.plugin_config("interval"),
                 "units": Plugin.UNITS.percent
             }
@@ -136,7 +136,7 @@ class DiskSizes(Plugin):
 
         triggers = [
             {
-                "name": "Free disk space less then 10% on mountpoint "
+                "name": "Free disk space less than 10% on mountpoint "
                         "{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
                 "expression": "{#TEMPLATE:system.vfs."
                               "percent_free[{#MOUNTPOINT}].last"
@@ -147,7 +147,7 @@ class DiskSizes(Plugin):
         if Plugin.Type == "mamonsu":
             triggers.append(
                 {
-                    "name": "Free inode space less then 10% on mountpoint "
+                    "name": "Free inode space less than 10% on mountpoint "
                             "{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
                     "expression": "{#TEMPLATE:system.vfs.percent_inode_free[{#MOUNTPOINT}].last"
                                   "()}&lt;" + self.plugin_config("vfs_inode_percent_free")
