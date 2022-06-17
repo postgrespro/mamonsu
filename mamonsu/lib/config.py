@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import pwd
 import socket
 import os
 import logging
@@ -11,6 +10,8 @@ from mamonsu.lib.plugin import Plugin
 from mamonsu.plugins.pgsql.driver.checks import is_conn_to_db
 from mamonsu.lib.default_config import DefaultConfig
 
+if platform.LINUX:
+    import pwd
 
 import configparser
 
