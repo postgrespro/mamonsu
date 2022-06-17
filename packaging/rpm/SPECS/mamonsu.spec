@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.0
+Version:        3.4.0
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,28 +73,6 @@ chown mamonsu.mamonsu /var/log/mamonsu
 chown mamonsu.mamonsu /etc/mamonsu/agent.conf
 
 %changelog
-* Thu Jun 16 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.0-1
-  - divided Instance Rate graph into two graphs - Blocks Rate, Transactions Rate;
-  - divided XLOG plugin into two plugins - WAL, Replication;
-  - changed 'pg_wait_sampling' plugin name to 'Wait Sampling';
-  - changed 'pg_stat_statements' plugin name to 'Statements';
-  - changed default agent.conf file permissions: now it read/write only for mamonsu user;
-  - added new Replication plugin metrics: Send Lag, Receive Lagadded pgpro_stats support to PostgresPro cluster (automatic switch from pg_stat_statements and pg_wait_sampling);
-  - added new bootstrap features: now the '-x' option also configures pg_stat_statements, pg_wait_sampling and pgpro_stats extensions;
-  - added custom schema check for pg_stat_statements, pg_wait_sampling and pgpro_stats extensions;
-  - added new lock types to the Wait Sampling plugin to fit PostgreSQL 10+: Extension Locks, Client Locks, Other Locks (e.g. IPC, Timeout, IO), Autovacuum Locks, Logical Replication Locks;
-  - added new 'System Free/Used Memory' graph;
-  - added new active locking queries feature to the report tool;
-  - replaced 'System Memory Overview' graph with 'System Free/Used Memory' in dashboards;
-  - fixed Statements plugin items generation for native zabbix agent;
-  - fixed Rollbacks item delta type;
-  - fixed WAL metrics delta types;
-  - fixed PostgreSQL Uptime trigger;
-  - improved Replication metrics evaluation algorithm;
-  - unified Zabbix objects names;
-  - unified config file sections and parameters names;
-  - set new color scheme;
-
 * Mon Feb 21 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.4.0-1
   - added Server Version metric;
   - added Available Memory metric;
