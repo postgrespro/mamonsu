@@ -29,7 +29,7 @@ jobs:
         pg_version: ['10', '11', '12', '13', '14']
 
     steps:
-      - name: Checkout Mamonsu repo
+      - name: Checkout mamonsu repo
         uses: actions/checkout@v1
 
       - name: Install docker-compose
@@ -67,7 +67,7 @@ jobs:
       - name: Install prequisites
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tests.sh --os="${{ matrix.docker_os }}" --pg-version="${{ matrix.pg_version }}"
 
-      - name: Build and install Mamonsu
+      - name: Build and install mamonsu
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/mamonsu_build.sh --os="${{ matrix.docker_os }}" --pg-version="${{ matrix.pg_version }}"
 
       - name: Test MAMONSU BOOTSTRAP
@@ -85,5 +85,8 @@ jobs:
       - name: Test MAMONSU ZABBIX CLI
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tools/zabbix_cli.sh --zbx-address="${{ steps.zabbix_address.outputs.zabbix_address }}" --zbx-version="${{ matrix.zabbix_version }}"
 
-      - name: Test Mamonsu metrics on master
+      - name: Test mamonsu metrics on master
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/metrics.sh --pg-version="${{ matrix.pg_version }}" --os="${{ matrix.docker_os }}"
+
+      - name: Test Mamonsu removal
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/mamonsu_removal.sh --os="${{ matrix.docker_os }}"
