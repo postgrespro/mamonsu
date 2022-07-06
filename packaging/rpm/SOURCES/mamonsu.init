@@ -27,7 +27,7 @@ COMMAND="/usr/bin/$NAME -d -a /etc/mamonsu/plugins -c $CONFIG -p $PIDFILE"
 RUNAS=mamonsu
 
 [ ! -d $PIDDIR ] && mkdir -p $PIDDIR
-chown $RUNAS $PIDDIR
+chown -R $RUNAS $PIDDIR
 
 start() {
   if [ -f $PIDFILE ] && kill -0 $(cat $PIDFILE); then

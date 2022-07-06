@@ -84,16 +84,37 @@ class Memory(Plugin):
         all_items = []
         free_used_items = []
         for item in self.Items:
-            all_items.append({
-                "key": self.right_type(self.key, item[0]),
-                "color": item[3]
-            })
-            if item[0] in ["cached", "available", "used", "total"]:
-                free_used_items.append({
+            if item[0] != "total":
+                all_items.append({
                     "key": self.right_type(self.key, item[0]),
-                    "color": item[3],
-                    "drawtype": item[4]
+                    "color": item[3]
                 })
+        # manually build Free/Used graph items to manage the order of graph filled regions
+        # used - User-Space
+        free_used_items.append({
+            "key": self.right_type(self.key, self.Items[13][0]),
+            "color": self.Items[13][3],
+            "drawtype": self.Items[13][4]
+        })
+        # cached
+        free_used_items.append({
+            "key": self.right_type(self.key, self.Items[3][0]),
+            "color": self.Items[3][3],
+            "drawtype": self.Items[3][4]
+        })
+        # available
+        free_used_items.append({
+            "key": self.right_type(self.key, self.Items[1][0]),
+            "color": self.Items[1][3],
+            "drawtype": self.Items[1][4]
+        })
+        # total
+        free_used_items.append({
+            "key": self.right_type(self.key, self.Items[11][0]),
+            "color": self.Items[11][3],
+            "drawtype": self.Items[11][4]
+        })
+
         graphs = [
             {
                 "name": self.graph_name_detailed,
@@ -104,7 +125,7 @@ class Memory(Plugin):
             {
                 "name": self.graph_name_free_used,
                 "height": 400,
-                "type": 1,
+                "type": 0,
                 "items": free_used_items
             }
         ]

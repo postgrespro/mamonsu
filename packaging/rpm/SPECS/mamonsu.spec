@@ -57,20 +57,20 @@ getent passwd mamonsu > /dev/null || \
     -c "mamonsu monitoring user" mamonsu
 
 mkdir -p /var/run/mamonsu
-chown mamonsu.mamonsu /var/run/mamonsu
+chown -R mamonsu.mamonsu /var/run/mamonsu
 
 mkdir -p /etc/mamonsu/plugins
 touch /etc/mamonsu/plugins/__init__.py
 
 mkdir -p /var/log/mamonsu
-chown mamonsu.mamonsu /var/log/mamonsu
+chown -R mamonsu.mamonsu /var/log/mamonsu
 
 %preun
 /sbin/service mamonsu stop >/dev/null 2>&1
 /sbin/chkconfig --del mamonsu
 
 %post
-chown mamonsu.mamonsu /etc/mamonsu/agent.conf
+chown -R mamonsu.mamonsu /etc/mamonsu
 
 %changelog
 * Mon Feb 21 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.4.0-1

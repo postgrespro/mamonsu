@@ -23,7 +23,7 @@ done
 
 echo && echo
 echo "================================================================================================================="
-echo "---> Install Mamonsu latest"
+echo "---> Install mamonsu latest"
 echo && echo
 
 # clean install mamonsu
@@ -45,7 +45,7 @@ if [ "${OS%:*}" = "centos" ]; then
     systemctl daemon-reload
     systemctl restart mamonsu
     sleep 5
-    echo && echo && echo "Mamonsu version:"
+    echo && echo && echo "mamonsu version:"
     mamonsu --version
     echo && echo
 
@@ -67,7 +67,7 @@ elif [ "${OS%:*}" = "ubuntu" ]; then
     cat /mamonsu/github-actions-tests/sources/agent_3.4.0.conf > /etc/mamonsu/agent.conf
     service mamonsu restart
     sleep 5
-    echo && echo && echo "Mamonsu version:"
+    echo && echo && echo "mamonsu version:"
     mamonsu --version
     echo && echo
 

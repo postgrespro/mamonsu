@@ -14,14 +14,15 @@ if [ "$1" = "configure" ]; then
     fi
 
     mkdir -p /var/run/mamonsu
-    chown mamonsu:mamonsu /var/run/mamonsu
 
     mkdir -p /etc/mamonsu/plugins
     touch /etc/mamonsu/plugins/__init__.py
-    [ -f /etc/mamonsu/agent.conf ] || cp /usr/share/mamonsu/example_linux.conf /etc/mamonsu/agent.conf && chown mamonsu:mamonsu /etc/mamonsu/agent.conf
+    [ -f /etc/mamonsu/agent.conf ] || cp /usr/share/mamonsu/example_linux.conf /etc/mamonsu/agent.conf
 
-    chown mamonsu:mamonsu /var/log/mamonsu
-    chown mamonsu:mamonsu /var/lib/mamonsu
+    chown -R mamonsu:mamonsu /var/run/mamonsu
+    chown -R mamonsu:mamonsu /var/log/mamonsu
+    chown -R mamonsu:mamonsu /var/lib/mamonsu
+    chown -R mamonsu:mamonsu /etc/mamonsu
 
 fi
 
