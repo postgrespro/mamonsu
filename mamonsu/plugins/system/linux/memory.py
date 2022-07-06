@@ -84,10 +84,11 @@ class Memory(Plugin):
         all_items = []
         free_used_items = []
         for item in self.Items:
-            all_items.append({
-                "key": self.right_type(self.key, item[0]),
-                "color": item[3]
-            })
+            if item[0] != "total":
+                all_items.append({
+                    "key": self.right_type(self.key, item[0]),
+                    "color": item[3]
+                })
         # manually build Free/Used graph items to manage the order of graph filled regions
         # used - User-Space
         free_used_items.append({
