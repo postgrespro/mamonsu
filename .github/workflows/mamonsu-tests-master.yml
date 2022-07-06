@@ -93,4 +93,4 @@ jobs:
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/metrics.sh --pg-version="${{ matrix.pg_version }}" --os="${{ matrix.docker_os }}"
 
       - name: Test Mamonsu removal
-          run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/mamonsu_removal.sh --os="${{ matrix.docker_os }}"
+        run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/mamonsu_removal.sh --os="${{ matrix.docker_os }}"
