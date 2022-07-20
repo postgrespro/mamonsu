@@ -1054,7 +1054,7 @@ def generate_dashboard(template, uuid):
                                          Instance.graphs_name["transactions"],
                                          Memory.graph_name_free_used,
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[2][0] + "]"),
-                                         Autovacuum.key.format("[]"),
+                                         Autovacuum.key_count.format("[]"),
                                          BgWriter.graph_name_buffers,
                                          BgWriter.graph_name_ws,
                                          Instance.key + Instance.Items[1][1],
