@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from mamonsu.plugins.pgsql.archive_command import ArchiveCommand
+from mamonsu.plugins.pgsql.autovacuum import Autovacuum
 from mamonsu.plugins.pgsql.bgwriter import BgWriter
 from mamonsu.plugins.pgsql.checkpoint import Checkpoint
 from mamonsu.plugins.pgsql.connections import Connections
@@ -1053,7 +1054,7 @@ def generate_dashboard(template, uuid):
                                          Instance.graphs_name["transactions"],
                                          Memory.graph_name_free_used,
                                          ArchiveCommand.key.format("[" + ArchiveCommand.Items[2][0] + "]"),
-                                         Databases.key_autovacumm.format("[]"),
+                                         Autovacuum.key.format("[]"),
                                          BgWriter.graph_name_buffers,
                                          BgWriter.graph_name_ws,
                                          Instance.key + Instance.Items[1][1],
