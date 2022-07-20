@@ -90,7 +90,7 @@ class PLUGIN_NAME(Plugin):
             # screen name ('page')
             # graph size ('size')
             # position on screen ('position', but it's optionally - you can set 0 to avoid sorting)
-            return [{'dashboard': {'name': self.right_type(self.key_autovacumm),
+            return [{'dashboard': {'name': self.right_type(self.key_autovacuum),
                                    'page': ZbxTemplate.dashboard_page_PAGE['name'], # see available values in mamonsu/lib/zbx_template.py dashboard_page_*
                                    'size': ZbxTemplate.dashboard_widget_size_SIZE, # see available values in mamonsu/lib/zbx_template.py dashboard_widget_size_*
                                    'position': N}}]
