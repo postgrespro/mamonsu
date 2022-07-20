@@ -85,6 +85,49 @@ DO
 $do$
 BEGIN
    IF (SELECT setting::integer FROM pg_settings WHERE name = 'server_version_num') >= 100000 THEN
+      DROP FUNCTION IF EXISTS mamonsu.autovacuum_utilization();
+      CREATE OR REPLACE FUNCTION mamonsu.autovacuum_utilization()
+      RETURNS FLOAT AS $$
+         WITH count_tb AS (
+            SELECT count(*)::float AS count
+            FROM pg_catalog.pg_stat_activity
+            WHERE backend_type = 'autovacuum worker'
+         ),
+         settings_tb AS (
+            SELECT setting::float
+            FROM pg_catalog.pg_settings
+            WHERE name = 'autovacuum_max_workers'
+         )
+         SELECT count_tb.count*100/settings_tb.setting
+         FROM count_tb, settings_tb
+      $$ LANGUAGE SQL SECURITY DEFINER;
+   ELSE
+      DROP FUNCTION IF EXISTS mamonsu.count_autovacuum();
+      CREATE OR REPLACE FUNCTION mamonsu.count_autovacuum()
+      RETURNS FLOAT AS $$
+         WITH count_tb AS (
+            SELECT count(*)::float AS count
+            FROM pg_catalog.pg_stat_activity
+            WHERE query LIKE '%%autovacuum%%'
+            AND state <> 'idle'
+            AND pid <> pg_catalog.pg_backend_pid()
+         ),
+         settings_tb AS (
+            SELECT setting::float
+            FROM pg_catalog.pg_settings
+            WHERE name = 'autovacuum_max_workers'
+         )
+         SELECT count_tb.count*100/settings_tb.setting
+         FROM count_tb, settings_tb
+      $$ LANGUAGE SQL SECURITY DEFINER;
+   END IF;
+END
+$do$;
+
+DO
+$do$
+BEGIN
+   IF (SELECT setting::integer FROM pg_settings WHERE name = 'server_version_num') >= 100000 THEN
       DROP FUNCTION IF EXISTS mamonsu.get_connections_states();
       CREATE OR REPLACE FUNCTION mamonsu.get_connections_states()
       RETURNS TABLE(state text, waiting boolean) AS $$

@@ -12,7 +12,7 @@ prepare_builddir: clean
 	chown -R root.root $(BUILDDIR)
 
 deb: prepare_builddir
-	cd $(BUILDDIR) && cp -a $(WORKDIR)/packaging/debian . && dpkg-buildpackage -b
+	cd $(BUILDDIR) && cp -a $(WORKDIR)/packaging/debian . && dpkg-buildpackage -b --no-sign
 	cp -av build/mamonsu*.deb .
 
 rpm: prepare_builddir $(BUILDDIR)/packaging/rpm/SPECS/$(SPEC)
