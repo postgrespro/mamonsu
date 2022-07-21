@@ -27,7 +27,7 @@ class SystemUptime(Plugin):
     def triggers(self, template, dashboard=False):
         return template.trigger(
             {
-                "name": "System was restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})",
+                "name": "System: {HOSTNAME} was restarted (uptime={ITEM.LASTVALUE})",
                 "expression": "{#TEMPLATE:" + self.right_type(self.key) + ".last()}&lt;" + self.plugin_config("uptime")
             }
         )

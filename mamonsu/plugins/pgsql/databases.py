@@ -101,7 +101,7 @@ class Databases(Plugin):
             }]
         items = [
             {"key": self.right_type(self.key_db_size, var_discovery="{#DATABASE},"),
-             "name": "PostgreSQL Databases {#DATABASE}: size",
+             "name": "PostgreSQL Databases: {#DATABASE} size",
              "units": Plugin.UNITS.bytes,
              "value_type": Plugin.VALUE_TYPE.numeric_unsigned,
              "delay": self.plugin_config("interval")},

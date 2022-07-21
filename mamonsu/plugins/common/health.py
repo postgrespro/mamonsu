@@ -55,21 +55,21 @@ class Health(Plugin):
     def triggers(self, template, dashboard=False):
         if self.Type == "mamonsu":
             result = template.trigger({
-                "name": "Mamonsu plugin errors on {HOSTNAME}. {ITEM.LASTVALUE}",
+                "name": "Mamonsu health: plugin errors on {HOSTNAME}. {ITEM.LASTVALUE}",
                 "expression": "{#TEMPLATE:mamonsu.plugin.errors[].strlen()}&gt;1"
             }) + template.trigger({
-                "name": "Mamonsu nodata from {HOSTNAME}",
+                "name": "Mamonsu health: nodata from {HOSTNAME}",
                 "expression": "{#TEMPLATE:" + self.right_type("mamonsu.plugin.keepalive{0}") + ".nodata(180)}=1"
             })
             if platform.LINUX:
                 result += template.trigger({
-                    "name": "Mamonsu agent memory usage alert on {HOSTNAME}: {ITEM.LASTVALUE} bytes",
+                    "name": "Mamonsu health: agent memory usage alert on {HOSTNAME}: {ITEM.LASTVALUE} bytes",
                     "expression": "{#TEMPLATE:mamonsu.memory.rss[max].last()}&gt;" + self.plugin_config(
                         "max_memory_usage")
                 })
         else:
             result = template.trigger({
-                "name": "Mamonsu nodata from {HOSTNAME}",
+                "name": "Mamonsu health: nodata from {HOSTNAME}",
                 "expression": "{#TEMPLATE:" + self.right_type("mamonsu.plugin.keepalive{0}") + ".nodata(180)}=1"
             })
         return result

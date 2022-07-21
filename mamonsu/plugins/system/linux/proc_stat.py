@@ -142,7 +142,7 @@ class ProcStat(Plugin):
     def triggers(self, template, dashboard=False):
         return template.trigger(
             {
-                "name": "Process fork-rate too frequently on {HOSTNAME}",
+                "name": "System: process fork-rate too frequently on {HOSTNAME}",
                 "expression": "{#TEMPLATE:" + self.right_type("system.processes{0}", "forkrate") +
                               ".min(5m)}&gt;" + str(self.ForkRate)
             }
