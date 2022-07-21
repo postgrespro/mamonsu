@@ -13,8 +13,8 @@ class Autovacuum(Plugin):
     key_count = "pgsql.autovacuum.count{0}"
     key_utilization = "pgsql.autovacuum.utilization{0}"
     key_utilization_avg5 = "pgsql.autovacuum.utilization.avg5{0}"
-    key_utilization_avg10 = "pgsql.autovacuum.utilization.avg10{0}"
     key_utilization_avg15 = "pgsql.autovacuum.utilization.avg15{0}"
+    key_utilization_avg30 = "pgsql.autovacuum.utilization.avg30{0}"
 
     DEFAULT_CONFIG = {
         "interval": str(60)
@@ -57,21 +57,21 @@ class Autovacuum(Plugin):
                 "delay": self.plugin_config("interval")
             }))
             result += (template.item({
-                "name": "PostgreSQL Autovacuum: Average Utilization per 10 minutes",
-                "key": self.right_type(self.key_utilization_avg10),
-                "value_type": Plugin.VALUE_TYPE.numeric_float,
-                "units": Plugin.UNITS.percent,
-                "type": Plugin.TYPE.CALCULATED,
-                "params": "avg(pgsql.autovacuum.utilization[], 10m)",
-                "delay": self.plugin_config("interval")
-            }))
-            result += (template.item({
                 "name": "PostgreSQL Autovacuum: Average Utilization per 15 minutes",
                 "key": self.right_type(self.key_utilization_avg15),
                 "value_type": Plugin.VALUE_TYPE.numeric_float,
                 "units": Plugin.UNITS.percent,
                 "type": Plugin.TYPE.CALCULATED,
                 "params": "avg(pgsql.autovacuum.utilization[], 15m)",
+                "delay": self.plugin_config("interval")
+            }))
+            result += (template.item({
+                "name": "PostgreSQL Autovacuum: Average Utilization per 30 minutes",
+                "key": self.right_type(self.key_utilization_avg30),
+                "value_type": Plugin.VALUE_TYPE.numeric_float,
+                "units": Plugin.UNITS.percent,
+                "type": Plugin.TYPE.CALCULATED,
+                "params": "avg(pgsql.autovacuum.utilization[], 30m)",
                 "delay": self.plugin_config("interval")
             }))
             return result
