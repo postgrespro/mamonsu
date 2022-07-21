@@ -9,8 +9,9 @@ class Health(Plugin):
 
     AgentPluginType = "sys"
 
-    DEFAULT_CONFIG = {
-        "max_memory_usage": str(40 * 1024 * 1024)
+    # key: (macro, value)
+    plugin_macros = {
+        "mamonsu_max_memory_usage": [("macro", "{$MAMONSU_MAX_MEMORY_USAGE}"), ("value", 40 * 1024 * 1024)]
     }
 
     counter = 0
@@ -52,6 +53,15 @@ class Health(Plugin):
         else:
             return []
 
+    def macros(self, template, dashboard=False):
+        result = ""
+        for macro in self.plugin_macros.keys():
+            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
+        if not dashboard:
+            return result
+        else:
+            return []
+
     def triggers(self, template, dashboard=False):
         if self.Type == "mamonsu":
             result = template.trigger({
@@ -64,8 +74,7 @@ class Health(Plugin):
             if platform.LINUX:
                 result += template.trigger({
                     "name": "Mamonsu health: agent memory usage alert on {HOSTNAME}: {ITEM.LASTVALUE} bytes",
-                    "expression": "{#TEMPLATE:mamonsu.memory.rss[max].last()}&gt;" + self.plugin_config(
-                        "max_memory_usage")
+                    "expression": "{#TEMPLATE:mamonsu.memory.rss[max].last()}&gt;" + self.plugin_macros["mamonsu_max_memory_usage"][0][1]
                 })
         else:
             result = template.trigger({
