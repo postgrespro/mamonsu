@@ -1761,7 +1761,7 @@ Default config:
       </tr>
       <tr>
         <th>Key</th>
-        <td>pgsql.autovacumm.count[]</td>
+        <td>pgsql.autovacuum.count[]</td>
       </tr>
       <tr>
         <th>Type</th>

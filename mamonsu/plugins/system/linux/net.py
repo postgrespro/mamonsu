@@ -50,7 +50,7 @@ class Net(Plugin):
             })
 
         rule = {
-            "name": "Net Iface Discovery",
+            "name": "System: net Iface Discovery",
             "key": key_discovery
         }
         if Plugin.old_zabbix:

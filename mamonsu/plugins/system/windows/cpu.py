@@ -64,6 +64,6 @@ class Cpu(Plugin):
 
     def triggers(self, template, dashboard=False):
         return template.trigger({
-            "name": "CPU privileged time is too big on {HOSTNAME}",
+            "name": "System: CPU privileged time is too big on {HOSTNAME}",
             "expression": "{#TEMPLATE:system.cpu[privileged_time].last()}&gt;" + str(self.MaxPrivilegedTime)
         })

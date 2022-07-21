@@ -61,7 +61,7 @@ class DiskSizes(Plugin):
         else:
             key_discovery = "system.vfs.discovery"
         rule = {
-            "name": "VFS Discovery",
+            "name": "System: VFS Discovery",
             "key": key_discovery
         }
         if Plugin.old_zabbix:
@@ -136,7 +136,7 @@ class DiskSizes(Plugin):
 
         triggers = [
             {
-                "name": "Free disk space less than 10% on mountpoint "
+                "name": "System: free disk space less than 10% on mountpoint "
                         "{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
                 "expression": "{#TEMPLATE:system.vfs."
                               "percent_free[{#MOUNTPOINT}].last"
@@ -147,7 +147,7 @@ class DiskSizes(Plugin):
         if Plugin.Type == "mamonsu":
             triggers.append(
                 {
-                    "name": "Free inode space less than 10% on mountpoint "
+                    "name": "System: free inode space less than 10% on mountpoint "
                             "{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
                     "expression": "{#TEMPLATE:system.vfs.percent_inode_free[{#MOUNTPOINT}].last"
                                   "()}&lt;" + self.plugin_config("vfs_inode_percent_free")
