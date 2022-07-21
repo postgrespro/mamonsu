@@ -32,8 +32,8 @@ class ZbxTemplate(object):
             </applications>
             <items>{items}</items>
             <discovery_rules>{discovery_rules}</discovery_rules>
-            <screens>{screens}</screens>
             <macros>{macros}</macros>
+            <screens>{screens}</screens>
         </template>
     </templates>
     <triggers>{triggers}</triggers>
@@ -172,15 +172,14 @@ class ZbxTemplate(object):
         self.plg_type = plg_type
         # create template
         template_data = {'template': self.Template, 'application': self.Application}
-        if Plugin.Type == 'agent':
-            template_data['macros'] = self._macro()
-        else:
-            template_data['macros'] = ""
-        template_data['triggers'] = self._get_all('triggers', plugins)
         template_data['items'] = self._get_all('items', plugins)
-        template_data['graphs'] = self._get_all('graphs', plugins)
         template_data['discovery_rules'] = self._get_all('discovery_rules', plugins)
+        if Plugin.Type == 'agent':
+            template_data['macros'] = self.agent_macro()
+        template_data['macros'] = self._get_all('macros', plugins)
         template_data['screens'] = self.screen(plugins)
+        template_data['triggers'] = self._get_all('triggers', plugins)
+        template_data['graphs'] = self._get_all('graphs', plugins)
         output_xml = self.mainTemplate.format(**template_data)
         if Plugin.Type == 'agent':
             output_xml = ZbxTemplate.turn_agent_type(self, output_xml)
@@ -300,13 +299,20 @@ class ZbxTemplate(object):
                                                     xml_key)
         return result
 
-    def _macro(self, xml_key='macro'):
+    def agent_macro(self, xml_key='macro'):
         result = ''
         value = {'value': '-qAt -p 5433 -U postgres ', 'macro': "{$PG_CONNINFO}"}
         result += '<{1}>{0}</{1}>'.format(self._format_args(self.macro_defaults, value), xml_key)
         value = {'value': '/opt/pgpro/std-10/bin/psql', 'macro': "{$PG_PATH}"}
         result += '<{1}>{0}</{1}>'.format(self._format_args(self.macro_defaults, value), xml_key)
         return result
+
+    def mamonsu_macro(self, args=None, xml_key='macro', defaults=None):
+        if args is None:
+            args = {}
+        if defaults is None:
+            defaults = self.macro_defaults
+        return '<{1}>{0}</{1}>'.format(self._format_args(defaults, args), xml_key)
 
     def item(self, args=None, xml_key='item', prototype=False):
         if args is None:

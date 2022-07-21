@@ -12,9 +12,11 @@ class DiskSizes(Plugin):
     # tmp_query_agent_percent_inode_free = " "FIXME for inode
     key = "system.vfs"
 
-    DEFAULT_CONFIG = {
-        "vfs_percent_free": str(10),
-        "vfs_inode_percent_free": str(10)}
+    # key: (macro, value)
+    plugin_macros = {
+        "vfs_percent_free": [("macro", "{$VFS_PERCENT_FREE}"), ("value", 10)],
+        "vfs_inode_percent_free": [("macro", "{$VFS_INODE_PERCENT_FREE}"), ("value", 10)]
+    }
 
     ExcludeFsTypes = [
         "none", "unknown", "rootfs", "iso9660", "squashfs", "udf", "romfs", "ramfs", "debugfs", "cgroup", "cgroup_root",
@@ -53,6 +55,15 @@ class DiskSizes(Plugin):
                          100 - (float(vfs.f_files - vfs.f_ffree) * 100 / vfs.f_files))
 
             zbx.send("system.vfs.discovery[]", zbx.json({"data": points}))
+
+    def macros(self, template, dashboard=False):
+        result = ""
+        for macro in self.plugin_macros.keys():
+            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
+        if not dashboard:
+            return result
+        else:
+            return []
 
     def discovery_rules(self, template, dashboard=False):
 
@@ -140,7 +151,7 @@ class DiskSizes(Plugin):
                         "{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
                 "expression": "{#TEMPLATE:system.vfs."
                               "percent_free[{#MOUNTPOINT}].last"
-                              "()}&lt;" + self.plugin_config("vfs_percent_free")
+                              "()}&lt;" + self.plugin_macros["vfs_percent_free"][0][1]
             },
         ]
 
@@ -150,7 +161,7 @@ class DiskSizes(Plugin):
                     "name": "System: free inode space less than 10% on mountpoint "
                             "{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
                     "expression": "{#TEMPLATE:system.vfs.percent_inode_free[{#MOUNTPOINT}].last"
-                                  "()}&lt;" + self.plugin_config("vfs_inode_percent_free")
+                                  "()}&lt;" + self.plugin_macros["vfs_inode_percent_free"][0][1]
                 }
             )
 

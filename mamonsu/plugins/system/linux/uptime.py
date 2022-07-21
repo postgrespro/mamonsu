@@ -4,7 +4,10 @@ from mamonsu.plugins.system.plugin import SystemPlugin as Plugin
 class SystemUptime(Plugin):
     AgentPluginType = "sys"
 
-    DEFAULT_CONFIG = {"uptime": str(60 * 5)}
+    # key: (macro, value)
+    plugin_macros = {
+        "system_uptime": [("macro", "{$SYSTEM_UPTIME}"), ("value", 60 * 5)]
+    }
     query_agent = "cat /proc/uptime | awk '{ print int($1) }'"
     key = "system.uptime{0}"
 
@@ -24,11 +27,20 @@ class SystemUptime(Plugin):
         else:
             return []
 
+    def macros(self, template, dashboard=False):
+        result = ""
+        for macro in self.plugin_macros.keys():
+            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
+        if not dashboard:
+            return result
+        else:
+            return []
+
     def triggers(self, template, dashboard=False):
         return template.trigger(
             {
-                "name": "System: {HOSTNAME} was restarted (uptime={ITEM.LASTVALUE})",
-                "expression": "{#TEMPLATE:" + self.right_type(self.key) + ".last()}&lt;" + self.plugin_config("uptime")
+                "name": "System: {HOSTNAME} was restarted (start time={ITEM.LASTVALUE})",
+                "expression": "{#TEMPLATE:" + self.right_type(self.key) + ".last()}&lt;" + self.plugin_macros["system_uptime"][0][1]
             }
         )
 
