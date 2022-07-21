@@ -112,12 +112,12 @@ class Replication(Plugin):
 
     def triggers(self, template, dashboard=False):
         triggers = template.trigger({
-            "name": "PostgreSQL streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})",
+            "name": "PostgreSQL Replication: streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})",
             "expression": "{#TEMPLATE:" + self.right_type(self.key_replication,
                                                           "sec") + ".last()}&gt;" + self.plugin_config(
                 "lag_more_than_in_sec")
         }) + template.trigger({
-            "name": "PostgreSQL number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})",
+            "name": "PostgreSQL Replication: number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})",
             "expression": "{#TEMPLATE:" + self.right_type(self.key_non_active_slots) + ".last()}&gt;" + str(
                 NUMBER_NON_ACTIVE_SLOTS)
         })
