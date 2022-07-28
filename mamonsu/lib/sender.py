@@ -41,7 +41,10 @@ class Sender:
                     last_value, last_time = self._last_values[hash_key]
                     self._last_values[hash_key] = (value, clock)
                     if delta == Plugin.DELTA.speed_per_second:
-                        value = float(value - last_value) / (clock - last_time)
+                        if last_time == clock:
+                            pass
+                        else:
+                            value = float(value - last_value) / (clock - last_time)
                     if delta == Plugin.DELTA.simple_change:
                         value = float(value - last_value)
                 else:
