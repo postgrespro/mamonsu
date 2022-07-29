@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.0
+Version:        3.5.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown -R mamonsu.mamonsu /var/log/mamonsu
 chown -R mamonsu.mamonsu /etc/mamonsu
 
 %changelog
+* Fri Jul 29 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.1-1
+  - fixed delta speed metrics evaluation;
+
 * Wed Jul 6 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.0-1
   - divided Instance Rate graph into two graphs - Blocks Rate, Transactions Rate;
   - divided XLOG plugin into two plugins - WAL, Replication;
