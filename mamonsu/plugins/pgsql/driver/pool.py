@@ -47,25 +47,6 @@ class Pool(object):
             SELECT mamonsu.count_autovacuum();
             """
         ),
-        "autovacuum_utilization": (
-            """
-            WITH count_tb AS (
-                    SELECT count(*)::float AS count
-                    FROM pg_catalog.pg_stat_activity
-                    WHERE {0}
-                    ),
-            settings_tb AS (
-                    SELECT setting::float
-                    FROM pg_catalog.pg_settings
-                    WHERE name = 'autovacuum_max_workers'
-            )
-            SELECT count_tb.count*100/settings_tb.setting
-            FROM count_tb, settings_tb;
-            """,
-            """
-            SELECT mamonsu.autovacuum_utilization();
-            """
-        ),
         "buffer_cache": (
             """
             SELECT sum(1) * (current_setting('block_size')::int8) AS size,

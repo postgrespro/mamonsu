@@ -8,10 +8,9 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 class PgHealth(Plugin):
     AgentPluginType = "pg"
-    # key: (macro, value)
-    plugin_macros = {
-        "pg_uptime": [("macro", "{$PG_UPTIME}"), ("value", 60 * 10)],
-        "cache_hit_ratio_percent": [("macro", "{$CACHE_HIT_RATIO_PERCENT}"), ("value", 80)]
+    DEFAULT_CONFIG = {
+        "uptime": str(60 * 10),
+        "cache": str(80)
     }
     query_health = """
     SELECT 1 AS health;
@@ -94,22 +93,15 @@ class PgHealth(Plugin):
                                   "position": 3}
                 }]
 
-    def macros(self, template, dashboard=False):
-        result = ""
-        for macro in self.plugin_macros.keys():
-            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
-        if not dashboard:
-            return result
-        else:
-            return []
-
     def triggers(self, template, dashboard=False):
         result = template.trigger({
             "name": "PostgreSQL Health: service has been restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".change()}&gt;" + self.plugin_macros["pg_uptime"][0][1]
+            "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".change()}&gt;" + str(
+                self.plugin_config("uptime"))
         }) + template.trigger({
             "name": "PostgreSQL Health: cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_cache, "hit") + ".last()}&lt;" + self.plugin_macros["cache_hit_ratio_percent"][0][1]
+            "expression": "{#TEMPLATE:" + self.right_type(self.key_cache, "hit") + ".last()}&lt;" + str(
+                self.plugin_config("cache"))
         }) + template.trigger({
             "name": "PostgreSQL Health: no ping from PostgreSQL for 3 minutes on {HOSTNAME}",
             "expression": "{#TEMPLATE:" + self.right_type(self.key_ping) + ".nodata(180)}=1"

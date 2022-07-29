@@ -12,11 +12,9 @@ class DiskSizes(Plugin):
     # tmp_query_agent_percent_inode_free = " "FIXME for inode
     key = "system.vfs"
 
-    # key: (macro, value)
-    plugin_macros = {
-        "vfs_percent_free": [("macro", "{$VFS_PERCENT_FREE}"), ("value", 10)],
-        "vfs_inode_percent_free": [("macro", "{$VFS_INODE_PERCENT_FREE}"), ("value", 10)]
-    }
+    DEFAULT_CONFIG = {
+        "vfs_percent_free": str(10),
+        "vfs_inode_percent_free": str(10)}
 
     ExcludeFsTypes = [
         "none", "unknown", "rootfs", "iso9660", "squashfs", "udf", "romfs", "ramfs", "debugfs", "cgroup", "cgroup_root",
@@ -56,15 +54,6 @@ class DiskSizes(Plugin):
 
             zbx.send("system.vfs.discovery[]", zbx.json({"data": points}))
 
-    def macros(self, template, dashboard=False):
-        result = ""
-        for macro in self.plugin_macros.keys():
-            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
-        if not dashboard:
-            return result
-        else:
-            return []
-
     def discovery_rules(self, template, dashboard=False):
 
         if Plugin.Type == "mamonsu":
@@ -72,7 +61,7 @@ class DiskSizes(Plugin):
         else:
             key_discovery = "system.vfs.discovery"
         rule = {
-            "name": "System: VFS Discovery",
+            "name": "VFS Discovery",
             "key": key_discovery
         }
         if Plugin.old_zabbix:
@@ -147,21 +136,21 @@ class DiskSizes(Plugin):
 
         triggers = [
             {
-                "name": "System: free disk space less than 10% on mountpoint "
+                "name": "Free disk space less than 10% on mountpoint "
                         "{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
                 "expression": "{#TEMPLATE:system.vfs."
                               "percent_free[{#MOUNTPOINT}].last"
-                              "()}&lt;" + self.plugin_macros["vfs_percent_free"][0][1]
+                              "()}&lt;" + self.plugin_config("vfs_percent_free")
             },
         ]
 
         if Plugin.Type == "mamonsu":
             triggers.append(
                 {
-                    "name": "System: free inode space less than 10% on mountpoint "
+                    "name": "Free inode space less than 10% on mountpoint "
                             "{#MOUNTPOINT} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
                     "expression": "{#TEMPLATE:system.vfs.percent_inode_free[{#MOUNTPOINT}].last"
-                                  "()}&lt;" + self.plugin_macros["vfs_inode_percent_free"][0][1]
+                                  "()}&lt;" + self.plugin_config("vfs_inode_percent_free")
                 }
             )
 

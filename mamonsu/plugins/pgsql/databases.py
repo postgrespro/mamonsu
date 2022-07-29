@@ -4,7 +4,6 @@ from distutils.version import LooseVersion
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
-from mamonsu.plugins.pgsql.autovacuum import Autovacuum
 
 
 class Databases(Plugin):
@@ -51,6 +50,7 @@ class Databases(Plugin):
     key_db_size = "pgsql.database.size{0}"
     key_db_age = "pgsql.database.max_age{0}"
     key_db_bloating_tables = "pgsql.database.bloating_tables{0}"
+    key_autovacumm = "pgsql.autovacumm.count{0}"
     key_invalid_indexes = "pgsql.database.invalid_indexes{0}"
 
     DEFAULT_CONFIG = {
@@ -81,6 +81,42 @@ class Databases(Plugin):
         zbx.send("pgsql.database.discovery[]", zbx.json({"data": dbs}))
         del dbs, bloat_count, invalid_indexes_count
 
+        if Pooler.server_version_greater("10.0"):
+            result = Pooler.run_sql_type("count_autovacuum", args=["backend_type = 'autovacuum worker'"])
+        else:
+            result = Pooler.run_sql_type("count_autovacuum", args=[
+                "query LIKE '%%autovacuum%%' AND state <> 'idle' AND pid <> pg_catalog.pg_backend_pid()"])
+        zbx.send("pgsql.autovacumm.count[]", int(result[0][0]))
+
+    def items(self, template, dashboard=False):
+        if not dashboard:
+            return template.item({
+                "name": "PostgreSQL Autovacuum: Count of Autovacuum Workers",
+                "key": self.right_type(self.key_autovacumm),
+                "delay": self.plugin_config("interval")
+            })
+        else:
+            return []
+
+    def graphs(self, template, dashboard=False):
+        result = template.graph({
+            "name": "PostgreSQL Autovacuum: Count of Autovacuum Workers",
+            "items": [{
+                "key": self.right_type(self.key_autovacumm),
+                "color": "87C2B9",
+                "drawtype": 2
+            }]
+        })
+        if not dashboard:
+            return result
+        else:
+            return [{
+                "dashboard": {"name": "PostgreSQL Autovacuum: Count of Autovacuum Workers",
+                              "page": ZbxTemplate.dashboard_page_overview["name"],
+                              "size": ZbxTemplate.dashboard_widget_size_medium,
+                              "position": 5}
+            }]
+
     def discovery_rules(self, template, dashboard=False):
         rule = {
             "name": "PostgreSQL Databases Discovery",
@@ -101,7 +137,7 @@ class Databases(Plugin):
             }]
         items = [
             {"key": self.right_type(self.key_db_size, var_discovery="{#DATABASE},"),
-             "name": "PostgreSQL Databases: {#DATABASE} size",
+             "name": "PostgreSQL Databases {#DATABASE}: size",
              "units": Plugin.UNITS.bytes,
              "value_type": Plugin.VALUE_TYPE.numeric_unsigned,
              "delay": self.plugin_config("interval")},
@@ -130,7 +166,7 @@ class Databases(Plugin):
                      "key": self.right_type(self.key_db_bloating_tables, var_discovery="{#DATABASE},"),
                      "drawtype": 2},
                     {"color": "793F5D",
-                     "key": self.right_type(Autovacuum.key_count),
+                     "key": self.right_type(self.key_autovacumm),
                      "yaxisside": 1,
                      "drawtype": 2}]
             },
@@ -141,7 +177,7 @@ class Databases(Plugin):
                      "key": self.right_type(self.key_db_age, var_discovery="{#DATABASE},"),
                      "drawtype": 2},
                     {"color": "793F5D",
-                     "key": self.right_type(Autovacuum.key_count),
+                     "key": self.right_type(self.key_autovacumm),
                      "yaxisside": 1,
                      "drawtype": 2}]
             }]
@@ -161,4 +197,12 @@ class Databases(Plugin):
                                                               self.plugin_config("min_rows"))),
                   "{0},$3 $2 -d \"$1\" -c \"{1}\"".format(self.key_invalid_indexes.format("[*]"),
                                                           self.query_invalid_indexes)]
+        if LooseVersion(self.VersionPG) >= LooseVersion("10"):
+            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_autovacumm.format("[*]"),
+                                                        Pooler.SQL["count_autovacuum"][0].format(
+                                                            "backend_type = 'autovacuum worker'")))
+        else:
+            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_autovacumm.format("[*]"),
+                                                        Pooler.SQL["count_autovacuum"][0].format(
+                                                            "query LIKE '%%autovacuum%%' AND state <> 'idle' AND pid <> pg_catalog.pg_backend_pid()")))
         return template_zabbix.key_and_query(result)

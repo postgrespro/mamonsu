@@ -8,9 +8,9 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 
 class Connections(Plugin):
     AgentPluginType = "pg"
-    # key: (macro, value)
-    plugin_macros = {
-        "connections_percent": [("macro", "{$CONNECTIONS_PERCENT}"), ("value", 90)]
+    # (state, key, name, graph)
+    DEFAULT_CONFIG = {
+        "percent_connections_tr": str(90)
     }
     # (state, key, name, graph item color)
     Items = [
@@ -217,23 +217,14 @@ class Connections(Plugin):
                               "position": 1}
             }]
 
-    def macros(self, template, dashboard=False):
-        result = ""
-        for macro in self.plugin_macros.keys():
-            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
-        if not dashboard:
-            return result
-        else:
-            return []
-
     def triggers(self, template, dashboard=False):
         return template.trigger({
-            "name": "PostgreSQL Connections: too many connections on {HOSTNAME} (total connections more than " +
-                    self.plugin_macros["connections_percent"][0][1] + "% of max_connections)",
+            "name": "PostgreSQL Connections: too many connections on {HOSTNAME} (total connections more than " + self.plugin_config(
+                "percent_connections_tr") + "% of max_connections)",
             "expression": " {#TEMPLATE:" + self.right_type(self.key,
                                                            "total") + ".last()}/{#TEMPLATE:" + self.right_type(self.key,
-                                                                                                               "max_connections") + ".last()}*100 >" +
-                          self.plugin_macros["connections_percent"][0][1]
+                                                                                                               "max_connections") + ".last()}*100 >" + self.plugin_config(
+                "percent_connections_tr")
         })
 
     def keys_and_queries(self, template_zabbix):

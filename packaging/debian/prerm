@@ -16,20 +16,10 @@ case "$1" in
         rm -fr /var/log/mamonsu
         rm -fr /var/run/mamonsu
         rm -fr /var/lib/mamonsu
+        rm -f /etc/mamonsu/agent.conf
+        rm -rf /etc/mamonsu/plugins
 	;;
     *)
         echo "prerm called with unknown argument \`$1'" >&2
         exit 1
 esac
-
-#DEBHELPER#
-
-case "$1" in
-remove)
-        type systemctl > /dev/null 2>&1  && rm /etc/init.d/mamonsu || :
-        type systemctl > /dev/null 2>&1  && systemctl daemon-reload || :
-        ;;
-*)
-;;
-esac
-

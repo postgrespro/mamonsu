@@ -148,9 +148,6 @@ class Plugin(object):
     def graphs(self, template, dashboard=False):
         return None
 
-    def macros(self, template, dashboard=False):
-        return None
-
     def triggers(self, template, dashboard=False):
         return None
 

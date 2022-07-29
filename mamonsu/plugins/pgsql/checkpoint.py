@@ -19,9 +19,8 @@ class Checkpoint(Plugin):
     """  # for mamonsu and agent checkpoints in hour
     key = "pgsql.checkpoint{0}"
 
-    # key: (macro, value)
-    plugin_macros = {
-        "max_checkpoint_by_wal_in_hour": [("macro", "{$MAX_CHECKPOINT_BY_WAL_IN_HOUR}"), ("value", 12)]
+    DEFAULT_CONFIG = {
+        "max_checkpoint_by_wal_in_hour": str(12)
     }
 
     Items = [
@@ -120,20 +119,12 @@ class Checkpoint(Plugin):
                                   "position": 10}
                 }]
 
-    def macros(self, template, dashboard=False):
-        result = ""
-        for macro in self.plugin_macros.keys():
-            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
-        if not dashboard:
-            return result
-        else:
-            return []
-
     def triggers(self, template, dashboard=False):
         return template.trigger({
             "name": "PostgreSQL Checkpoints: required checkpoints occurs too frequently on {HOSTNAME}",
             "expression": "{#TEMPLATE:" + self.right_type(self.key,
-                                                          self.Items[1][1]) + ".last()}&gt;" + self.plugin_macros["max_checkpoint_by_wal_in_hour"][0][1]
+                                                          self.Items[1][1]) + ".last()}&gt;" + self.plugin_config(
+                "max_checkpoint_by_wal_in_hour")
         })
 
     def keys_and_queries(self, template_zabbix):

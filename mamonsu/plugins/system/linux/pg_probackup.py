@@ -107,7 +107,7 @@ class PgProbackup(Plugin):
 
     def discovery_rules(self, template, dashboard=False):
         rule = {
-            "name": "pg_probackup Discovery",
+            "name": "pg_probackup discovery",
             "key": self.key_main.format("[{0}]".format(self.Macros[self.Type])),
         }
         if Plugin.old_zabbix:
@@ -129,21 +129,21 @@ class PgProbackup(Plugin):
         items = [
             {
                 "key": self.right_type(self.key_dir_size, var_discovery="{#BACKUPDIR},"),
-                "name": "pg_probackup dir {#BACKUPDIR}: Size",
+                "name": "pg_probackup dir {#BACKUPDIR}: size",
                 "units": Plugin.UNITS.bytes,
                 "value_type": Plugin.VALUE_TYPE.numeric_unsigned,
                 "delay": self.plugin_config("interval")
             },
             {
                 "key": self.right_type(self.key_dir_error, var_discovery="{#BACKUPDIR},"),
-                "name": "pg_probackup dir {#BACKUPDIR}: Error",
+                "name": "pg_probackup dir {#BACKUPDIR}: error",
                 "value_type": Plugin.VALUE_TYPE.text,
                 "delay": self.plugin_config("interval")
             },
         ]
         graphs = [
             {
-                "name": "pg_probackup Backup dir: {#BACKUPDIR} Size",
+                "name": "pg_probackup backup dir: {#BACKUPDIR} size",
                 "type": 1,
                 "items": [
                     {
@@ -156,7 +156,7 @@ class PgProbackup(Plugin):
         ]
         triggers = [
             {
-                "name": "pg_probackup: error in dir {#BACKUPDIR} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
+                "name": "Error in pg_probackup dir {#BACKUPDIR} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
                 "expression": "{#TEMPLATE:pg_probackup.dir.error[{#BACKUPDIR}].str(ok)}&lt;&gt;1"
             }
         ]

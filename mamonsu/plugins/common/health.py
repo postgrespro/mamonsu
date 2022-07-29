@@ -9,9 +9,8 @@ class Health(Plugin):
 
     AgentPluginType = "sys"
 
-    # key: (macro, value)
-    plugin_macros = {
-        "mamonsu_max_memory_usage": [("macro", "{$MAMONSU_MAX_MEMORY_USAGE}"), ("value", 40 * 1024 * 1024)]
+    DEFAULT_CONFIG = {
+        "max_memory_usage": str(40 * 1024 * 1024)
     }
 
     counter = 0
@@ -53,32 +52,24 @@ class Health(Plugin):
         else:
             return []
 
-    def macros(self, template, dashboard=False):
-        result = ""
-        for macro in self.plugin_macros.keys():
-            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
-        if not dashboard:
-            return result
-        else:
-            return []
-
     def triggers(self, template, dashboard=False):
         if self.Type == "mamonsu":
             result = template.trigger({
-                "name": "Mamonsu health: plugin errors on {HOSTNAME}. {ITEM.LASTVALUE}",
+                "name": "Mamonsu plugin errors on {HOSTNAME}. {ITEM.LASTVALUE}",
                 "expression": "{#TEMPLATE:mamonsu.plugin.errors[].strlen()}&gt;1"
             }) + template.trigger({
-                "name": "Mamonsu health: nodata from {HOSTNAME}",
+                "name": "Mamonsu nodata from {HOSTNAME}",
                 "expression": "{#TEMPLATE:" + self.right_type("mamonsu.plugin.keepalive{0}") + ".nodata(180)}=1"
             })
             if platform.LINUX:
                 result += template.trigger({
-                    "name": "Mamonsu health: agent memory usage alert on {HOSTNAME}: {ITEM.LASTVALUE} bytes",
-                    "expression": "{#TEMPLATE:mamonsu.memory.rss[max].last()}&gt;" + self.plugin_macros["mamonsu_max_memory_usage"][0][1]
+                    "name": "Mamonsu agent memory usage alert on {HOSTNAME}: {ITEM.LASTVALUE} bytes",
+                    "expression": "{#TEMPLATE:mamonsu.memory.rss[max].last()}&gt;" + self.plugin_config(
+                        "max_memory_usage")
                 })
         else:
             result = template.trigger({
-                "name": "Mamonsu health: nodata from {HOSTNAME}",
+                "name": "Mamonsu nodata from {HOSTNAME}",
                 "expression": "{#TEMPLATE:" + self.right_type("mamonsu.plugin.keepalive{0}") + ".nodata(180)}=1"
             })
         return result

@@ -9,12 +9,10 @@ import re
 
 class ArchiveCommand(Plugin):
     AgentPluginType = "pg"
-    Interval = 60
-
-    # key: (macro, value)
-    plugin_macros = {
-        "archive_queue_files": [("macro", "{$ARCHIVE_QUEUE_FILES}"), ("value", 2)]
+    DEFAULT_CONFIG = {
+        "max_count_files": str(2)
     }
+    Interval = 60
 
     # if streaming replication is on, archive queue length and size will always be 0 for replicas
     query_agent_count_files = """
@@ -179,20 +177,12 @@ class ArchiveCommand(Plugin):
                               "position": 1}
             }]
 
-    def macros(self, template, dashboard=False):
-        result = ""
-        for macro in self.plugin_macros.keys():
-            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
-        if not dashboard:
-            return result
-        else:
-            return []
-
     def triggers(self, template, dashboard=False):
         return template.trigger({
             "name": "PostgreSQL Archiver: count files need to archive on {HOSTNAME} more than 2",
             "expression": "{#TEMPLATE:" + self.right_type(self.key,
-                                                          self.Items[0][0]) + ".last()}&gt;" + self.plugin_macros["archive_queue_files"][0][1]
+                                                          self.Items[0][0]) + ".last()}&gt;" + self.plugin_config(
+                "max_count_files")
         })
 
     def keys_and_queries(self, template_zabbix):

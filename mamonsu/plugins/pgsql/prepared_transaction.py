@@ -30,9 +30,8 @@ class PreparedTransaction(Plugin):
     FROM mamonsu.prepared_transaction();
     """
 
-    # key: (macro, value)
-    plugin_macros = {
-        "max_prepared_transaction_time": [("macro", "{$MAX_PREPARED_TRANSACTION_TIME}"), ("value", 5 * 60 * 60)]
+    DEFAULT_CONFIG = {
+        "max_prepared_transaction_time": str(5 * 60 * 60)
     }
 
     def run(self, zbx):
@@ -93,19 +92,10 @@ class PreparedTransaction(Plugin):
         else:
             return []
 
-    def macros(self, template, dashboard=False):
-        result = ""
-        for macro in self.plugin_macros.keys():
-            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
-        if not dashboard:
-            return result
-        else:
-            return []
-
     def triggers(self, template, dashboard=False):
         result = template.trigger({
             "name": "PostgreSQL Prepared Transactions: prepared transaction is too old on {HOSTNAME}",
-            "expression": "{#TEMPLATE:" + self.key_prepared["key"] + ".last()}&gt;" +
-                          self.plugin_macros["max_prepared_transaction_time"][0][1]
+            "expression": "{#TEMPLATE:" + self.key_prepared["key"] + ".last()}&gt;" + self.plugin_config(
+                "max_prepared_transaction_time")
         })
         return result

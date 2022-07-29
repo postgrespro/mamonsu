@@ -1,3 +1,6 @@
+mamonsu (3.5.1-1) stable; urgency=low
+  * fixed delta speed metrics evaluation;
+
 mamonsu (3.5.0-1) stable; urgency=low
   * divided Instance Rate graph into two graphs - Blocks Rate, Transactions Rate;
   * divided XLOG plugin into two plugins - WAL, Replication;

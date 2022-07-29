@@ -35,10 +35,9 @@ class Oldest(Plugin):
     WHERE leader_pid is not NULL;
     """
 
-    # key: (macro, value)
-    plugin_macros = {
-        "max_xid_age": [("macro", "{$MAX_XID_AGE}"), ("value", 5000 * 60 * 60)],
-        "max_transaction_time": [("macro", "{$MAX_TRANSACTION_TIME}"), ("value", 5 * 60 * 60)],
+    DEFAULT_CONFIG = {
+        "max_xid_age": str(5000 * 60 * 60),
+        "max_transaction_time": str(5 * 60 * 60)
     }
 
     def run(self, zbx):
@@ -86,25 +85,16 @@ class Oldest(Plugin):
                                   "position": 2}
                 }]
 
-    def macros(self, template, dashboard=False):
-        result = ""
-        for macro in self.plugin_macros.keys():
-            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
-        if not dashboard:
-            return result
-        else:
-            return []
-
     def triggers(self, template, dashboard=False):
         return template.trigger({
             "name": "PostgreSQL Transactions: the oldest XID is too big on {HOSTNAME}",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key, "xid_age") + ".last()}&gt;" +
-                          self.plugin_macros["max_xid_age"][0][1]
+            "expression": "{#TEMPLATE:" + self.right_type(self.key, "xid_age") + ".last()}&gt;" + self.plugin_config(
+                "max_xid_age")
         }) + template.trigger({
             "name": "PostgreSQL Transactions: running transaction is too old on {HOSTNAME}",
             "expression": "{#TEMPLATE:" + self.right_type(self.key,
-                                                          "transaction_time") + ".last()}&gt;" +
-                          self.plugin_macros["max_transaction_time"][0][1]
+                                                          "transaction_time") + ".last()}&gt;" + self.plugin_config(
+                "max_transaction_time")
         })
 
     def keys_and_queries(self, template_zabbix):

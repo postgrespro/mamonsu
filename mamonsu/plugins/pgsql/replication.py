@@ -10,9 +10,8 @@ NUMBER_NON_ACTIVE_SLOTS = 0
 
 class Replication(Plugin):
     AgentPluginType = "pg"
-    # key: (macro, value)
-    plugin_macros = {
-        "critical_lag_seconds": [("macro", "{$CRITICAL_LAG_SECONDS}"), ("value", 60 * 5)]
+    DEFAULT_CONFIG = {
+        "lag_more_than_in_sec": str(60 * 5)
     }
 
     # get time of replication lag
@@ -90,6 +89,7 @@ class Replication(Plugin):
         """)
         zbx.send(self.key_non_active_slots.format("[]"), int(non_active_slots[0][0]))
 
+
     def items(self, template, dashboard=False):
         result = ""
         if self.Type == "mamonsu":
@@ -110,23 +110,14 @@ class Replication(Plugin):
         else:
             return []
 
-    def macros(self, template, dashboard=False):
-        result = ""
-        for macro in self.plugin_macros.keys():
-            result += template.mamonsu_macro(defaults=self.plugin_macros[macro])
-        if not dashboard:
-            return result
-        else:
-            return []
-
     def triggers(self, template, dashboard=False):
         triggers = template.trigger({
-            "name": "PostgreSQL Replication: streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})",
+            "name": "PostgreSQL streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})",
             "expression": "{#TEMPLATE:" + self.right_type(self.key_replication,
-                                                          "sec") + ".last()}&gt;" +
-                          self.plugin_macros["critical_lag_seconds"][0][1]
+                                                          "sec") + ".last()}&gt;" + self.plugin_config(
+                "lag_more_than_in_sec")
         }) + template.trigger({
-            "name": "PostgreSQL Replication: number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})",
+            "name": "PostgreSQL number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})",
             "expression": "{#TEMPLATE:" + self.right_type(self.key_non_active_slots) + ".last()}&gt;" + str(
                 NUMBER_NON_ACTIVE_SLOTS)
         })
