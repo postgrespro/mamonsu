@@ -115,7 +115,7 @@ class Statements(Plugin):
         extension_schema = self.extension_schema(extension=extension)
 
         # TODO: add 13 and 14 items when pgpro_stats added new WAL metrics
-        all_items = self.Items
+        all_items = self.Items.copy()
         if Pooler.server_version_greater("14"):
             self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
             if not Pooler.is_pgpro() or not Pooler.is_pgpro_ee():
@@ -205,7 +205,7 @@ class Statements(Plugin):
             extension_schema = self.extension_schema(extension=extension)
 
             result = []
-            all_items = self.Items
+            all_items = self.Items.copy()
             if LooseVersion(self.VersionPG) < LooseVersion("13"):
                 self.Items[5][1] = self.Items[5][1].format("total_time")
             else:
