@@ -185,7 +185,7 @@ CREATE OR REPLACE FUNCTION mamonsu.count_{3}_lag_lsn()
 RETURNS TABLE(application_name TEXT, {8} total_lag INTEGER) AS $$
 SELECT application_name,
        {6} 
-       (pg_{7}_diff(pg_current_{7}(), replay_{9}))::int AS total_lag
+       coalesce((pg_{7}_diff(pg_current_{7}(), replay_{9}))::int, 0) AS total_lag
 FROM pg_stat_replication
 $$ LANGUAGE SQL SECURITY DEFINER;
 """

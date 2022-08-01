@@ -51,11 +51,11 @@ class Replication(Plugin):
             Pooler.run_sql_type("replication_lag_master_query")
             if Pooler.server_version_greater("10.0") and (Pooler.is_superuser() or Pooler.is_bootstraped()):
                 result_lags = Pooler.run_sql_type("wal_lag_lsn",
-                                                  args=[" (pg_wal_lsn_diff(pg_current_wal_lsn(), sent_lsn))::int AS send_lag, "
-                                                        "(pg_wal_lsn_diff(sent_lsn, flush_lsn))::int AS receive_lag, "
-                                                        "(pg_wal_lsn_diff(sent_lsn, write_lsn))::int AS write_lag, "
-                                                        "(pg_wal_lsn_diff(write_lsn, flush_lsn))::int AS flush_lag, "
-                                                        "(pg_wal_lsn_diff(flush_lsn, replay_lsn))::int AS replay_lag, " if not Pooler.is_bootstraped() else
+                                                  args=[" coalesce((pg_wal_lsn_diff(pg_current_wal_lsn(), sent_lsn))::int, 0) AS send_lag, "
+                                                        "coalesce((pg_wal_lsn_diff(sent_lsn, flush_lsn))::int, 0) AS receive_lag, "
+                                                        "coalesce((pg_wal_lsn_diff(sent_lsn, write_lsn))::int, 0) AS write_lag, "
+                                                        "coalesce((pg_wal_lsn_diff(write_lsn, flush_lsn))::int, 0) AS flush_lag, "
+                                                        "coalesce((pg_wal_lsn_diff(flush_lsn, replay_lsn))::int, 0) AS replay_lag, " if not Pooler.is_bootstraped() else
                                                         " send_lag, receive_lag, write_lag, flush_lag, replay_lag, ",
                                                         "wal", "lsn"])
                 if result_lags:
