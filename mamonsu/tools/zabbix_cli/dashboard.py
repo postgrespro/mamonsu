@@ -32,11 +32,7 @@ def generate_dashboard(template, uuid):
          <uuid>{42}</uuid>
          <template>{1}</template>
          <name>{1}</name>
-         <groups>
-            <group>
-               <name>Templates</name>
-            </group>
-         </groups>
+         <groups></groups>
          <dashboards>
             <dashboard>
                <uuid>{42}</uuid>
