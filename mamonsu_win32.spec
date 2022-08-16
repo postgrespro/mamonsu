@@ -9,6 +9,7 @@ a = Analysis(['mamonsu_win32.py'],
              datas=[],
              hiddenimports=[
                 'mamonsu.plugins.pgsql.archive_command',
+                'mamonsu.plugins.pgsql.autovacuum',
                 'mamonsu.plugins.pgsql.bgwriter',
                 'mamonsu.plugins.pgsql.cfs',
                 'mamonsu.plugins.pgsql.checkpoint',
