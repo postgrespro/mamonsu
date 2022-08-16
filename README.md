@@ -152,10 +152,6 @@ $ git clone ... && cd mamonsu && make deb && dpkg -i mamonsu*.deb
 $ yum install make rpm-build python3-devel python3-setuptools
 $ git clone ... && cd mamonsu && make rpm && rpm -i mamonsu*.rpm
 ```  
-**Build repository, *./packaging/repo/gnupg* and *./packaging/repo/rpmmacros* must be provided by caller:**  
-```shell
-$ make -j2 build/all && make -j1 repo/all
-```
 **Build win32 exe:**  
 ```shell
 $ git clone ... && cd mamonsu && py setup_win32.py py2exe
