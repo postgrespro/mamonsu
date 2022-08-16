@@ -169,7 +169,7 @@ $ pyinstaller --onefile service_win32.spec
 **Build NSIS installer:**  
 ```shell
 $ git clone ... && cd mamonsu && py setup_win32.py py2exe
-$ makensis packaging/win/mamonsu.nsis
+$ makensis packaging\win\mamonsu.nsis
 ```
 
 ## Installation
