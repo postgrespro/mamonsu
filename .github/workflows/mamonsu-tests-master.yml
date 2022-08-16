@@ -8,6 +8,7 @@ on:
       - 'README.md'
       - 'documentation/**'
       - 'examples/**'
+      - 'packaging/conf/**'
   pull_request:
     branches:
       - master
