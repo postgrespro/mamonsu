@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.1
+Version:        3.5.2
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,13 @@ chown -R mamonsu.mamonsu /var/log/mamonsu
 chown -R mamonsu.mamonsu /etc/mamonsu
 
 %changelog
+* Tue Aug 16 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.2-1
+  - fixed Statements plugin list of metrics creation;
+  - fixed Zabbix API requests to fit new Dashboard Template section rules;
+  - fixed Replication plugin metrics - null values are now taken into account;
+  - added new autovacuum utilization metrics: instant and average per 5, 15 and 30 minutes;
+  - moved plugin custom parameters to Zabbix Macros;
+
 * Fri Jul 29 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.1-1
   - fixed delta speed metrics evaluation;
 

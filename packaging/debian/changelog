@@ -1,3 +1,10 @@
+mamonsu (3.5.2-1) stable; urgency=low
+  * fixed Statements plugin list of metrics creation;
+  * fixed Zabbix API requests to fit new Dashboard Template section rules;
+  * fixed Replication plugin metrics - null values are now taken into account;
+  * added new autovacuum utilization metrics: instant and average per 5, 15 and 30 minutes;
+  * moved plugin custom parameters to Zabbix Macros;
+
 mamonsu (3.5.1-1) stable; urgency=low
   * fixed delta speed metrics evaluation;
 
