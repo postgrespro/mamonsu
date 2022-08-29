@@ -181,12 +181,6 @@ A pre-built _mamonsu_ packages is provided in official Postgres Pro repository: 
 $ wget https://repo.postgrespro.ru/mamonsu/keys/pgpro-repo-add.sh
 $ sudo chmod 700 ./pgpro-repo-add.sh
 $ sudo ./pgpro-repo-add.sh
-# for Debian, Ubuntu, Astra:
-$ apt-get install mamonsu
-# for RPM-based distros such as Centos, RHEL:
-$ yum install mamonsu
-# for SLES:
-$ zypper install mamonsu
 ```   
 
 Install package   
@@ -198,7 +192,7 @@ Install package
   ```shell
   $ zypper install mamonsu
   ```  
-- for AltLinux, AltlLinux-spt:
+- for Debian, Ubuntu, AltLinux, AltlLinux-spt:
   ```shell
   $ apt-get update
   $ apt-get install mamonsu
