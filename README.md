@@ -176,18 +176,19 @@ $ makensis packaging\win\mamonsu.nsis
 To use _mamonsu_, you must create a Zabbix account and set up a Zabbix server as explained in [Zabbix documentation](https://www.zabbix.com/documentation/current/). Naturally, you must also have a PostgreSQL instance up and running if you are going to monitor PostgreSQL metrics.  
 A pre-built _mamonsu_ packages is provided in official Postgres Pro repository: [repo/mamonsu](https://repo.postgrespro.ru/mamonsu/)  
 
-**For Debian, Ubuntu, Astra:**  
+**Install from repository using script:**  
 ```shell
-$ wget  https://repo.postgrespro.ru/mamonsu/keys/pgpro-repo-add.sh
-$ sudo chmod 700 ./apt-repo-add.sh
-$ sudo ./apt-repo-add.sh
+$ wget https://repo.postgrespro.ru/mamonsu/keys/pgpro-repo-add.sh
+$ sudo chmod 700 ./pgpro-repo-add.sh
+$ sudo ./pgpro-repo-add.sh
+# for Debian, Ubuntu, Astra:
 $ apt-get install mamonsu
+# for RPM-based distros such as Centos, RHEL:
+$ yum install mamonsu
+# for SLES:
+$ zypper install mamonsu
 ```   
-**For RPM-based distros such as Centos, RHEL, Oraclelinux, SLES, AltLinux, AltLinux-spt:**  
-Install rpm from repository adding name of the specific distro such as:
-```shell
-$ rpm -i https://repo.postgrespro.ru/mamonsu/keys/pgpro-repo-add.sh
-```
+
 Install package   
 - for RH-like:  
   ```shell
