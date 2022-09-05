@@ -131,8 +131,7 @@ class Statements(Plugin):
             columns = [x[1] for x in all_items]
         elif Pooler.server_version_greater("13"):
             self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
-            if not Pooler.is_pgpro() or not Pooler.is_pgpro_ee():
-                all_items += self.Items_pg_13
+            all_items += self.Items_pg_13
             columns = [x[1] for x in all_items]
         else:
             self.Items[5][1] = self.Items[5][1].format("total_time")

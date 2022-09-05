@@ -237,12 +237,13 @@ def run_deploy():
             if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
                 bootstrap_extension_queries = fill_query_params(CreateWaitSamplingFunctionsSQL)
                 Pooler.query(bootstrap_extension_queries)
-                statements_items = [x[1] for x in Statements.Items]
-                statements_items[5] = statements_items[5].format("total_exec_time+total_plan_time")
-                statements_columns = [x[0][x[0].find("[")+1:x[0].find("]")] for x in Statements.Items]
-                bootstrap_extension_queries = CreateStatementsFunctionsSQL.format(
-                    columns=" bigint, ".join(statements_columns) + " bigint", metrics=(", ".join(statements_items)))
-                Pooler.query(bootstrap_extension_queries)
+                if Pooler.server_version_greater("12"):
+                    statements_items = [x[1] for x in Statements.Items] + ([x[1] for x in Statements.Items_pg_13] if Pooler.server_version_greater("13") else [])
+                    statements_items[5] = statements_items[5].format("total_exec_time+total_plan_time")
+                    statements_columns = [x[0][x[0].find("[")+1:x[0].find("]")] for x in Statements.Items] + ([x[0][x[0].find("[")+1:x[0].find("]")] for x in Statements.Items_pg_13] if Pooler.server_version_greater("13") else [])
+                    bootstrap_extension_queries = CreateStatementsFunctionsSQL.format(
+                        columns=" bigint, ".join(statements_columns) + " bigint", metrics=(", ".join(statements_items)))
+                    Pooler.query(bootstrap_extension_queries)
         except Exception as e:
             sys.stderr.write(
                 "Bootstrap failed to create auxiliary extensions and functions.\n"

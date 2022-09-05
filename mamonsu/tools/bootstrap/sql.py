@@ -292,7 +292,7 @@ BEGIN
                    json_data.value::int AS count
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
-                                   FROM ' || extension_schema || '.pgpro_stats_totals
+                                   FROM ' || extension_schema || '.pgpro_stats_totals()
                                    WHERE object_type = ''cluster''))) setoflocks, 
             jsonb_each(setoflocks.locktuple) AS json_data)
             SELECT
@@ -321,7 +321,7 @@ BEGIN
                    json_data.value::int AS count
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
-                                   FROM ' || extension_schema || '.pgpro_stats_totals
+                                   FROM ' || extension_schema || '.pgpro_stats_totals()
                                    WHERE object_type = ''cluster''))) setoflocks, 
             jsonb_each(setoflocks.locktuple) AS json_data)
             SELECT
@@ -341,7 +341,7 @@ BEGIN
                    json_data.value::int AS count
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
-                                   FROM ' || extension_schema || '.pgpro_stats_totals
+                                   FROM ' || extension_schema || '.pgpro_stats_totals()
                                    WHERE object_type = ''cluster''))) setoflocks, 
             jsonb_each(setoflocks.locktuple) AS json_data
             WHERE setoflocks.key IN (''Lock'', ''LWLock'', ''LWLockTranche'', ''LWLockNamed''))
@@ -415,7 +415,7 @@ BEGIN
                   CREATE OR REPLACE FUNCTION mamonsu.statements_pro()
                   RETURNS TABLE({columns}) AS $$
                       SELECT {metrics}
-                      FROM ' || extension_schema || '.pgpro_stats_totals
+                      FROM ' || extension_schema || '.pgpro_stats_totals()
                       WHERE object_type = ''cluster'';        
                   $$ LANGUAGE SQL SECURITY DEFINER;';
       ELSE
