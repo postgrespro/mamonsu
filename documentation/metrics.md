@@ -1781,6 +1781,122 @@ Default config:
       </tr>
     </table>
 
+- **Autovacuum Utilization (instant)**  
+
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Autovacuum: Utilization per [MAMONSU_INTERVAL] seconds</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.autovacumm.utilization[]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+- **Autovacuum Utilization (average per 5 minutes)**  
+
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Autovacuum: Utilization per 5 minutes</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.autovacumm.utilization.avg5[]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+- **Autovacuum Utilization (average per 15 minutes)**  
+
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Autovacuum: Utilization per 15 minutes</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.autovacumm.utilization.avg15[]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
+- **Autovacuum Utilization (average per 30 minutes)**  
+
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Autovacuum: Utilization per 30 minutes</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.autovacumm.utilization.avg30[]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>9.5+</td>
+      </tr>
+    </table>
+
     *Autovacuum Workers* evaluates as count of `pg_stat_activity.backend_type = 'autovacuum worker'` for PG 10+ and as summa of avtovacuum queries with not idle state for PG 9.6 and lower.
 
 ## Background Writer
