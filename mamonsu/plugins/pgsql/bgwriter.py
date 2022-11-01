@@ -48,7 +48,7 @@ class BgWriter(Plugin):
     ]
 
     graph_name_buffers = "PostgreSQL bgwriter: Buffers"
-    graph_name_ws = "PostgreSQL bgwriter: Events"
+    graph_name_ws = "PostgreSQL bgwriter: Write/Sync"
 
     def run(self, zbx):
         columns = [x[0] for x in self.Items]
