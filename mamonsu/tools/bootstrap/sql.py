@@ -102,8 +102,8 @@ BEGIN
          FROM count_tb, settings_tb
       $$ LANGUAGE SQL SECURITY DEFINER;
    ELSE
-      DROP FUNCTION IF EXISTS mamonsu.count_autovacuum();
-      CREATE OR REPLACE FUNCTION mamonsu.count_autovacuum()
+      DROP FUNCTION IF EXISTS mamonsu.autovacuum_utilization();
+      CREATE OR REPLACE FUNCTION mamonsu.autovacuum_utilization()
       RETURNS FLOAT AS $$
          WITH count_tb AS (
             SELECT count(*)::float AS count
