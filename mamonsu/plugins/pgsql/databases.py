@@ -147,7 +147,7 @@ class Databases(Plugin):
             }]
         triggers = [{
             "name": "PostgreSQL Databases: invalid indexes in {#DATABASE} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:pgsql.database.invalid_indexes[{#DATABASE}].last()}&gt;0"}
+            "expression": "{#TEMPLATE:" + items[3]['key'] + ".last()}&gt;0"}
         ]
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs, triggers=triggers)
 
