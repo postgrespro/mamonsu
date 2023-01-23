@@ -34,35 +34,34 @@ class Statements(Plugin):
     # zbx_key, sql, desc, unit, delta, (Graph, color, side)
     Items = [
         ("stat[read_bytes]",
-         "sum(shared_blks_read+local_blks_read+temp_blks_read)*8*1024",
+         "(sum(shared_blks_read+local_blks_read+temp_blks_read)*8*1024)::bigint",
          "Read bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
          ("PostgreSQL Statements: Bytes", "87C2B9", 0)),
         ("stat[write_bytes]",
-         "sum(shared_blks_written+local_blks_written"
-         "+temp_blks_written)*8*1024",
+         "(sum(shared_blks_written+local_blks_written+temp_blks_written)*8*1024)::bigint",
          "Write bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
          ("PostgreSQL Statements: Bytes", "793F5D", 0)),
         ("stat[dirty_bytes]",
-         "sum(shared_blks_dirtied+local_blks_dirtied)*8*1024",
+         "(sum(shared_blks_dirtied+local_blks_dirtied)*8*1024)::bigint",
          "Dirty bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
          ("PostgreSQL Statements: Bytes", "9C8A4E", 0)),
 
         ("stat[read_time]",
-         "sum(blk_read_time)/float4(100)",
+         "(sum(blk_read_time)/float4(100))::bigint",
          "Read IO Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
          ("PostgreSQL Statements: Spent Time", "87C2B9", 0)),
         ("stat[write_time]",
-         "sum(blk_write_time)/float4(100)",
+         "(sum(blk_write_time)/float4(100))::bigint",
          "Write IO Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
          ("PostgreSQL Statements: Spent Time", "793F5D", 0)),
         ["stat[other_time]",
-         "sum({0}-blk_read_time-blk_write_time)/float4(100)",
+         "(sum({0}-blk_read_time-blk_write_time)/float4(100))::bigint",
          "Other (mostly CPU) Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
          ("PostgreSQL Statements: Spent Time", "9C8A4E", 0)]]
 
     Items_pg_13 = [
         ("stat[wal_bytes]",
-         "sum(wal_bytes)",
+         "sum(wal_bytes)::bigint",
          "Amount of WAL Files", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
          ("PostgreSQL Statements: WAL Statistics", "00B0B8", 0)),
         ("stat[wal_records]",
