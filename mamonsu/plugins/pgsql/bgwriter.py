@@ -119,5 +119,6 @@ class BgWriter(Plugin):
         result = []
         for item in self.Items:
             # delete from key '[' and ']' in Item for zabbix agent
-            result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + item[0]), self.query.format(item[0])))
+            result.append(
+                "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format("." + item[0]), self.query.format(item[0])))
         return template_zabbix.key_and_query(result)

@@ -118,14 +118,14 @@ class Instance(Plugin):
                 "delay": self.plugin_config("interval"),
                 "delta": delta
             })
-            result += template.item({
-                "key": self.key_server_mode,
-                "name": "PostgreSQL Instance: Server Mode",
-                "value_type": self.VALUE_TYPE.text,
-                "units": self.UNITS.none,
-                "delay": self.plugin_config("interval"),
-                "delta": Plugin.DELTA.as_is
-            })
+        result += template.item({
+            "key": self.right_type(self.key_server_mode),
+            "name": "PostgreSQL Instance: Server Mode",
+            "value_type": self.VALUE_TYPE.text,
+            "units": self.UNITS.none,
+            "delay": self.plugin_config("interval"),
+            "delta": Plugin.DELTA.as_is
+        })
         if not dashboard:
             return result
         else:
@@ -197,7 +197,7 @@ class Instance(Plugin):
     def triggers(self, template, dashboard=False):
         return template.trigger({
             "name": "PostgreSQL Instance: server mode has been changed on {HOSTNAME} to {ITEM.LASTVALUE}",
-            "expression": "{#TEMPLATE:" + self.key_server_mode + ".change()}>0"
+            "expression": "{#TEMPLATE:" + self.right_type(self.key_server_mode) + ".change()}>0"
         })
 
     def keys_and_queries(self, template_zabbix):
@@ -209,7 +209,7 @@ class Instance(Plugin):
         for item in all_items:
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[1].split("[")
-            result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                           self.query_agent.format(format(item[0]))))
-        result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key_server_mode, self.query_server_mode))
+            result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
+                                                              self.query_agent.format(format(item[0]))))
+        result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_server_mode, self.query_server_mode))
         return template_zabbix.key_and_query(result)

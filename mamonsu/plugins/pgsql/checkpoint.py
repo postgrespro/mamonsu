@@ -101,8 +101,8 @@ class Checkpoint(Plugin):
             "name": self.graph_name_count,
             "items": items_checkpoints
         }) + template.graph({
-             "name": self.graph_name_ws,
-             "items": items_checkpoints_write_sync
+            "name": self.graph_name_ws,
+            "items": items_checkpoints_write_sync
         })
         if not dashboard:
             return result
@@ -133,7 +133,8 @@ class Checkpoint(Plugin):
         return template.trigger({
             "name": "PostgreSQL Checkpoints: required checkpoints occurs too frequently on {HOSTNAME}",
             "expression": "{#TEMPLATE:" + self.right_type(self.key,
-                                                          self.Items[1][1]) + ".last()}&gt;" + self.plugin_macros["max_checkpoint_by_wal_in_hour"][0][1]
+                                                          self.Items[1][1]) + ".last()}&gt;" +
+                          self.plugin_macros["max_checkpoint_by_wal_in_hour"][0][1]
         })
 
     def keys_and_queries(self, template_zabbix):
@@ -141,9 +142,9 @@ class Checkpoint(Plugin):
         for num, item in enumerate(self.Items):
             if num > 1:
                 result.append(
-                    "{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + item[1]), self.query.format(item[0])))
+                    "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format("." + item[1]), self.query.format(item[0])))
             else:
                 result.append(
-                    "{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + item[1]),
-                                                     self.query_interval.format(item[0])))
+                    "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format("." + item[1]),
+                                                        self.query_interval.format(item[0])))
         return template_zabbix.key_and_query(result)

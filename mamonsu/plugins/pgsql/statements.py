@@ -175,7 +175,7 @@ class Statements(Plugin):
                         "key": self.right_type(self.key + keys[0] + "{0}", keys[1][:-1]),
                         "color": item[5][1],
                         "yaxisside": item[5][2],
-                    "drawtype": 2})
+                        "drawtype": 2})
             # create graph
             graph = {
                 "name": graph_item[0],
@@ -215,24 +215,26 @@ class Statements(Plugin):
 
             for i, item in enumerate(all_items):
                 keys = item[0].split("[")
-                result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                               self.query[extension + "_bootstrap"].format(
-                                                                   columns=", ".join(
-                                                                       [x[0][x[0].find("[") + 1:x[0].find("]")] for x in
-                                                                        all_items]), metrics=(", ".join(columns)),
-                                                                   extension_schema=extension_schema) if Pooler.is_bootstraped() else
-                                                               self.query[extension].format(
-                                                                   metrics=(", ".join(columns)),
-                                                                   extension_schema=extension_schema)))
+                result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
+                                                                  self.query[extension + "_bootstrap"].format(
+                                                                      columns=", ".join(
+                                                                          [x[0][x[0].find("[") + 1:x[0].find("]")] for x
+                                                                           in
+                                                                           all_items]), metrics=(", ".join(columns)),
+                                                                      extension_schema=extension_schema) if Pooler.is_bootstraped() else
+                                                                  self.query[extension].format(
+                                                                      metrics=(", ".join(columns)),
+                                                                      extension_schema=extension_schema)))
 
             if LooseVersion(self.VersionPG) >= LooseVersion("14"):
                 if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
                     all_items += self.Items_pg_14
                 for i, item in enumerate(all_items):
                     keys = item[0].split("[")
-                    result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                                   self.query_info.format(metrics=(item[1]),
-                                                                                          extension_schema=extension_schema)))
+                    result.append(
+                        "{0}[*],$2 $1 -Aqtc \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
+                                                            self.query_info.format(metrics=(item[1]),
+                                                                                   extension_schema=extension_schema)))
             return template_zabbix.key_and_query(result)
         else:
             return

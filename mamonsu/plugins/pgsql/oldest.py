@@ -108,7 +108,7 @@ class Oldest(Plugin):
         })
 
     def keys_and_queries(self, template_zabbix):
-        result = ["{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".xid_age"), self.OldestXidSql),
-                  "{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".transaction_time"), self.OldestTransactionSql),
-                  "{0}[*],$2 $1 -c \"{1}\"".format("pgsql.parallel{0}".format(".queries"), self.ParallelQueries)]
+        result = ["{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format(".xid_age"), self.OldestXidSql),
+                  "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format(".transaction_time"), self.OldestTransactionSql),
+                  "{0}[*],$2 $1 -Aqtc \"{1}\"".format("pgsql.parallel{0}".format(".queries"), self.ParallelQueries)]
         return template_zabbix.key_and_query(result)

@@ -152,13 +152,13 @@ class Databases(Plugin):
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs, triggers=triggers)
 
     def keys_and_queries(self, template_zabbix):
-        result = ["{0},$2 $1 -c \"{1}\"".format(self.key_db_discovery.format("[*]"), self.query_agent_discovery),
+        result = ["{0},$2 $1 -Aqtc \"{1}\"".format(self.key_db_discovery.format("[*]"), self.query_agent_discovery),
                   "{0},echo \"{1}\" | $3 $2 -v p1=\"$1\"".format(self.key_db_size.format("[*]"), self.query_size),
                   "{0},echo \"{1}\" | $3 $2 -v p1=\"$1\"".format(self.key_db_age.format("[*]"), self.query_age),
-                  "{0},$3 $2 -d \"$1\" -c \"{1}\"".format(self.key_db_bloating_tables.format("[*]"),
-                                                          self.query_bloating_tables.format(
-                                                              self.plugin_config("bloat_scale"),
-                                                              self.plugin_config("min_rows"))),
-                  "{0},$3 $2 -d \"$1\" -c \"{1}\"".format(self.key_invalid_indexes.format("[*]"),
-                                                          self.query_invalid_indexes)]
+                  "{0},$3 $2 -d \"$1\" -Aqtc \"{1}\"".format(self.key_db_bloating_tables.format("[*]"),
+                                                             self.query_bloating_tables.format(
+                                                                 self.plugin_config("bloat_scale"),
+                                                                 self.plugin_config("min_rows"))),
+                  "{0},$3 $2 -d \"$1\" -Aqtc \"{1}\"".format(self.key_invalid_indexes.format("[*]"),
+                                                             self.query_invalid_indexes)]
         return template_zabbix.key_and_query(result)

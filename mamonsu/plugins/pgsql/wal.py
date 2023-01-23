@@ -49,7 +49,8 @@ class Wal(Plugin):
     def run(self, zbx):
 
         # count of WAL files
-        result = Pooler.run_sql_type("count_wal_files", args=["wal" if Pooler.server_version_greater("10.0") else "xlog"])
+        result = Pooler.run_sql_type("count_wal_files",
+                                     args=["wal" if Pooler.server_version_greater("10.0") else "xlog"])
         zbx.send(self.key_count_wall.format("[]"), int(result[0][0]))
 
         if Pooler.server_version_greater("10"):
@@ -110,26 +111,26 @@ class Wal(Plugin):
             "delta": delta,
         }) + template.item({
             "name": "PostgreSQL WAL: Buffers Full",
-            "key": self.key_wal_buffers_full,
+            "key": self.right_type(self.key_wal_buffers_full),
             "value_type": self.VALUE_TYPE.numeric_float,
             "delta": delta,
         }) + template.item({
             "name": "PostgreSQL WAL: Write Time (ms)",
-            "key": self.key_wal_write_time,
+            "key": self.right_type(self.key_wal_write_time),
             "value_type": self.VALUE_TYPE.numeric_float,
             "delta": delta,
         }) + template.item({
             "name": "PostgreSQL WAL: Sync Time (ms)",
-            "key": self.key_wal_sync_time,
+            "key": self.right_type(self.key_wal_sync_time),
             "value_type": self.VALUE_TYPE.numeric_float,
             "delta": delta,
         }) + template.item({
             "name": "PostgreSQL WAL: Sync Duty (%)",
-            "key": self.key_wal_sync_duty,
+            "key": self.right_type(self.key_wal_sync_duty),
             "value_type": Plugin.VALUE_TYPE.numeric_float,
             "units": Plugin.UNITS.percent,
             "type": Plugin.TYPE.CALCULATED,
-            "params": "last(" + self.key_wal_sync_time + ")/10"
+            "params": "last({item})/10".format(item=self.key_wal_sync_time)
         })
         if not dashboard:
             return result
@@ -151,26 +152,27 @@ class Wal(Plugin):
                                   "page": ZbxTemplate.dashboard_page_wal["name"],
                                   "size": ZbxTemplate.dashboard_widget_size_medium,
                                   "position": 6}
-            }]
+                }]
 
     def keys_and_queries(self, template_zabbix):
         result = []
         if LooseVersion(self.VersionPG) < LooseVersion("10"):
-            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wall.format("[*]"), self.query_xlog_lsn_diff))
+            result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_wall.format("[*]"), self.query_xlog_lsn_diff))
             result.append(
-                "{0},$2 $1 -c \"{1}\"".format(self.key_count_wall.format("[*]"),
-                                              Pooler.SQL["count_wal_files"][0].format("xlog")))
+                "{0},$2 $1 -Aqtc \"{1}\"".format(self.key_count_wall.format("[*]"),
+                                                 Pooler.SQL["count_wal_files"][0].format("xlog")))
         else:
-            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wall.format("[*]"), self.query_wal_lsn_diff))
-            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_count_wall.format("[*]"),
-                                                        Pooler.SQL["count_wal_files"][0].format("wal")))
+            result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_wall.format("[*]"), self.query_wal_lsn_diff))
+            result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_count_wall.format("[*]"),
+                                                           Pooler.SQL["count_wal_files"][0].format("wal")))
 
         if LooseVersion(self.VersionPG) >= LooseVersion("14"):
-            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wal_records.format("[*]"), self.query_wal_records))
-            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wal_fpi.format("[*]"), self.query_wal_fpi))
+            result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_wal_records.format("[*]"), self.query_wal_records))
+            result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_wal_fpi.format("[*]"), self.query_wal_fpi))
             result.append(
-                "{0},$2 $1 -c \"{1}\"".format(self.key_wal_buffers_full.format("[*]"), self.query_wal_buffers_full))
+                "{0},$2 $1 -Aqtc \"{1}\"".format(self.key_wal_buffers_full.format("[*]"), self.query_wal_buffers_full))
             result.append(
-                "{0},$2 $1 -c \"{1}\"".format(self.key_wal_write_time.format("[*]"), self.query_wal_write_time))
-            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wal_sync_time.format("[*]"), self.query_wal_sync_time))
+                "{0},$2 $1 -Aqtc \"{1}\"".format(self.key_wal_write_time.format("[*]"), self.query_wal_write_time))
+            result.append(
+                "{0},$2 $1 -Aqtc \"{1}\"".format(self.key_wal_sync_time.format("[*]"), self.query_wal_sync_time))
         return template_zabbix.key_and_query(result)

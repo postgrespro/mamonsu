@@ -239,30 +239,31 @@ class Connections(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         for item in self.Items:
-            result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + item[1]),
-                                                           self.query_agent.format(item[1],
-                                                                                   "AND (backend_type = 'client backend' OR backend_type = 'parallel worker')" if LooseVersion(
-                                                                                       self.VersionPG) >= LooseVersion(
-                                                                                       "10") else "")))
-        result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".total"), self.query_agent_total.format(
+            result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format("." + item[1]),
+                                                              self.query_agent.format(item[1],
+                                                                                      "AND (backend_type = 'client backend' OR backend_type = 'parallel worker')" if LooseVersion(
+                                                                                          self.VersionPG) >= LooseVersion(
+                                                                                          "10") else "")))
+        result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format(".total"), self.query_agent_total.format(
             "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if LooseVersion(
                 self.VersionPG) >= LooseVersion(
                 "10") else "state IS NOT NULL")))
         if LooseVersion(self.VersionPG) < LooseVersion("9.6"):
             result.append(
-                "{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".waiting"), self.query_agent_waiting_old_v.format(
+                "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format(".waiting"), self.query_agent_waiting_old_v.format(
                     "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if LooseVersion(
                         self.VersionPG) >= LooseVersion(
                         "10") else "state IS NOT NULL")))
         else:
             result.append(
-                "{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".waiting"), self.query_agent_waiting_new_v.format(
+                "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format(".waiting"), self.query_agent_waiting_new_v.format(
                     "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if LooseVersion(
                         self.VersionPG) >= LooseVersion(
                         "10") else "state IS NOT NULL")))
             if LooseVersion(self.VersionPG) >= LooseVersion("10"):
-                result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".other"),
-                                                               self.query_other_connections.format(
-                                                                   "', '".join(self.default_backend_types))))
-        result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".max_connections"), self.query_agent_max_conn))
+                result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format(".other"),
+                                                                  self.query_other_connections.format(
+                                                                      "', '".join(self.default_backend_types))))
+        result.append(
+            "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format(".max_connections"), self.query_agent_max_conn))
         return template_zabbix.key_and_query(result)
