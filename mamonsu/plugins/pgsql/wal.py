@@ -53,12 +53,13 @@ class Wal(Plugin):
                                      args=["wal" if Pooler.server_version_greater("10.0") else "xlog"])
         zbx.send(self.key_count_wall.format("[]"), int(result[0][0]))
 
-        if Pooler.server_version_greater("10"):
-            result = Pooler.query(self.query_wal_lsn_diff)
-            zbx.send(self.key_wall.format("[]"), float(result[0][0]), self.DELTA_SPEED)
-        else:
-            result = Pooler.query(self.query_xlog_lsn_diff)
-            zbx.send(self.key_wall.format("[]"), float(result[0][0]), self.DELTA_SPEED)
+        if not Pooler.in_recovery():
+            if Pooler.server_version_greater("10"):
+                result = Pooler.query(self.query_wal_lsn_diff)
+                zbx.send(self.key_wall.format("[]"), float(result[0][0]), self.DELTA_SPEED)
+            else:
+                result = Pooler.query(self.query_xlog_lsn_diff)
+                zbx.send(self.key_wall.format("[]"), float(result[0][0]), self.DELTA_SPEED)
 
         # PG 14 pg_stat_wal metrics
         if Pooler.server_version_greater("14"):
