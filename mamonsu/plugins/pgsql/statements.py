@@ -77,7 +77,7 @@ class Statements(Plugin):
     Items_pg_14 = [
         ("stat_info[dealloc]",
          "dealloc",
-         "Nnumber of Times pg_stat_statements.max Was Exceeded",
+         "Number of Times pg_stat_statements.max Was Exceeded",
          Plugin.UNITS.none,
          Plugin.DELTA.simple_change,
          ("PostgreSQL Statements Info: Number of Times pg_stat_statements.max Was Exceeded", "793F5D", 0)),
