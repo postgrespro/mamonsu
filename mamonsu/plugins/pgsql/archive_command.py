@@ -46,7 +46,7 @@ class ArchiveCommand(Plugin):
     ('x' || substring(pg_{1}_name(pg_current_{0}()) from 17 for 8))::bit(32)::int END AS current_wal_mod
     FROM pg_settings, pg_stat_archiver
     WHERE pg_settings.name = 'wal_segment_size')
-    greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1) * segment_size, 0), 0)::bigint AS size_files
+    SELECT greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1) * segment_size, 0), 0)::bigint AS size_files
     FROM values;
     """
 
