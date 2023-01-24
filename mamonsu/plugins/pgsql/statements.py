@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from distutils.version import LooseVersion
@@ -16,7 +17,7 @@ class Statements(Plugin):
         "pgpro_stats":
             """
             SELECT {metrics}
-            FROM {extension_schema}.pgpro_stats_totals
+            FROM {extension_schema}.pgpro_stats_totals()
             WHERE object_type = 'cluster';
             """,
         "pgpro_stats_bootstrap":
@@ -94,31 +95,32 @@ class Statements(Plugin):
         ("PostgreSQL Statements: Spent Time", 1),
         ("PostgreSQL Statements: WAL Statistics", None)]
 
+    extension = ""
+
     # pgpro_stats работает только для PGPRO 12+ в режиме bootstrap и/или если в конфиге указан суперпользователь mamonsu
     def run(self, zbx):
-        extension = ""
         if (Pooler.is_pgpro() or Pooler.is_pgpro_ee()) and Pooler.server_version_greater("12"):
             if Pooler.extension_installed("pgpro_stats"):
                 if not Pooler.is_bootstraped():
                     self.disable_and_exit_if_not_superuser()
-                extension = "pgpro_stats"
+                self.extension = "pgpro_stats"
             elif Pooler.extension_installed("pg_stat_statements"):
-                extension = "pg_stat_statements"
+                self.extension = "pg_stat_statements"
             else:
                 self.disable_and_exit_if_extension_is_not_installed(ext="pgpro_stats")
         else:
             if not Pooler.extension_installed("pg_stat_statements"):
                 self.disable_and_exit_if_extension_is_not_installed(ext="pg_stat_statements")
-            extension = "pg_stat_statements"
+            self.extension = "pg_stat_statements"
 
-        extension_schema = self.extension_schema(extension=extension)
+        extension_schema = self.extension_schema(extension=self.extension)
 
         # TODO: add 13 and 14 items when pgpro_stats added new WAL metrics
         all_items = self.Items.copy()
         if Pooler.server_version_greater("14"):
             self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
-            if not Pooler.is_pgpro() or not Pooler.is_pgpro_ee():
-                all_items += self.Items_pg_13
+            all_items += self.Items_pg_13
+            if self.extension == "pg_stat_statements":
                 info_items = self.Items_pg_14
                 info_params = [x[1] for x in info_items]
                 info_result = Pooler.query(
@@ -127,18 +129,16 @@ class Statements(Plugin):
                     zbx_key, value = "pgsql.{0}".format(
                         info_items[key][0]), int(value)
                     zbx.send(zbx_key, value, info_items[key][4])
-            columns = [x[1] for x in all_items]
         elif Pooler.server_version_greater("13"):
             self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
             all_items += self.Items_pg_13
-            columns = [x[1] for x in all_items]
         else:
             self.Items[5][1] = self.Items[5][1].format("total_time")
-            columns = [x[1] for x in all_items]
-        result = Pooler.query(self.query[extension + "_bootstrap"].format(
+        columns = [x[1] for x in all_items]
+        result = Pooler.query(self.query[self.extension + "_bootstrap"].format(
             columns=", ".join([x[0][x[0].find("[") + 1:x[0].find("]")] for x in all_items]),
             metrics=(", ".join(columns)), extension_schema=extension_schema) if Pooler.is_bootstraped() else self.query[
-            extension].format(metrics=(", ".join(columns)), extension_schema=extension_schema))
+            self.extension].format(metrics=(", ".join(columns)), extension_schema=extension_schema))
         for key, value in enumerate(result[0]):
             zbx_key, value = "pgsql.{0}".format(all_items[key][0]), int(value)
             zbx.send(zbx_key, value, all_items[key][4])
@@ -191,16 +191,16 @@ class Statements(Plugin):
     def keys_and_queries(self, template_zabbix):
         if (Pooler.is_pgpro() or Pooler.is_pgpro_ee()) and Pooler.server_version_greater("12"):
             if Pooler.extension_installed("pgpro_stats"):
-                extension = "pgpro_stats"
+                self.extension = "pgpro_stats"
             elif Pooler.extension_installed("pg_stat_statements"):
-                extension = "pg_stat_statements"
+                self.extension = "pg_stat_statements"
         else:
             if Pooler.extension_installed("pg_stat_statements"):
-                extension = "pg_stat_statements"
+                self.extension = "pg_stat_statements"
 
         if Pooler.extension_installed("pgpro_stats") or Pooler.extension_installed("pg_stat_statements"):
 
-            extension_schema = self.extension_schema(extension=extension)
+            extension_schema = self.extension_schema(extension=self.extension)
 
             result = []
             all_items = self.Items.copy()
@@ -216,13 +216,13 @@ class Statements(Plugin):
             for i, item in enumerate(all_items):
                 keys = item[0].split("[")
                 result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                                  self.query[extension + "_bootstrap"].format(
+                                                                  self.query[self.extension + "_bootstrap"].format(
                                                                       columns=", ".join(
                                                                           [x[0][x[0].find("[") + 1:x[0].find("]")] for x
                                                                            in
                                                                            all_items]), metrics=(", ".join(columns)),
                                                                       extension_schema=extension_schema) if Pooler.is_bootstraped() else
-                                                                  self.query[extension].format(
+                                                                  self.query[self.extension].format(
                                                                       metrics=(", ".join(columns)),
                                                                       extension_schema=extension_schema)))
 
