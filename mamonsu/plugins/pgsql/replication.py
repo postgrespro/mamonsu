@@ -90,7 +90,7 @@ class Replication(Plugin):
             else:
                 self.disable_and_exit_if_not_superuser()
 
-        non_active_slots = Pooler.query(query_non_active_slots)
+        non_active_slots = Pooler.query(self.query_non_active_slots)
         zbx.send(self.key_non_active_slots.format("[]"), int(non_active_slots[0][0]))
 
     def items(self, template, dashboard=False):
