@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
-from distutils.version import LooseVersion
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
 
@@ -202,7 +201,7 @@ class Instance(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if LooseVersion(self.VersionPG) < LooseVersion("12"):
+        if Pooler.server_version_less("11"):
             all_items = self.Items
         else:
             all_items = self.Items + self.Items_pg_12

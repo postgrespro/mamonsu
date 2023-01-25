@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from distutils.version import LooseVersion
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
@@ -98,7 +97,7 @@ class Autovacuum(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if LooseVersion(self.VersionPG) >= LooseVersion("10"):
+        if Pooler.server_version_greater("10"):
             # TODO: define another metric key because it duplicates native zabbix agents keys
             # result.append("{0},$2 $1 -c \"{1}\"".format(self.key_count.format("[*]"),
             #                                                Pooler.SQL["count_autovacuum"][0].format(

@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from distutils.version import LooseVersion
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
-from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.plugins.pgsql.autovacuum import Autovacuum
 
 

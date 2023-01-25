@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
-from distutils.version import LooseVersion
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
 import re
@@ -200,7 +199,7 @@ class ArchiveCommand(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if LooseVersion(self.VersionPG) >= LooseVersion("10"):
+        if Pooler.server_version_greater("10"):
             result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[0][0]),
                                                               self.query_agent_count_files.format("wal_lsn",
                                                                                                   "walfile")))

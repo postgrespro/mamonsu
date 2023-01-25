@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
-from distutils.version import LooseVersion
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
 
@@ -157,7 +157,7 @@ class Wal(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if LooseVersion(self.VersionPG) < LooseVersion("10"):
+        if Pooler.server_version_less("9.6"):
             result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wall.format("[*]"), self.query_xlog_lsn_diff))
             result.append(
                 "{0},$2 $1 -c \"{1}\"".format(self.key_count_wall.format("[*]"),
@@ -166,14 +166,13 @@ class Wal(Plugin):
             result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wall.format("[*]"), self.query_wal_lsn_diff))
             result.append("{0},$2 $1 -c \"{1}\"".format(self.key_count_wall.format("[*]"),
                                                            Pooler.SQL["count_wal_files"][0].format("wal")))
-
-        if LooseVersion(self.VersionPG) >= LooseVersion("14"):
-            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wal_records.format("[*]"), self.query_wal_records))
-            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wal_fpi.format("[*]"), self.query_wal_fpi))
-            result.append(
-                "{0},$2 $1 -c \"{1}\"".format(self.key_wal_buffers_full.format("[*]"), self.query_wal_buffers_full))
-            result.append(
-                "{0},$2 $1 -c \"{1}\"".format(self.key_wal_write_time.format("[*]"), self.query_wal_write_time))
-            result.append(
-                "{0},$2 $1 -c \"{1}\"".format(self.key_wal_sync_time.format("[*]"), self.query_wal_sync_time))
+            if Pooler.server_version_greater("14"):
+                result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wal_records.format("[*]"), self.query_wal_records))
+                result.append("{0},$2 $1 -c \"{1}\"".format(self.key_wal_fpi.format("[*]"), self.query_wal_fpi))
+                result.append(
+                    "{0},$2 $1 -c \"{1}\"".format(self.key_wal_buffers_full.format("[*]"), self.query_wal_buffers_full))
+                result.append(
+                    "{0},$2 $1 -c \"{1}\"".format(self.key_wal_write_time.format("[*]"), self.query_wal_write_time))
+                result.append(
+                    "{0},$2 $1 -c \"{1}\"".format(self.key_wal_sync_time.format("[*]"), self.query_wal_sync_time))
         return template_zabbix.key_and_query(result)
