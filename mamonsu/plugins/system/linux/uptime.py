@@ -44,6 +44,7 @@ class SystemUptime(Plugin):
             }
         )
 
-    def keys_and_queries(self, template_zabbix):
-        result = ["system.uptime,{0}".format(self.query_agent)]
-        return template_zabbix.key_and_query(result)
+    # TODO: define another metric key because it duplicates native zabbix agents keys
+    # def keys_and_queries(self, template_zabbix):
+    #     result = ["system.uptime,{0}".format(self.query_agent)]
+    #     return template_zabbix.key_and_query(result)

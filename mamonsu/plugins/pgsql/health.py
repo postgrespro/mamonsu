@@ -122,7 +122,9 @@ class PgHealth(Plugin):
         return result
 
     def keys_and_queries(self, template_zabbix):
-        result = ["{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_ping.format(""), self.query_health),
-                  "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_uptime.format(""), self.query_uptime),
-                  "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_version.format(""), self.query_version)]
+        # TODO: define another metric key because it duplicates native zabbix agents keys
+        # result = ["{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_ping.format(""), self.query_health),
+        #           "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_uptime.format(""), self.query_uptime),
+        #           "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_version.format(""), self.query_version)]
+        result = ["{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_version.format(""), self.query_version)]
         return template_zabbix.key_and_query(result)

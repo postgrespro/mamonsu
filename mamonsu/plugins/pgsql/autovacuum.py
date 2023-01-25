@@ -99,16 +99,18 @@ class Autovacuum(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         if LooseVersion(self.VersionPG) >= LooseVersion("10"):
-            result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_count.format("[*]"),
-                                                           Pooler.SQL["count_autovacuum"][0].format(
-                                                               "backend_type = 'autovacuum worker'")))
+            # TODO: define another metric key because it duplicates native zabbix agents keys
+            # result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_count.format("[*]"),
+            #                                                Pooler.SQL["count_autovacuum"][0].format(
+            #                                                    "backend_type = 'autovacuum worker'")))
             result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_utilization.format("[*]"),
                                                            Pooler.SQL["autovacuum_utilization"][0].format(
                                                                "backend_type = 'autovacuum worker'")))
         else:
-            result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_count.format("[*]"),
-                                                           Pooler.SQL["count_autovacuum"][0].format(
-                                                               "query LIKE '%%autovacuum%%' AND state <> 'idle' AND pid <> pg_catalog.pg_backend_pid()")))
+            # TODO: define another metric key because it duplicates native zabbix agents keys
+            # result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_count.format("[*]"),
+            #                                                Pooler.SQL["count_autovacuum"][0].format(
+            #                                                    "query LIKE '%%autovacuum%%' AND state <> 'idle' AND pid <> pg_catalog.pg_backend_pid()")))
             result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_utilization.format("[*]"),
                                                            Pooler.SQL["autovacuum_utilization"][0].format(
                                                                "query LIKE '%%autovacuum%%' AND state <> 'idle' AND pid <> pg_catalog.pg_backend_pid()")))
