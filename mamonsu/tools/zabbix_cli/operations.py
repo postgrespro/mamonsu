@@ -62,20 +62,20 @@ class Operations(object):
             sys.exit(3)
 
     def _generic_list(self, typ):
+        name, fltr = '', ''
         if typ == 'template':
             name, fltr = 'name', 'host'
         elif typ == 'hostgroup':
-            name, fltr = 'name', 'host'
+            name = 'name'
         elif typ == 'host':
-            fltr, name = 'host', 'host'
+            name, fltr = 'host', 'host'
         else:
             sys.stderr.write('Unknown type: {0} for listing'.format(typ))
             sys.exit(4)
         try:
             for x in self.req.post(
                     method='{0}.get'.format(typ),
-                    params={
-                        'filter': {fltr: []}}):
+                    params={'filter': {fltr: []}} if fltr != '' else {'filter': []}):
                 print(x[name])
         except Exception as e:
             sys.stderr.write('List error: {0}\n'.format(e))
