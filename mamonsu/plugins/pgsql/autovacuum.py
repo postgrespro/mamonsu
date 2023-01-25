@@ -52,7 +52,7 @@ class Autovacuum(Plugin):
                 "value_type": Plugin.VALUE_TYPE.numeric_float,
                 "units": Plugin.UNITS.percent,
                 "type": Plugin.TYPE.CALCULATED,
-                "params": "avg({item}, 5m)".format(item=self.key_utilization.format("[]")),
+                "params": "avg(//{item}, 5m)".format(item=self.right_type(self.key_utilization)),
                 "delay": self.plugin_config("interval")
             }))
             result += (template.item({
@@ -61,7 +61,7 @@ class Autovacuum(Plugin):
                 "value_type": Plugin.VALUE_TYPE.numeric_float,
                 "units": Plugin.UNITS.percent,
                 "type": Plugin.TYPE.CALCULATED,
-                "params": "avg({item}, 15m)".format(item=self.key_utilization.format("[]")),
+                "params": "avg(//{item}, 15m)".format(item=self.right_type(self.key_utilization)),
                 "delay": self.plugin_config("interval")
             }))
             result += (template.item({
@@ -70,7 +70,7 @@ class Autovacuum(Plugin):
                 "value_type": Plugin.VALUE_TYPE.numeric_float,
                 "units": Plugin.UNITS.percent,
                 "type": Plugin.TYPE.CALCULATED,
-                "params": "avg({item}, 30m)".format(item=self.key_utilization.format("[]")),
+                "params": "avg(//{item}, 30m)".format(item=self.right_type(self.key_utilization)),
                 "delay": self.plugin_config("interval")
             }))
             return result
@@ -100,18 +100,18 @@ class Autovacuum(Plugin):
         result = []
         if LooseVersion(self.VersionPG) >= LooseVersion("10"):
             # TODO: define another metric key because it duplicates native zabbix agents keys
-            # result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_count.format("[*]"),
+            # result.append("{0},$2 $1 -c \"{1}\"".format(self.key_count.format("[*]"),
             #                                                Pooler.SQL["count_autovacuum"][0].format(
             #                                                    "backend_type = 'autovacuum worker'")))
-            result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_utilization.format("[*]"),
+            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_utilization.format("[*]"),
                                                            Pooler.SQL["autovacuum_utilization"][0].format(
                                                                "backend_type = 'autovacuum worker'")))
         else:
             # TODO: define another metric key because it duplicates native zabbix agents keys
-            # result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_count.format("[*]"),
+            # result.append("{0},$2 $1 -c \"{1}\"".format(self.key_count.format("[*]"),
             #                                                Pooler.SQL["count_autovacuum"][0].format(
             #                                                    "query LIKE '%%autovacuum%%' AND state <> 'idle' AND pid <> pg_catalog.pg_backend_pid()")))
-            result.append("{0},$2 $1 -Aqtc \"{1}\"".format(self.key_utilization.format("[*]"),
+            result.append("{0},$2 $1 -c \"{1}\"".format(self.key_utilization.format("[*]"),
                                                            Pooler.SQL["autovacuum_utilization"][0].format(
                                                                "query LIKE '%%autovacuum%%' AND state <> 'idle' AND pid <> pg_catalog.pg_backend_pid()")))
         return template_zabbix.key_and_query(result)

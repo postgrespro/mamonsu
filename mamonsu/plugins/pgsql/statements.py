@@ -215,7 +215,7 @@ class Statements(Plugin):
 
             for i, item in enumerate(all_items):
                 keys = item[0].split("[")
-                result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
+                result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
                                                                   self.query[self.extension + "_bootstrap"].format(
                                                                       columns=", ".join(
                                                                           [x[0][x[0].find("[") + 1:x[0].find("]")] for x
@@ -232,7 +232,7 @@ class Statements(Plugin):
                 for i, item in enumerate(all_items):
                     keys = item[0].split("[")
                     result.append(
-                        "{0}[*],$2 $1 -Aqtc \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
+                        "{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
                                                             self.query_info.format(metrics=(item[1]),
                                                                                    extension_schema=extension_schema)))
             return template_zabbix.key_and_query(result)

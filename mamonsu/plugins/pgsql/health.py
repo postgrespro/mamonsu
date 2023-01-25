@@ -4,8 +4,6 @@ from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
 import time
 from mamonsu.lib.zbx_template import ZbxTemplate
-from mamonsu.plugins.pgsql.instance import Instance
-
 
 class PgHealth(Plugin):
     AgentPluginType = "pg"
@@ -59,9 +57,10 @@ class PgHealth(Plugin):
             "value_type": Plugin.VALUE_TYPE.numeric_float,
             "units": Plugin.UNITS.percent,
             "type": Plugin.TYPE.CALCULATED,
-            "params": "last({blocks_hit})*100/(last({blocks_hit})+last({blocks_read}))".format(
-                blocks_hit=Instance.key + Instance.Items[2][1],
-                blocks_read=Instance.key + Instance.Items[3][1])
+            "params": "last(//{blocks_hit})*100/(last(//{blocks_hit})+last(//{blocks_read}))".format(
+                # TODO: hardcoded params
+                blocks_hit=self.right_type("pgsql.blocks.hit{0}"),
+                blocks_read=self.right_type("pgsql.blocks.read{0}"))
         }) + template.item({
             "name": "PostgreSQL Health: Service Uptime",
             "key": self.right_type(self.key_uptime),
@@ -123,8 +122,8 @@ class PgHealth(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         # TODO: define another metric key because it duplicates native zabbix agents keys
-        # result = ["{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_ping.format(""), self.query_health),
-        #           "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_uptime.format(""), self.query_uptime),
-        #           "{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_version.format(""), self.query_version)]
-        result = ["{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_version.format(""), self.query_version)]
+        # result = ["{0}[*],$2 $1 -c \"{1}\"".format(self.key_ping.format(""), self.query_health),
+        #           "{0}[*],$2 $1 -c \"{1}\"".format(self.key_uptime.format(""), self.query_uptime),
+        #           "{0}[*],$2 $1 -c \"{1}\"".format(self.key_version.format(""), self.query_version)]
+        result = ["{0}[*],$2 $1 -c \"{1}\"".format(self.key_version.format(""), self.query_version)]
         return template_zabbix.key_and_query(result)

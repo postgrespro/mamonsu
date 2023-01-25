@@ -202,15 +202,15 @@ class Replication(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         if LooseVersion(self.VersionPG) < LooseVersion("10"):
-            result.append("{0},$2 $1 -Aqtc \"{1}\"".format("pgsql.replication_lag.sec[*]",
+            result.append("{0},$2 $1 -c \"{1}\"".format("pgsql.replication_lag.sec[*]",
                                                            self.query_agent_replication_lag.format(
                                                                self.plugin_config("interval"), "xlog_receive_location",
                                                                "xlog_replay_location")))
         else:
-            result.append("{0},$2 $1 -Aqtc \"{1}\"".format("pgsql.replication_lag.sec[*]",
+            result.append("{0},$2 $1 -c \"{1}\"".format("pgsql.replication_lag.sec[*]",
                                                            self.query_agent_replication_lag.format(
                                                                self.plugin_config("interval"), "wal_receive_lsn",
                                                                "wal_replay_lsn")))
-        result.append("{0},$2 $1 -Aqtc \"{1}\"".format("pgsql.replication.non_active_slots[*]",
+        result.append("{0},$2 $1 -c \"{1}\"".format("pgsql.replication.non_active_slots[*]",
                                                        self.query_non_active_slots))
         return template_zabbix.key_and_query(result)

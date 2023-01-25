@@ -201,20 +201,20 @@ class ArchiveCommand(Plugin):
     def keys_and_queries(self, template_zabbix):
         result = []
         if LooseVersion(self.VersionPG) >= LooseVersion("10"):
-            result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format("." + self.Items[0][0]),
+            result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[0][0]),
                                                               self.query_agent_count_files.format("wal_lsn",
                                                                                                   "walfile")))
-            result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format("." + self.Items[1][0]),
+            result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[1][0]),
                                                               self.query_agent_size_files.format("wal_lsn", "walfile")))
         else:
-            result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format("." + self.Items[0][0]),
+            result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[0][0]),
                                                               self.query_agent_count_files.format("xlog_location",
                                                                                                   "xlogfile")))
-            result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format("." + self.Items[1][0]),
+            result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[1][0]),
                                                               self.query_agent_size_files.format("xlog_location",
                                                                                                  "xlogfile")))
-        result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format("." + self.Items[2][0]),
+        result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[2][0]),
                                                           self.query_agent_archived_count))
-        result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key.format("." + self.Items[3][0]),
+        result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[3][0]),
                                                           self.query_agent_failed_count))
         return template_zabbix.key_and_query(result)

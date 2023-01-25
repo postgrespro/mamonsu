@@ -70,7 +70,7 @@ class Instance(Plugin):
          Plugin.UNITS.none, Plugin.DELTA.simple_change)
     ]
 
-    key_server_mode = "pgsql.server_mode"
+    key_server_mode = "pgsql.server_mode{0}"
     query_server_mode = """
     SELECT CASE WHEN pg_is_in_recovery() THEN 'STANDBY'
                 ELSE 'MASTER'
@@ -98,7 +98,7 @@ class Instance(Plugin):
             zbx_key, value = "pgsql.{0}".format(all_items[key][1]), int(value)
             zbx.send(zbx_key, value, all_items[key][5], only_positive_speed=True)
         result_server_mode = Pooler.query(self.query_server_mode)[0][0]
-        zbx.send(self.key_server_mode, result_server_mode)
+        zbx.send(self.right_type(self.key_server_mode), result_server_mode)
         del columns, result, result_server_mode
 
     def items(self, template, dashboard=False):
@@ -209,7 +209,7 @@ class Instance(Plugin):
         for item in all_items:
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[1].split("[")
-            result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                              self.query_agent.format(format(item[0]))))
-        result.append("{0}[*],$2 $1 -Aqtc \"{1}\"".format(self.key_server_mode, self.query_server_mode))
+            result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
+                                                           self.query_agent.format(format(item[0]))))
+        result.append("{0},$2 $1 -c \"{1}\"".format(self.key_server_mode.format("[*]"), self.query_server_mode))
         return template_zabbix.key_and_query(result)
