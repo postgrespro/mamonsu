@@ -87,13 +87,13 @@ pgsql.tuples[inserted]
 pgsql.tuples[returned]
 pgsql.tuples[updated]
 pgsql.uptime[]
-pgsql.wal.buffers_full
+pgsql.wal.buffers_full[]
 pgsql.wal.count[]
 pgsql.wal.fpi.count[]
 pgsql.wal.records.count[]
-pgsql.wal.sync_time
+pgsql.wal.sync_time[]
 pgsql.wal.write[]
-pgsql.wal.write_time
+pgsql.wal.write_time[]
 system.cpu[idle]
 system.cpu[iowait]
 system.cpu[irq]
