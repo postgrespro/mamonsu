@@ -70,7 +70,7 @@ jobs:
       - name: Copy test scripts to container
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) mkdir -p -m 755 /mamonsu/
       - run: docker cp . $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ):/mamonsu
-      - name: Install prequisites
+      - name: Install prerequisites
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) bash /mamonsu/github-actions-tests/tests.sh --os="${{ matrix.docker_os }}" --pg-version="${{ matrix.pg_version }}"
 
       - name: Build and install mamonsu
