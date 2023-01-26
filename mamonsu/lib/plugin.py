@@ -24,7 +24,7 @@ class Plugin(object):
     AgentPluginType = 'all'
 
     # PG version
-    VersionPG = '10'
+    VersionPG = '14'
 
     # Macros for run as agent type or as mamonsu
     Macros = {"mamonsu": "", "agent": "{$PG_CONNINFO},{$PG_PATH}"}

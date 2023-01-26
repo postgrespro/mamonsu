@@ -23,6 +23,12 @@ class Replication(Plugin):
             END;
     """
 
+    query_non_active_slots = """
+    SELECT count(*)
+    FROM pg_replication_slots
+    WHERE active = 'false';
+    """
+
     # for discovery rule for name of each replica
     key_lsn_replication_discovery = "pgsql.replication.discovery{0}"
     key_total_lag = "pgsql.replication.total_lag{0}"
@@ -52,13 +58,14 @@ class Replication(Plugin):
             Pooler.run_sql_type("replication_lag_master_query")
             if Pooler.server_version_greater("10.0") and (Pooler.is_superuser() or Pooler.is_bootstraped()):
                 result_lags = Pooler.run_sql_type("wal_lag_lsn",
-                                                  args=[" coalesce((pg_wal_lsn_diff(pg_current_wal_lsn(), sent_lsn))::int, 0) AS send_lag, "
-                                                        "coalesce((pg_wal_lsn_diff(sent_lsn, flush_lsn))::int, 0) AS receive_lag, "
-                                                        "coalesce((pg_wal_lsn_diff(sent_lsn, write_lsn))::int, 0) AS write_lag, "
-                                                        "coalesce((pg_wal_lsn_diff(write_lsn, flush_lsn))::int, 0) AS flush_lag, "
-                                                        "coalesce((pg_wal_lsn_diff(flush_lsn, replay_lsn))::int, 0) AS replay_lag, " if not Pooler.is_bootstraped() else
-                                                        " send_lag, receive_lag, write_lag, flush_lag, replay_lag, ",
-                                                        "wal", "lsn"])
+                                                  args=[
+                                                      " coalesce((pg_wal_lsn_diff(pg_current_wal_lsn(), sent_lsn))::int, 0) AS send_lag, "
+                                                      "coalesce((pg_wal_lsn_diff(sent_lsn, flush_lsn))::int, 0) AS receive_lag, "
+                                                      "coalesce((pg_wal_lsn_diff(sent_lsn, write_lsn))::int, 0) AS write_lag, "
+                                                      "coalesce((pg_wal_lsn_diff(write_lsn, flush_lsn))::int, 0) AS flush_lag, "
+                                                      "coalesce((pg_wal_lsn_diff(flush_lsn, replay_lsn))::int, 0) AS replay_lag, " if not Pooler.is_bootstraped() else
+                                                      " send_lag, receive_lag, write_lag, flush_lag, replay_lag, ",
+                                                      "wal", "lsn"])
                 if result_lags:
                     lags = []
                     for info in result_lags:
@@ -83,11 +90,7 @@ class Replication(Plugin):
             else:
                 self.disable_and_exit_if_not_superuser()
 
-        non_active_slots = Pooler.query("""
-        SELECT count(*)
-        FROM pg_replication_slots
-        WHERE active = 'false';
-        """)
+        non_active_slots = Pooler.query(self.query_non_active_slots)
         zbx.send(self.key_non_active_slots.format("[]"), int(non_active_slots[0][0]))
 
     def items(self, template, dashboard=False):
@@ -200,12 +203,14 @@ class Replication(Plugin):
         result = []
         if LooseVersion(self.VersionPG) < LooseVersion("10"):
             result.append("{0},$2 $1 -c \"{1}\"".format("pgsql.replication_lag.sec[*]",
-                                                        self.query_agent_replication_lag.format(
-                                                            self.plugin_config("interval"), "xlog_receive_location",
-                                                            "xlog_replay_location")))
+                                                           self.query_agent_replication_lag.format(
+                                                               self.plugin_config("interval"), "xlog_receive_location",
+                                                               "xlog_replay_location")))
         else:
             result.append("{0},$2 $1 -c \"{1}\"".format("pgsql.replication_lag.sec[*]",
-                                                        self.query_agent_replication_lag.format(
-                                                            self.plugin_config("interval"), "wal_receive_lsn",
-                                                            "wal_replay_lsn")))
+                                                           self.query_agent_replication_lag.format(
+                                                               self.plugin_config("interval"), "wal_receive_lsn",
+                                                               "wal_replay_lsn")))
+        result.append("{0},$2 $1 -c \"{1}\"".format("pgsql.replication.non_active_slots[*]",
+                                                       self.query_non_active_slots))
         return template_zabbix.key_and_query(result)

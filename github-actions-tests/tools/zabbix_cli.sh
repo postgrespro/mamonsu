@@ -99,7 +99,7 @@ mamonsu zabbix $OPTIONS host delete ${HOST_ID} | grep "hostids.*${HOST_ID}" || e
 
 # test 'mamonsu hostgroup'
 echo && echo "------> mamonsu zabbix hostgroup list"
-mamonsu zabbix $OPTIONS hostgroup list | grep Templates || exit 11
+mamonsu zabbix $OPTIONS hostgroup list | grep Linux || exit 11
 echo && echo "------> mamonsu zabbix hostgroup show"
 mamonsu zabbix $OPTIONS hostgroup show "Linux servers" | grep Linux || exit 11
 echo && echo "------> mamonsu zabbix hostgroup id"

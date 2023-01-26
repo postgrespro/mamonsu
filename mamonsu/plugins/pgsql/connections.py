@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
-from distutils.version import LooseVersion
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
 
@@ -240,29 +239,22 @@ class Connections(Plugin):
         result = []
         for item in self.Items:
             result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + item[1]),
-                                                           self.query_agent.format(item[1],
-                                                                                   "AND (backend_type = 'client backend' OR backend_type = 'parallel worker')" if LooseVersion(
-                                                                                       self.VersionPG) >= LooseVersion(
-                                                                                       "10") else "")))
+                                                              self.query_agent.format(item[1],
+                                                                                      "AND (backend_type = 'client backend' OR backend_type = 'parallel worker')" if Pooler.server_version_greater("10") else "")))
         result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".total"), self.query_agent_total.format(
-            "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if LooseVersion(
-                self.VersionPG) >= LooseVersion(
-                "10") else "state IS NOT NULL")))
-        if LooseVersion(self.VersionPG) < LooseVersion("9.6"):
+            "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if Pooler.server_version_greater("10") else "state IS NOT NULL")))
+        if Pooler.server_version_less("9.5"):
             result.append(
                 "{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".waiting"), self.query_agent_waiting_old_v.format(
-                    "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if LooseVersion(
-                        self.VersionPG) >= LooseVersion(
-                        "10") else "state IS NOT NULL")))
+                    "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if Pooler.server_version_greater("10") else "state IS NOT NULL")))
         else:
             result.append(
                 "{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".waiting"), self.query_agent_waiting_new_v.format(
-                    "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if LooseVersion(
-                        self.VersionPG) >= LooseVersion(
-                        "10") else "state IS NOT NULL")))
-            if LooseVersion(self.VersionPG) >= LooseVersion("10"):
+                    "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if Pooler.server_version_greater("10") else "state IS NOT NULL")))
+            if Pooler.server_version_greater("10"):
                 result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".other"),
-                                                               self.query_other_connections.format(
-                                                                   "', '".join(self.default_backend_types))))
-        result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".max_connections"), self.query_agent_max_conn))
+                                                                  self.query_other_connections.format(
+                                                                      "', '".join(self.default_backend_types))))
+        result.append(
+            "{0}[*],$2 $1 -c \"{1}\"".format(self.key.format(".max_connections"), self.query_agent_max_conn))
         return template_zabbix.key_and_query(result)

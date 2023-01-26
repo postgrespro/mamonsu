@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
-from distutils.version import LooseVersion
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
 
@@ -70,7 +69,7 @@ class Instance(Plugin):
          Plugin.UNITS.none, Plugin.DELTA.simple_change)
     ]
 
-    key_server_mode = "pgsql.server_mode"
+    key_server_mode = "pgsql.server_mode{0}"
     query_server_mode = """
     SELECT CASE WHEN pg_is_in_recovery() THEN 'STANDBY'
                 ELSE 'MASTER'
@@ -98,7 +97,7 @@ class Instance(Plugin):
             zbx_key, value = "pgsql.{0}".format(all_items[key][1]), int(value)
             zbx.send(zbx_key, value, all_items[key][5], only_positive_speed=True)
         result_server_mode = Pooler.query(self.query_server_mode)[0][0]
-        zbx.send(self.key_server_mode, result_server_mode)
+        zbx.send(self.right_type(self.key_server_mode), result_server_mode)
         del columns, result, result_server_mode
 
     def items(self, template, dashboard=False):
@@ -118,14 +117,14 @@ class Instance(Plugin):
                 "delay": self.plugin_config("interval"),
                 "delta": delta
             })
-            result += template.item({
-                "key": self.key_server_mode,
-                "name": "PostgreSQL Instance: Server Mode",
-                "value_type": self.VALUE_TYPE.text,
-                "units": self.UNITS.none,
-                "delay": self.plugin_config("interval"),
-                "delta": Plugin.DELTA.as_is
-            })
+        result += template.item({
+            "key": self.right_type(self.key_server_mode),
+            "name": "PostgreSQL Instance: Server Mode",
+            "value_type": self.VALUE_TYPE.text,
+            "units": self.UNITS.none,
+            "delay": self.plugin_config("interval"),
+            "delta": Plugin.DELTA.as_is
+        })
         if not dashboard:
             return result
         else:
@@ -197,12 +196,12 @@ class Instance(Plugin):
     def triggers(self, template, dashboard=False):
         return template.trigger({
             "name": "PostgreSQL Instance: server mode has been changed on {HOSTNAME} to {ITEM.LASTVALUE}",
-            "expression": "{#TEMPLATE:" + self.key_server_mode + ".change()}>0"
+            "expression": "{#TEMPLATE:" + self.right_type(self.key_server_mode) + ".change()}>0"
         })
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if LooseVersion(self.VersionPG) < LooseVersion("12"):
+        if Pooler.server_version_less("11"):
             all_items = self.Items
         else:
             all_items = self.Items + self.Items_pg_12
@@ -211,5 +210,5 @@ class Instance(Plugin):
             keys = item[1].split("[")
             result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
                                                            self.query_agent.format(format(item[0]))))
-        result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key_server_mode, self.query_server_mode))
+        result.append("{0},$2 $1 -c \"{1}\"".format(self.key_server_mode.format("[*]"), self.query_server_mode))
         return template_zabbix.key_and_query(result)

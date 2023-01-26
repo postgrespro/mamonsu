@@ -1083,6 +1083,6 @@ def generate_dashboard(template, uuid):
                                          Instance.key + Instance.Items[11][1],
                                          PgHealth.key_uptime.format("[]"),
                                          Wal.key_wal_records.format("[]"),
-                                         Wal.key_wal_sync_duty,
+                                         Wal.key_wal_sync_duty.format("[]"),
                                          Wal.key_count_wall.format("[]"),
                                          uuid).replace("\\r\\n", " ").split())

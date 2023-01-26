@@ -5,7 +5,6 @@ from .pool import Pooler
 import time
 from mamonsu.lib.zbx_template import ZbxTemplate
 
-
 class PgHealth(Plugin):
     AgentPluginType = "pg"
     # key: (macro, value)
@@ -58,7 +57,10 @@ class PgHealth(Plugin):
             "value_type": Plugin.VALUE_TYPE.numeric_float,
             "units": Plugin.UNITS.percent,
             "type": Plugin.TYPE.CALCULATED,
-            "params": "last(pgsql.blocks[hit])*100/(last(pgsql.blocks[hit])+last(pgsql.blocks[read]))"
+            "params": "last(//{blocks_hit})*100/(last(//{blocks_hit})+last(//{blocks_read}))".format(
+                # TODO: hardcoded params
+                blocks_hit=self.right_type("pgsql.blocks.hit{0}"),
+                blocks_read=self.right_type("pgsql.blocks.read{0}"))
         }) + template.item({
             "name": "PostgreSQL Health: Service Uptime",
             "key": self.right_type(self.key_uptime),
@@ -106,10 +108,12 @@ class PgHealth(Plugin):
     def triggers(self, template, dashboard=False):
         result = template.trigger({
             "name": "PostgreSQL Health: service has been restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".change()}&gt;" + self.plugin_macros["pg_uptime"][0][1]
+            "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".change()}&gt;" +
+                          self.plugin_macros["pg_uptime"][0][1]
         }) + template.trigger({
             "name": "PostgreSQL Health: cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_cache, "hit") + ".last()}&lt;" + self.plugin_macros["cache_hit_ratio_percent"][0][1]
+            "expression": "{#TEMPLATE:" + self.right_type(self.key_cache, "hit") + ".last()}&lt;" +
+                          self.plugin_macros["cache_hit_ratio_percent"][0][1]
         }) + template.trigger({
             "name": "PostgreSQL Health: no ping from PostgreSQL for 3 minutes on {HOSTNAME}",
             "expression": "{#TEMPLATE:" + self.right_type(self.key_ping) + ".nodata(180)}=1"
@@ -117,7 +121,9 @@ class PgHealth(Plugin):
         return result
 
     def keys_and_queries(self, template_zabbix):
-        result = ["{0}[*],$2 $1 -c \"{1}\"".format(self.key_ping.format(""), self.query_health),
-                  "{0}[*],$2 $1 -c \"{1}\"".format(self.key_uptime.format(""), self.query_uptime),
-                  "{0}[*],$2 $1 -c \"{1}\"".format(self.key_version.format(""), self.query_version)]
+        # TODO: define another metric key because it duplicates native zabbix agents keys
+        # result = ["{0}[*],$2 $1 -c \"{1}\"".format(self.key_ping.format(""), self.query_health),
+        #           "{0}[*],$2 $1 -c \"{1}\"".format(self.key_uptime.format(""), self.query_uptime),
+        #           "{0}[*],$2 $1 -c \"{1}\"".format(self.key_version.format(""), self.query_version)]
+        result = ["{0}[*],$2 $1 -c \"{1}\"".format(self.key_version.format(""), self.query_version)]
         return template_zabbix.key_and_query(result)

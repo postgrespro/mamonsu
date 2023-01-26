@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
-from distutils.version import LooseVersion
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
 import re
@@ -46,7 +45,7 @@ class ArchiveCommand(Plugin):
     ('x' || substring(pg_{1}_name(pg_current_{0}()) from 17 for 8))::bit(32)::int END AS current_wal_mod
     FROM pg_settings, pg_stat_archiver
     WHERE pg_settings.name = 'wal_segment_size')
-    greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1) * segment_size, 0), 0)::bigint AS size_files
+    SELECT greatest(coalesce(((segment_parts_count - last_wal_mod) + ((current_wal_div - last_wal_div - 1) * segment_parts_count) + current_wal_mod - 1) * segment_size, 0), 0)::bigint AS size_files
     FROM values;
     """
 
@@ -59,10 +58,12 @@ class ArchiveCommand(Plugin):
     key = "pgsql.archive_command{0}"
     Items = [
         # key, desc, color, side, graph, delta, units
-        ("count_files_to_archive", "Files in archive_status Need to Archive Count", "006AAE", 0, 1, Plugin.DELTA.as_is, Plugin.UNITS.none),
+        ("count_files_to_archive", "Files in archive_status Need to Archive Count", "006AAE", 0, 1, Plugin.DELTA.as_is,
+         Plugin.UNITS.none),
         ("size_files_to_archive", "Files Need to Archive Size", "793F5D", 0, 0, Plugin.DELTA.as_is, Plugin.UNITS.bytes),
         ("archived_files", "Archived Files Count", "00CC00", 0, 1, Plugin.DELTA.simple_change, Plugin.UNITS.none),
-        ("failed_trying_to_archive", "Attempts to Archive Files Count", "FF5656", 0, 1, Plugin.DELTA.simple_change, Plugin.UNITS.none),
+        ("failed_trying_to_archive", "Attempts to Archive Files Count", "FF5656", 0, 1, Plugin.DELTA.simple_change,
+         Plugin.UNITS.none),
     ]
     old_archived_count = None
     old_failed_count = None
@@ -192,25 +193,27 @@ class ArchiveCommand(Plugin):
         return template.trigger({
             "name": "PostgreSQL Archiver: count files need to archive on {HOSTNAME} more than 2",
             "expression": "{#TEMPLATE:" + self.right_type(self.key,
-                                                          self.Items[0][0]) + ".last()}&gt;" + self.plugin_macros["archive_queue_files"][0][1]
+                                                          self.Items[0][0]) + ".last()}&gt;" +
+                          self.plugin_macros["archive_queue_files"][0][1]
         })
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if LooseVersion(self.VersionPG) >= LooseVersion("10"):
+        if Pooler.server_version_greater("10"):
             result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[0][0]),
-                                                           self.query_agent_count_files.format("wal_lsn", "walfile")))
+                                                              self.query_agent_count_files.format("wal_lsn",
+                                                                                                  "walfile")))
             result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[1][0]),
-                                                           self.query_agent_size_files.format("wal_lsn", "walfile")))
+                                                              self.query_agent_size_files.format("wal_lsn", "walfile")))
         else:
             result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[0][0]),
-                                                           self.query_agent_count_files.format("xlog_location",
-                                                                                               "xlogfile")))
+                                                              self.query_agent_count_files.format("xlog_location",
+                                                                                                  "xlogfile")))
             result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[1][0]),
-                                                           self.query_agent_size_files.format("xlog_location",
-                                                                                              "xlogfile")))
+                                                              self.query_agent_size_files.format("xlog_location",
+                                                                                                 "xlogfile")))
         result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[2][0]),
-                                                       self.query_agent_archived_count))
+                                                          self.query_agent_archived_count))
         result.append("{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + self.Items[3][0]),
-                                                       self.query_agent_failed_count))
+                                                          self.query_agent_failed_count))
         return template_zabbix.key_and_query(result)

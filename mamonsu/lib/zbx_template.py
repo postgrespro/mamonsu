@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+
 import mamonsu.lib.platform as platform
 from mamonsu.lib.const import Template
 from mamonsu.lib.plugin import Plugin
@@ -174,9 +175,9 @@ class ZbxTemplate(object):
         template_data = {'template': self.Template, 'application': self.Application}
         template_data['items'] = self._get_all('items', plugins)
         template_data['discovery_rules'] = self._get_all('discovery_rules', plugins)
-        if Plugin.Type == 'agent':
-            template_data['macros'] = self.agent_macro()
         template_data['macros'] = self._get_all('macros', plugins)
+        if Plugin.Type == 'agent':
+            template_data['macros'] += self.agent_macro()
         template_data['screens'] = self.screen(plugins)
         template_data['triggers'] = self._get_all('triggers', plugins)
         template_data['graphs'] = self._get_all('graphs', plugins)
@@ -301,9 +302,9 @@ class ZbxTemplate(object):
 
     def agent_macro(self, xml_key='macro'):
         result = ''
-        value = {'value': '-qAt -p 5433 -U postgres ', 'macro': "{$PG_CONNINFO}"}
+        value = {'value': '-qAt -p 5432 -U postgres ', 'macro': "{$PG_CONNINFO}"}
         result += '<{1}>{0}</{1}>'.format(self._format_args(self.macro_defaults, value), xml_key)
-        value = {'value': '/opt/pgpro/std-10/bin/psql', 'macro': "{$PG_PATH}"}
+        value = {'value': '/usr/bin/psql', 'macro': "{$PG_PATH}"}
         result += '<{1}>{0}</{1}>'.format(self._format_args(self.macro_defaults, value), xml_key)
         return result
 

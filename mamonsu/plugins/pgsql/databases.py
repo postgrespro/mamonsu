@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from distutils.version import LooseVersion
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 from .pool import Pooler
-from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.plugins.pgsql.autovacuum import Autovacuum
 
 
@@ -147,7 +145,7 @@ class Databases(Plugin):
             }]
         triggers = [{
             "name": "PostgreSQL Databases: invalid indexes in {#DATABASE} (hostname={HOSTNAME} value={ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:pgsql.database.invalid_indexes[{#DATABASE}].last()}&gt;0"}
+            "expression": "{#TEMPLATE:" + items[3]['key'] + ".last()}&gt;0"}
         ]
         return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs, triggers=triggers)
 
@@ -156,9 +154,9 @@ class Databases(Plugin):
                   "{0},echo \"{1}\" | $3 $2 -v p1=\"$1\"".format(self.key_db_size.format("[*]"), self.query_size),
                   "{0},echo \"{1}\" | $3 $2 -v p1=\"$1\"".format(self.key_db_age.format("[*]"), self.query_age),
                   "{0},$3 $2 -d \"$1\" -c \"{1}\"".format(self.key_db_bloating_tables.format("[*]"),
-                                                          self.query_bloating_tables.format(
-                                                              self.plugin_config("bloat_scale"),
-                                                              self.plugin_config("min_rows"))),
+                                                             self.query_bloating_tables.format(
+                                                                 self.plugin_config("bloat_scale"),
+                                                                 self.plugin_config("min_rows"))),
                   "{0},$3 $2 -d \"$1\" -c \"{1}\"".format(self.key_invalid_indexes.format("[*]"),
-                                                          self.query_invalid_indexes)]
+                                                             self.query_invalid_indexes)]
         return template_zabbix.key_and_query(result)
