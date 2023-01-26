@@ -62,7 +62,7 @@ jobs:
         run: bash ./github-actions-tests/zbx_install.sh --zbx-version="${{ matrix.zabbix_version }}"
       - name: Retrieve Zabbix address
         run: |
-          echo "::set-output name=zabbix_address::$(hostname -I | awk '{print $1}')"
+          echo "zabbix_address=$(hostname -I | awk '{print $1}')" >> $GITHUB_OUTPUT
         id: zabbix_address
       - name: Edit Zabbix address in agent.conf
         run: sed -i "s/\(address *= *\).*/\1 ${{ steps.zabbix_address.outputs.zabbix_address }}/" ${{ env.MAMONSU_PATH }}/github-actions-tests/sources/agent_3.5.2.conf
