@@ -106,19 +106,22 @@ class PgHealth(Plugin):
             return []
 
     def triggers(self, template, dashboard=False):
-        result = template.trigger({
-            "name": "PostgreSQL Health: service has been restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".change()}&gt;" +
-                          self.plugin_macros["pg_uptime"][0][1]
-        }) + template.trigger({
-            "name": "PostgreSQL Health: cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_cache, "hit") + ".last()}&lt;" +
-                          self.plugin_macros["cache_hit_ratio_percent"][0][1]
-        }) + template.trigger({
-            "name": "PostgreSQL Health: no ping from PostgreSQL for 3 minutes on {HOSTNAME}",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_ping) + ".nodata(180)}=1"
-        })
-        return result
+        if self.Type == 'mamonsu':
+            result = template.trigger({
+                "name": "PostgreSQL Health: service has been restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})",
+                "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".change()}&gt;" +
+                              self.plugin_macros["pg_uptime"][0][1]
+            }) + template.trigger({
+                "name": "PostgreSQL Health: cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})",
+                "expression": "{#TEMPLATE:" + self.right_type(self.key_cache, "hit") + ".last()}&lt;" +
+                              self.plugin_macros["cache_hit_ratio_percent"][0][1]
+            }) + template.trigger({
+                "name": "PostgreSQL Health: no ping from PostgreSQL for 3 minutes on {HOSTNAME}",
+                "expression": "{#TEMPLATE:" + self.right_type(self.key_ping) + ".nodata(180)}=1"
+            })
+            return result
+        else:
+            return ""
 
     def keys_and_queries(self, template_zabbix):
         # TODO: define another metric key because it duplicates native zabbix agents keys
