@@ -59,8 +59,8 @@ class PgHealth(Plugin):
             "type": Plugin.TYPE.CALCULATED,
             "params": "last(//{blocks_hit})*100/(last(//{blocks_hit})+last(//{blocks_read}))".format(
                 # TODO: hardcoded params
-                blocks_hit=self.right_type("pgsql.blocks.hit{0}"),
-                blocks_read=self.right_type("pgsql.blocks.read{0}"))
+                blocks_hit=self.right_type("pgsql.blocks{0}", "hit"),
+                blocks_read=self.right_type("pgsql.blocks{0}", "read"))
         }) + template.item({
             "name": "PostgreSQL Health: Service Uptime",
             "key": self.right_type(self.key_uptime),
@@ -106,19 +106,22 @@ class PgHealth(Plugin):
             return []
 
     def triggers(self, template, dashboard=False):
-        result = template.trigger({
-            "name": "PostgreSQL Health: service has been restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".change()}&gt;" +
-                          self.plugin_macros["pg_uptime"][0][1]
-        }) + template.trigger({
-            "name": "PostgreSQL Health: cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_cache, "hit") + ".last()}&lt;" +
-                          self.plugin_macros["cache_hit_ratio_percent"][0][1]
-        }) + template.trigger({
-            "name": "PostgreSQL Health: no ping from PostgreSQL for 3 minutes on {HOSTNAME}",
-            "expression": "{#TEMPLATE:" + self.right_type(self.key_ping) + ".nodata(180)}=1"
-        })
-        return result
+        if self.Type == 'mamonsu':
+            result = template.trigger({
+                "name": "PostgreSQL Health: service has been restarted on {HOSTNAME} (uptime={ITEM.LASTVALUE})",
+                "expression": "{#TEMPLATE:" + self.right_type(self.key_uptime) + ".change()}&gt;" +
+                              self.plugin_macros["pg_uptime"][0][1]
+            }) + template.trigger({
+                "name": "PostgreSQL Health: cache hit ratio too low on {HOSTNAME} ({ITEM.LASTVALUE})",
+                "expression": "{#TEMPLATE:" + self.right_type(self.key_cache, "hit") + ".last()}&lt;" +
+                              self.plugin_macros["cache_hit_ratio_percent"][0][1]
+            }) + template.trigger({
+                "name": "PostgreSQL Health: no ping from PostgreSQL for 3 minutes on {HOSTNAME}",
+                "expression": "{#TEMPLATE:" + self.right_type(self.key_ping) + ".nodata(180)}=1"
+            })
+            return result
+        else:
+            return ""
 
     def keys_and_queries(self, template_zabbix):
         # TODO: define another metric key because it duplicates native zabbix agents keys

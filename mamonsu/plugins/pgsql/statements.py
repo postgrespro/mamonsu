@@ -213,25 +213,26 @@ class Statements(Plugin):
 
             for i, item in enumerate(all_items):
                 keys = item[0].split("[")
-                result.append("{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                                  self.query[self.extension + "_bootstrap"].format(
-                                                                      columns=", ".join(
-                                                                          [x[0][x[0].find("[") + 1:x[0].find("]")] for x
-                                                                           in
-                                                                           all_items]), metrics=(", ".join(columns)),
-                                                                      extension_schema=extension_schema) if Pooler.is_bootstraped() else
-                                                                  self.query[self.extension].format(
-                                                                      metrics=(", ".join(columns)),
-                                                                      extension_schema=extension_schema)))
+                result.append("{0}[*],$2 $1 -c \"{1}\" | awk -F  '|' '{{print ${2}}}'".format(
+                    "{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
+                    self.query[self.extension + "_bootstrap"].format(
+                        columns=", ".join([x[0][x[0].find("[") + 1:x[0].find("]")] for x in all_items]),
+                        metrics=(", ".join(columns)),
+                        extension_schema=extension_schema) if Pooler.is_bootstraped() else
+                    self.query[self.extension].format(
+                        metrics=(", ".join(columns)),
+                        extension_schema=extension_schema),
+                    i + 1))
 
             if Pooler.server_version_greater("14"):
                 if self.extension == "pg_stat_statements":
                     for i, item in enumerate(self.Items_pg_14):
                         keys = item[0].split("[")
                         result.append(
-                            "{0}[*],$2 $1 -c \"{1}\"".format("{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                                                self.query_info.format(metrics=(item[1]),
-                                                                                       extension_schema=extension_schema)))
+                            "{0}[*],$2 $1 -c \"{1}\" | awk -F  '|' '{{print ${2}}}'".format(
+                                "{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
+                                self.query_info.format(metrics=(item[1]), extension_schema=extension_schema),
+                            i + 1))
             return template_zabbix.key_and_query(result)
         else:
             return
