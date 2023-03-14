@@ -59,8 +59,8 @@ class PgHealth(Plugin):
             "type": Plugin.TYPE.CALCULATED,
             "params": "last(//{blocks_hit})*100/(last(//{blocks_hit})+last(//{blocks_read}))".format(
                 # TODO: hardcoded params
-                blocks_hit=self.right_type("pgsql.blocks.hit{0}"),
-                blocks_read=self.right_type("pgsql.blocks.read{0}"))
+                blocks_hit=self.right_type("pgsql.blocks{0}", "hit"),
+                blocks_read=self.right_type("pgsql.blocks{0}", "read"))
         }) + template.item({
             "name": "PostgreSQL Health: Service Uptime",
             "key": self.right_type(self.key_uptime),
