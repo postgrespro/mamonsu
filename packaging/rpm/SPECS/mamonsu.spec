@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.2
+Version:        3.5.3
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,12 @@ chown -R mamonsu.mamonsu /var/log/mamonsu
 chown -R mamonsu.mamonsu /etc/mamonsu
 
 %changelog
+* Thu Mar 16 2023 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.3-1
+  - removed the owner check for the mamonsu agent.conf file (previously this was not flexible and only required the user "mamonsu");
+  - removed metrics that conflict with the native Zabbix agent metrics (only in agent mode, in regular mode it works as usual);
+  - added pg_stat_wal queries for native Zabbix agent;
+  - fixed native Zabbix agent queries;
+
 * Tue Aug 16 2022 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.2-1
   - fixed Statements plugin list of metrics creation;
   - fixed Zabbix API requests to fit new Dashboard Template section rules;

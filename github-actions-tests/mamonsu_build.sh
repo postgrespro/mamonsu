@@ -41,7 +41,7 @@ if [ "${OS%:*}" = "centos" ]; then
     python3 setup.py build && python3 setup.py install
     make rpm
     sudo rpm -i ./mamonsu*.rpm
-    cat /mamonsu/github-actions-tests/sources/agent_3.5.2.conf > /etc/mamonsu/agent.conf
+    cat /mamonsu/github-actions-tests/sources/agent_3.5.3.conf > /etc/mamonsu/agent.conf
     systemctl daemon-reload
     systemctl restart mamonsu
     sleep 5
@@ -64,7 +64,7 @@ elif [ "${OS%:*}" = "ubuntu" ]; then
     python3 setup.py build && python3 setup.py install
     make deb
     sudo dpkg -i ./mamonsu*.deb
-    cat /mamonsu/github-actions-tests/sources/agent_3.5.2.conf > /etc/mamonsu/agent.conf
+    cat /mamonsu/github-actions-tests/sources/agent_3.5.3.conf > /etc/mamonsu/agent.conf
     service mamonsu restart
     sleep 5
     echo && echo && echo "mamonsu version:"
