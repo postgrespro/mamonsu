@@ -1,3 +1,9 @@
+mamonsu (3.5.3-1) stable; urgency=low
+  * removed the owner check for the mamonsu agent.conf file (previously this was not flexible and only required the user "mamonsu");
+  * removed metrics that conflict with the native Zabbix agent metrics (only in agent mode, in regular mode it works as usual);
+  * added pg_stat_wal queries for native Zabbix agent;
+  * fixed native Zabbix agent queries;
+
 mamonsu (3.5.2-1) stable; urgency=low
   * fixed Statements plugin list of metrics creation;
   * fixed Zabbix API requests to fit new Dashboard Template section rules;
