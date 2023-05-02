@@ -10,6 +10,11 @@ BEGIN
       SELECT FROM pg_catalog.pg_roles 
       WHERE rolname = '{0}') THEN
       CREATE ROLE {0} LOGIN PASSWORD '{0}';
+      IF EXISTS (
+        SELECT FROM pg_catalog.pg_roles
+        WHERE rolname = 'pg_monitor') THEN
+        GRANT pg_monitor TO {0};
+      END IF;
    END IF;
 END
 $do$;
