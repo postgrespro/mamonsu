@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.3
+Version:        3.5.4
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown -R mamonsu.mamonsu /var/log/mamonsu
 chown -R mamonsu.mamonsu /etc/mamonsu
 
 %changelog
+* Wed May 17 2023 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.4-1
+  - fixed privileges for mamonsu role created by bootstrap;
+
 * Thu Mar 16 2023 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.3-1
   - removed the owner check for the mamonsu agent.conf file (previously this was not flexible and only required the user "mamonsu");
   - removed metrics that conflict with the native Zabbix agent metrics (only in agent mode, in regular mode it works as usual);
