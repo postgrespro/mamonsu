@@ -294,7 +294,7 @@ BEGIN
             WITH lock_table AS (
             SELECT setoflocks.key,
                    json_data.key AS lock_type,
-                   json_data.value::int AS count
+                   json_data.value::bigint AS count
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
                                    FROM ' || extension_schema || '.pgpro_stats_totals()
@@ -323,7 +323,7 @@ BEGIN
             WITH lock_table AS (
             SELECT setoflocks.key,
                    json_data.key AS lock_type,
-                   json_data.value::int AS count
+                   json_data.value::bigint AS count
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
                                    FROM ' || extension_schema || '.pgpro_stats_totals()
@@ -343,7 +343,7 @@ BEGIN
             WITH lock_table AS (
             SELECT setoflocks.key,
                    json_data.key AS lock_type,
-                   json_data.value::int AS count
+                   json_data.value::bigint AS count
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
                                    FROM ' || extension_schema || '.pgpro_stats_totals()
