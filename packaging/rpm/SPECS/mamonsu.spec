@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.4
+Version:        3.5.5
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown -R mamonsu.mamonsu /var/log/mamonsu
 chown -R mamonsu.mamonsu /etc/mamonsu
 
 %changelog
+* Tue Jun 13 2023 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.5-1
+  - fixed types mismatch for pgpro_stats and pg_wait_sampling;
+
 * Wed May 17 2023 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.4-1
   - fixed privileges for mamonsu role created by bootstrap;
 

@@ -1,3 +1,6 @@
+mamonsu (3.5.5-1) stable; urgency=low
+  * fixed types mismatch for pgpro_stats and pg_wait_sampling;
+
 mamonsu (3.5.4-1) stable; urgency=low
   * fixed privileges for mamonsu role created by bootstrap;
 
