@@ -3274,7 +3274,7 @@ Default config:
       </tr>
     </table>
    
-    *Access Exclusive* calculates as summa of locks from `pg_locks` with mode `Access Exclusive`.
+    *Access Exclusive* calculates as summa of locks from `pg_locks` with mode `Access Exclusive`. Metric describes a total number of locks acquired (or waiting) by all queries like DROP TABLE, TRUNCATE, REINDEX, CLUSTER, VACUUM FULL, REFRESH MATERIALIZED VIEW, LOCK TABLE and some forms of ALTER INDEX and ALTER TABLE.  
 
 
 - **Access Share**  
@@ -3307,7 +3307,7 @@ Default config:
       </tr>
     </table>
    
-    *Access Share* calculates as summa of locks from `pg_locks` with mode `Access Share`.
+    *Access Share* calculates as summa of locks from `pg_locks` with mode `Access Share`. Metric describes a total number of locks acquired (or waiting) by queries that only reads tables and do not modify.
 
 
 - **Exclusive**  
@@ -3340,7 +3340,7 @@ Default config:
       </tr>
     </table>
    
-    *Exclusive* calculates as summa of locks from `pg_locks` with mode `Exclusive`.
+    *Exclusive* calculates as summa of locks from `pg_locks` with mode `Exclusive`. Metric describes a total number of locks acquired (or waiting) by all queries like REFRESH MATERIALIZED VIEW CONCURRENTLY.
 
 
 - **Row Exclusive**  
@@ -3373,7 +3373,7 @@ Default config:
       </tr>
     </table>
    
-    *Row Exclusive* calculates as summa of locks from `pg_locks` with mode `Row Exclusive`.
+    *Row Exclusive* calculates as summa of locks from `pg_locks` with mode `Row Exclusive`. Metric describes a total number of locks acquired (or waiting) by all queries like UPDATE, DELETE, INSERT and MERGE.
 
 
 - **Row Share**  
@@ -3406,7 +3406,7 @@ Default config:
       </tr>
     </table>
    
-    *Row Share* calculates as summa of locks from `pg_locks` with mode `Row Share`.
+    *Row Share* calculates as summa of locks from `pg_locks` with mode `Row Share`. Metric describes a total number of locks acquired (or waiting) by all queries like SELECT FOR SHARE and SELECT FOR UPDATE.
 
 
 - **Share Row Exclusive**  
@@ -3439,7 +3439,7 @@ Default config:
       </tr>
     </table>
    
-    *Share Row Exclusive* calculates as summa of locks from `pg_locks` with mode `Share Row Exclusive`.
+    *Share Row Exclusive* calculates as summa of locks from `pg_locks` with mode `Share Row Exclusive`. Metric describes a total number of locks acquired (or waiting) by all queries like CREATE TRIGGER and some forms of ALTER TABLE.
 
 
 - **Share Update Exclusive**  
@@ -3472,7 +3472,7 @@ Default config:
       </tr>
     </table>
    
-    *Share Update Exclusive* calculates as summa of locks from `pg_locks` with mode `Share Update Exclusive`.
+    *Share Update Exclusive* calculates as summa of locks from `pg_locks` with mode `Share Update Exclusive`. Metric describes a total number of locks acquired (or waiting) by all queries like VACUUM, ANALYZE, CREATE INDEX CONCURRENTLY, CREATE STATISTICS, COMMENT ON, REINDEX CONCURRENTLY, and some forms of ALTER INDEX and ALTER TABLE.
 
 
 - **Share**  
@@ -3505,7 +3505,7 @@ Default config:
       </tr>
     </table>
    
-    *Share* calculates as summa of locks from `pg_locks` with mode `Share`.
+    *Share* calculates as summa of locks from `pg_locks` with mode `Share`. Metric describes a total number of locks acquired (or waiting) by all queries like CREATE INDEX.
 
 ### Graphs
 
