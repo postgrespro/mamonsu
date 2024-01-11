@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.5
+Version:        3.5.6
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown -R mamonsu.mamonsu /var/log/mamonsu
 chown -R mamonsu.mamonsu /etc/mamonsu
 
 %changelog
+* Thu Jan 11 2024 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.6-1
+  - changed pg_locks plugin metrics names. Warning: custom user-defined triggers and processing functions may be broken if they use item.name parameter.;
+
 * Tue Jun 13 2023 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.5-1
   - fixed types mismatch for pgpro_stats and pg_wait_sampling;
 
