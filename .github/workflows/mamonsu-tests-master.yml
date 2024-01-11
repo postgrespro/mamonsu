@@ -32,7 +32,9 @@ jobs:
         exclude:
           # excludes PG 15, 16 on CentOS
           - docker_os: 'centos:7'
-            pg_version: ['15', '16']
+            pg_version: '15'
+          - docker_os: 'centos:7'
+            pg_version: '16'
 
     steps:
       - name: Checkout mamonsu repo
