@@ -3250,7 +3250,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL Locks: ALTER TABLE, DROP TABLE, TRUNCATE, REINDEX, CLUSTER, VACUUM FULL, LOCK TABLE</td>
+        <td>PostgreSQL Locks: total number of locks acquired (or waiting) by all queries like DROP TABLE, TRUNCATE, REINDEX, CLUSTER, VACUUM FULL, REFRESH MATERIALIZED VIEW, LOCK TABLE and some forms of ALTER INDEX and ALTER TABLE</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -3283,7 +3283,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL Locks: Read Only Queries</td>
+        <td>PostgreSQL Locks: total number of locks acquired (or waiting) by queries that only reads tables and do not modify</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -3316,7 +3316,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL Locks: Locks From Application or Some Operations on System Catalogs</td>
+        <td>PostgreSQL Locks: total number of locks acquired (or waiting) by all queries like REFRESH MATERIALIZED VIEW CONCURRENTLY</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -3349,7 +3349,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL Locks: Write Queries</td>
+        <td>PostgreSQL Locks: total number of locks acquired (or waiting) by all queries like UPDATE, DELETE, INSERT and MERGE</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -3382,7 +3382,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL Locks: SELECT FOR SHARE and SELECT FOR UPDATE</td>
+        <td>PostgreSQL Locks: total number of locks acquired (or waiting) by all queries like SELECT FOR SHARE and SELECT FOR UPDATE</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -3415,7 +3415,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL Locks: Locks From Application</td>
+        <td>PostgreSQL Locks: total number of locks acquired (or waiting) by all queries like CREATE TRIGGER and some forms of ALTER TABLE</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -3448,7 +3448,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL Locks: VACUUM, ANALYZE, CREATE INDEX CONCURRENTLY</td>
+        <td>PostgreSQL Locks: total number of locks acquired (or waiting) by all queries like VACUUM, ANALYZE, CREATE INDEX CONCURRENTLY, CREATE STATISTICS, COMMENT ON, REINDEX CONCURRENTLY, and some forms of ALTER INDEX and ALTER TABLE</td>
       </tr>
       <tr>
         <th>Key</th>
@@ -3481,7 +3481,7 @@ Default config:
     <table>
       <tr>
         <th>Name</th>
-        <td>PostgreSQL Locks: CREATE INDEX</td>
+        <td>PostgreSQL Locks: total number of locks acquired (or waiting) by all queries like CREATE INDEX</td>
       </tr>
       <tr>
         <th>Key</th>
