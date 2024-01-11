@@ -1,3 +1,6 @@
+mamonsu (3.5.6-1) stable; urgency=low
+  * changed pg_locks plugin metrics names. Warning: custom user-defined triggers and processing functions may be broken if they use item.name parameter.;
+
 mamonsu (3.5.5-1) stable; urgency=low
   * fixed types mismatch for pgpro_stats and pg_wait_sampling;
 
