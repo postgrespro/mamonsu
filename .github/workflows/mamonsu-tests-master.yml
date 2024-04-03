@@ -26,15 +26,27 @@ jobs:
       MAMONSU_PATH: '/home/runner/work/mamonsu/mamonsu/'
     strategy:
       matrix:
-        docker_os: ['ubuntu:20.04', 'centos:7']
-        zabbix_version: ['4.0.44', '4.4.10', '5.0.30', '5.4.12', '6.0.12', '6.2.6']
-        pg_version: ['12', '13', '14', '15', '16']
+        docker_os: ['ubuntu:20.04', 'centos:7', 'centos:8']
+        zabbix_version: ['4.0.44', '4.4.10', '5.0.30', '5.4.12', '6.0.12', '6.2.9']
+        pg_version: ['12', '13', '14', '15']
+        include:
+          - docker_os: 'centos:8'
+            pg_version: '16'
+            zabbix_version: '6.2.9'
         exclude:
           # excludes PG 15, 16 on CentOS
           - docker_os: 'centos:7'
             pg_version: '15'
           - docker_os: 'centos:7'
             pg_version: '16'
+          - docker_os: 'centos:8'
+            pg_version: '12'
+          - docker_os: 'centos:8'
+            pg_version: '13'
+          - docker_os: 'centos:8'
+            pg_version: '14'
+          - docker_os: 'centos:8'
+            pg_version: '15'
 
     steps:
       - name: Checkout mamonsu repo
@@ -42,7 +54,7 @@ jobs:
 
       - name: Install docker-compose
         run: sudo apt-get update
-      - run: sudo rm /usr/local/bin/docker-compose
+      - run: sudo rm -f /usr/local/bin/docker-compose
       - run: curl -L https://github.com/docker/compose/releases/download/${{ env.DOCKER_COMPOSE_VERSION }}/docker-compose-`uname -s`-`uname -m` > docker-compose
       - run: chmod +x docker-compose
       - run: sudo mv docker-compose /usr/local/bin
