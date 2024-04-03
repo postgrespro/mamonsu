@@ -43,13 +43,16 @@ if [ "${OS}" = "centos:7" ]; then
     eval "${PACKAGE_MANAGER_INSTALL} wget"
     eval "${PACKAGE_MANAGER_INSTALL} bc"
     eval "${PACKAGE_MANAGER_INSTALL} unzip"
-    REPO=${PACKAGE_MANAGER_INSTALL}" https://download.postgresql.org/pub/repos/yum/reporpms/EL-"$(echo ${OS} | sed -r 's/^[^0-9]*([0-9]+).*/\1/')"-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+    eval "${PACKAGE_MANAGER_INSTALL} https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+    REPO=${PACKAGE_MANAGER_INSTALL}" https://download.postgresql.org/pub/repos/yum/reporpms/EL-"$(echo ${OS} | sed -r 's/^[^0-9]*([0-9]+).*/\1/')"-x86_64/pgdg-redhat-repo-latest.noarch.rpm"\
 
     # run tests
     sudo bash /mamonsu/github-actions-tests/pg_install.sh --os="${OS}" --pmi="${PACKAGE_MANAGER_INSTALL}" --repo="${REPO}" --pg-version="${PG_VERSION}"
 
 elif [ "${OS}" = "centos:8" ]; then
     # install and set up components missing in docker image (sudo, wget, bc, unzip)
+    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
     dnf update -y
     dnf install -y sudo
     PACKAGE_MANAGER_INSTALL="sudo dnf -y install"
@@ -57,6 +60,7 @@ elif [ "${OS}" = "centos:8" ]; then
     eval "${PACKAGE_MANAGER_INSTALL} wget"
     eval "${PACKAGE_MANAGER_INSTALL} bc"
     eval "${PACKAGE_MANAGER_INSTALL} unzip"
+    eval "${PACKAGE_MANAGER_INSTALL} https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm"
     REPO=${PACKAGE_MANAGER_INSTALL}" https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm; sudo dnf -qy module disable postgresql"
 
     # run tests
