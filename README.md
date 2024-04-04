@@ -17,8 +17,8 @@ Supported platforms:
 - FreeBSD;
 - Windows;
 
-Supported Zabbix server versions: 3.0 - 6.0  
-Supported PostgreSQL versions: 9.5 - 14 
+Supported Zabbix server versions: 4.0.44 - 6.4.13
+Supported PostgreSQL versions: 12 - 16
 ***
 
 ***Table of Contents***
