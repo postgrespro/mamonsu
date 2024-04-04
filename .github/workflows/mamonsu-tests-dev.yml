@@ -33,6 +33,9 @@ jobs:
           - docker_os: 'centos:8'
             pg_version: '16'
             zabbix_version: '6.2.9'
+          - docker_os: 'centos:8'
+            pg_version: '16'
+            zabbix_version: '6.4.13'
         exclude:
           - docker_os: 'centos:8'
             pg_version: '12'

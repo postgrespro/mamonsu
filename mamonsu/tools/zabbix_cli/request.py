@@ -5,6 +5,7 @@ import logging
 from collections import OrderedDict
 
 
+from distutils.version import LooseVersion
 import urllib.request as urllib2
 
 
@@ -13,20 +14,22 @@ class Request(object):
     def __init__(self, url, user, passwd):
         self._url, self._user, self._passwd = url, user, passwd
         self._id, self._auth_tocken = 0, None
-    
+        self._api_version = self.post(method='apiinfo.version', params=[])
+
     def set_user(self, user):
         self._user=user
-        
+
     def set_passwd(self, passwd):
         self._passwd=passwd
-        
+
     def _auth(self):
         if self._auth_tocken is None:
             if not self._user:
                 return None
+            user_field = 'user' if LooseVersion(self._api_version) < LooseVersion('6.4') else 'username'
             self._auth_tocken = self.post(
                 'user.login',
-                {'user': self._user, 'password': self._passwd})
+                {user_field: self._user, 'password': self._passwd})
         return self._auth_tocken
 
     def _get_id(self):
