@@ -37,8 +37,6 @@ class Connections(Plugin):
        WHERE (backend_type NOT IN ('{0}'));
     """.format("', '".join(default_backend_types))
 
-    Max_connections = None
-
     query_agent = """
     SELECT count(*)
     FROM pg_catalog.pg_stat_activity
@@ -125,14 +123,13 @@ class Connections(Plugin):
                     "(backend_type = 'client backend' OR backend_type = 'parallel worker')" if Pooler.server_version_greater(
                         "10.0") else "state IS NOT NULL"))
         zbx.send("pgsql.connections[waiting]", int(result[0][0]))
-        if self.Max_connections is None:
-            result = Pooler.query("""
-            SELECT setting
-            FROM pg_settings
-            WHERE name = 'max_connections';
-            """)
-            self.Max_connections = result[0][0]
-        zbx.send("pgsql.connections[max_connections]", int(self.Max_connections))
+
+        result = Pooler.query("""
+        SELECT setting
+        FROM pg_settings
+        WHERE name = 'max_connections';
+        """)
+        zbx.send("pgsql.connections[max_connections]", int(result[0][0]))
 
         if Pooler.server_version_greater("10.0"):
             result = Pooler.query(self.query_other_connections)
