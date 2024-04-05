@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.6
+Version:        3.5.7
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,11 @@ chown -R mamonsu.mamonsu /var/log/mamonsu
 chown -R mamonsu.mamonsu /etc/mamonsu
 
 %changelog
+* Fri Apr 5 2024 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.7-1
+  - added support for Zabbix 6.4 API: handle deprecated parameters for auth request;
+  - removed caching of pgsql.connections[max_connections] metric;
+  - update default logrotate rules;
+
 * Thu Jan 11 2024 Alexandra Kuznetsova <a.kuznetsova@postgrespro.ru>  - 3.5.6-1
   - changed pg_locks plugin metrics names. Warning: custom user-defined triggers and processing functions may be broken if they use item.name parameter.;
 

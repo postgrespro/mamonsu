@@ -1,16 +1,3 @@
-/var/log/mamonsu/agent.log {
-    daily
-    rotate 7
-    compress
-    missingok
-    notifempty
-    create 0640 mamonsu mamonsu
-    sharedscripts
-    postrotate
-        [ -e /var/run/mamonsu/mamonsu.pid ] && /etc/init.d/mamonsu restart >/dev/null
-    endscript
-}
-
 /var/log/mamonsu/mamonsu.log {
     daily
     rotate 7
@@ -20,15 +7,11 @@
     create 0640 mamonsu mamonsu
     sharedscripts
     postrotate
-        [ -e /var/run/mamonsu/mamonsu.pid ] && /etc/init.d/mamonsu restart >/dev/null
+        if [ -d "/run/systemd/system" -a -x "/bin/systemctl" ]; then
+            /bin/systemctl condrestart mamonsu >/dev/null
+        else
+            /etc/init.d/mamonsu condrestart >/dev/null
+        fi
     endscript
 }
 
-/var/log/mamonsu/localhost.log {
-    daily
-    rotate 7
-    compress
-    missingok
-    notifempty
-    create 0640 mamonsu mamonsu
-}
