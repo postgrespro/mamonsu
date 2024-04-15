@@ -4,7 +4,7 @@ from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 import os
 from .pool import Pooler
 import re
-from distutils.version import LooseVersion
+from pkg_resources import packaging
 import mamonsu.lib.platform as platform
 import posix
 
@@ -91,7 +91,7 @@ class MemoryLeakDiagnostic(Plugin):
         for row in Pooler.query(query=self.query):
             pids.append(row[0])
 
-        if (LooseVersion(self.os_release) < LooseVersion("4.5")
+        if (packaging.version.parse(self.os_release) < packaging.version.parse("4.5")
             and not (self.os_name == "centos" and self.os_version == "7")) \
                 or (not self.os_name and not self.os_version):
             for pid in pids:

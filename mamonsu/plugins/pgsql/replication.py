@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
-from distutils.version import LooseVersion
+from pkg_resources import packaging
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
 
@@ -201,7 +201,7 @@ class Replication(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if LooseVersion(self.VersionPG) < LooseVersion("10"):
+        if packaging.version.parse(self.VersionPG) < packaging.version.parse("10"):
             result.append("{0},$2 $1 -c \"{1}\"".format("pgsql.replication_lag.sec[*]",
                                                            self.query_agent_replication_lag.format(
                                                                self.plugin_config("interval"), "xlog_receive_location",

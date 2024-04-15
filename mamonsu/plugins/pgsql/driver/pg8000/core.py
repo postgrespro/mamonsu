@@ -2,7 +2,7 @@ import socket
 from collections import defaultdict, deque
 from datetime import datetime as Datetime
 from decimal import Decimal
-from distutils.version import LooseVersion
+from pkg_resources import packaging
 from hashlib import md5
 from itertools import count, islice
 from struct import Struct
@@ -1416,11 +1416,11 @@ class Connection():
                 pass
 
         elif key == b"server_version":
-            self._server_version = LooseVersion(value.decode('ascii'))
-            if self._server_version < LooseVersion('8.2.0'):
+            self._server_version = packaging.version.parse(value.decode('ascii'))
+            if self._server_version < packaging.version.parse('8.2.0'):
                 self._commands_with_count = (
                     b"INSERT", b"DELETE", b"UPDATE", b"MOVE")
-            elif self._server_version < LooseVersion('9.0.0'):
+            elif self._server_version < packaging.version.parse('9.0.0'):
                 self._commands_with_count = (
                     b"INSERT", b"DELETE", b"UPDATE", b"MOVE", b"FETCH",
                     b"COPY")
