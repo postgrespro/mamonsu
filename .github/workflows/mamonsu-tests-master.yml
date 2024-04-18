@@ -42,6 +42,9 @@ jobs:
           - docker_os: 'ubuntu:20.04'
             pg_version: '15'
             zabbix_version: '6.4.13'
+          - docker_os: 'ubuntu:24.04'
+            pg_version: '16'
+            zabbix_version: '6.4.13'
         exclude:
           # excludes PG 15, 16 on CentOS
           - docker_os: 'centos:7'
