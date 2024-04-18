@@ -1416,7 +1416,12 @@ class Connection():
                 pass
 
         elif key == b"server_version":
-            self._server_version = packaging.version.parse(value.decode('ascii'))
+            # LooseVersion() from distutils was able to handle non-relevant strings
+            # in version (like "16.2 (Ubuntu 16.2-1.pgdg20.04+1)")
+            # since distutils became deprecated we need this hack hoping that
+            # postgres package maintainers won't come up with something more exotic
+            string_version = value.decode('ascii').split(' ')[0]
+            self._server_version = packaging.version.parse(string_version)
             if self._server_version < packaging.version.parse('8.2.0'):
                 self._commands_with_count = (
                     b"INSERT", b"DELETE", b"UPDATE", b"MOVE")

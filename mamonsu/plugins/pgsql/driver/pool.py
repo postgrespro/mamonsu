@@ -124,8 +124,10 @@ class Pool(object):
         db = self._normalize_db(db)
         if db in self._cache["server_version"]["storage"]:
             return self._cache["server_version"]["storage"][db]
+
+        version_string = self.query("show server_version", db)[0][0]
         result = bytes(
-            self.query("show server_version", db)[0][0], "utf-8")
+            version_string.split(" ")[0], "utf-8")
         self._cache["server_version"]["storage"][db] = "{0}".format(
             result.decode("ascii"))
         return self._cache["server_version"]["storage"][db]
