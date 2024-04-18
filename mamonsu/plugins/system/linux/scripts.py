@@ -14,13 +14,13 @@ contains() {
 
 while getopts "s::a:sj:uphvt:" OPTION; do
     case ${OPTION} in
- 
+
     j)
             JSON=1
             JSON_ATTR=(${OPTARG})
             IFS="${IFS_DEFAULT}"
             ;;
-    
+
     esac
 done
 
@@ -46,10 +46,10 @@ if [[ ${JSON} -eq 1 ]]; then
     count=1
     while read line; do
         values=(${line})
-            if [ $(contains "${list_str}" "," "${values[8]}") -eq 0 ]; then    
+            if [ $(contains "${list_str}" "," "${values[8]}") -eq 0 ]; then
             if [[ ${output} != " " ]]; then
                 echo "      ${output}"
-                fi        
+                fi
                  output='{ '
                  output+='"'{#${JSON_ATTR[0]}}'"'
                  output+=':'
@@ -57,7 +57,7 @@ if [[ ${JSON} -eq 1 ]]; then
                  output+=' }'
                  tmp="${output}"
                  output="${output},"
-            fi        
+            fi
         let "count=count+1"
     done <<< "${rval}"
     echo "      ${tmp}"
@@ -76,22 +76,22 @@ exit ${rcode}
  IFS_DEFAULT="${IFS}"
  #
  #################################################################################
- 
- 
+
+
  while getopts "s::a:sj:uphvt:" OPTION; do
      case ${OPTION} in
- 
+
          j)
              JSON=1
              JSON_ATTR=(${OPTARG})
              IFS="${IFS_DEFAULT}"
              ;;
-    
+
      esac
  done
- 
+
  #################################################################################
- 
+
  output=" "
  rval=`cat /proc/diskstats`
  if [[ ${JSON} -eq 1 ]]; then
@@ -102,9 +102,9 @@ exit ${rcode}
      while read line; do
         if [[ ${line} != '' ]]; then
              IFS="|" values=(${line})
- 
-             if [[ $count == 1 ]]; then    # for loop0 case          
-                 new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+
+             if [[ $count == 1 ]]; then    # for loop0 case
+                 new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                  new_value3=`echo "$new_value2" | cut -d " " -f 3`
                  read_op=`echo "$new_value2" | cut -d " " -f 4`
                  read_sc=`echo "$new_value2" | cut -d " " -f 6`
@@ -112,7 +112,7 @@ exit ${rcode}
                  write_sc=`echo "$new_value2" | cut -d " " -f 10`
                  ticks=`echo "$new_value2" | cut -d " " -f 13`
              else
-                 new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+                 new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                  new_value3=`echo "$new_value2" | cut -d " " -f 4`
                  read_op=`echo "$new_value2" | cut -d " " -f 5`
                  read_sc=`echo "$new_value2" | cut -d " " -f 7`
@@ -123,8 +123,8 @@ exit ${rcode}
              if [[ $new_value3 != *"loop"* ]]  &&  [[ $new_value3 != *"ram"* ]] && [[ $new_value3 != *[0-9]* ]]; then
                  if [[ ${output} != " " ]]; then
                  echo "      ${output}"
-                 fi 
-                 value=$(($read_op+$value)) 
+                 fi
+                 value=$(($read_op+$value))
                   output='{ '
                   output+='"'{#${JSON_ATTR[0]}}'"'
                   output+=':'
@@ -142,7 +142,7 @@ exit ${rcode}
  else
      echo "${rval:-0}"
  fi
- 
+
  exit ${rcode}
  """,
 
@@ -156,26 +156,26 @@ while read line; do
        if [[ ${line} != '' ]]; then
             IFS="|" values=(${line})
 
-            if [[ $count == 1 ]]; then    # for loop0 case          
-                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+            if [[ $count == 1 ]]; then    # for loop0 case
+                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                 # echo $new_value2
                 new_value3=`echo "$new_value2" | cut -d " " -f 3`
                 read_op=`echo "$new_value2" | cut -d " " -f 4`
-                
+
             else
-                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                 new_value3=`echo "$new_value2" | cut -d " " -f 4`
                 read_op=`echo "$new_value2" | cut -d " " -f 5`
-                
+
             fi
             re='^[0-9]+$'
-            has_digits='no'    
+            has_digits='no'
             if [[ "${new_value3: -1}" =~ $re ]]; then
                   has_digits='yes'
             fi
             if [[ $new_value3 != *"loop"* ]]  &&  [[ $new_value3 != *"ram"* ]] &&  [[ $has_digits == 'no' ]]; then
-                value=$(($read_op+$value)) 
-                 
+                value=$(($read_op+$value))
+
 
             fi
           fi
@@ -195,23 +195,23 @@ while read line; do
        if [[ ${line} != '' ]]; then
             IFS="|" values=(${line})
 
-            if [[ $count == 1 ]]; then    # for loop0 case          
-                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+            if [[ $count == 1 ]]; then    # for loop0 case
+                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                 # echo $new_value2
-                new_value3=`echo "$new_value2" | cut -d " " -f 3`               
+                new_value3=`echo "$new_value2" | cut -d " " -f 3`
                 read_sc=`echo "$new_value2" | cut -d " " -f 6`
             else
-                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                 new_value3=`echo "$new_value2" | cut -d " " -f 4`
-                read_sc=`echo "$new_value2" | cut -d " " -f 7`                
+                read_sc=`echo "$new_value2" | cut -d " " -f 7`
             fi
             re='^[0-9]+$'
-            has_digits='no'    
+            has_digits='no'
             if [[ "${new_value3: -1}" =~ $re ]]; then
                   has_digits='yes'
             fi
             if [[ $new_value3 != *"loop"* ]]  &&  [[ $new_value3 != *"ram"* ]] &&  [[ $has_digits == 'no' ]]; then
-                value=$(($read_sc+$value)) 
+                value=$(($read_sc+$value))
             fi
           fi
     let "count=count+1"
@@ -230,28 +230,28 @@ while read line; do
        if [[ ${line} != '' ]]; then
             IFS="|" values=(${line})
 
-            if [[ $count == 1 ]]; then    # for loop0 case          
-                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
-                new_value3=`echo "$new_value2" | cut -d " " -f 3`                
+            if [[ $count == 1 ]]; then    # for loop0 case
+                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
+                new_value3=`echo "$new_value2" | cut -d " " -f 3`
                 write_op=`echo "$new_value2" | cut -d " " -f 8`
-                
+
             else
-                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                 new_value3=`echo "$new_value2" | cut -d " " -f 4`
-                
+
                 write_op=`echo "$new_value2" | cut -d " " -f 9`
-                
+
             fi
             re='^[0-9]+$'
-            has_digits='no'    
+            has_digits='no'
             if [[ "${new_value3: -1}" =~ $re ]]; then
                   has_digits='yes'
             fi
             if [[ $new_value3 != *"loop"* ]]  &&  [[ $new_value3 != *"ram"* ]] &&  [[ $has_digits == 'no' ]];then
-                #echo $write_op 
+                #echo $write_op
 
-                value=$(($write_op+$value)) 
-                 
+                value=$(($write_op+$value))
+
 
             fi
           fi
@@ -270,25 +270,25 @@ while read line; do
        if [[ ${line} != '' ]]; then
             IFS="|" values=(${line})
 
-            if [[ $count == 1 ]]; then    # for loop0 case          
-                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+            if [[ $count == 1 ]]; then    # for loop0 case
+                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                 new_value3=`echo "$new_value2" | cut -d " " -f 3`
                 write_sc=`echo "$new_value2" | cut -d " " -f 10`
             else
-                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                 new_value3=`echo "$new_value2" | cut -d " " -f 4`
                 write_sc=`echo "$new_value2" | cut -d " " -f 11`
             fi
             re='^[0-9]+$'
-            has_digits='no'    
+            has_digits='no'
             if [[ "${new_value3: -1}" =~ $re ]]; then
                   has_digits='yes'
             fi
             #echo $values
             if [[ $new_value3 != *"loop"* ]]  &&  [[ $new_value3 != *"ram"* ]] &&  [[ $has_digits == 'no' ]]; then
-                #echo $write_sc 
+                #echo $write_sc
                 #echo $new_value3
-                value=$(($write_sc+$value)) 
+                value=$(($write_sc+$value))
             fi
           fi
     let "count=count+1"
@@ -302,7 +302,7 @@ echo $(($value*512))
 #################################################################################
 while getopts "s::a:sj:uphvt:" OPTION; do
     case ${OPTION} in
-   
+
         j)
             JSON=1
             JSON_ATTR=(${OPTARG})
@@ -323,7 +323,7 @@ if [[ ${JSON} -eq 1 ]]; then
             if [[ "${values[0]}" != *"lo:"* ]] && [[ "${#values[@]}">1 ]]; then
             if [[ ${output} != " " ]] && [[ $count > 4 ]]; then
                 echo "      ${output}"
-                fi        
+                fi
                  output='{ '
                  output+='"'{#${JSON_ATTR[0]}}'"'
                  output+=':'
@@ -332,7 +332,7 @@ if [[ ${JSON} -eq 1 ]]; then
                  output+=' }'
                  tmp="${output}"
                  output="${output},"
-            fi        
+            fi
         let "count=count+1"
     done <<< "${rval}"
     echo "      ${tmp}"
@@ -356,19 +356,19 @@ while read line; do
        if [[ ${line} != '' ]]; then
             IFS="|" values=(${line})
 
-            if [[ $count == 1 ]]; then    # for loop0 case          
-                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+            if [[ $count == 1 ]]; then    # for loop0 case
+                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                 # echo $new_value2
                 new_value3=`echo "$new_value2" | cut -d " " -f 3`
                 ticks=`echo "$new_value2" | cut -d " " -f 13`
             else
-                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \+/ /gp'`
+                new_value2=`echo ${values[0]} | sed -n '/[0-9]/s/ \\+/ /gp'`
                 new_value3=`echo "$new_value2" | cut -d " " -f 4`
                 ticks=`echo "$new_value2" | cut -d " " -f 14`
             fi
             if [[ $new_value3 != *"loop"* ]]  &&  [[ $new_value3 != *"ram"* ]]; then
-                #echo $ticks 
-                value=$(($ticks+$value)) 
+                #echo $ticks
+                value=$(($ticks+$value))
             fi
           fi
     let "count=count+1"

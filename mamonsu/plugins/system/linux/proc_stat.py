@@ -16,7 +16,7 @@ class ProcStat(Plugin):
     # alert fork-rate
     ForkRate = 500
     # /proc/stat all cpu line
-    re_stat = re.compile("cpu\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)")
+    re_stat = re.compile(r"cpu\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)")
 
     ProcessItems = [
         # key, zbx_key, name, delta, color, side
