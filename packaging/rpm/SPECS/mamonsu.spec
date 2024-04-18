@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.7
+Version:        3.5.8
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown -R mamonsu.mamonsu /var/log/mamonsu
 chown -R mamonsu.mamonsu /etc/mamonsu
 
 %changelog
+* Thu Apr 18 2024 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.8-1
+  - Prepare for python 3.12: remove deprecated distutils imports;
+
 * Fri Apr 5 2024 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.7-1
   - added support for Zabbix 6.4 API: handle deprecated parameters for auth request;
   - removed caching of pgsql.connections[max_connections] metric;
