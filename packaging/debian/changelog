@@ -1,3 +1,6 @@
+mamonsu (3.5.8-1) stable; urgency=low
+  * Prepare for python 3.12: remove deprecated distutils imports;
+
 mamonsu (3.5.7-1) stable; urgency=low
   * added support for Zabbix 6.4 API: handle deprecated parameters for auth request;
   * removed caching of pgsql.connections[max_connections] metric;

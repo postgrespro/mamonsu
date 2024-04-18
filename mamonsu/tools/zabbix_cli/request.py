@@ -5,7 +5,7 @@ import logging
 from collections import OrderedDict
 
 
-from distutils.version import LooseVersion
+from pkg_resources import packaging
 import urllib.request as urllib2
 
 
@@ -26,7 +26,7 @@ class Request(object):
         if self._auth_tocken is None:
             if not self._user:
                 return None
-            user_field = 'user' if LooseVersion(self._api_version) < LooseVersion('6.4') else 'username'
+            user_field = 'user' if packaging.version.parse(self._api_version) < packaging.version.parse('6.4') else 'username'
             self._auth_tocken = self.post(
                 'user.login',
                 {user_field: self._user, 'password': self._passwd})

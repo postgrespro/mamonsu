@@ -5,9 +5,9 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 class Memory(Plugin):
     AgentPluginType = "sys"
 
-    query_agent = "cat /proc/meminfo | awk '/^{0}\:/ "
-    query_agent_used = "MemTotal=$(cat /proc/meminfo | awk '/MemTotal\:/ { print $2 }'); " \
-                       "SUM=$(cat /proc/meminfo | awk '/(MemFree|Buffers|(Swap)?Cached|Slab|PageTables)\:/ " \
+    query_agent = r"cat /proc/meminfo | awk '/^{0}\:/ "
+    query_agent_used = r"MemTotal=$(cat /proc/meminfo | awk '/MemTotal\:/ { print $2 }'); " \
+                       r"SUM=$(cat /proc/meminfo | awk '/(MemFree|Buffers|(Swap)?Cached|Slab|PageTables)\:/ " \
                        "{ SUM += $2 } END {print SUM}'); echo $((($MemTotal-$SUM)*1024))"
     query_agent_swap = "expr `grep -Ei 'Swap(Total|Free)' /proc/meminfo | awk '{print $2 * 1024}' | paste -s -d '-' " \
                        "| sed -E 's/-/ - /g'` "

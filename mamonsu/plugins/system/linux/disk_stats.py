@@ -23,7 +23,7 @@ class DiskStats(Plugin):
     # Track only physical devices without logical partitions
     OnlyPhysicalDevices = True
 
-    re_stat = re.compile("^(?:\s+\d+){2}\s+([\w\d]+) (.*)$")
+    re_stat = re.compile(r"^(?:\s+\d+){2}\s+([\w\d]+) (.*)$")
 
     # rd_ios rd_merges rd_sectors rd_ticks
     # wr_ios wr_merges wr_sectors wr_ticks
@@ -43,7 +43,7 @@ class DiskStats(Plugin):
                 if m is None:
                     continue
                 dev, val = m.group(1), m.group(2)
-                if self.OnlyPhysicalDevices and re.search("\d+$", dev):  # get drive name without digits at the end
+                if self.OnlyPhysicalDevices and re.search(r"\d+$", dev):  # get drive name without digits at the end
                     continue
                 val = [int(x) for x in val.split()]
                 read_op, read_sc, write_op, write_sc, ticks = val[0], val[2], val[4], val[6], val[9]

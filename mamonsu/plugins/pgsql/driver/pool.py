@@ -1,4 +1,4 @@
-from distutils.version import LooseVersion
+from pkg_resources import packaging
 from .connection import Connection, ConnectionInfo
 
 
@@ -124,27 +124,29 @@ class Pool(object):
         db = self._normalize_db(db)
         if db in self._cache["server_version"]["storage"]:
             return self._cache["server_version"]["storage"][db]
+
+        version_string = self.query("show server_version", db)[0][0]
         result = bytes(
-            self.query("show server_version", db)[0][0], "utf-8")
+            version_string.split(" ")[0], "utf-8")
         self._cache["server_version"]["storage"][db] = "{0}".format(
             result.decode("ascii"))
         return self._cache["server_version"]["storage"][db]
 
     def server_version_greater(self, version, db=None):
         db = self._normalize_db(db)
-        return self.server_version(db) >= LooseVersion(version)
+        return packaging.version.parse(self.server_version(db)) >= packaging.version.parse(version)
 
     def server_version_less(self, version, db=None):
         db = self._normalize_db(db)
-        return self.server_version(db) <= LooseVersion(version)
+        return packaging.version.parse(self.server_version(db)) <= packaging.version.parse(version)
 
     def bootstrap_version_greater(self, version):
-        return str(
-            self._cache["bootstrap"]["version"]) >= LooseVersion(version)
+        return packaging.version.parse(
+                str(self._cache["bootstrap"]["version"])) >= packaging.version.parse(version)
 
     def bootstrap_version_less(self, version):
-        return str(
-            self._cache["bootstrap"]["version"]) <= LooseVersion(version)
+        return packaging.version.parse(
+                str(self._cache["bootstrap"]["version"])) <= packaging.version.parse(version)
 
     def in_recovery(self, db=None):
         db = self._normalize_db(db)
@@ -166,8 +168,8 @@ class Pool(object):
         self._cache["bootstrap"]["counter"] = 0
         # TODO: изменить на нормальное название, 'config' слишком общее
         sql = """
-        SELECT count(*) 
-        FROM pg_catalog.pg_class 
+        SELECT count(*)
+        FROM pg_catalog.pg_class
         WHERE relname = 'config';
         """
         result = int(self.query(sql, db)[0][0])
@@ -175,7 +177,7 @@ class Pool(object):
         if self._cache["bootstrap"]["storage"][db]:
             self._connections[db].log.info("Found mamonsu bootstrap")
             sql = """
-            SELECT max(version) 
+            SELECT max(version)
             FROM mamonsu.config;
             """
             self._cache["bootstrap"]["version"] = self.query(sql, db)[0][0]
@@ -227,8 +229,8 @@ class Pool(object):
     def extension_installed(self, ext, db=None):
         db = self._normalize_db(db)
         result = self.query("""
-        SELECT count(*) 
-        FROM pg_catalog.pg_extension 
+        SELECT count(*)
+        FROM pg_catalog.pg_extension
         WHERE lower(extname) = lower('{0}');
         """.format(ext), db)
         return (int(result[0][0])) == 1
@@ -239,9 +241,9 @@ class Pool(object):
             return self._cache["extension_schema"][extension][db]
         try:
             self._cache["extension_schema"][extension][db] = self.query("""
-            SELECT n.nspname 
-            FROM pg_extension e 
-            JOIN pg_namespace n ON e.extnamespace = n.oid 
+            SELECT n.nspname
+            FROM pg_extension e
+            JOIN pg_namespace n ON e.extnamespace = n.oid
             WHERE e.extname = '{0}'
             """.format(extension), db)[0][0]
             return self._cache["extension_schema"][extension][db]
@@ -250,7 +252,7 @@ class Pool(object):
 
     def databases(self):
         result, databases = self.query("""
-        SELECT datname 
+        SELECT datname
         FROM pg_catalog.pg_database;
         """), []
         for row in result:
@@ -309,13 +311,13 @@ class Pool(object):
         db = self._normalize_db(db)
         if self.is_bootstraped() and self.bootstrap_version_greater("2.3.4"):
             result = self.query("""
-            SELECT * 
+            SELECT *
             FROM mamonsu.get_sys_param('{0}');
             """.format(param))[0][0]
         else:
             result = self.query("""
-            SELECT setting 
-            FROM pg_catalog.pg_settings 
+            SELECT setting
+            FROM pg_catalog.pg_settings
             WHERE name = '{0}';
             """.format(param), db)[0][0]
         return result
