@@ -36,7 +36,7 @@ start() {
   fi
   echo -n 'Starting service' >&2
   su -c "$COMMAND" $RUNAS -s /bin/sh &
-  echo -e '\t\tOK' >&2
+  echo '\t\tOK' >&2
 }
 
 stop() {
@@ -46,7 +46,7 @@ stop() {
   fi
   echo -n 'Stopping service' >&2
   kill -15 $(cat "$PIDFILE") && rm -f "$PIDFILE"
-  echo -e '\t\tOK' >&2
+  echo '\t\tOK' >&2
 }
 
 status() {
