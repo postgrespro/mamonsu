@@ -1,6 +1,9 @@
-from pkg_resources import packaging
 from .connection import Connection, ConnectionInfo
 
+try:
+    from pkg_resources import packaging
+except ImportError:
+    import packaging.version
 
 class Pool(object):
     ExcludeDBs = ["template0", "template1"]

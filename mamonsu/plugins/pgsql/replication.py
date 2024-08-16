@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
-from pkg_resources import packaging
 from .pool import Pooler
 from mamonsu.lib.zbx_template import ZbxTemplate
+
+try:
+    from pkg_resources import packaging
+except ImportError:
+    import packaging.version
 
 NUMBER_NON_ACTIVE_SLOTS = 0
 
