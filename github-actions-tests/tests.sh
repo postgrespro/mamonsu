@@ -69,7 +69,7 @@ REPO
     eval "${PACKAGE_MANAGER_INSTALL} wget"
     eval "${PACKAGE_MANAGER_INSTALL} bc"
     eval "${PACKAGE_MANAGER_INSTALL} unzip"
-    eval "${PACKAGE_MANAGER_INSTALL} https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+    eval "${PACKAGE_MANAGER_INSTALL} https://archives.fedoraproject.org/pub/archive/epel/7/x86_64/Packages/e/epel-release-7-14.noarch.rpm"
     REPO=${PACKAGE_MANAGER_INSTALL}" https://download.postgresql.org/pub/repos/yum/reporpms/EL-"$(echo ${OS} | sed -r 's/^[^0-9]*([0-9]+).*/\1/')"-x86_64/pgdg-redhat-repo-latest.noarch.rpm"\
 
     # run tests
