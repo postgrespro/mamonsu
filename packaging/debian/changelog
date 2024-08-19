@@ -1,3 +1,7 @@
+mamonsu (3.5.9-1) stable; urgency=low
+  * Run on systems with latest setuptools installed (>67.7.2);
+  * Drop using dotted user:group specification in RPM pre-install stage;
+
 mamonsu (3.5.8-1) stable; urgency=low
   * Prepare for python 3.12: remove deprecated distutils imports;
 

@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.8
+Version:        3.5.9
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,10 @@ chown -R mamonsu:mamonsu /var/log/mamonsu
 chown -R mamonsu:mamonsu /etc/mamonsu
 
 %changelog
+* Mon Aug 19 2024 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.9-1
+  - Run on systems with latest setuptools installed (>67.7.2);
+  - Drop using dotted user:group specification in RPM pre-install stage;
+
 * Thu Apr 18 2024 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.8-1
   - Prepare for python 3.12: remove deprecated distutils imports;
 
