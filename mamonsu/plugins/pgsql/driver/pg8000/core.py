@@ -2,11 +2,15 @@ import socket
 from collections import defaultdict, deque
 from datetime import datetime as Datetime
 from decimal import Decimal
-from pkg_resources import packaging
 from hashlib import md5
 from itertools import count, islice
 from struct import Struct
 from warnings import warn
+
+try:
+    from pkg_resources import packaging
+except ImportError:
+    import packaging.version
 
 from mamonsu.plugins.pgsql.driver.pg8000 import converters
 from .exceptions import (

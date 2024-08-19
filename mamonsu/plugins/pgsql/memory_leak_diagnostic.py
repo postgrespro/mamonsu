@@ -4,10 +4,13 @@ from mamonsu.plugins.pgsql.plugin import PgsqlPlugin as Plugin
 import os
 from .pool import Pooler
 import re
-from pkg_resources import packaging
 import mamonsu.lib.platform as platform
 import posix
 
+try:
+    from pkg_resources import packaging
+except ImportError:
+    import packaging.version
 
 class MemoryLeakDiagnostic(Plugin):
     DEFAULT_CONFIG = {
