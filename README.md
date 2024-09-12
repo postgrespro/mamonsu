@@ -179,7 +179,7 @@ Pre-built _mamonsu_ packages are provided in official Postgres Pro repository: [
 
 **Install from repository using script:**  
 ```shell
-$ wget https://repo.postgrespro.ru/mamonsu/keys/pgpro-repo-add.sh
+$ wget https://repo.postgrespro.ru/mamonsu/mamonsu/keys/pgpro-repo-add.sh
 $ sudo chmod 700 ./pgpro-repo-add.sh
 $ sudo ./pgpro-repo-add.sh
 ```   
