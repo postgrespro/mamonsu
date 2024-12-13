@@ -42,8 +42,9 @@ if [ "${OS%:*}" = "centos" ]; then
     make rpm
     sudo rpm -i ./mamonsu*.rpm
     cat /mamonsu/github-actions-tests/sources/agent_3.5.9.conf > /etc/mamonsu/agent.conf
-    systemctl daemon-reload
-    systemctl restart mamonsu
+    # ensuring mamonsu can actually start
+    sudo su -s /bin/bash -c "mamonsu bootstrap -x --user postgres -d mamonsu_test_db" mamonsu
+    /etc/init.d/mamonsu restart
     sleep 5
     echo && echo && echo "mamonsu version:"
     mamonsu --version
@@ -65,6 +66,8 @@ elif [ "${OS%:*}" = "ubuntu" ]; then
     make deb
     sudo dpkg -i ./mamonsu*.deb
     cat /mamonsu/github-actions-tests/sources/agent_3.5.9.conf > /etc/mamonsu/agent.conf
+    # ensuring mamonsu can actually start
+    sudo su -s /bin/bash -c "mamonsu bootstrap -x --user postgres -d mamonsu_test_db" mamonsu
     service mamonsu restart
     sleep 5
     echo && echo && echo "mamonsu version:"
