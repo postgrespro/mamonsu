@@ -86,7 +86,7 @@ jobs:
           echo "zabbix_address=$(hostname -I | awk '{print $1}')" >> $GITHUB_OUTPUT
         id: zabbix_address
       - name: Edit Zabbix address in agent.conf
-        run: sed -i "s/\(address *= *\).*/\1 ${{ steps.zabbix_address.outputs.zabbix_address }}/" ${{ env.MAMONSU_PATH }}/github-actions-tests/sources/agent_3.5.9.conf
+        run: sed -i "s/\(address *= *\).*/\1 ${{ steps.zabbix_address.outputs.zabbix_address }}/" ${{ env.MAMONSU_PATH }}/github-actions-tests/sources/agent_3.5.10.conf
 
       - name: Copy test scripts to container
         run: docker exec $( echo "${{ matrix.docker_os }}" | sed 's/://' | sed 's/\.//' ) mkdir -p -m 755 /mamonsu/
