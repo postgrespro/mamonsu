@@ -5,7 +5,12 @@ import sys
 import json
 from mamonsu.tools.zabbix_cli.request import Request
 from mamonsu.lib.parser import zabbix_msg
-from pkg_resources import packaging
+
+try:
+    from pkg_resources import packaging
+except ImportError:
+    import packaging.version
+
 from mamonsu.tools.zabbix_cli.dashboard import generate_dashboard
 
 
