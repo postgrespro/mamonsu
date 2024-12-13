@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.9
+Version:        3.5.10
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,11 @@ chown -R mamonsu:mamonsu /var/log/mamonsu
 chown -R mamonsu:mamonsu /etc/mamonsu
 
 %changelog
+* Sat Dec 14 2024 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.10-1
+  - Updated checkpoint plugin: added support for new view pg_stat_checkpointer;
+  - Updated bgwriter plugin: consider updated view pg_stat_bgwriter in postgres 17;
+  - Run zabbix cli tools with latest setuptools installed (>67.7.2);
+
 * Mon Aug 19 2024 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.9-1
   - Run on systems with latest setuptools installed (>67.7.2);
   - Drop using dotted user:group specification in RPM pre-install stage;

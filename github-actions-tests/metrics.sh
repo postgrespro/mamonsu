@@ -60,12 +60,12 @@ END
 sleep 120
 
 # read metric for specific version
-while read metric; do
+for metric in $(cat ${METRICS_FILE}); do
     GREP=$( mamonsu agent metric-get ${metric} | grep "pgsql\|sys\|mamonsu" )
     if [ -z "$GREP" ]; then
 	      echo "---> ERROR: Cannot found metric $metric"
         exit 11
     fi
-done <"${METRICS_FILE}"
+done
 
 echo && echo

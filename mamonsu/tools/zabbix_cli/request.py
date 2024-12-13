@@ -4,8 +4,11 @@ import json
 import logging
 from collections import OrderedDict
 
+try:
+    from pkg_resources import packaging
+except ImportError:
+    import packaging.version
 
-from pkg_resources import packaging
 import urllib.request as urllib2
 
 

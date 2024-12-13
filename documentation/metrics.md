@@ -1997,7 +1997,7 @@ Default config:
       </tr>
       <tr>
         <th>Supported Version</th>
-        <td>9.5+</td>
+        <td>9.5 - 16</td>
       </tr>
     </table>
 
@@ -2030,7 +2030,7 @@ Default config:
       </tr>
       <tr>
         <th>Supported Version</th>
-        <td>9.5+</td>
+        <td>9.5 - 16</td>
       </tr>
     </table>
 
@@ -2096,7 +2096,7 @@ Default config:
       </tr>
       <tr>
         <th>Supported Version</th>
-        <td>9.5+</td>
+        <td>9.5 - 16</td>
       </tr>
     </table>
 
@@ -2208,7 +2208,7 @@ Default config:
 
 ### Items
 
-*Checkpoints metrics* use information from `pg_stat_bgwriter`.
+*Checkpoints metrics* use information from `pg_stat_bgwriter`. Starting from Postgres 17 this information is pulled from view `pg_stat_checkpointer`.
 
 - **Checkpoints Sync Time**  
    
@@ -2340,6 +2340,40 @@ Default config:
     </table>
 
     *Requested Checkpoints* maps `checkpoints_req`.
+
+
+- **Buffers Written During Checkpoints**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL bgwriter: Buffers Written During Checkpoints</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.checkpoint[buffers_written]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Simple Change</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>17+</td>
+      </tr>
+    </table>
+
+    *Buffers Written During Checkpoints* maps `buffers_written`.
+
 
 ### Graphs
 

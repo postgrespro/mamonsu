@@ -12,43 +12,67 @@ class BgWriter(Plugin):
     SELECT {0}
     FROM pg_catalog.pg_stat_bgwriter;
     """
-    Items = [
-        # key, zbx_key, description,
-        #    ('graph name', color, side), units, delta
-
-        ("buffers_checkpoint", "bgwriter[buffers_checkpoint]",
-         "Buffers Written During Checkpoints",
-         ("PostgreSQL bgwriter", "006AAE", 1),
-         Plugin.DELTA.simple_change),
-
-        ("buffers_clean", "bgwriter[buffers_clean]",
-         "Buffers Written",
-         ("PostgreSQL bgwriter", "00CC00", 1),
-         Plugin.DELTA.simple_change),
-
-        ("maxwritten_clean", "bgwriter[maxwritten_clean]",
-         "Number of bgwriter Stopped by Max Write Count",
-         ("PostgreSQL bgwriter", "FF5656", 0),
-         Plugin.DELTA.simple_change),
-
-        ("buffers_backend", "bgwriter[buffers_backend]",
-         "Buffers Written Directly by a Backend",
-         ("PostgreSQL bgwriter", "9C8A4E", 1),
-         Plugin.DELTA.simple_change),
-
-        ("buffers_backend_fsync", "bgwriter[buffers_backend_fsync]",
-         "Times a Backend Execute Its Own Fsync",
-         ("PostgreSQL bgwriter", "00CC00", 0),
-         Plugin.DELTA.simple_change),
-
-        ("buffers_alloc", "bgwriter[buffers_alloc]",
-         "Buffers Allocated",
-         ("PostgreSQL bgwriter", "FF5656", 1),
-         Plugin.DELTA.simple_change)
-    ]
 
     graph_name_buffers = "PostgreSQL bgwriter: Buffers"
     graph_name_ws = "PostgreSQL bgwriter: Write/Sync"
+
+    def __init__(self, config):
+        super(BgWriter, self).__init__(config)
+        if Pooler.server_version_less("17"):
+            self.Items = [
+                # key, zbx_key, description,
+                #    ('graph name', color, side), units, delta
+
+                ("buffers_checkpoint", "bgwriter[buffers_checkpoint]",
+                 "Buffers Written During Checkpoints",
+                 ("PostgreSQL bgwriter", "006AAE", 1),
+                 Plugin.DELTA.simple_change),
+
+                ("buffers_clean", "bgwriter[buffers_clean]",
+                 "Buffers Written",
+                 ("PostgreSQL bgwriter", "00CC00", 1),
+                 Plugin.DELTA.simple_change),
+
+                ("maxwritten_clean", "bgwriter[maxwritten_clean]",
+                 "Number of bgwriter Stopped by Max Write Count",
+                 ("PostgreSQL bgwriter", "FF5656", 0),
+                 Plugin.DELTA.simple_change),
+
+                ("buffers_backend", "bgwriter[buffers_backend]",
+                 "Buffers Written Directly by a Backend",
+                 ("PostgreSQL bgwriter", "9C8A4E", 1),
+                 Plugin.DELTA.simple_change),
+
+                ("buffers_backend_fsync", "bgwriter[buffers_backend_fsync]",
+                 "Times a Backend Execute Its Own Fsync",
+                 ("PostgreSQL bgwriter", "00CC00", 0),
+                 Plugin.DELTA.simple_change),
+
+                ("buffers_alloc", "bgwriter[buffers_alloc]",
+                 "Buffers Allocated",
+                 ("PostgreSQL bgwriter", "FF5656", 1),
+                 Plugin.DELTA.simple_change)
+            ]
+        else:
+            self.Items = [
+                # key, zbx_key, description,
+                #    ('graph name', color, side), units, delta
+
+                ("buffers_clean", "bgwriter[buffers_clean]",
+                 "Buffers Written",
+                 ("PostgreSQL bgwriter", "00CC00", 1),
+                 Plugin.DELTA.simple_change),
+
+                ("maxwritten_clean", "bgwriter[maxwritten_clean]",
+                 "Number of bgwriter Stopped by Max Write Count",
+                 ("PostgreSQL bgwriter", "FF5656", 0),
+                 Plugin.DELTA.simple_change),
+
+                ("buffers_alloc", "bgwriter[buffers_alloc]",
+                 "Buffers Allocated",
+                 ("PostgreSQL bgwriter", "FF5656", 1),
+                 Plugin.DELTA.simple_change)
+            ]
 
     def run(self, zbx):
         columns = [x[0] for x in self.Items]

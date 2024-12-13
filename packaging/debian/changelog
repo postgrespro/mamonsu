@@ -1,3 +1,8 @@
+mamonsu (3.5.10-1) stable; urgency=low
+  * Updated checkpoint plugin: added support for new view pg_stat_checkpointer;
+  * Updated bgwriter plugin: consider updated view pg_stat_bgwriter in postgres 17;
+  * Run zabbix cli tools with latest setuptools installed (>67.7.2);
+
 mamonsu (3.5.9-1) stable; urgency=low
   * Run on systems with latest setuptools installed (>67.7.2);
   * Drop using dotted user:group specification in RPM pre-install stage;
