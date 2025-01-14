@@ -1,3 +1,7 @@
+mamonsu (3.5.11-1) stable; urgency=low
+  * Updated statements plugin: added support for pgpro_stats 1.8;
+  * Fixed types for count_wal_lag_lsn() function (int to bigint);
+
 mamonsu (3.5.10-1) stable; urgency=low
   * Updated checkpoint plugin: added support for new view pg_stat_checkpointer;
   * Updated bgwriter plugin: consider updated view pg_stat_bgwriter in postgres 17;
