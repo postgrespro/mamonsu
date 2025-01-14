@@ -142,7 +142,7 @@ class Statements(Plugin):
         # TODO: add 13 and 14 items when pgpro_stats added new WAL metrics
         all_items = self.Items.copy()
 
-        if Pooler.extension_version_greater("pgpro_stats", "1.8"):
+        if Pooler.extension_installed("pgpro_stats") and Pooler.extension_version_greater("pgpro_stats", "1.8"):
             info_view = 'pg_stat_statements_info'
             if self.extension == "pgpro_stats":
                 info_view = 'pgpro_stats_info'

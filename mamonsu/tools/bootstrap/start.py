@@ -237,7 +237,7 @@ def run_deploy():
             if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
                 bootstrap_extension_queries = fill_query_params(CreateWaitSamplingFunctionsSQL)
                 Pooler.query(bootstrap_extension_queries)
-                if Pooler.extension_version_greater("pgpro_stats", "1.8"):
+                if Pooler.extension_installed("pgpro_stats") and Pooler.extension_version_greater("pgpro_stats", "1.8"):
                     statements_items = [x[1] for x in Statements.Items_pgpro_stats_1_8] + [x[1] for x in Statements.Items_pg_13]
                     statements_columns = [x[0][x[0].find("[")+1:x[0].find("]")] for x in Statements.Items_pgpro_stats_1_8] + [x[0][x[0].find("[")+1:x[0].find("]")] for x in Statements.Items_pg_13]
                     bootstrap_extension_queries = CreateStatementsFunctionsSQL.format(
