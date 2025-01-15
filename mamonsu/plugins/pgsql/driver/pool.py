@@ -110,6 +110,7 @@ class Pool(object):
             "bootstrap": {"storage": {}, "counter": 0, "cache": 10, "version": False},
             "recovery": {"storage": {}, "counter": 0, "cache": 10},
             "extension_schema": {"pg_buffercache": {}, "pg_stat_statements": {}, "pg_wait_sampling": {}, "pgpro_stats": {}},
+            "extension_versions" : {},
             "pgpro": {"storage": {}},
             "pgproee": {"storage": {}}
         }
@@ -134,6 +135,19 @@ class Pool(object):
         self._cache["server_version"]["storage"][db] = "{0}".format(
             result.decode("ascii"))
         return self._cache["server_version"]["storage"][db]
+
+    def extension_version(self, extension, db=None):
+        db = self._normalize_db(db)
+        if extension in self._cache["extension_versions"] and db in self._cache["extension_versions"][extension][db]:
+            return self._cache["extension_versions"][extension][db]
+
+        version_string = self.query("select extversion from pg_catalog.pg_extension where lower(extname) = lower('{0}');".format(extension), db)[0][0]
+        result = bytes(
+            version_string.split(" ")[0], "utf-8")
+        self._cache["extension_versions"][extension] = {}
+        self._cache["extension_versions"][extension][db] = "{0}".format(
+            result.decode("ascii"))
+        return self._cache["extension_versions"][extension][db]
 
     def server_version_greater(self, version, db=None):
         db = self._normalize_db(db)
@@ -228,6 +242,14 @@ class Pool(object):
             self._connections[db].log.info("pgpro_edition() is not defined")
             self._cache["pgproee"][db] = False
         return self._cache["pgproee"][db]
+
+    def extension_version_greater(self, extension, version, db=None):
+        db = self._normalize_db(db)
+        return packaging.version.parse(self.extension_version(extension, db)) >= packaging.version.parse(version)
+
+    def extension_version_less(self, extension, version, db=None):
+        db = self._normalize_db(db)
+        return packaging.version.parse(self.extension_version(extension, db)) <= packaging.version.parse(version)
 
     def extension_installed(self, ext, db=None):
         db = self._normalize_db(db)

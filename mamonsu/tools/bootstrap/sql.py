@@ -7,7 +7,7 @@ DO
 $do$
 BEGIN
    IF NOT EXISTS (
-      SELECT FROM pg_catalog.pg_roles 
+      SELECT FROM pg_catalog.pg_roles
       WHERE rolname = '{0}') THEN
       CREATE ROLE {0} LOGIN PASSWORD '{0}';
       IF EXISTS (
@@ -166,15 +166,15 @@ $$ LANGUAGE SQL SECURITY DEFINER;
 DROP FUNCTION IF EXISTS mamonsu.get_oldest_transaction();
 CREATE or REPLACE FUNCTION mamonsu.get_oldest_transaction()
 RETURNS DOUBLE PRECISION AS $$
-    SELECT 
-        CASE WHEN extract(epoch from max(now() - xact_start)) IS NOT null 
+    SELECT
+        CASE WHEN extract(epoch from max(now() - xact_start)) IS NOT null
               AND extract(epoch from max(now() - xact_start))>0
-            THEN extract(epoch from max(now() - xact_start)) 
-            ELSE 0 
-        END 
-    FROM pg_catalog.pg_stat_activity 
-    WHERE 
-        pid NOT IN(select pid from pg_stat_replication) AND 
+            THEN extract(epoch from max(now() - xact_start))
+            ELSE 0
+        END
+    FROM pg_catalog.pg_stat_activity
+    WHERE
+        pid NOT IN(select pid from pg_stat_replication) AND
         pid <> pg_backend_pid()
 $$ LANGUAGE SQL SECURITY DEFINER;
 
@@ -225,15 +225,15 @@ DROP FUNCTION IF EXISTS mamonsu.prepared_transaction();
 CREATE OR REPLACE FUNCTION mamonsu.prepared_transaction()
 RETURNS TABLE(count_prepared BIGINT, oldest_prepared BIGINT) AS $$
 SELECT COUNT(*) AS count_prepared,
-coalesce (ROUND(MAX(EXTRACT (EPOCH FROM (now() - prepared)))),0)::bigint AS oldest_prepared  
+coalesce (ROUND(MAX(EXTRACT (EPOCH FROM (now() - prepared)))),0)::bigint AS oldest_prepared
 FROM pg_catalog.pg_prepared_xacts$$ LANGUAGE SQL SECURITY DEFINER;
 
 DROP FUNCTION IF EXISTS mamonsu.count_{3}_lag_lsn();
 CREATE OR REPLACE FUNCTION mamonsu.count_{3}_lag_lsn()
-RETURNS TABLE(application_name TEXT, {8} total_lag INTEGER) AS $$
+RETURNS TABLE(application_name TEXT, {8} total_lag BIGINT) AS $$
 SELECT application_name,
-       {6} 
-       coalesce((pg_{7}_diff(pg_current_{7}(), replay_{9}))::int, 0) AS total_lag
+       {6}
+       coalesce((pg_{7}_diff(pg_current_{7}(), replay_{9}))::bigint, 0) AS total_lag
 FROM pg_stat_replication
 $$ LANGUAGE SQL SECURITY DEFINER;
 """
@@ -287,7 +287,7 @@ BEGIN
          FROM pg_extension e
          JOIN pg_namespace n
          ON e.extnamespace = n.oid
-         WHERE e.extname = 'pgpro_stats';   
+         WHERE e.extname = 'pgpro_stats';
          EXECUTE 'DROP FUNCTION IF EXISTS mamonsu.wait_sampling_all_locks();
          CREATE OR REPLACE FUNCTION mamonsu.wait_sampling_all_locks()
          RETURNS TABLE(lock_type text, count bigint) AS $$
@@ -298,7 +298,7 @@ BEGIN
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
                                    FROM ' || extension_schema || '.pgpro_stats_totals()
-                                   WHERE object_type = ''cluster''))) setoflocks, 
+                                   WHERE object_type = ''cluster''))) setoflocks,
             jsonb_each(setoflocks.locktuple) AS json_data)
             SELECT
                 CASE
@@ -327,7 +327,7 @@ BEGIN
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
                                    FROM ' || extension_schema || '.pgpro_stats_totals()
-                                   WHERE object_type = ''cluster''))) setoflocks, 
+                                   WHERE object_type = ''cluster''))) setoflocks,
             jsonb_each(setoflocks.locktuple) AS json_data)
             SELECT
                 lock_type,
@@ -347,7 +347,7 @@ BEGIN
             FROM (SELECT key, value AS locktuple
                   FROM jsonb_each((SELECT wait_stats
                                    FROM ' || extension_schema || '.pgpro_stats_totals()
-                                   WHERE object_type = ''cluster''))) setoflocks, 
+                                   WHERE object_type = ''cluster''))) setoflocks,
             jsonb_each(setoflocks.locktuple) AS json_data
             WHERE setoflocks.key IN (''Lock'', ''LWLock'', ''LWLockTranche'', ''LWLockNamed''))
             SELECT
@@ -415,13 +415,13 @@ BEGIN
          FROM pg_extension e
          JOIN pg_namespace n
          ON e.extnamespace = n.oid
-         WHERE e.extname = 'pgpro_stats';   
+         WHERE e.extname = 'pgpro_stats';
          EXECUTE 'DROP FUNCTION IF EXISTS mamonsu.statements_pro();
                   CREATE OR REPLACE FUNCTION mamonsu.statements_pro()
                   RETURNS TABLE({columns}) AS $$
                       SELECT {metrics}
                       FROM ' || extension_schema || '.pgpro_stats_totals()
-                      WHERE object_type = ''cluster'';        
+                      WHERE object_type = ''cluster'';
                   $$ LANGUAGE SQL SECURITY DEFINER;';
       ELSE
          EXIT functions_creation;

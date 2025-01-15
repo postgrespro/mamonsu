@@ -27,7 +27,7 @@ class Statements(Plugin):
 
     query_info = """
     SELECT {metrics}
-    FROM {extension_schema}.pg_stat_statements_info;
+    FROM {extension_schema}.{info_view_name};
     """
     key = "pgsql."
     # zbx_key, sql, desc, unit, delta, (Graph, color, side)
@@ -88,6 +88,32 @@ class Statements(Plugin):
          ("PostgreSQL Statements Info: Last Statistics Reset Time", "9C8A4E", 0))
     ]
 
+    Items_pgpro_stats_1_8 = [
+        ("stat[read_bytes]",
+         "(sum(shared_blks_read+local_blks_read+temp_blks_read)*8*1024)::bigint",
+         "Read bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Bytes", "87C2B9", 0)),
+        ("stat[write_bytes]",
+         "(sum(shared_blks_written+local_blks_written+temp_blks_written)*8*1024)::bigint",
+         "Write bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Bytes", "793F5D", 0)),
+        ("stat[dirty_bytes]",
+         "(sum(shared_blks_dirtied+local_blks_dirtied)*8*1024)::bigint",
+         "Dirty bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Bytes", "9C8A4E", 0)),
+        ("stat[read_time]",
+         "(sum(shared_blk_read_time+local_blk_read_time+temp_blk_read_time)/float4(100))::bigint",
+         "Read IO Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Spent Time", "87C2B9", 0)),
+        ("stat[write_time]",
+         "(sum(shared_blk_write_time+local_blk_write_time+temp_blk_write_time)/float4(100))::bigint",
+         "Write IO Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Spent Time", "793F5D", 0)),
+        ["stat[other_time]",
+         "(sum(total_exec_time+total_plan_time-shared_blk_read_time-local_blk_read_time-temp_blk_read_time-shared_blk_write_time-local_blk_write_time-temp_blk_write_time)/float4(100))::bigint",
+         "Other (mostly CPU) Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
+         ("PostgreSQL Statements: Spent Time", "9C8A4E", 0)]]
+
     all_graphs = [
         ("PostgreSQL Statements: Bytes", None),
         ("PostgreSQL Statements: Spent Time", 1),
@@ -115,21 +141,45 @@ class Statements(Plugin):
 
         # TODO: add 13 and 14 items when pgpro_stats added new WAL metrics
         all_items = self.Items.copy()
-        if Pooler.server_version_greater("14"):
+
+        if Pooler.extension_installed("pgpro_stats") and Pooler.extension_version_greater("pgpro_stats", "1.8"):
+            info_view = 'pg_stat_statements_info'
+            if self.extension == "pgpro_stats":
+                info_view = 'pgpro_stats_info'
+
+            info_items = self.Items_pg_14
+            info_params = [x[1] for x in info_items]
+            info_result = Pooler.query(
+                self.query_info.format(metrics=(", ".join(info_params)), extension_schema=extension_schema, info_view_name=info_view))
+            for key, value in enumerate(info_result[0]):
+                zbx_key, value = "pgsql.{0}".format(
+                    info_items[key][0]), int(value)
+                zbx.send(zbx_key, value, info_items[key][4])
+
+            all_items = self.Items_pgpro_stats_1_8.copy()
+            all_items += self.Items_pg_13
+
+        elif Pooler.server_version_greater("14"):
             self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
             all_items += self.Items_pg_13
+            info_view = 'pgpro_stats_info'
             if self.extension == "pg_stat_statements":
-                info_items = self.Items_pg_14
-                info_params = [x[1] for x in info_items]
-                info_result = Pooler.query(
-                    self.query_info.format(metrics=(", ".join(info_params)), extension_schema=extension_schema))
-                for key, value in enumerate(info_result[0]):
-                    zbx_key, value = "pgsql.{0}".format(
-                        info_items[key][0]), int(value)
-                    zbx.send(zbx_key, value, info_items[key][4])
+                info_view = 'pg_stat_statements_info'
+            info_items = self.Items_pg_14
+            info_params = [x[1] for x in info_items]
+            info_result = Pooler.query(
+                self.query_info.format(metrics=(", ".join(info_params)),
+                                       extension_schema=extension_schema,
+                                       info_view_name=info_view))
+            for key, value in enumerate(info_result[0]):
+                zbx_key, value = "pgsql.{0}".format(
+                    info_items[key][0]), int(value)
+                zbx.send(zbx_key, value, info_items[key][4])
+
         elif Pooler.server_version_greater("13"):
             self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
             all_items += self.Items_pg_13
+
         else:
             self.Items[5][1] = self.Items[5][1].format("total_time")
         columns = [x[1] for x in all_items]
