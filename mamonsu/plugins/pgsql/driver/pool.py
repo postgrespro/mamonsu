@@ -1,9 +1,6 @@
 from .connection import Connection, ConnectionInfo
 
-try:
-    from pkg_resources import packaging
-except ImportError:
-    import packaging.version
+from mamonsu.lib.version import parse
 
 class Pool(object):
     ExcludeDBs = ["template0", "template1"]
@@ -151,19 +148,17 @@ class Pool(object):
 
     def server_version_greater(self, version, db=None):
         db = self._normalize_db(db)
-        return packaging.version.parse(self.server_version(db)) >= packaging.version.parse(version)
+        return parse(self.server_version(db)) >= parse(version)
 
     def server_version_less(self, version, db=None):
         db = self._normalize_db(db)
-        return packaging.version.parse(self.server_version(db)) <= packaging.version.parse(version)
+        return parse(self.server_version(db)) <= parse(version)
 
     def bootstrap_version_greater(self, version):
-        return packaging.version.parse(
-                str(self._cache["bootstrap"]["version"])) >= packaging.version.parse(version)
+        return parse(str(self._cache["bootstrap"]["version"])) >= parse(version)
 
     def bootstrap_version_less(self, version):
-        return packaging.version.parse(
-                str(self._cache["bootstrap"]["version"])) <= packaging.version.parse(version)
+        return parse(str(self._cache["bootstrap"]["version"])) <= parse(version)
 
     def in_recovery(self, db=None):
         db = self._normalize_db(db)
@@ -245,11 +240,11 @@ class Pool(object):
 
     def extension_version_greater(self, extension, version, db=None):
         db = self._normalize_db(db)
-        return packaging.version.parse(self.extension_version(extension, db)) >= packaging.version.parse(version)
+        return parse(self.extension_version(extension, db)) >= parse(version)
 
     def extension_version_less(self, extension, version, db=None):
         db = self._normalize_db(db)
-        return packaging.version.parse(self.extension_version(extension, db)) <= packaging.version.parse(version)
+        return parse(self.extension_version(extension, db)) <= parse(version)
 
     def extension_installed(self, ext, db=None):
         db = self._normalize_db(db)

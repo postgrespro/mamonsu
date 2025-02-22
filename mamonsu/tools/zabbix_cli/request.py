@@ -4,10 +4,7 @@ import json
 import logging
 from collections import OrderedDict
 
-try:
-    from pkg_resources import packaging
-except ImportError:
-    import packaging.version
+import mamonsu.lib.version as version
 
 import urllib.request as urllib2
 
@@ -29,7 +26,7 @@ class Request(object):
         if self._auth_tocken is None:
             if not self._user:
                 return None
-            user_field = 'user' if packaging.version.parse(self._api_version) < packaging.version.parse('6.4') else 'username'
+            user_field = 'user' if version.parse(self._api_version) < version.parse('6.4') else 'username'
             self._auth_tocken = self.post(
                 'user.login',
                 {user_field: self._user, 'password': self._passwd})

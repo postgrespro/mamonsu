@@ -7,11 +7,7 @@ from itertools import count, islice
 from struct import Struct
 from warnings import warn
 
-try:
-    from pkg_resources import packaging
-except ImportError:
-    import packaging.version
-
+import mamonsu.lib.version as version
 from mamonsu.plugins.pgsql.driver.pg8000 import converters
 from .exceptions import (
     ArrayContentNotSupportedError, DatabaseError, Error, IntegrityError,
@@ -1425,11 +1421,11 @@ class Connection():
             # since distutils became deprecated we need this hack hoping that
             # postgres package maintainers won't come up with something more exotic
             string_version = value.decode('ascii').split(' ')[0]
-            self._server_version = packaging.version.parse(string_version)
-            if self._server_version < packaging.version.parse('8.2.0'):
+            self._server_version = version.parse(string_version)
+            if self._server_version < version.parse('8.2.0'):
                 self._commands_with_count = (
                     b"INSERT", b"DELETE", b"UPDATE", b"MOVE")
-            elif self._server_version < packaging.version.parse('9.0.0'):
+            elif self._server_version < version.parse('9.0.0'):
                 self._commands_with_count = (
                     b"INSERT", b"DELETE", b"UPDATE", b"MOVE", b"FETCH",
                     b"COPY")

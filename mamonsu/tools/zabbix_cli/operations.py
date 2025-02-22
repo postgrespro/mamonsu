@@ -3,13 +3,9 @@
 from __future__ import print_function
 import sys
 import json
+import mamonsu.lib.version as version
 from mamonsu.tools.zabbix_cli.request import Request
 from mamonsu.lib.parser import zabbix_msg
-
-try:
-    from pkg_resources import packaging
-except ImportError:
-    import packaging.version
 
 from mamonsu.tools.zabbix_cli.dashboard import generate_dashboard
 
@@ -176,10 +172,10 @@ class Operations(object):
                     }
                 },
                 'source': open(file).read()}
-            if packaging.version.parse(zabbix_version) < packaging.version.parse('5.4'):
+            if version.parse(zabbix_version) < version.parse('5.4'):
                 params['rules']['applications'] = {'createMissing': True,
                                                    'deleteMissing': True}
-            if packaging.version.parse(zabbix_version) < packaging.version.parse('5.2'):
+            if version.parse(zabbix_version) < version.parse('5.2'):
                 params['rules']['templateScreens'] = {'createMissing': True,
                                                       'updateExisting': False,
                                                       'deleteMissing': True}
@@ -334,7 +330,7 @@ class Operations(object):
             if not len(args) == 2:
                 return self._print_help()
             zabbix_version = str(self.req.post(method='apiinfo.version', params=[]))
-            if packaging.version.parse(zabbix_version) < packaging.version.parse('6.0'):
+            if version.parse(zabbix_version) < version.parse('6.0'):
                 print("You can import Mamonsu dashboard only on Zabbix 6.0+.")
                 return
             else:
