@@ -20,7 +20,7 @@ on:
 
 jobs:
   mamonsu-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       DOCKER_COMPOSE_VERSION: '1.29.2'
       MAMONSU_PATH: '/home/runner/work/mamonsu/mamonsu/'
