@@ -7,10 +7,8 @@ import re
 import mamonsu.lib.platform as platform
 import posix
 
-try:
-    from pkg_resources import packaging
-except ImportError:
-    import packaging.version
+import mamonsu.lib.version as version
+
 
 class MemoryLeakDiagnostic(Plugin):
     DEFAULT_CONFIG = {
@@ -94,7 +92,7 @@ class MemoryLeakDiagnostic(Plugin):
         for row in Pooler.query(query=self.query):
             pids.append(row[0])
 
-        if (packaging.version.parse(self.os_release) < packaging.version.parse("4.5")
+        if (version.parse(self.os_release) < version.parse("4.5")
             and not (self.os_name == "centos" and self.os_version == "7")) \
                 or (not self.os_name and not self.os_version):
             for pid in pids:

@@ -1,9 +1,8 @@
 from .connection import Connection, ConnectionInfo
 
-try:
-    from pkg_resources import packaging
-except ImportError:
-    import packaging.version
+from mamonsu.lib.version import parse
+import threading
+
 
 class Pool(object):
     ExcludeDBs = ["template0", "template1"]
@@ -110,10 +109,11 @@ class Pool(object):
             "bootstrap": {"storage": {}, "counter": 0, "cache": 10, "version": False},
             "recovery": {"storage": {}, "counter": 0, "cache": 10},
             "extension_schema": {"pg_buffercache": {}, "pg_stat_statements": {}, "pg_wait_sampling": {}, "pgpro_stats": {}},
-            "extension_versions" : {},
+            "extension_versions": {},
             "pgpro": {"storage": {}},
             "pgproee": {"storage": {}}
         }
+        self._lock = threading.RLock()
 
     def connection_string(self, db=None):
         db = self._normalize_db(db)
@@ -125,84 +125,88 @@ class Pool(object):
         return self._connections[db].query(query)
 
     def server_version(self, db=None):
-        db = self._normalize_db(db)
-        if db in self._cache["server_version"]["storage"]:
+        with self._lock:
+            db = self._normalize_db(db)
+            if db in self._cache["server_version"]["storage"]:
+                return self._cache["server_version"]["storage"][db]
+
+            version_string = self.query("show server_version", db)[0][0]
+            result = bytes(
+                version_string.split(" ")[0], "utf-8")
+            self._cache["server_version"]["storage"][db] = "{0}".format(
+                result.decode("ascii"))
             return self._cache["server_version"]["storage"][db]
 
-        version_string = self.query("show server_version", db)[0][0]
-        result = bytes(
-            version_string.split(" ")[0], "utf-8")
-        self._cache["server_version"]["storage"][db] = "{0}".format(
-            result.decode("ascii"))
-        return self._cache["server_version"]["storage"][db]
-
     def extension_version(self, extension, db=None):
-        db = self._normalize_db(db)
-        if extension in self._cache["extension_versions"] and db in self._cache["extension_versions"][extension][db]:
-            return self._cache["extension_versions"][extension][db]
+        with self._lock:
+            db = self._normalize_db(db)
+            if extension in self._cache["extension_versions"] and db in self._cache["extension_versions"][extension][db]:
+                return self._cache["extension_versions"][extension][db]
 
-        version_string = self.query("select extversion from pg_catalog.pg_extension where lower(extname) = lower('{0}');".format(extension), db)[0][0]
-        result = bytes(
-            version_string.split(" ")[0], "utf-8")
-        self._cache["extension_versions"][extension] = {}
-        self._cache["extension_versions"][extension][db] = "{0}".format(
-            result.decode("ascii"))
-        return self._cache["extension_versions"][extension][db]
+            version_string = self.query("select extversion from pg_catalog.pg_extension where lower(extname) = lower('{0}');".format(extension), db)[0][0]
+            result = bytes(
+                version_string.split(" ")[0], "utf-8")
+            self._cache["extension_versions"][extension] = {}
+            self._cache["extension_versions"][extension][db] = "{0}".format(
+                result.decode("ascii"))
+            return self._cache["extension_versions"][extension][db]
 
     def server_version_greater(self, version, db=None):
         db = self._normalize_db(db)
-        return packaging.version.parse(self.server_version(db)) >= packaging.version.parse(version)
+        return parse(self.server_version(db)) >= parse(version)
 
     def server_version_less(self, version, db=None):
         db = self._normalize_db(db)
-        return packaging.version.parse(self.server_version(db)) <= packaging.version.parse(version)
+        return parse(self.server_version(db)) <= parse(version)
 
     def bootstrap_version_greater(self, version):
-        return packaging.version.parse(
-                str(self._cache["bootstrap"]["version"])) >= packaging.version.parse(version)
+        with self._lock:
+            return parse(str(self._cache["bootstrap"]["version"])) >= parse(version)
 
     def bootstrap_version_less(self, version):
-        return packaging.version.parse(
-                str(self._cache["bootstrap"]["version"])) <= packaging.version.parse(version)
+        with self._lock:
+            return parse(str(self._cache["bootstrap"]["version"])) <= parse(version)
 
     def in_recovery(self, db=None):
-        db = self._normalize_db(db)
-        if db in self._cache["recovery"]["storage"]:
-            if self._cache["recovery"]["counter"] < self._cache["recovery"]["cache"]:
-                self._cache["recovery"]["counter"] += 1
-                return self._cache["recovery"]["storage"][db]
-        self._cache["recovery"]["counter"] = 0
-        self._cache["recovery"]["storage"][db] = self.query(
-            "select pg_catalog.pg_is_in_recovery()", db)[0][0]
-        return self._cache["recovery"]["storage"][db]
+        with self._lock:
+            db = self._normalize_db(db)
+            if db in self._cache["recovery"]["storage"]:
+                if self._cache["recovery"]["counter"] < self._cache["recovery"]["cache"]:
+                    self._cache["recovery"]["counter"] += 1
+                    return self._cache["recovery"]["storage"][db]
+            self._cache["recovery"]["counter"] = 0
+            self._cache["recovery"]["storage"][db] = self.query(
+                "select pg_catalog.pg_is_in_recovery()", db)[0][0]
+            return self._cache["recovery"]["storage"][db]
 
     def is_bootstraped(self, db=None):
-        db = self._normalize_db(db)
-        if db in self._cache["bootstrap"]["storage"]:
-            if self._cache["bootstrap"]["counter"] < self._cache["bootstrap"]["cache"]:
-                self._cache["bootstrap"]["counter"] += 1
-                return self._cache["bootstrap"]["storage"][db]
-        self._cache["bootstrap"]["counter"] = 0
-        # TODO: изменить на нормальное название, 'config' слишком общее
-        sql = """
-        SELECT count(*)
-        FROM pg_catalog.pg_class
-        WHERE relname = 'config';
-        """
-        result = int(self.query(sql, db)[0][0])
-        self._cache["bootstrap"]["storage"][db] = (result == 1)
-        if self._cache["bootstrap"]["storage"][db]:
-            self._connections[db].log.info("Found mamonsu bootstrap")
+        with self._lock:
+            db = self._normalize_db(db)
+            if db in self._cache["bootstrap"]["storage"]:
+                if self._cache["bootstrap"]["counter"] < self._cache["bootstrap"]["cache"]:
+                    self._cache["bootstrap"]["counter"] += 1
+                    return self._cache["bootstrap"]["storage"][db]
+            self._cache["bootstrap"]["counter"] = 0
+            # TODO: изменить на нормальное название, 'config' слишком общее
             sql = """
-            SELECT max(version)
-            FROM mamonsu.config;
+            SELECT count(*)
+            FROM pg_catalog.pg_class
+            WHERE relname = 'config';
             """
-            self._cache["bootstrap"]["version"] = self.query(sql, db)[0][0]
-        else:
-            self._connections[db].log.info("Mamonsu bootstrap is not found")
-            self._connections[db].log.info(
-                "hint: run `mamonsu bootstrap` if you want to run without superuser rights")
-        return self._cache["bootstrap"]["storage"][db]
+            result = int(self.query(sql, db)[0][0])
+            self._cache["bootstrap"]["storage"][db] = (result == 1)
+            if self._cache["bootstrap"]["storage"][db]:
+                self._connections[db].log.info("Found mamonsu bootstrap")
+                sql = """
+                SELECT max(version)
+                FROM mamonsu.config;
+                """
+                self._cache["bootstrap"]["version"] = self.query(sql, db)[0][0]
+            else:
+                self._connections[db].log.info("Mamonsu bootstrap is not found")
+                self._connections[db].log.info(
+                    "hint: run `mamonsu bootstrap` if you want to run without superuser rights")
+            return self._cache["bootstrap"]["storage"][db]
 
     def is_superuser(self, db=None):
         _ = self._normalize_db(db)
@@ -214,42 +218,44 @@ class Pool(object):
             return False
 
     def is_pgpro(self, db=None):
-        db = self._normalize_db(db)
-        if db in self._cache["pgpro"]:
+        with self._lock:
+            db = self._normalize_db(db)
+            if db in self._cache["pgpro"]:
+                return self._cache["pgpro"][db]
+            try:
+                self.query("""
+                SELECT pgpro_version();
+                """)
+                self._cache["pgpro"][db] = True
+            except:
+                self._cache["pgpro"][db] = False
             return self._cache["pgpro"][db]
-        try:
-            self.query("""
-            SELECT pgpro_version();
-            """)
-            self._cache["pgpro"][db] = True
-        except:
-            self._cache["pgpro"][db] = False
-        return self._cache["pgpro"][db]
 
     def is_pgpro_ee(self, db=None):
-        db = self._normalize_db(db)
-        if not self.is_pgpro(db):
-            return False
-        if db in self._cache["pgproee"]:
+        with self._lock:
+            db = self._normalize_db(db)
+            if not self.is_pgpro(db):
+                return False
+            if db in self._cache["pgproee"]:
+                return self._cache["pgproee"][db]
+            try:
+                ed = self.query("""
+                SELECT pgpro_edition();
+                """)[0][0]
+                self._connections[db].log.info("pgpro_edition is {}".format(ed))
+                self._cache["pgproee"][db] = (ed.lower() == "enterprise")
+            except:
+                self._connections[db].log.info("pgpro_edition() is not defined")
+                self._cache["pgproee"][db] = False
             return self._cache["pgproee"][db]
-        try:
-            ed = self.query("""
-            SELECT pgpro_edition();
-            """)[0][0]
-            self._connections[db].log.info("pgpro_edition is {}".format(ed))
-            self._cache["pgproee"][db] = (ed.lower() == "enterprise")
-        except:
-            self._connections[db].log.info("pgpro_edition() is not defined")
-            self._cache["pgproee"][db] = False
-        return self._cache["pgproee"][db]
 
     def extension_version_greater(self, extension, version, db=None):
         db = self._normalize_db(db)
-        return packaging.version.parse(self.extension_version(extension, db)) >= packaging.version.parse(version)
+        return parse(self.extension_version(extension, db)) >= parse(version)
 
     def extension_version_less(self, extension, version, db=None):
         db = self._normalize_db(db)
-        return packaging.version.parse(self.extension_version(extension, db)) <= packaging.version.parse(version)
+        return parse(self.extension_version(extension, db)) <= parse(version)
 
     def extension_installed(self, ext, db=None):
         db = self._normalize_db(db)
@@ -261,19 +267,20 @@ class Pool(object):
         return (int(result[0][0])) == 1
 
     def extension_schema(self, extension, db=None):
-        db = self._normalize_db(db)
-        if db in self._cache["extension_schema"][extension]:
-            return self._cache["extension_schema"][extension][db]
-        try:
-            self._cache["extension_schema"][extension][db] = self.query("""
-            SELECT n.nspname
-            FROM pg_extension e
-            JOIN pg_namespace n ON e.extnamespace = n.oid
-            WHERE e.extname = '{0}'
-            """.format(extension), db)[0][0]
-            return self._cache["extension_schema"][extension][db]
-        except:
-            self._connections[db].log.info("{0} is not installed".format(extension))
+        with self._lock:
+            db = self._normalize_db(db)
+            if db in self._cache["extension_schema"][extension]:
+                return self._cache["extension_schema"][extension][db]
+            try:
+                self._cache["extension_schema"][extension][db] = self.query("""
+                SELECT n.nspname
+                FROM pg_extension e
+                JOIN pg_namespace n ON e.extnamespace = n.oid
+                WHERE e.extname = '{0}'
+                """.format(extension), db)[0][0]
+                return self._cache["extension_schema"][extension][db]
+            except:
+                self._connections[db].log.info("{0} is not installed".format(extension))
 
     def databases(self):
         result, databases = self.query("""
