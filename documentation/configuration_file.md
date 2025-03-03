@@ -10,6 +10,8 @@ All parameters must be specified in the `parameter = value` format.
 
 > **_NOTE:_**  It is necessary to check permissions to the _mamonsu_ user to directories/files for correct interaction of agent with them. By default configuration file _agent.conf_ should have read/write permissions for _mamonsu_ user only.
 
+> **_NOTE:_**  Config file supports string interpolation via _%()s_ syntax in parameter values. please see “[Parameter Values Interpolation](#parameter-values-interpolation)” below.
+
 ***
 
 ### Connection Parameters
@@ -237,3 +239,22 @@ By default this plugin is disabled. To enable it set the enabled parameter to Tr
 This plugin collects two metrics: *pg_probackup.dir.size[#backup_directory]* (the size of the target directory) and *pg_probackup.dir.error[#backup_directory]* (backup errors) for each specified *backup_directory*.
 
 If any generated backup has bad status, like ERROR, CORRUPT, ORPHAN, а trigger is fired.
+
+### Parameter Values Interpolation
+
+Mamonsu uses python3 built-in configparser library which allows defining arbitary variables in any config section and then reuse it within the same config section.
+
+Example:
+```editorconfig
+[postgres]
+pg = postgres
+enabled = True
+user = %(pg)s
+password = %(pg)s
+database = %(pg)s
+port = 5432
+application_name = %(pg)s
+query_timeout = 10
+```
+
+What is important to note here is that you cannot use symbol _%_ in any parameter's value since it will be treated as an interolation syntax.
