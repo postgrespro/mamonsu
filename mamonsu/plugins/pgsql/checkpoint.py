@@ -21,70 +21,71 @@ class Checkpoint(Plugin):
 
     def __init__(self, config):
         super(Checkpoint, self).__init__(config)
-        if Pooler.server_version_less("17"):
-            self.query = """
-            SELECT {0}
-            FROM pg_catalog.pg_stat_bgwriter;
-            """  # for mamonsu and agent
-            self.query_interval = """
-            SELECT {0}*3600
-            FROM pg_catalog.pg_stat_bgwriter;
-            """  # for mamonsu and agent checkpoints in hour
-            self.Items = [
-                # key, zbx_key, description,
-                #    ('graph name', color, side), units, delta, factor
-                ("checkpoints_timed", "count_timed",
-                 "by Timeout (in hour)",
-                 ("PostgreSQL Checkpoints: Count (in hour)", "00CC00", 0),
-                 Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
+        if self.is_enabled():
+            if Pooler.server_version_less("17"):
+                self.query = """
+                SELECT {0}
+                FROM pg_catalog.pg_stat_bgwriter;
+                """  # for mamonsu and agent
+                self.query_interval = """
+                SELECT {0}*3600
+                FROM pg_catalog.pg_stat_bgwriter;
+                """  # for mamonsu and agent checkpoints in hour
+                self.Items = [
+                    # key, zbx_key, description,
+                    #    ('graph name', color, side), units, delta, factor
+                    ("checkpoints_timed", "count_timed",
+                     "by Timeout (in hour)",
+                     ("PostgreSQL Checkpoints: Count (in hour)", "00CC00", 0),
+                     Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
-                ("checkpoints_req", "count_wal",
-                 "by WAL (in hour)",
-                 ("PostgreSQL Checkpoints: Count (in hour)", "FF5656", 0),
-                 Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
+                    ("checkpoints_req", "count_wal",
+                     "by WAL (in hour)",
+                     ("PostgreSQL Checkpoints: Count (in hour)", "FF5656", 0),
+                     Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
-                ("checkpoint_write_time", "write_time",
-                 "Write Time",
-                 ("PostgreSQL Checkpoints: Write/Sync", "00CC00", 1),
-                 Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1),
+                    ("checkpoint_write_time", "write_time",
+                     "Write Time",
+                     ("PostgreSQL Checkpoints: Write/Sync", "00CC00", 1),
+                     Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1),
 
-                ("checkpoint_sync_time", "checkpoint_sync_time",
-                 "Sync Time",
-                 ("PostgreSQL Checkpoints: Write/Sync", "FF5656", 1),
-                 Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1)
-            ]
-        else:
-            self.query = """
-            SELECT {0}
-            FROM pg_catalog.pg_stat_checkpointer;
-            """  # for mamonsu and agent
-            self.query_interval = """
-            SELECT {0}*3600
-            FROM pg_catalog.pg_stat_checkpointer;
-            """  # for mamonsu and agent checkpoints in hour
-            self.Items = [
-                # key, zbx_key, description,
-                #    ('graph name', color, side), units, delta, factor
-                ("num_timed", "count_timed",
-                 "by Timeout (in hour)",
-                 ("PostgreSQL Checkpoints: Count (in hour)", "00CC00", 0),
-                 Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
+                    ("checkpoint_sync_time", "checkpoint_sync_time",
+                     "Sync Time",
+                     ("PostgreSQL Checkpoints: Write/Sync", "FF5656", 1),
+                     Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1)
+                ]
+            else:
+                self.query = """
+                SELECT {0}
+                FROM pg_catalog.pg_stat_checkpointer;
+                """  # for mamonsu and agent
+                self.query_interval = """
+                SELECT {0}*3600
+                FROM pg_catalog.pg_stat_checkpointer;
+                """  # for mamonsu and agent checkpoints in hour
+                self.Items = [
+                    # key, zbx_key, description,
+                    #    ('graph name', color, side), units, delta, factor
+                    ("num_timed", "count_timed",
+                     "by Timeout (in hour)",
+                     ("PostgreSQL Checkpoints: Count (in hour)", "00CC00", 0),
+                     Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
-                ("num_requested", "count_wal",
-                 "by WAL (in hour)",
-                 ("PostgreSQL Checkpoints: Count (in hour)", "FF5656", 0),
-                 Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
+                    ("num_requested", "count_wal",
+                     "by WAL (in hour)",
+                     ("PostgreSQL Checkpoints: Count (in hour)", "FF5656", 0),
+                     Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
 
-                ("write_time", "write_time",
-                 "Write Time",
-                 ("PostgreSQL Checkpoints: Write/Sync", "00CC00", 1),
-                 Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1),
+                    ("write_time", "write_time",
+                     "Write Time",
+                     ("PostgreSQL Checkpoints: Write/Sync", "00CC00", 1),
+                     Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1),
 
-                ("sync_time", "checkpoint_sync_time",
-                 "Sync Time",
-                 ("PostgreSQL Checkpoints: Write/Sync", "FF5656", 1),
-                 Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1)
-            ]
+                    ("sync_time", "checkpoint_sync_time",
+                     "Sync Time",
+                     ("PostgreSQL Checkpoints: Write/Sync", "FF5656", 1),
+                     Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1)
+                ]
 
     def run(self, zbx):
         columns = [x[0] for x in self.Items]
