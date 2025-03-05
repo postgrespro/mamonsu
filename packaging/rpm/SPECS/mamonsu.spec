@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.11
+Version:        3.5.12
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,11 @@ chown -R mamonsu:mamonsu /var/log/mamonsu
 chown -R mamonsu:mamonsu /etc/mamonsu
 
 %changelog
+* Wed Mar 5 2025 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.12-1
+  - Port version parser code from public archive of pypa/pkg_resources;
+  - Thread-safe implementation of connection cache;
+  - Skip BGwriter and Checkpoint plugins initialization if Postgres metrics collection was explicitly disabled;
+
 * Wed Jan 15 2025 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.11-1
   - Updated statements plugin: added support for pgpro_stats 1.8;
   - Fixed types for count_wal_lag_lsn() function (int to bigint);

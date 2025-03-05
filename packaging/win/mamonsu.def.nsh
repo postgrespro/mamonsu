@@ -1,5 +1,5 @@
 !define NAME Mamonsu
-!define VERSION 3.5.11
+!define VERSION 3.5.12
 !define MAMONSU_REG_PATH "Software\PostgresPro\Mamonsu"
 !define MAMONSU_REG_UNINSTALLER_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall"
 !define EDB_REG "SOFTWARE\Postgresql"
