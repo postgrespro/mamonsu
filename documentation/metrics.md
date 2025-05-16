@@ -3691,7 +3691,8 @@ Default config:
 ### Replication
 
 Default config:  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lag_more_than_in_sec = 300
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lag_more_than_in_sec = 300\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;critical_bytes_held_by_non_active_slot = 1073741824 bytes
 
 ### Items
 
@@ -3763,6 +3764,37 @@ Default config:
    
     *Non-active Replication Slots* calculates as count of slots with `false` active status.
 
+- **Bytes Held By Non-active Replication Slots**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Replication: Bytes held by non-active slot {#NON_ACTIVE_SLOT_NAME}</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.replication.non_active_slots_discovery[]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td>Bytes</td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>10+</td>
+      </tr>
+    </table>
+   
+    *Non-active Replication Slots* calculates as count of slots with `false` active status.
 
 - **Streaming Replication Lag**  
    
@@ -3861,12 +3893,40 @@ Default config:
       </tr>
     </table>
 
+- **PostgreSQL Replication: Non-active Slots Discovery**
+
+    Items:
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Replication: Bytes held by non-active slot {#NON_ACTIVE_SLOT_NAME}</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.replication.non_active_slots_discovery[]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td>Bytes</td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>As Is</td>
+      </tr>
+    </table>
+
 ### Triggers
 
 - **PostgreSQL Instance: server mode has been changed on {HOSTNAME} to {ITEM.LASTVALUE}**
 
 - **PostgreSQL number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})**  
-
+    Disabled by default
+- **PostgreSQL Replication: bytes held by slot {#NON_ACTIVE_SLOT_NAME} is too high (value={ITEM.LASTVALUE})**
+    Triggers if *PostgreSQL Replication: Bytes held by non-active slot {#NON_ACTIVE_SLOT_NAME}* exceeds `critical_bytes_held_by_non_active_slot`.
 - **PostgreSQL streaming lag too high on {HOSTNAME} (value={ITEM.LASTVALUE})**  
     Triggers if *PostgreSQL Replication: Streaming Replication Lag* exceeds `lag_more_than_in_sec`.
 
