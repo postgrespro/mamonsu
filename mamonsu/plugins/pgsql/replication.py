@@ -13,7 +13,8 @@ class Replication(Plugin):
     AgentPluginType = "pg"
     # key: (macro, value)
     plugin_macros = {
-        "critical_lag_seconds": [("macro", "{$CRITICAL_LAG_SECONDS}"), ("value", 60 * 5)]
+        "critical_lag_seconds": [("macro", "{$CRITICAL_LAG_SECONDS}"), ("value", 60 * 5)],
+        "critical_bytes_held_by_none_active_slot": [("macro", "{$CRITICAL_BYTES_HELD_BY_NON_ACTIVE_SLOT}"), ("value", 1024 * 1024 * 1024)]
     }
 
     # get time of replication lag
@@ -30,8 +31,15 @@ class Replication(Plugin):
     WHERE active = 'false';
     """
 
+    query_bytes_held_by_non_active_slot = """
+    SELECT slot_name, coalesce(pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn)::bigint, 0) AS wal_size_bytes
+    FROM pg_replication_slots
+    WHERE active = 'false';
+    """
+
     # for discovery rule for name of each replica
     key_lsn_replication_discovery = "pgsql.replication.discovery{0}"
+    key_replication_non_active_slots_discovery = "pgsql.replication.non_active_slots_discovery{0}"
     key_total_lag = "pgsql.replication.total_lag{0}"
     #  for PG 10 and higher
     key_flush = "pgsql.replication.flush_lag{0}"
@@ -42,6 +50,7 @@ class Replication(Plugin):
 
     key_replication = "pgsql.replication_lag{0}"
     key_non_active_slots = "pgsql.replication.non_active_slots{0}"
+    key_non_active_slots_held_bytes = "pgsql.replication.non_active_slots_held_bytes{0}"
 
     def run(self, zbx):
 
@@ -79,6 +88,14 @@ class Replication(Plugin):
                         zbx.send("pgsql.replication.replay_lag[{0}]".format(info[0]), float(info[5]))
                     zbx.send("pgsql.replication.discovery[]", zbx.json({"data": lags}))
                     del lags
+                bytes_held_by_non_active_slot = Pooler.run_sql_type("wal_held_bytes_master", args=[])
+                if bytes_held_by_non_active_slot:
+                    discovery = []
+                    for info in bytes_held_by_non_active_slot:
+                        discovery.append({"{#NON_ACTIVE_SLOT_NAME}": info[0]})
+                        zbx.send("pgsql.replication.non_active_slots_held_bytes[{0}]".format(info[0]), int(info[1]))
+                    zbx.send("pgsql.replication.non_active_slots_discovery[]", zbx.json({"data": discovery}))
+                    del discovery
             elif Pooler.is_superuser() or Pooler.is_bootstraped():
                 result_lags = Pooler.run_sql_type("wal_lag_lsn", args=[" ", "xlog", "location"])
                 if result_lags:
@@ -90,7 +107,15 @@ class Replication(Plugin):
                     del lags
             else:
                 self.disable_and_exit_if_not_superuser()
-
+        else:
+            bytes_held_by_non_active_slot = Pooler.run_sql_type("wal_held_bytes_replica", args=[])
+            if bytes_held_by_non_active_slot:
+                discovery = []
+                for info in bytes_held_by_non_active_slot:
+                    discovery.append({"{#NON_ACTIVE_SLOT_NAME}": info[0]})
+                    zbx.send("pgsql.replication.non_active_slots_held_bytes[{0}]".format(info[0]), int(info[1]))
+                zbx.send("pgsql.replication.non_active_slots_discovery[]", zbx.json({"data": discovery}))
+                del discovery
         non_active_slots = Pooler.query(self.query_non_active_slots)
         zbx.send(self.key_non_active_slots.format("[]"), int(non_active_slots[0][0]))
 
@@ -132,7 +157,8 @@ class Replication(Plugin):
         }) + template.trigger({
             "name": "PostgreSQL Replication: number of non-active replication slots on {HOSTNAME} (value={ITEM.LASTVALUE})",
             "expression": "{#TEMPLATE:" + self.right_type(self.key_non_active_slots) + ".last()}&gt;" + str(
-                NUMBER_NON_ACTIVE_SLOTS)
+                NUMBER_NON_ACTIVE_SLOTS),
+            "status": 1
         })
         return triggers
 
@@ -198,7 +224,42 @@ class Replication(Plugin):
                 ]
             }
         ]
-        return template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)
+        active_slots_discovery_rule = template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs)
+
+        rule = {
+            "name": "PostgreSQL Replication: Non Active Slots Discovery",
+            "key": self.key_replication_non_active_slots_discovery.format("[{0}]".format(self.Macros[self.Type]))
+        }
+        if Plugin.old_zabbix:
+            conditions = []
+            rule["filter"] = "{#NON_ACTIVE_SLOT_NAME}:.*"
+        else:
+            conditions = [{
+                "condition": [
+                    {"macro": "{#NON_ACTIVE_SLOT_NAME}",
+                     "value": ".*",
+                     "operator": 8,
+                     "formulaid": "A"}
+                ]
+            }]
+        items = [
+            {"key": self.right_type(self.key_non_active_slots_held_bytes, var_discovery="{#NON_ACTIVE_SLOT_NAME},"),
+             "name": "PostgreSQL Replication: Bytes held by non-active slot {#NON_ACTIVE_SLOT_NAME}",
+             "value_type": Plugin.VALUE_TYPE.numeric_float,
+             "delay": self.plugin_config("interval"),
+             "drawtype": 2}
+        ]
+        graphs = []
+        triggers = [
+            {
+                "name": "PostgreSQL Replication: bytes held by slot {#NON_ACTIVE_SLOT_NAME} is too high (value={ITEM.LASTVALUE})",
+                "expression": "{#TEMPLATE:" + self.right_type(self.key_non_active_slots_held_bytes, var_discovery="{#NON_ACTIVE_SLOT_NAME},") + ".last()}&gt;" +
+                          self.plugin_macros["critical_bytes_held_by_none_active_slot"][0][1]
+            }
+        ]
+        non_active_slots_discovery_rule = template.discovery_rule(rule=rule, conditions=conditions, items=items, graphs=graphs, triggers=triggers)
+
+        return active_slots_discovery_rule + non_active_slots_discovery_rule
 
     def keys_and_queries(self, template_zabbix):
         result = []

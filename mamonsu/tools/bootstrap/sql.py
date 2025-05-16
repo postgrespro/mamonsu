@@ -236,6 +236,23 @@ SELECT application_name,
        coalesce((pg_{7}_diff(pg_current_{7}(), replay_{9}))::bigint, 0) AS total_lag
 FROM pg_stat_replication
 $$ LANGUAGE SQL SECURITY DEFINER;
+
+DROP FUNCTION IF EXISTS mamonsu.bytes_held_by_inactive_slot_on_master();
+CREATE OR REPLACE FUNCTION mamonsu.bytes_held_by_inactive_slot_on_master()
+RETURNS TABLE(slot_name TEXT, wal_held_bytes BIGINT) AS $$
+SELECT slot_name::TEXT, coalesce((pg_{7}_diff(pg_current_wal_lsn(), restart_lsn))::bigint, 0) AS wal_held_bytes
+FROM pg_replication_slots
+WHERE active = 'false'
+$$ LANGUAGE SQL SECURITY DEFINER;
+
+DROP FUNCTION IF EXISTS mamonsu.bytes_held_by_inactive_slot_on_replica();
+CREATE OR REPLACE FUNCTION mamonsu.bytes_held_by_inactive_slot_on_replica()
+RETURNS TABLE(slot_name TEXT, wal_held_bytes BIGINT) AS $$
+SELECT slot_name::TEXT, coalesce((pg_{7}_diff(pg_last_wal_replay_lsn(), restart_lsn))::bigint, 0) AS wal_held_bytes
+FROM pg_replication_slots
+WHERE active = 'false'
+$$ LANGUAGE SQL SECURITY DEFINER;
+
 """
 
 CreatePgBuffercacheFunctionsSQL = """

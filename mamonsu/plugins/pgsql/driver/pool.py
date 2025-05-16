@@ -86,7 +86,7 @@ class Pool(object):
             """
             SELECT application_name,
                    {0}
-                   coalesce((pg_{1}_{2}_diff(pg_current_{1}_{2}(), replay_lsn))::int, 0) AS total_lag
+                   coalesce((pg_{1}_{2}_diff(pg_current_{1}_{2}(), replay_{2}))::int, 0) AS total_lag
             FROM pg_stat_replication;
             """,
             """
@@ -94,6 +94,30 @@ class Pool(object):
                    {0}
                    total_lag
             FROM mamonsu.count_{1}_lag_lsn();
+            """
+        ),
+        "wal_held_bytes_master": (
+            """
+            SELECT slot_name,
+                   coalesce((pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn))::int, 0) AS wal_held_bytes
+            FROM pg_replication_slots;
+            """,
+            """
+            SELECT slot_name,
+                   wal_held_bytes
+            FROM mamonsu.bytes_held_by_inactive_slot_on_master();
+            """
+        ),
+        "wal_held_bytes_replica": (
+            """
+            SELECT slot_name,
+                   coalesce((pg_wal_lsn_diff(pg_last_wal_replay_lsn(), restart_lsn))::int, 0) AS wal_held_bytes
+            FROM pg_replication_slots;
+            """,
+            """
+            SELECT slot_name,
+                   wal_held_bytes
+            FROM mamonsu.bytes_held_by_inactive_slot_on_replica();
             """
         )
     }
