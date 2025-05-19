@@ -10,25 +10,21 @@ class Queue(object):
         self.lock = threading.Lock()
 
     def add(self, metric):
-        self.lock.acquire()
-        self.queue.insert(0, metric)
-        self.lock.release()
+        with self.lock:
+            self.queue.insert(0, metric)
 
     # replace last metric
     def replace(self, metric):
-        self.lock.acquire()
-        self.queue.pop()
-        self.queue.append(metric)
-        self.lock.release()
+        with self.lock:
+            if self.queue:
+                self.queue.pop()
+            self.queue.append(metric)
 
     def size(self):
-        self.lock.acquire()
-        result = len(self.queue)
-        self.lock.release()
-        return result
+        with self.lock:
+            return len(self.queue)
 
     def flush(self):
-        self.lock.acquire()
-        result, self.queue = self.queue, []
-        self.lock.release()
-        return result
+        with self.lock:
+            result, self.queue = self.queue, []
+            return result
