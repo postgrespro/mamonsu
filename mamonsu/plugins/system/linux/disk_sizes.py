@@ -20,7 +20,7 @@ class DiskSizes(Plugin):
 
     ExcludeFsTypes = [
         "none", "unknown", "rootfs", "iso9660", "squashfs", "udf", "romfs", "ramfs", "debugfs", "cgroup", "cgroup_root",
-        "pstore", "devtmpfs", "autofs", "cgroup", "configfs", "devpts", "efivarfs", "fusectl", "fuse.gvfsd-fuse",
+        "pstore", "devtmpfs", "autofs", "cgroup2", "configfs", "devpts", "efivarfs", "fusectl", "fuse.gvfsd-fuse",
         "hugetlbfs", "mqueue", "binfmt_misc", "nfsd", "proc", "pstore", "selinuxfs", "rpc_pipefs", "securityfs",
         "sysfs", "nsfs", "tmpfs", "tracefs"
     ]
