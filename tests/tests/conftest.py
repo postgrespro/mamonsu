@@ -34,18 +34,13 @@ def mamonsu_container(docker_compose) -> Container:  # noqa
     container.remove()
 
 
-def parametrize(pg_version: int) -> int:
-    os.environ["POSTGRES_VERSION"] = str(pg_version)
-    return pg_version
-
-
-@pytest.fixture(scope="session", params=[12, 13, 14, 15, 16, 17])
+@pytest.fixture(scope="session", params=os.getenv('POSTGRES_VERSIONS', str(Config().POSTGRES_VERSION)).split(','))
 def docker_compose(config: Config, request) -> None:
     subprocess.run(
         ["docker", "rmi", f"{ContainersEnum.MAMONSU}:latest"]
     )
-
     os.environ["POSTGRES_VERSION"] = str(request.param)
+
     subprocess.run(
         [
             "docker-compose",
