@@ -4,7 +4,7 @@ from pathlib import Path
 def _find_tests_root() -> Path:
     current = Path(__file__).absolute()
     for parent in current.parents:
-        if (parent / "mmns_pg.Dockerfile").exists() or (parent / "pytest.ini").exists():
+        if (parent / "debian.Dockerfile").exists() or (parent / "pytest.ini").exists():
             return parent
     raise FileNotFoundError("Project root not found")
 
