@@ -48,7 +48,7 @@ sudo -u postgres echo "restore_command = 'cp $WAL_DIR/%f %p'" >> $DATA_SLAVE_PHY
 su postgres -c "pg_ctl start -D $DATA_SLAVE_PHYSICAL_DIR"
 
 # create logical slave
-if [ "$POSTGRES_VERSION" -ge 100 ]; then  # TODO: пофиксить и объединить или убрать вообще
+if [ "$POSTGRES_VERSION" -ge 100 ]; then  # TODO: Пофиксить, пока что отключено
     # create PGDATA directory
     sudo mkdir -p $DATA_SLAVE_LOGICAL_DIR
     sudo chown postgres:postgres $DATA_SLAVE_LOGICAL_DIR

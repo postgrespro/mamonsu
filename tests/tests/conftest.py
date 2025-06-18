@@ -39,9 +39,7 @@ def parametrize(pg_version: int) -> int:
     return pg_version
 
 
-@pytest.fixture(scope="session", params=[10, 11,
-                                         # 12, 13, 14, 15, 16, 17
-                                         ])
+@pytest.fixture(scope="session", params=[12, 13, 14, 15, 16, 17])
 def docker_compose(config: Config, request) -> None:
     subprocess.run(
         ["docker", "rmi", f"{ContainersEnum.MAMONSU}:latest"]
@@ -57,7 +55,7 @@ def docker_compose(config: Config, request) -> None:
             "-d",
             "--wait",
         ],
-        # check=True,
+        check=True,
     )
     yield  # noqa
     subprocess.run(

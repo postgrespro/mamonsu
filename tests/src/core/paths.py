@@ -15,4 +15,3 @@ class ProjectPaths:
 
     COMPOSE_FILE = TESTS_ROOT / "docker-compose.yaml"
     METRICS_PATH = MAMONSU_ROOT / "github-actions-tests" / "sources"
-

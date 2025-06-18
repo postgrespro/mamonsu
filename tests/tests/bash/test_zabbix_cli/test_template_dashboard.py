@@ -100,7 +100,7 @@ class TestZabbixCliDashboardTemplateSuite:
             zabbix_options: str,
             init_mamonsu_in_zbx,
     ) -> None:
-        mamonsu_container('mamonsu export template template.xml --template-name="test-template"')  # TODO: вынести
+        mamonsu_container('mamonsu export template template.xml --template-name="test-template"')
         mamonsu_container(f'mamonsu zabbix {zabbix_options} template export template.xml')
 
         exit_code, template_id = mamonsu_container(
