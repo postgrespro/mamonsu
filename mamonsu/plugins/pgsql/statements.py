@@ -275,13 +275,16 @@ class Statements(Plugin):
                     i + 1))
 
             if Pooler.server_version_greater("14"):
+                info_view = 'pgpro_stats_info'
                 if self.extension == "pg_stat_statements":
-                    for i, item in enumerate(self.Items_pg_14):
-                        keys = item[0].split("[")
-                        result.append(
-                            "{0}[*],$2 $1 -c \"{1}\" | awk -F  '|' '{{print ${2}}}'".format(
-                                "{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
-                                self.query_info.format(metrics=(item[1]), extension_schema=extension_schema),
+                    info_view = 'pg_stat_statements_info'
+                for i, item in enumerate(self.Items_pg_14):
+                    keys = item[0].split("[")
+                    result.append(
+                        "{0}[*],$2 $1 -c \"{1}\" | awk -F  '|' '{{print ${2}}}'".format(
+                            "{0}{1}.{2}".format(self.key, keys[0], keys[1][:-1]),
+                            self.query_info.format(metrics=(item[1]), extension_schema=extension_schema,
+                                                   info_view_name=info_view),
                             i + 1))
             return template_zabbix.key_and_query(result)
         else:
