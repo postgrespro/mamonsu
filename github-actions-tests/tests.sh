@@ -93,6 +93,11 @@ elif [ "${OS}" = "centos:8" ]; then
     sudo bash /mamonsu/github-actions-tests/pg_install.sh --os="${OS}" --pmi="${PACKAGE_MANAGER_INSTALL}" --repo="${REPO}" --pg-version="${PG_VERSION}"
 
 elif [ "${OS%:*}" = "ubuntu" ]; then
+    # old versions of ubuntu got their packages in apt-archive.postgresql.org
+    REPO_BASE_URL="http://apt.postgresql.org/pub/repos/apt"
+    if [[ "${OS:7}" == "20.04" ]]; then
+        REPO_BASE_URL="http://apt-archive.postgresql.org/pub/repos/apt"
+    fi
     # install and set up components missing in docker image (sudo, wget, bc, unzip, lsb-release, gnupg, tzdata)
     apt-get clean && apt-get update && apt-get install -y sudo
     PACKAGE_MANAGER_INSTALL="sudo apt-get -y install"
@@ -110,7 +115,7 @@ elif [ "${OS%:*}" = "ubuntu" ]; then
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 7FCC7D46ACCC4CF8
 
     # add info about PG repo for ubuntu
-    REPO="sudo sh -c 'echo \"deb http://apt.postgresql.org/pub/repos/apt \$(lsb_release -cs)-pgdg main\" > /etc/apt/sources.list.d/pgdg.list'; wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - ; sudo apt-get update"
+    REPO="sudo sh -c 'echo \"deb ${REPO_BASE_URL} \$(lsb_release -cs)-pgdg main\" > /etc/apt/sources.list.d/pgdg.list'; wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - ; sudo apt-get update"
 
     # run tests
     sudo bash /mamonsu/github-actions-tests/pg_install.sh --os="${OS}" --pmi="${PACKAGE_MANAGER_INSTALL}" --repo="${REPO}" --pg-version="${PG_VERSION}"
