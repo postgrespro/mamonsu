@@ -1,3 +1,6 @@
+mamonsu (3.5.14-1) stable; urgency=low
+  * Fixed the replication stats collection when the follower's lag exceeds the integer range.;
+
 mamonsu (3.5.13-1) stable; urgency=low
   * Added a new metric that displays the bytes held by non-active replication slots, along with the corresponding trigger.;
   * Set the trigger for 'number of non-active replication slots' to be disabled by default.;

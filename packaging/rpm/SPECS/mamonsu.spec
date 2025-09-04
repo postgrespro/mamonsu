@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.13
+Version:        3.5.14
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown -R mamonsu:mamonsu /var/log/mamonsu
 chown -R mamonsu:mamonsu /etc/mamonsu
 
 %changelog
+* Thu Sep 4 2025 Andrey Papsuyko <a.papsuyko@postgrespro.ru>  - 3.5.14-1
+  - Fixed the replication stats collection when the follower's lag exceeds the integer range.;
+
 * Thu May 29 2025 Andrey Papsuyko <a.papsuyko@postgrespro.ru>  - 3.5.13-1
   - Added a new metric that displays the bytes held by non-active replication slots, along with the corresponding trigger.;
   - Set the trigger for 'number of non-active replication slots' to be disabled by default.;
