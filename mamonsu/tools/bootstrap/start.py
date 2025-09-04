@@ -166,13 +166,13 @@ def fill_query_params(queries):
             'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
             'waiting' if Pooler.server_version_less('9.6.0') else 'case when wait_event_type is null then false '
                                                                   ' else true end  as waiting',
-            'coalesce((pg_wal_lsn_diff(pg_current_wal_lsn(), sent_lsn))::int, 0) AS send_lag, '
-            'coalesce((pg_wal_lsn_diff(sent_lsn, flush_lsn))::int, 0) AS receive_lag, '
-            'coalesce((pg_wal_lsn_diff(sent_lsn, write_lsn))::int, 0) AS write_lag, '
-            'coalesce((pg_wal_lsn_diff(write_lsn, flush_lsn))::int, 0) AS flush_lag, '
-            'coalesce((pg_wal_lsn_diff(flush_lsn, replay_lsn))::int, 0) AS replay_lag,' if Pooler.server_version_greater('10.0') else '',
+            'coalesce((pg_wal_lsn_diff(pg_current_wal_lsn(), sent_lsn))::bigint, 0) AS send_lag, '
+            'coalesce((pg_wal_lsn_diff(sent_lsn, flush_lsn))::bigint, 0) AS receive_lag, '
+            'coalesce((pg_wal_lsn_diff(sent_lsn, write_lsn))::bigint, 0) AS write_lag, '
+            'coalesce((pg_wal_lsn_diff(write_lsn, flush_lsn))::bigint, 0) AS flush_lag, '
+            'coalesce((pg_wal_lsn_diff(flush_lsn, replay_lsn))::bigint, 0) AS replay_lag,' if Pooler.server_version_greater('10.0') else '',
             'wal_lsn' if Pooler.server_version_greater('10.0') else 'xlog_location',
-            'send_lag INTEGER, receive_lag INTEGER, write_lag INTEGER, flush_lag INTEGER, replay_lag INTEGER,' if Pooler.server_version_greater('10.0')
+            'send_lag BIGINT, receive_lag BIGINT, write_lag BIGINT, flush_lag BIGINT, replay_lag BIGINT,' if Pooler.server_version_greater('10.0')
             else '',
             'lsn' if Pooler.server_version_greater('10.0') else 'location',
             'walfile' if Pooler.server_version_greater('10.0') else 'xlogfile',
