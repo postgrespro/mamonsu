@@ -45,16 +45,16 @@ class Statements(Plugin):
          "Dirty bytes/s", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
          ("PostgreSQL Statements: Bytes", "9C8A4E", 0)),
 
-        ("stat[read_time]",
-         "(sum(blk_read_time)/float4(100))::bigint",
+        ["stat[read_time]",
+         "(sum({0})/float4(100))::bigint",
          "Read IO Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL Statements: Spent Time", "87C2B9", 0)),
-        ("stat[write_time]",
-         "(sum(blk_write_time)/float4(100))::bigint",
+         ("PostgreSQL Statements: Spent Time", "87C2B9", 0)],
+        ["stat[write_time]",
+         "(sum({0})/float4(100))::bigint",
          "Write IO Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
-         ("PostgreSQL Statements: Spent Time", "793F5D", 0)),
+         ("PostgreSQL Statements: Spent Time", "793F5D", 0)],
         ["stat[other_time]",
-         "(sum({0}-blk_read_time-blk_write_time)/float4(100))::bigint",
+         "(sum({0}-{1})/float4(100))::bigint",
          "Other (mostly CPU) Time", Plugin.UNITS.s, Plugin.DELTA.speed_per_second,
          ("PostgreSQL Statements: Spent Time", "9C8A4E", 0)]]
 
@@ -160,7 +160,14 @@ class Statements(Plugin):
             all_items += self.Items_pg_13
 
         elif Pooler.server_version_greater("14"):
-            self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
+            if Pooler.server_version_greater("17"):
+                self.Items[3][1] = self.Items[3][1].format("shared_blk_read_time+local_blk_read_time+temp_blk_read_time")
+                self.Items[4][1] = self.Items[4][1].format("shared_blk_write_time+local_blk_write_time+temp_blk_write_time")
+                self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time", "shared_blk_read_time-local_blk_read_time-temp_blk_read_time-shared_blk_write_time-local_blk_write_time-temp_blk_write_time")
+            else:
+                self.Items[3][1] = self.Items[3][1].format("blk_read_time")
+                self.Items[4][1] = self.Items[4][1].format("blk_write_time")
+                self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time", "blk_read_time-blk_write_time")
             all_items += self.Items_pg_13
             info_view = 'pgpro_stats_info'
             if self.extension == "pg_stat_statements":
@@ -177,11 +184,17 @@ class Statements(Plugin):
                 zbx.send(zbx_key, value, info_items[key][4])
 
         elif Pooler.server_version_greater("13"):
-            self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
+            self.Items[3][1] = self.Items[3][1].format("blk_read_time")
+            self.Items[4][1] = self.Items[4][1].format("blk_write_time")
+            self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time", "blk_read_time-blk_write_time")
+
             all_items += self.Items_pg_13
 
         else:
-            self.Items[5][1] = self.Items[5][1].format("total_time")
+            self.Items[3][1] = self.Items[3][1].format("blk_read_time")
+            self.Items[4][1] = self.Items[4][1].format("blk_write_time")
+            self.Items[5][1] = self.Items[5][1].format("total_time", "blk_read_time-blk_write_time")
+
         columns = [x[1] for x in all_items]
         result = Pooler.query(self.query[self.extension + "_bootstrap"].format(
             columns=", ".join([x[0][x[0].find("[") + 1:x[0].find("]")] for x in all_items]),

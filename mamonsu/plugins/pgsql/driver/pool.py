@@ -155,6 +155,7 @@ class Pool(object):
                 return self._cache["server_version"]["storage"][db]
 
             version_string = self.query("show server_version", db)[0][0]
+            version_string = version_string.rstrip("devel")
             result = bytes(
                 version_string.split(" ")[0], "utf-8")
             self._cache["server_version"]["storage"][db] = "{0}".format(
@@ -248,7 +249,7 @@ class Pool(object):
                 return self._cache["pgpro"][db]
             try:
                 self.query("""
-                SELECT pgpro_version();
+                SHOW pgpro_version;
                 """)
                 self._cache["pgpro"][db] = True
             except:
@@ -264,7 +265,7 @@ class Pool(object):
                 return self._cache["pgproee"][db]
             try:
                 ed = self.query("""
-                SELECT pgpro_edition();
+                SHOW pgpro_edition;
                 """)[0][0]
                 self._connections[db].log.info("pgpro_edition is {}".format(ed))
                 self._cache["pgproee"][db] = (ed.lower() == "enterprise")

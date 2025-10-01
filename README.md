@@ -19,7 +19,7 @@ Supported platforms:
 
 Supported Zabbix server versions: 4.0.44 - 6.4.13
 
-Supported PostgreSQL versions: 12 - 17
+Supported PostgreSQL versions: 12 - 18
 ***
 
 ***Table of Contents***
