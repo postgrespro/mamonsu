@@ -74,15 +74,26 @@ class Wal(Plugin):
             result = Pooler.query("""
             SELECT wal_buffers_full FROM pg_stat_wal;
             """)
-            zbx.send(self.key_wal_buffers_full.format("[]"), int(result[0][0]), self.DELTA_SPEED)
-            result = Pooler.query("""
-            SELECT wal_write_time FROM pg_stat_wal;
-            """)
-            zbx.send(self.key_wal_write_time.format("[]"), int(result[0][0]), self.DELTA_SPEED)
-            result = Pooler.query("""
-            SELECT wal_sync_time FROM pg_stat_wal;
-            """)
-            zbx.send(self.key_wal_sync_time.format("[]"), int(result[0][0]), self.DELTA_SPEED)
+            if Pooler.server_version_greater("18"):
+                zbx.send(self.key_wal_buffers_full.format("[]"), int(result[0][0]), self.DELTA_SPEED)
+                result = Pooler.query("""
+                SELECT SUM(write_time) AS wal_write_time FROM pg_stat_io WHERE object = 'wal';
+                """)
+                zbx.send(self.key_wal_write_time.format("[]"), int(result[0][0]), self.DELTA_SPEED)
+                result = Pooler.query("""
+                SELECT SUM(fsync_time) AS wal_sync_time FROM pg_stat_io WHERE object = 'wal';
+                """)
+                zbx.send(self.key_wal_sync_time.format("[]"), int(result[0][0]), self.DELTA_SPEED)
+            else:
+                zbx.send(self.key_wal_buffers_full.format("[]"), int(result[0][0]), self.DELTA_SPEED)
+                result = Pooler.query("""
+                SELECT wal_write_time FROM pg_stat_wal;
+                """)
+                zbx.send(self.key_wal_write_time.format("[]"), int(result[0][0]), self.DELTA_SPEED)
+                result = Pooler.query("""
+                SELECT wal_sync_time FROM pg_stat_wal;
+                """)
+                zbx.send(self.key_wal_sync_time.format("[]"), int(result[0][0]), self.DELTA_SPEED)
 
     def items(self, template, dashboard=False):
         result = ""
