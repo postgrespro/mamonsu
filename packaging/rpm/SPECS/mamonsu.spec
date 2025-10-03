@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.14
+Version:        3.5.15
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown -R mamonsu:mamonsu /var/log/mamonsu
 chown -R mamonsu:mamonsu /etc/mamonsu
 
 %changelog
+* Fri Oct 3 2025 Andrey Papsuyko <a.papsuyko@postgrespro.ru>  - 3.5.15-1
+  - PostgreSQL 18 support;
+
 * Thu Sep 4 2025 Andrey Papsuyko <a.papsuyko@postgrespro.ru>  - 3.5.14-1
   - Fixed the replication stats collection when the follower's lag exceeds the integer range.;
 

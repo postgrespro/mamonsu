@@ -1,3 +1,6 @@
+mamonsu (3.5.15-1) stable; urgency=low
+  * PostgreSQL 18 support;
+
 mamonsu (3.5.14-1) stable; urgency=low
   * Fixed the replication stats collection when the follower's lag exceeds the integer range.;
 
