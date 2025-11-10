@@ -1,0 +1,68 @@
+services:
+  mamonsu-pg:
+    build:
+      context: .
+      dockerfile: tests/debian.Dockerfile
+      args:
+        POSTGRES_VERSION: ${POSTGRES_VERSION}
+    container_name: mamonsu-pg
+    hostname: mamonsu-pg
+    image: mamonsu-pg
+    ports:
+      - "${MAMONSU_AGENT_EXT_PORT}:${MAMONSU_AGENT_PORT}"
+      - "${POSTGRES_EXT_PORT}:${POSTGRES_PORT}"
+    environment:
+      POSTGRES_VERSION: ${POSTGRES_VERSION}
+      MAMONSU_AGENT_PORT: ${MAMONSU_AGENT_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: md5
+      ZABBIX_USER: ${ZABBIX_ADMIN_USER}
+      ZABBIX_PASSWD: ${ZABBIX_ADMIN_PASS}
+      ZABBIX_URL: http://${ZABBIX_INT_URL}/
+    restart: no
+
+  zabbix:
+    image: zabbix/zabbix-server-pgsql:6.4.13-ubuntu
+    container_name: zabbix
+    hostname: zabbix
+    environment:
+      - DB_SERVER_HOST=mamonsu-pg
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=zabbix
+      - PGPASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "${ZABBIX_SERVER_EXT_PORT}:${ZABBIX_SERVER_PORT}"
+    depends_on:
+      - mamonsu-pg
+
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-pgsql:6.4.13-ubuntu
+    container_name: zabbix-web
+    hostname: zabbix-web
+    environment:
+      - DB_SERVER_HOST=mamonsu-pg
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=zabbix
+      - ZBX_SERVER_HOST=zabbix-server
+      - ZBX_SERVER_PORT=${ZABBIX_SERVER_PORT}
+      - ZABBIX_ADMIN_USER=Admin
+      - ZABBIX_ADMIN_PASS=zabbix
+    ports:
+      - "${ZABBIX_WEB_EXT_PORT}:${ZABBIX_WEB_PORT}"
+    depends_on:
+      - zabbix
+    healthcheck:
+      test: |
+        curl -fsS "http://localhost:${ZABBIX_WEB_PORT}/api_jsonrpc.php" \
+          -X POST \
+          -H "Content-Type: application/json-rpc" \
+          -d '{"jsonrpc":"2.0","method":"apiinfo.version","id":1,"auth":null,"params":{}}' \
+        | grep -q '"result"' || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
