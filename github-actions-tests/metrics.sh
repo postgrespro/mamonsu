@@ -64,6 +64,7 @@ for metric in $(cat ${METRICS_FILE}); do
     GREP=$( mamonsu agent metric-get ${metric} | grep "pgsql\|sys\|mamonsu" )
     if [ -z "$GREP" ]; then
 	      echo "---> ERROR: Cannot found metric $metric"
+	      mamonsu agent metric-list
         exit 11
     fi
 done

@@ -2374,6 +2374,69 @@ Default config:
 
     *Buffers Written During Checkpoints* maps `buffers_written`.
 
+- **Done Checkpoints**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Checkpoints: Done (in hour)</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.checkpoint[count_done]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>18+</td>
+      </tr>
+    </table>
+
+    *Done Checkpoints* maps `num_done`.
+
+- **SLRU Written**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Checkpoints: SLRU Written (in hour)</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.checkpoint[slru_written]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Speed Per Second</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>18+</td>
+      </tr>
+    </table>
+
+    *SLRU Written* maps `slru_written`.
 
 ### Graphs
 
@@ -2919,6 +2982,70 @@ Default config:
     </table>
 
     *Checksum Failures* maps `checksum_failures`.
+
+- **Parallel Workers To Launch**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Instance: Parallel Workers To Launch</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.parallel[instance_to_launch]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Simple Change</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>18+</td>
+      </tr>
+    </table>
+   
+    *Parallel Workers To Launch* maps `parallel_workers_to_launch`.
+
+- **Parallel Workers Launched**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Instance: Parallel Workers Launched</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.parallel[instance_launched]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Simple Change</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>18+</td>
+      </tr>
+    </table>
+   
+    *Parallel Workers Launched* maps `parallel_workers_launched`.
 
 ### Graphs
 <table>
@@ -4001,6 +4128,37 @@ Default config:
    
     *Amount of WAL Records* maps `wal_records`.
 
+- **WAL Buffers Full**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Statements: WAL Buffers Full</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.stat[wal_buffers_full]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Simple Change</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>18+</td>
+      </tr>
+    </table>
+   
+    *WAL Buffers Full* maps `wal_buffers_full`.
 
 - **Dirty Bytes**  
    
@@ -4297,6 +4455,70 @@ Default config:
     </table>
    
     *pg_stat_statements.max Exceeding Count* maps `dealloc`.
+
+- **Parallel Workers To Launch**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Statements: Parallel Workers To Launch</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.parallel[statements_to_launch]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Simple Change</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>18+</td>
+      </tr>
+    </table>
+   
+    *Parallel Workers To Launch* maps `parallel_workers_to_launch`.
+
+- **Parallel Workers Launched**  
+   
+    Zabbix item:  
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>PostgreSQL Statements: Parallel Workers Launched</td>
+      </tr>
+      <tr>
+        <th>Key</th>
+        <td>pgsql.parallel[statements_launched]</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>Numeric (float)</td>
+      </tr>
+      <tr>
+        <th>Units</th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Delta</th>
+        <td>Simple Change</td>
+      </tr>
+      <tr>
+        <th>Supported Version</th>
+        <td>18+</td>
+      </tr>
+    </table>
+   
+    *Parallel Workers Launched* maps `parallel_workers_launched`.
 
 ### Graphs
 

@@ -88,6 +88,29 @@ class Statements(Plugin):
          ("PostgreSQL Statements Info: Last Statistics Reset Time", "9C8A4E", 0))
     ]
 
+    Items_pg_18 = [
+        ("parallel[statements_to_launch]",
+         "sum(parallel_workers_to_launch)",
+         "Number of parallel workers planned to be launched",
+         Plugin.UNITS.none,
+         Plugin.DELTA.simple_change,
+         ("PostgreSQL Statements: Parallel Workers To Launch", "87C2B9", 0)),
+
+        ("parallel[statements_launched]",
+         "sum(parallel_workers_launched)",
+         "Number of parallel workers actually launched",
+         Plugin.UNITS.none,
+         Plugin.DELTA.simple_change,
+         ("PostgreSQL Statements: Parallel Workers Launched", "793F5D", 0)),
+
+        ("stat[wal_buffers_full]",
+         "sum(wal_buffers_full)",
+         "Number of times the WAL buffers became full",
+         Plugin.UNITS.none,
+         Plugin.DELTA.simple_change,
+         ("PostgreSQL Statements: WAL Buffers Full", "9C8A4E", 0)),
+    ]
+
     Items_pgpro_stats_1_8 = [
         ("stat[read_bytes]",
          "(sum(shared_blks_read+local_blks_read+temp_blks_read)*8*1024)::bigint",
@@ -168,6 +191,8 @@ class Statements(Plugin):
                 self.Items[3][1] = self.Items[3][1].format("blk_read_time")
                 self.Items[4][1] = self.Items[4][1].format("blk_write_time")
                 self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time", "blk_read_time-blk_write_time")
+            if Pooler.server_version_greater("18"):
+                all_items += self.Items_pg_18
             all_items += self.Items_pg_13
             info_view = 'pgpro_stats_info'
             if self.extension == "pg_stat_statements":
@@ -210,7 +235,7 @@ class Statements(Plugin):
             delta = Plugin.DELTA.as_is
         else:
             delta = Plugin.DELTA.speed_per_second
-        for item in self.Items + self.Items_pg_13 + self.Items_pg_14:
+        for item in self.Items + self.Items_pg_13 + self.Items_pg_14 + self.Items_pg_18:
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[0].split("[")
             result += template.item({
@@ -229,7 +254,7 @@ class Statements(Plugin):
         result = ""
         for graph_item in self.all_graphs:
             items = []
-            for item in self.Items + self.Items_pg_13:
+            for item in self.Items + self.Items_pg_13 + self.Items_pg_18:
                 if item[5][0] == graph_item[0]:
                     keys = item[0].split("[")
                     items.append({
@@ -271,6 +296,8 @@ class Statements(Plugin):
                 self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
                 if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
                     all_items += self.Items_pg_13
+            if Pooler.server_version_greater("18"):
+                all_items += self.Items_pg_18
 
             columns = [x[1] for x in all_items]
 
@@ -287,6 +314,7 @@ class Statements(Plugin):
                         extension_schema=extension_schema),
                     i + 1))
 
+            # Info view
             if Pooler.server_version_greater("14"):
                 info_view = 'pgpro_stats_info'
                 if self.extension == "pg_stat_statements":
