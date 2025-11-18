@@ -68,6 +68,17 @@ class Instance(Plugin):
          ("PostgreSQL Instance: Events", "006AAE", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change)
     ]
+    Items_pg_18 = [
+        # key, zbx_key, description,
+        #    ('graph name', color, side), units, delta
+        ("parallel_workers_to_launch", "parallel[instance_to_launch]", "",
+         ("PostgreSQL Instance: Parallel Workers To Launch", "00CC00", 0),
+         Plugin.UNITS.none, Plugin.DELTA.simple_change),
+
+        ("parallel_workers_launched", "parallel[instance_launched]", "",
+         ("PostgreSQL Instance: Parallel Workers Launched", "00CC00", 0),
+         Plugin.UNITS.none, Plugin.DELTA.simple_change)
+    ]
 
     key_server_mode = "pgsql.server_mode{0}"
     query_server_mode = """
@@ -86,8 +97,9 @@ class Instance(Plugin):
     def run(self, zbx):
         all_items = self.Items
         if Pooler.server_version_greater("12.0"):
-            all_items = self.Items + self.Items_pg_12
-
+            all_items += self.Items_pg_12
+        if Pooler.server_version_greater("18.0"):
+            all_items += self.Items_pg_18
         columns = ["sum(COALESCE({0}, 0)) as {0}".format(x[0]) for x in all_items]
         result = Pooler.query("""
         SELECT {0}
@@ -102,7 +114,7 @@ class Instance(Plugin):
 
     def items(self, template, dashboard=False):
         result = ""
-        for num, item in enumerate(self.Items + self.Items_pg_12):
+        for num, item in enumerate(self.Items + self.Items_pg_12 + self.Items_pg_18):
             if self.Type == "mamonsu":
                 delta = Plugin.DELTA.as_is
             else:
@@ -154,7 +166,7 @@ class Instance(Plugin):
         result = ""
         for name in self.graphs_name.values():
             items = []
-            for num, item in enumerate(self.Items + self.Items_pg_12):
+            for num, item in enumerate(self.Items + self.Items_pg_12 + self.Items_pg_18):
                 if item[3][0] == name:
                     # split each item to get values for keys of both agent type and mamonsu type
                     keys = item[1].split("[")
@@ -201,10 +213,11 @@ class Instance(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        if Pooler.server_version_less("11"):
-            all_items = self.Items
-        else:
-            all_items = self.Items + self.Items_pg_12
+        all_items = self.Items
+        if Pooler.server_version_greater("12.0"):
+            all_items += self.Items_pg_12
+        if Pooler.server_version_greater("18.0"):
+            all_items += self.Items_pg_18
         for item in all_items:
             # split each item to get values for keys of both agent type and mamonsu type
             keys = item[1].split("[")

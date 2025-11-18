@@ -8,6 +8,7 @@ from mamonsu.lib.zbx_template import ZbxTemplate
 class Checkpoint(Plugin):
     AgentPluginType = "pg"
     Interval = 60 * 5
+    FactorIndex = 6
 
     key = "pgsql.checkpoint{0}"
 
@@ -85,6 +86,18 @@ class Checkpoint(Plugin):
                      "Sync Time",
                      ("PostgreSQL Checkpoints: Write/Sync", "FF5656", 1),
                      Plugin.UNITS.ms, Plugin.DELTA.speed_per_second, 1)
+                ]
+            if Pooler.server_version_greater("18"):
+                self.Items += [
+                    ("num_done", "count_done",
+                     "Done (in hour)",
+                     ("PostgreSQL Checkpoints: Done (in hour)", "00CC00", 0),
+                     Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60),
+
+                    ("slru_written", "slru_written",
+                     "SLRU Written (in hour)",
+                     ("PostgreSQL Checkpoints: SLRU Written (in hour)", "00CC00", 0),
+                     Plugin.UNITS.none, Plugin.DELTA.speed_per_second, 60 * 60)
                 ]
 
     def run(self, zbx):
@@ -174,8 +187,8 @@ class Checkpoint(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        for num, item in enumerate(self.Items):
-            if num > 1:
+        for item in self.Items:
+            if item[self.FactorIndex] == 1:
                 result.append(
                     "{0}[*],$2 $1 -c \"{1}\"".format(self.key.format("." + item[1]), self.query.format(item[0])))
             else:
