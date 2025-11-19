@@ -15,7 +15,7 @@ from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.zbx_template import ZbxTemplate
 from mamonsu.lib.get_keys import GetKeys
 
-if platform.LINUX:
+if platform.LINUX or platform.DARWIN:
     from mamonsu.plugins.system.linux.scripts import Scripts
 
 
@@ -224,7 +224,7 @@ def is_any_equal(array):
 #  extract pg version from input
 def define_pg_version(version_args):
     if len(version_args) < 4:
-        if version_args in ["9.5", "9.6", "10", "11", "12", "13", "14", "15", "16", "17"]:
+        if version_args in ["9.5", "9.6", "10", "11", "12", "13", "14", "15", "16", "17", "18"]:
             version_number = version_args[0].split('.')
             for num in version_number:
                 if not num.isdigit():
