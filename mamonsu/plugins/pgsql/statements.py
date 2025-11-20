@@ -293,7 +293,11 @@ class Statements(Plugin):
             if Pooler.server_version_less("12"):
                 self.Items[5][1] = self.Items[5][1].format("total_time")
             else:
-                self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time")
+                if Pooler.server_version_greater("17"):
+                    self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time",
+                                                               "shared_blk_read_time-local_blk_read_time-temp_blk_read_time-shared_blk_write_time-local_blk_write_time-temp_blk_write_time")
+                else:
+                    self.Items[5][1] = self.Items[5][1].format("total_exec_time+total_plan_time", "blk_read_time-blk_write_time")
                 if Pooler.is_pgpro() or Pooler.is_pgpro_ee():
                     all_items += self.Items_pg_13
             if Pooler.server_version_greater("18"):
