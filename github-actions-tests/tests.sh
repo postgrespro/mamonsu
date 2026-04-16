@@ -98,8 +98,14 @@ elif [ "${OS%:*}" = "ubuntu" ]; then
     if [[ "${OS:7}" == "20.04" ]]; then
         REPO_BASE_URL="http://apt-archive.postgresql.org/pub/repos/apt"
     fi
+
+    sed -i 's|http://archive.ubuntu.com|http://azure.archive.ubuntu.com|g' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || \
+    sed -i 's|http://archive.ubuntu.com|http://azure.archive.ubuntu.com|g' /etc/apt/sources.list
+    sed -i 's|http://security.ubuntu.com|http://azure.archive.ubuntu.com|g' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || \
+    sed -i 's|http://security.ubuntu.com|http://azure.archive.ubuntu.com|g' /etc/apt/sources.list
+
     # install and set up components missing in docker image (sudo, wget, bc, unzip, lsb-release, gnupg, tzdata)
-    apt-get clean && apt-get update && apt-get install -y sudo
+    rm -rf /var/lib/apt/lists/* && apt-get update && apt-get install -y sudo
     PACKAGE_MANAGER_INSTALL="sudo apt-get -y install"
     PACKAGE_MANAGER_REMOVE="sudo apt-get -y remove"
     eval "${PACKAGE_MANAGER_INSTALL} wget"
