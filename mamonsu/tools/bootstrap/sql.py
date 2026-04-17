@@ -289,10 +289,13 @@ DECLARE
 BEGIN
    CREATE EXTENSION IF NOT EXISTS pgpro_stats WITH SCHEMA mamonsu;
 
-   WITH tb_type AS (SELECT exists(SELECT * FROM pg_proc WHERE proname = 'pgpro_version'))
+   WITH tb_type AS 
+    (SELECT
+        EXISTS (SELECT 1 FROM pg_settings WHERE name = 'pgpro_version') AS has_guc,
+		EXISTS (SELECT 1 FROM pg_proc WHERE proname = 'pgpro_version' AND pronamespace = 'pg_catalog'::regnamespace) AS has_func)
    SELECT
       CASE
-         WHEN exists = false THEN 'vanilla' ELSE 'pro'
+         WHEN (has_guc OR has_func) THEN 'pro' ELSE 'vanilla'
       END INTO pg_type
    FROM tb_type;
 
@@ -417,10 +420,13 @@ DECLARE
 BEGIN
    CREATE EXTENSION IF NOT EXISTS pgpro_stats WITH SCHEMA mamonsu;
 
-   WITH tb_type AS (SELECT exists(SELECT * FROM pg_proc WHERE proname = 'pgpro_version'))
+   WITH tb_type AS 
+    (SELECT
+        EXISTS (SELECT 1 FROM pg_settings WHERE name = 'pgpro_version') AS has_guc,
+		EXISTS (SELECT 1 FROM pg_proc WHERE proname = 'pgpro_version' AND pronamespace = 'pg_catalog'::regnamespace) AS has_func)
    SELECT
       CASE
-         WHEN exists = false THEN 'vanilla' ELSE 'pro'
+         WHEN (has_guc OR has_func) THEN 'pro' ELSE 'vanilla'
       END INTO pg_type
    FROM tb_type;
 
