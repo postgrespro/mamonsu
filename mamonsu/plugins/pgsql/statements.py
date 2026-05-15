@@ -226,7 +226,7 @@ class Statements(Plugin):
             metrics=(", ".join(columns)), extension_schema=extension_schema) if Pooler.is_bootstraped() else self.query[
             self.extension].format(metrics=(", ".join(columns)), extension_schema=extension_schema))
         for key, value in enumerate(result[0]):
-            zbx_key, value = "pgsql.{0}".format(all_items[key][0]), int(value)
+            zbx_key, value = "pgsql.{0}".format(all_items[key][0]), int(value or 0)
             zbx.send(zbx_key, value, all_items[key][4])
 
     def items(self, template, dashboard=False):
