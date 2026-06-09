@@ -18,7 +18,7 @@ case $i in
     shift
     ;;
     --zbx-version=*)
-    ZBX_version="${i#*=}"
+    ZBX_VERSION="${i#*=}"
     shift
     ;;
     *)

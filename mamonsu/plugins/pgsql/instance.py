@@ -71,11 +71,11 @@ class Instance(Plugin):
     Items_pg_18 = [
         # key, zbx_key, description,
         #    ('graph name', color, side), units, delta
-        ("parallel_workers_to_launch", "parallel[instance_to_launch]", "",
+        ("parallel_workers_to_launch", "parallel[instance_to_launch]", "Parallel Workers To Launch",
          ("PostgreSQL Instance: Parallel Workers To Launch", "00CC00", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change),
 
-        ("parallel_workers_launched", "parallel[instance_launched]", "",
+        ("parallel_workers_launched", "parallel[instance_launched]", "Parallel Workers Launched",
          ("PostgreSQL Instance: Parallel Workers Launched", "00CC00", 0),
          Plugin.UNITS.none, Plugin.DELTA.simple_change)
     ]
