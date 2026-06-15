@@ -46,12 +46,9 @@ ZBX_VERSION_MAJOR=${ZBX_VERSION_ARRAY[0]}
 ZBX_VERSION_MINOR=${ZBX_VERSION_ARRAY[1]}
 
 OLD_ZABBIX=" "
-if  ((ZBX_VERSION_MAJOR <= 4))
+if ((ZBX_VERSION_MAJOR < 4))
 then
-  if  ((ZBX_VERSION_MINOR <= 2))
-  then
-    OLD_ZABBIX=" --old-zabbix "
-  fi
+  OLD_ZABBIX=" --old-zabbix "
 fi
 
 echo && echo "------> mamonsu zabbix version"
