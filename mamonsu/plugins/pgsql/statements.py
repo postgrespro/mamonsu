@@ -60,7 +60,7 @@ class Statements(Plugin):
 
     Items_pg_13 = [
         ("stat[wal_bytes]",
-         "sum(wal_bytes)::bigint",
+         "sum(wal_bytes)::numeric",
          "Amount of WAL Files", Plugin.UNITS.bytes_per_second, Plugin.DELTA.speed_per_second,
          ("PostgreSQL Statements: WAL Statistics", "00B0B8", 0)),
         ("stat[wal_records]",
