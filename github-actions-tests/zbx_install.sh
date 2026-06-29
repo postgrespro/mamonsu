@@ -40,7 +40,9 @@ docker-compose -f ./docker-compose.yml up -d
 
 echo "---> Waiting for Zabbix ..."
 WAITED=0
-until curl -sf http://localhost:80/ > /dev/null 2>&1; do
+until curl -sf -X POST -H 'Content-Type: application/json' \
+    -d '{"jsonrpc":"2.0","method":"apiinfo.version","params":[],"id":1}' \
+    http://localhost:80/api_jsonrpc.php 2>/dev/null | grep -q '"result"'; do
     sleep 5
     WAITED=$((WAITED + 5))
     if [ $WAITED -ge 300 ]; then
