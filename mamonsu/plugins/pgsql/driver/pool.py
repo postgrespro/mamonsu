@@ -155,6 +155,7 @@ class Pool(object):
                 return self._cache["server_version"]["storage"][db]
 
             version_string = self.query("show server_version", db)[0][0]
+            version_string = version_string.split('-')[0]
             version_string = version_string.rstrip("devel")
             result = bytes(
                 version_string.split(" ")[0], "utf-8")
