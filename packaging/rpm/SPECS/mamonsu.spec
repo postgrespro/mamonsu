@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.15
+Version:        3.5.16
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,13 @@ chown -R mamonsu:mamonsu /var/log/mamonsu
 chown -R mamonsu:mamonsu /etc/mamonsu
 
 %changelog
+* Mon Jun 29 2026 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.16-1
+  - add columns support for PostgreSQL 18;
+  - fixed bug with index out of range during export in pg_stat_statements;
+  - fixed None to int conversion in pg_stat_statements;
+  - added description for parallel worker metrics in postgres18;
+  - changed some integer metrics from bigint to numeric due to overflow;
+
 * Fri Oct 3 2025 Andrey Papsuyko <a.papsuyko@postgrespro.ru>  - 3.5.15-1
   - PostgreSQL 18 support;
 

@@ -1,3 +1,10 @@
+mamonsu (3.5.16-1) stable; urgency=low
+  * add columns support for PostgreSQL 18;
+  * fixed bug with index out of range during export in pg_stat_statements;
+  * fixed None to int conversion in pg_stat_statements;
+  * added description for parallel worker metrics in postgres18;
+  * changed some integer metrics from bigint to numeric due to overflow;
+
 mamonsu (3.5.15-1) stable; urgency=low
   * PostgreSQL 18 support;
 
