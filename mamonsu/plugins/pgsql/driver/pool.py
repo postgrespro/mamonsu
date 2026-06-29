@@ -1,4 +1,5 @@
 from .connection import Connection, ConnectionInfo
+from .version import extract_version
 
 from mamonsu.lib.version import parse
 import threading
@@ -155,8 +156,8 @@ class Pool(object):
                 return self._cache["server_version"]["storage"][db]
 
             version_string = self.query("show server_version", db)[0][0]
-            version_string = version_string.split('-')[0]
-            version_string = version_string.rstrip("devel")
+            version_string = extract_version(version_string)
+
             result = bytes(
                 version_string.split(" ")[0], "utf-8")
             self._cache["server_version"]["storage"][db] = "{0}".format(
