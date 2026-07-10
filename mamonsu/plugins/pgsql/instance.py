@@ -95,7 +95,7 @@ class Instance(Plugin):
         "tuples": "PostgreSQL Instance: Tuples"}
 
     def run(self, zbx):
-        all_items = self.Items
+        all_items = self.Items.copy()
         if Pooler.server_version_greater("12.0"):
             all_items += self.Items_pg_12
         if Pooler.server_version_greater("18.0"):
@@ -213,7 +213,7 @@ class Instance(Plugin):
 
     def keys_and_queries(self, template_zabbix):
         result = []
-        all_items = self.Items
+        all_items = self.Items.copy()
         if Pooler.server_version_greater("12.0"):
             all_items += self.Items_pg_12
         if Pooler.server_version_greater("18.0"):
