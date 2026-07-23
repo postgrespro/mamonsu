@@ -1,3 +1,6 @@
+mamonsu (3.5.17-1) stable; urgency=low
+  * prevent Instance plugin Items list mutation on each run() cycle (#233);
+
 mamonsu (3.5.16-1) stable; urgency=low
   * add columns support for PostgreSQL 18;
   * fixed bug with index out of range during export in pg_stat_statements;
