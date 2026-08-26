@@ -15,6 +15,19 @@ if platform.LINUX:
     usage_msg += """    -d                 daemonize
 """
 
+usage_msg += """    Encryption of the connection to the Zabbix server, overrides the
+    [zabbix] section of the config file:
+        --zabbix-tls-connect              <unencrypted|psk|cert>
+        --zabbix-tls-psk-identity         <identity>
+        --zabbix-tls-psk-file             <file>
+        --zabbix-tls-ca-file              <file>
+        --zabbix-tls-crl-file             <file>
+        --zabbix-tls-cert-file            <file>
+        --zabbix-tls-key-file             <file>
+        --zabbix-tls-server-cert-issuer   <distinguished name>
+        --zabbix-tls-server-cert-subject  <distinguished name>
+"""
+
 usage_msg += """        --version      prints version information, then exits
         --help         shows this help message, then exits
 
@@ -296,6 +309,19 @@ def parse_args():
     parser.add_option('--zabbix-file', dest='zabbix_file', default='/var/log/mamonsu/localhost.log')
     # log level to send metrics
     parser.add_option('--zabbix-log-level', dest='zabbix_log_level', default='INFO')
+    # encryption of the connection to the Zabbix server, overrides [zabbix] of the
+    # config file; without these options the settings from the config file are used
+    parser.add_option('--zabbix-tls-connect', dest='zabbix_tls_connect', default=None)
+    parser.add_option('--zabbix-tls-psk-identity', dest='zabbix_tls_psk_identity', default=None)
+    parser.add_option('--zabbix-tls-psk-file', dest='zabbix_tls_psk_file', default=None)
+    parser.add_option('--zabbix-tls-ca-file', dest='zabbix_tls_ca_file', default=None)
+    parser.add_option('--zabbix-tls-crl-file', dest='zabbix_tls_crl_file', default=None)
+    parser.add_option('--zabbix-tls-cert-file', dest='zabbix_tls_cert_file', default=None)
+    parser.add_option('--zabbix-tls-key-file', dest='zabbix_tls_key_file', default=None)
+    parser.add_option(
+        '--zabbix-tls-server-cert-issuer', dest='zabbix_tls_server_cert_issuer', default=None)
+    parser.add_option(
+        '--zabbix-tls-server-cert-subject', dest='zabbix_tls_server_cert_subject', default=None)
 
     # check unknown options
     args, commands = parser.parse_args()

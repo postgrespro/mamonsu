@@ -535,5 +535,6 @@ API query:
 ## Additional chapters
 - [**Adding custom plugins**](documentation/adding_custom_plugins.md)
 - [**Configuration file**](documentation/configuration_file.md)
+- [**Encrypting the connection to Zabbix**](TLS_ENCRYPTION.md)
 - [**Metrics**](documentation/metrics.md)
 - [**Tools**](documentation/tools.md)

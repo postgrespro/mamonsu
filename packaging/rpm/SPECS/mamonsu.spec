@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.17
+Version:        3.5.17.1
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown -R mamonsu:mamonsu /var/log/mamonsu
 chown -R mamonsu:mamonsu /etc/mamonsu
 
 %changelog
+* Wed Aug 26 2026 kroxiksut <iksut@ya.ru> - 3.5.17.1-1
+- send metrics to the Zabbix server over TLS with a pre-shared key or a certificate
+
 * Thu Jul 23 2026 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.17-1
   - prevent Instance plugin Items list mutation on each run() cycle (#233);
 

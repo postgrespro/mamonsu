@@ -10,7 +10,13 @@ import logging
 
 from mamonsu.lib.plugin import Plugin
 from mamonsu.lib.queue import Queue
+from mamonsu.lib.senders import tls
 from itertools import islice
+
+
+TLS_UNENCRYPTED = 'unencrypted'
+TLS_PSK = 'psk'
+TLS_CERT = 'cert'
 
 
 class ZbxSender(Plugin):
@@ -32,6 +38,7 @@ class ZbxSender(Plugin):
         self.queue = Queue()
         self.log = logging.getLogger(
             'ZBX-{0}:{1}'.format(self.host, self.port))
+        self._setup_tls(config)
 
     def send(self, key, value, host=None, clock=None):
         if host is None:
@@ -110,14 +117,94 @@ class ZbxSender(Plugin):
                 if not lines:
                     break
 
+    def _setup_tls(self, config):
+        """Read TLS settings. Without them the sender behaves exactly as before."""
+        # raw=True: identities, distinguished names and paths are free text,
+        # a '%' in them must not trigger configparser interpolation
+        self.tls_connect = (config.fetch('zabbix', 'tls_connect', raw=True) or TLS_UNENCRYPTED).lower()
+        self.tls_psk_identity = config.fetch('zabbix', 'tls_psk_identity', raw=True)
+        self.tls_psk_file = config.fetch('zabbix', 'tls_psk_file', raw=True)
+        self.tls_cipher_psk = config.fetch('zabbix', 'tls_cipher_psk', raw=True)
+        self.tls_cipher_cert = config.fetch('zabbix', 'tls_cipher_cert', raw=True)
+        self.tls_ca_file = config.fetch('zabbix', 'tls_ca_file', raw=True)
+        self.tls_crl_file = config.fetch('zabbix', 'tls_crl_file', raw=True)
+        self.tls_cert_file = config.fetch('zabbix', 'tls_cert_file', raw=True)
+        self.tls_key_file = config.fetch('zabbix', 'tls_key_file', raw=True)
+        self.tls_server_cert_issuer = config.fetch('zabbix', 'tls_server_cert_issuer', raw=True)
+        self.tls_server_cert_subject = config.fetch('zabbix', 'tls_server_cert_subject', raw=True)
+        self._psk = None
+        if self.tls_connect == TLS_UNENCRYPTED:
+            return
+        # a misconfigured encrypted sender must never quietly fall back to
+        # plaintext, so the plugin is disabled instead
+        if self.tls_connect not in (TLS_PSK, TLS_CERT):
+            self._disable(
+                'unknown tls_connect value "{0}", expected one of: {1}'.format(
+                    self.tls_connect, ', '.join([TLS_UNENCRYPTED, TLS_PSK, TLS_CERT])))
+            return
+        if self.tls_connect == TLS_CERT:
+            missing = [name for name, value in (
+                ('tls_ca_file', self.tls_ca_file),
+                ('tls_cert_file', self.tls_cert_file),
+                ('tls_key_file', self.tls_key_file)) if not value]
+            if missing:
+                self._disable(
+                    'tls_connect = cert requires {0}'.format(', '.join(missing)))
+                return
+            self.log.info('sending metrics over TLS with a certificate')
+            return
+        if not self.tls_psk_identity or not self.tls_psk_file:
+            self._disable(
+                'tls_connect = psk requires both tls_psk_identity and tls_psk_file')
+            return
+        try:
+            self._psk = tls.read_psk_file(self.tls_psk_file)
+        except tls.TLSError as e:
+            self._disable('{0}'.format(e))
+            return
+        self.log.info(
+            'sending metrics over TLS-PSK, identity: {0}'.format(self.tls_psk_identity))
+
+    def _disable(self, reason):
+        self._enabled = False
+        self.log.error(reason)
+
+    def _connect(self):
+        if self.tls_connect == TLS_PSK:
+            return tls.connect_psk(
+                self.host, self.port, self.tls_psk_identity, self._psk,
+                int(self.timeout), self.tls_cipher_psk)
+        if self.tls_connect == TLS_CERT:
+            return tls.connect_cert(
+                self.host, self.port, self.tls_ca_file, self.tls_cert_file,
+                self.tls_key_file, int(self.timeout),
+                crl_file=self.tls_crl_file, ciphers=self.tls_cipher_cert,
+                server_cert_issuer=self.tls_server_cert_issuer,
+                server_cert_subject=self.tls_server_cert_subject)
+        if self.tls_connect != TLS_UNENCRYPTED:
+            # _setup_tls() disables the plugin, but send_file_to_zabbix() does
+            # not honour that flag - a misconfigured sender must fail here too
+            # rather than fall through to an unencrypted connection
+            raise tls.TLSError(
+                'unknown tls_connect value "{0}", refusing to send data'
+                ' unencrypted'.format(self.tls_connect))
+        sock = socket.socket()
+        try:
+            sock.settimeout(int(self.timeout))
+            sock.connect((self.host, self.port))
+        except Exception:
+            # a failed connect() would otherwise leak the file descriptor
+            # until the socket is garbage collected
+            sock.close()
+            raise
+        return sock
+
     def _send_data(self, data):
         sent_all = True
         data_len = struct.pack('<Q', len(data))
         packet = b'ZBXD\x01' + data_len + str.encode(data)
+        sock = self._connect()
         try:
-            sock = socket.socket()
-            sock.settimeout(int(self.timeout))
-            sock.connect((self.host, self.port))
             self.log.debug('request: {0}'.format(data))
             sock.sendall(packet)
             resp_header = self._receive(sock, 13)
