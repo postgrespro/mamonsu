@@ -19,6 +19,23 @@ if platform.LINUX or platform.DARWIN:
     from mamonsu.plugins.system.linux.scripts import Scripts
 
 
+def apply_zabbix_tls_args(cfg, args):
+    """Let the command line override the TLS settings of the config file."""
+    options = (
+        ('tls_connect', args.zabbix_tls_connect),
+        ('tls_psk_identity', args.zabbix_tls_psk_identity),
+        ('tls_psk_file', args.zabbix_tls_psk_file),
+        ('tls_ca_file', args.zabbix_tls_ca_file),
+        ('tls_crl_file', args.zabbix_tls_crl_file),
+        ('tls_cert_file', args.zabbix_tls_cert_file),
+        ('tls_key_file', args.zabbix_tls_key_file),
+        ('tls_server_cert_issuer', args.zabbix_tls_server_cert_issuer),
+        ('tls_server_cert_subject', args.zabbix_tls_server_cert_subject))
+    for key, value in options:
+        if value is not None:
+            cfg.config.set('zabbix', key, value)
+
+
 def start():
     def quit_handler(_signo=None, _stack_frame=None):
         logging.info("Bye bye!")
@@ -67,6 +84,7 @@ def start():
             cfg.config.set('zabbix', 'port', args.zabbix_port)
             cfg.config.set('zabbix', 'client', args.zabbix_client)
             cfg.config.set('log', 'level', args.zabbix_log_level)
+            apply_zabbix_tls_args(cfg, args)
 
             supervisor = Supervisor(cfg)
             supervisor.send_file_zabbix(cfg, args.zabbix_file)
@@ -186,6 +204,7 @@ def start():
     if len(commands) > 0:
         print_total_help()
     cfg = Config(args.config_file, args.plugins_dirs)
+    apply_zabbix_tls_args(cfg, args)
 
     # simple daemon
     if args.daemon:

@@ -11,6 +11,16 @@ Mamonsu testing with different Postgres version, different operation systems(not
   pip3 install -e requirement.txt
 ```
 
+## Unit tests
+
+The tests under `tests/unit` need neither docker nor a Zabbix server and are run from the repository root:
+
+```bash
+python -m pytest tests/unit
+```
+
+`tests/unit/test_tls_openssl.py` checks the TLS-PSK handshake against `openssl s_server`, so it is skipped when the openssl binary is missing. Both files can also be run directly with `python3`, which is handy on a host that has no pytest installed.
+
 ## Usage/Examples
 
 You can simly run tests with only pytest mark "bash" and it will be ran with Postgres version from env variable POSTGRES_VERSION which is specified in .env file

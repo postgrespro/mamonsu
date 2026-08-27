@@ -56,6 +56,18 @@ class Config(DefaultConfig):
         config.set('zabbix', 'port', str(10051))
         config.set('zabbix', 'timeout', str(15))
         config.set('zabbix', 're_send', str(False))
+        # unencrypted keeps the plain TCP connection used before 3.5.18
+        config.set('zabbix', 'tls_connect', 'unencrypted')
+        config.set('zabbix', 'tls_psk_identity', str(None))
+        config.set('zabbix', 'tls_psk_file', str(None))
+        config.set('zabbix', 'tls_cipher_psk', str(None))
+        config.set('zabbix', 'tls_cipher_cert', str(None))
+        config.set('zabbix', 'tls_ca_file', str(None))
+        config.set('zabbix', 'tls_crl_file', str(None))
+        config.set('zabbix', 'tls_cert_file', str(None))
+        config.set('zabbix', 'tls_key_file', str(None))
+        config.set('zabbix', 'tls_server_cert_issuer', str(None))
+        config.set('zabbix', 'tls_server_cert_subject', str(None))
 
         config.add_section('metric_log')
         config.set('metric_log', 'enabled', str(False))

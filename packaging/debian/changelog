@@ -1,3 +1,6 @@
+mamonsu (3.5.17.1-1) stable; urgency=low
+  * send metrics to the Zabbix server over TLS with a pre-shared key or a certificate;
+
 mamonsu (3.5.17-1) stable; urgency=low
   * prevent Instance plugin Items list mutation on each run() cycle (#233);
 

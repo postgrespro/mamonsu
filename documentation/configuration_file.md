@@ -99,6 +99,53 @@ The [zabbix] section provides connection settings for the Zabbix server and can 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 15
 
+**tls_connect**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How _mamonsu_ connects to the Zabbix server: `unencrypted` for a plain TCP connection, `psk` for a TLS connection with a pre-shared key, or `cert` for a TLS connection with certificates. The value has to match the _Connections from host_ setting of this host in Zabbix.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A PSK connection is negotiated as TLS 1.2, which Zabbix accepts in every version that supports encryption; a certificate connection uses TLS 1.2 or newer. PSK needs no additional Python package: on Python 3.13 and newer the handshake uses the standard `ssl` module, on older versions it goes through the system libssl (OpenSSL 1.1.1 or 3.x) directly.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: unencrypted
+
+**tls_psk_identity**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The PSK identity string, exactly as configured for this host in Zabbix. Required when tls_connect is psk.
+
+**tls_psk_file**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to the file with the pre-shared key, a single line of hexadecimal digits — the same file the Zabbix agent uses in its TLSPSKFile parameter. The file is read once at startup and must be readable by the user _mamonsu_ runs as; its content is never written to the mamonsu log. Required when tls_connect is psk.
+
+**tls_cipher_psk**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenSSL cipher string used to select the PSK cipher suites, for the rare case when the Zabbix server is restricted to a specific one.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: PSK
+
+**tls_ca_file**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to the top-level CA certificate that signed the certificate of the Zabbix server. Required when tls_connect is cert.
+
+**tls_cert_file**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to the certificate _mamonsu_ presents to the Zabbix server. Required when tls_connect is cert.
+
+**tls_key_file**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to the private key of that certificate. Required when tls_connect is cert.
+
+**tls_crl_file**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to a certificate revocation list. When set, the certificate of the Zabbix server is checked against it.
+
+**tls_server_cert_issuer**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Expected issuer of the server certificate, for example `CN=Zabbix CA,O=Company`. The attributes listed here must all be present in the certificate; their order does not matter, and a comma inside a value is escaped with a backslash. As in the Zabbix agent, the host name is not matched against the certificate — the issuer and subject are what identify the server.
+
+**tls_server_cert_subject**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Expected subject of the server certificate, in the same format as tls_server_cert_issuer.
+
+**tls_cipher_cert**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenSSL cipher string used to select the certificate cipher suites, for the rare case when the Zabbix server is restricted to a specific one.
+
+<p>&nbsp;</p>
+
+All of the tls_* parameters except the cipher ones (tls_cipher_psk, tls_cipher_cert) can be overridden from the command line, which is convenient for checking a setting without editing the config file:
+
+```bash
+mamonsu -c /etc/mamonsu/agent.conf --zabbix-tls-connect psk         --zabbix-tls-psk-identity 'PSK 001' --zabbix-tls-psk-file /etc/zabbix/zabbix_agentd.psk
+```
+
 <p>&nbsp;</p>
 
 **[agent]**  
