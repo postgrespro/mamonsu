@@ -116,7 +116,7 @@ What they cover:
 * the unencrypted path: the frame is byte for byte the previous one and `failed: N` is still detected;
 * the choice of the transport and the command line overrides.
 
-Verified on Linux with Python 3.12 and OpenSSL 3.0.13 (the ctypes path) and on Windows with Python 3.12 (the cert mode on the standard library; the PSK tests are skipped there). On Astra Linux with OpenSSL 1.1.1 the code is the same but has not been run yet, so it is worth executing `test_tls_openssl.py` on the host itself.
+Verified on Linux with Python 3.12 and OpenSSL 3.0.13 (the ctypes path) and on Windows with Python 3.12 (the cert mode on the standard library; the PSK tests are skipped there). The `psk` mode has also been run in a pilot on Astra Linux 1.7.6 with Python 3.7 and OpenSSL 1.1.1, the oldest combination the ctypes path is meant to cover, with metrics reaching a Zabbix 7.4 server.
 
 The reference check with the stock utility:
 
