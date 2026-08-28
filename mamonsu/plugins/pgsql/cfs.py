@@ -14,7 +14,7 @@ class Cfs(Plugin):
     }
 
     query_cfs_compressed_ratio = """
-    WITH cfs_data AS (
+    WITH cfs_data AS MATERIALIZED (
     SELECT
         n.nspname || '.' || c.relname AS table_name,
         cfs_compression_ratio(c.oid::regclass) AS ratio,
