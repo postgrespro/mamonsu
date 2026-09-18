@@ -14,6 +14,7 @@ class Cfs(Plugin):
     }
 
     query_cfs_compressed_ratio = """
+    WITH cfs_data AS MATERIALIZED (
     SELECT
         n.nspname || '.' || c.relname AS table_name,
         cfs_compression_ratio(c.oid::regclass) AS ratio,
@@ -21,9 +22,10 @@ class Cfs(Plugin):
     FROM
         pg_catalog.pg_class AS c
         LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-    WHERE c.reltablespace IN (SELECT oid FROM pg_catalog.pg_tablespace WHERE spcoptions::text ~ 'compression')
-        AND c.relkind IN ('r','v','m','S','f','p','')
-        AND cfs_compression_ratio(c.oid::regclass) <> 'NaN'
+    WHERE c.reltablespace IN (
+        SELECT oid FROM pg_catalog.pg_tablespace 
+        WHERE spcoptions::text ~ 'compression' AND spcname NOT IN ('pg_default', 'pg_global')
+    ) AND c.relkind IN ('r','m','S') -- only relkinds with physical storage
     
     UNION ALL
     
@@ -34,9 +36,12 @@ class Cfs(Plugin):
     FROM
         pg_catalog.pg_class AS c
         LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-    WHERE c.reltablespace IN (SELECT oid FROM pg_catalog.pg_tablespace WHERE spcoptions::text ~ 'compression')
-        AND c.relkind = 'i'
-        AND cfs_compression_ratio(c.oid::regclass) <> 'NaN';
+    WHERE c.reltablespace IN (
+        SELECT oid FROM pg_catalog.pg_tablespace
+        WHERE spcoptions::text ~ 'compression' AND spcname NOT IN ('pg_default', 'pg_global')
+    ) AND c.relkind = 'i'
+    -- subquery + outer NaN filter prevent planner from calling cfs_compression_ratio() before reltablespace/relkind filters
+    ) SELECT table_name, ratio, compressed_size FROM cfs_data WHERE ratio <> 'NaN';
     """
 
     query_cfs_activity = """
