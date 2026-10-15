@@ -1,3 +1,6 @@
+mamonsu (3.5.18-1) stable; urgency=low
+  * Fixed pgsql.cfs.compress_ratio metric query to select only relations with physical CFS storage;
+
 mamonsu (3.5.17-1) stable; urgency=low
   * prevent Instance plugin Items list mutation on each run() cycle (#233);
 

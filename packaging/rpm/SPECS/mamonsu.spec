@@ -1,5 +1,5 @@
 Name:           mamonsu
-Version:        3.5.17
+Version:        3.5.18
 Release:        1%{?dist}
 Summary:        Monitoring agent for PostgreSQL
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ chown -R mamonsu:mamonsu /var/log/mamonsu
 chown -R mamonsu:mamonsu /etc/mamonsu
 
 %changelog
+* Thu Oct 15 2026 Name Surname <n.surname@postgrespro.ru>  - 3.5.18-1
+  - Fixed pgsql.cfs.compress_ratio metric query to select only relations with physical CFS storage;
+
 * Thu Jul 23 2026 Maxim Styushin <m.styushin@postgrespro.ru>  - 3.5.17-1
   - prevent Instance plugin Items list mutation on each run() cycle (#233);
 
