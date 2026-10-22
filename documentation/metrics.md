@@ -5240,7 +5240,7 @@ Default config:
 ### Compressed File System
 
 Default config:  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;force_enable = False
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled = True
 
 ### Items
 
